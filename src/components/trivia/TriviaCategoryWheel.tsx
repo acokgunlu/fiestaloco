@@ -70,6 +70,16 @@ export const TriviaCategoryWheel: React.FC<TriviaCategoryWheelProps> = ({
                 const tx = textDist * Math.cos(textRad);
                 const ty = textDist * Math.sin(textRad);
 
+                // Yazi yaricap boyunca hizalanir. Cemberin alt yarisinda bu aci
+                // 90-270 araligina dusup metni BAS ASAGI cevirir; o dilimlerde
+                // 180 derece geri cevirip okunur tutuyoruz. Ikon da ayni anda
+                // donuyor, bu yuzden etiketin dis tarafinda kalmasi icin
+                // y isaretini ters ceviriyoruz.
+                const rawRotation = textAngle + 90;
+                const isUpsideDown = rawRotation > 90 && rawRotation < 270;
+                const textRotation = isUpsideDown ? rawRotation - 180 : rawRotation;
+                const iconOffsetY = isUpsideDown ? 16 : -16;
+
                 return (
                   <g key={catKey} className="group cursor-pointer">
                     {/* Slice path */}
@@ -82,7 +92,7 @@ export const TriviaCategoryWheel: React.FC<TriviaCategoryWheelProps> = ({
                     />
 
                     {/* Text & Icon in Slice */}
-                    <g transform={`translate(${tx}, ${ty}) rotate(${textAngle + 90})`}>
+                    <g transform={`translate(${tx}, ${ty}) rotate(${textRotation})`}>
                       <text
                         textAnchor="middle"
                         dominantBaseline="middle"
@@ -94,8 +104,9 @@ export const TriviaCategoryWheel: React.FC<TriviaCategoryWheelProps> = ({
                         {cat.label}
                       </text>
                       <text
-                        y="-16"
+                        y={iconOffsetY}
                         textAnchor="middle"
+                        dominantBaseline="middle"
                         fontSize={Math.max(14, size * 0.05)}
                         className="pointer-events-none"
                       >
