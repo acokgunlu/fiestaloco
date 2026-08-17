@@ -9,7 +9,6 @@ import {
 } from '../../types/triviaPursuit';
 import { INITIAL_TRIVIA_QUESTIONS, getNextTriviaQuestion } from '../../data/triviaPursuitQuestions';
 import { TriviaWedgePie } from './TriviaWedgePie';
-import { TriviaCategoryWheel } from './TriviaCategoryWheel';
 import { TriviaBoard } from './TriviaBoard';
 import {
   BoardPosition,

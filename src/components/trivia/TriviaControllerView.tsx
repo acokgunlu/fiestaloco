@@ -4,6 +4,7 @@ import {
   TriviaPursuitPlayer,
   TRIVIA_CATEGORIES,
   TriviaCategory,
+  TriviaBoardPosition,
 } from '../../types/triviaPursuit';
 import { TriviaWedgePie } from './TriviaWedgePie';
 import {
@@ -12,7 +13,6 @@ import {
   CheckCircle2,
   XCircle,
   Award,
-  Disc,
   Flame,
   HelpCircle,
   Sparkles,
@@ -29,6 +29,8 @@ interface TriviaControllerViewProps {
   myAnswerSubmitted: string | null;
   onSubmitAnswer: (answer: string) => void;
   onSpinWheel: () => void;
+  onRollDie: () => void;
+  onPickMove: (to: TriviaBoardPosition) => void;
   onSelectCategory: (cat: TriviaCategory) => void;
 }
 
@@ -40,10 +42,14 @@ export const TriviaControllerView: React.FC<TriviaControllerViewProps> = ({
   myAnswerSubmitted,
   onSubmitAnswer,
   onSpinWheel,
+  onRollDie,
+  onPickMove,
   onSelectCategory,
 }) => {
   const activePlayer = players[gameState.activePlayerIndex];
   const isMyTurn = myPlayer && activePlayer && myPlayer.id === activePlayer.id;
+  /** Zar atildi, hedef bekleniyor. */
+  const waitingForMove = (gameState.moveOptions?.length || 0) > 0;
   const currentQ = gameState.currentQuestion;
   const currentCat = currentQ ? TRIVIA_CATEGORIES[currentQ.category] : null;
 
@@ -118,7 +124,7 @@ export const TriviaControllerView: React.FC<TriviaControllerViewProps> = ({
             <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-left text-xs space-y-2">
               <p className="font-black text-emerald-700 dark:text-emerald-300">🎯 Oyun Hedefi:</p>
               <p className="text-slate-600 dark:text-slate-300">
-                6 farklı renkteki kategori rozetini toplayan ilk bilgin şampiyon olur! Sıranız geldiğinde çarkı çevirip soruları yanıtlayın.
+                Sıranız gelince zarı atıp tahtada ilerleyin. Rozet yalnızca KALE karelerinde kazanılır; 6 rozeti toplayıp merkeze ulaşan şampiyon olur!
               </p>
             </div>
           </div>
@@ -127,38 +133,68 @@ export const TriviaControllerView: React.FC<TriviaControllerViewProps> = ({
         {/* WHEEL SPIN PHASE */}
         {gameState.phase === 'WHEEL_SPIN' && (
           <div className="w-full space-y-5 text-center bg-white dark:bg-slate-900 rounded-3xl p-6 border-2 border-slate-200 dark:border-slate-800 shadow-lg">
+            {/* Tahta modu: cark yok, ZAR var. Hamleyi de telefondan seciyoruz —
+                TV'ye uzanmak gerekmesin. Secenekleri sunucu uretiyor. */}
             {isMyTurn ? (
-              <div className="space-y-4">
-                <div className="p-3 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-700 text-amber-900 dark:text-amber-200 text-xs font-black">
-                  Sıra sende! Çarkı çevirerek sorunun kategorisini belirle.
-                </div>
+              waitingForMove ? (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-center gap-3">
+                    <span className="w-14 h-14 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center text-3xl font-black shadow-md">
+                      {gameState.dieRoll}
+                    </span>
+                    <div className="text-left">
+                      <div className="text-sm font-black text-slate-900 dark:text-white">geldi!</div>
+                      <div className="text-xs font-bold text-slate-500 dark:text-slate-400">
+                        Nereye gideceğini seç
+                      </div>
+                    </div>
+                  </div>
 
-                <button
-                  id="btn-controller-spin-wheel"
-                  onClick={() => {
-                    playTurnSound();
-                    onSpinWheel();
-                  }}
-                  disabled={gameState.isSpinning}
-                  className={`w-full py-8 rounded-3xl font-black text-xl tracking-wider text-white shadow-xl transition-all transform active:scale-95 flex flex-col items-center justify-center gap-2 border-3 border-emerald-300 dark:border-emerald-500 cursor-pointer ${
-                    gameState.isSpinning
-                      ? 'bg-slate-400 dark:bg-slate-800 opacity-60 cursor-not-allowed'
-                      : 'bg-gradient-to-br from-emerald-500 via-teal-500 to-indigo-600 hover:scale-[1.02]'
-                  }`}
-                >
-                  <Disc className={`w-10 h-10 ${gameState.isSpinning ? 'animate-spin' : ''}`} />
-                  <span>{gameState.isSpinning ? 'ÇARK DÖNÜYOR...' : 'ÇARKI ÇEVİR!'}</span>
-                </button>
-              </div>
+                  <div className="space-y-2">
+                    {(gameState.moveOptions || []).map((opt, i) => (
+                      <button
+                        key={i}
+                        onClick={() => {
+                          playClickSound();
+                          onPickMove(opt.to);
+                        }}
+                        className="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-600 text-white font-black text-base shadow-lg active:scale-95 transition-transform cursor-pointer"
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="p-3 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-700 text-amber-900 dark:text-amber-200 text-xs font-black">
+                    Sıra sende! Zarı at ve tahtada ilerle.
+                  </div>
+
+                  <button
+                    id="btn-controller-roll-die"
+                    onClick={() => {
+                      playTurnSound();
+                      onRollDie();
+                    }}
+                    className="w-full py-8 rounded-3xl font-black text-xl tracking-wider text-white shadow-xl transition-all transform active:scale-95 flex flex-col items-center justify-center gap-2 border-3 border-amber-300 dark:border-amber-500 bg-gradient-to-br from-amber-500 via-orange-500 to-rose-600 hover:scale-[1.02] cursor-pointer"
+                  >
+                    <span className="text-4xl">🎲</span>
+                    <span>ZAR AT!</span>
+                  </button>
+                </div>
+              )
             ) : (
               <div className="py-8 space-y-3">
-                <div className="w-16 h-16 rounded-3xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 flex items-center justify-center mx-auto text-indigo-500">
-                  <Disc className="w-8 h-8 animate-spin" />
+                <div className="w-16 h-16 rounded-3xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 flex items-center justify-center mx-auto text-3xl">
+                  🎲
                 </div>
                 <h3 className="text-base font-black text-slate-800 dark:text-slate-200">
-                  {activePlayer?.name || 'Sıradaki oyuncu'} Çarkı Çeviriyor...
+                  {activePlayer?.name || 'Sıradaki oyuncu'} zar atıyor…
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400 font-bold">Kategori belirleniyor, telefonunuzdan hazır olun!</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 font-bold">
+                  Sırası gelince telefonunda zar butonu çıkacak.
+                </p>
               </div>
             )}
           </div>

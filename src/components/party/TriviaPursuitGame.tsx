@@ -135,6 +135,8 @@ export const TriviaPursuitGame: React.FC<TriviaPursuitGameProps> = ({ onBackToHu
         myAnswerSubmitted={socket.myAnswerSubmitted}
         onSubmitAnswer={socket.submitAnswer}
         onSpinWheel={socket.spinWheel}
+        onRollDie={socket.rollDie}
+        onPickMove={socket.pickMove}
         onSelectCategory={socket.selectCategory}
       />
     );

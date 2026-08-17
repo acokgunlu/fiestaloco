@@ -7,7 +7,6 @@ import {
   TriviaBoardPosition,
 } from '../../types/triviaPursuit';
 import { TriviaWedgePie } from './TriviaWedgePie';
-import { TriviaCategoryWheel } from './TriviaCategoryWheel';
 import { TriviaBoard } from './TriviaBoard';
 import {
   Trophy,

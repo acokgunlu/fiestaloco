@@ -224,6 +224,45 @@ export function CodenamesMobileControllerView({
         </div>
       )}
 
+      {/* LOBI: oyun henuz baslamadi. Oyun arayuzunu GOSTERME — sadece takim/rol
+          secimi ve bekleme durumu. (Sunucu phase='LOBBY' ile basliyor.) */}
+      {gameState.phase === 'LOBBY' && (
+        <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 shadow-lg text-center space-y-4">
+          <div className="w-16 h-16 rounded-3xl bg-emerald-100 dark:bg-emerald-950 border-2 border-emerald-400 flex items-center justify-center mx-auto text-3xl">
+            🕵️
+          </div>
+          <h3 className="text-lg font-black text-slate-900 dark:text-white">Odaya bağlandın!</h3>
+
+          <div
+            className={`p-3 rounded-2xl border text-xs font-black ${
+              myPlayer.team === 'red'
+                ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-300 dark:border-rose-800 text-rose-800 dark:text-rose-300'
+                : 'bg-sky-50 dark:bg-sky-950/40 border-sky-300 dark:border-sky-800 text-sky-800 dark:text-sky-300'
+            }`}
+          >
+            {myPlayer.team === 'red' ? '🔴 Kırmızı' : '🔵 Mavi'} takım ·{' '}
+            {isSpymaster ? '👑 Lider' : '🕵️ Ajan'}
+          </div>
+
+          <button
+            onClick={() => setShowRoleSwitcher(!showRoleSwitcher)}
+            className="w-full py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-xs font-black transition-colors cursor-pointer"
+          >
+            🔄 Takım / Rol Değiştir
+          </button>
+
+          <p className="text-xs text-slate-500 dark:text-slate-400 font-bold">
+            TV ekranından oyunun başlatılması bekleniyor…
+          </p>
+          <p className="text-[11px] text-slate-400 dark:text-slate-500 font-medium">
+            Her iki takımda da bir lider ve bir ajan olmadan oyun başlayamaz.
+          </p>
+        </div>
+      )}
+
+      {/* Oyun arayuzu — yalnizca oyun basladiktan sonra */}
+      {gameState.phase !== 'LOBBY' && (
+      <>
       {/* Match Score & Status Banner */}
       <div className="grid grid-cols-2 gap-2 text-center text-xs">
         <div
@@ -487,6 +526,8 @@ export function CodenamesMobileControllerView({
             </div>
           </div>
         </div>
+      )}
+      </>
       )}
     </div>
   );
