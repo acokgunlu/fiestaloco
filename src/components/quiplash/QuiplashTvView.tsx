@@ -77,7 +77,10 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
   const isGameOver = gameState.phase === 'GAME_OVER';
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white flex flex-col justify-between overflow-hidden relative selection:bg-purple-500 selection:text-white">
+    // TV sahnesi bilerek koyu kalir (projeksiyonda okunakli olsun diye), ama
+    // artik kendi min-h-screen sayfasini KURMAZ — diger TV gorunumleri gibi
+    // uygulama kabugunun icinde tam genislikte bir panel olarak yasar.
+    <div className="w-full rounded-3xl bg-slate-950 text-white border border-slate-800 shadow-2xl flex flex-col justify-between overflow-hidden relative selection:bg-purple-500 selection:text-white min-h-[85vh]">
       {/* Background glowing comedy party lights */}
       <div className="absolute -top-40 -left-40 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-1/2 -right-40 w-96 h-96 bg-pink-600/20 rounded-full blur-3xl pointer-events-none" />
@@ -185,7 +188,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
 
               <p className="text-xs text-slate-400 max-w-xs font-medium">
                 Telefonunuzun kamerasını okutun veya tarayıcıdan{' '}
-                <strong className="text-white">fiestaloco.com</strong> adresine girip{' '}
+                <strong className="text-white">{window.location.host}</strong> adresine girip{' '}
                 <strong className="text-amber-400">{roomCode}</strong> yazın.
               </p>
             </div>

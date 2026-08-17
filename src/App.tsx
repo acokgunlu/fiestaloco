@@ -421,7 +421,9 @@ export default function App() {
       />
 
       {/* Main Screen Router */}
-      <main className="flex-1 flex flex-col items-center justify-center p-2 sm:p-4">
+      {/* justify-start: masaustunde uzun ekranlarda icerik dikeyde ortalanip
+          ust/altta buyuk bosluk birakmasin, yukaridan aksin. */}
+      <main className="flex-1 flex flex-col items-center justify-start p-2 sm:p-4">
         {/* 1. MAIN ARCADE HUB (GAME SELECTOR) */}
         {activeModule === 'arcade_hub' && (
           <MainArcadeHub
