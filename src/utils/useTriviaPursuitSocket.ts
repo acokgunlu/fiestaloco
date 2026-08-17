@@ -154,10 +154,14 @@ export function useTriviaPursuitSocket() {
               sessionRef.current = { roomCode: msg.roomCode, role: 'observer' };
             }
           } else if (
-            type === 'trivia:state' ||
-            type === 'trivia:game_started' ||
-            type === 'trivia:spinning' ||
-            type === 'trivia:question_active'
+            // Sunucu durum yayinini farkli event adlariyla yapabiliyor.
+            // BEYAZ LISTE YERINE: gameState tasiyan HER trivia mesajini durum
+            // guncellemesi say. Onceden `trivia:die_rolled` ve
+            // `trivia:roll_again` listede olmadigi icin sessizce dusuyordu ve
+            // zar atilinca ekran hic guncellenmiyordu.
+            typeof type === 'string' &&
+            type.startsWith('trivia:') &&
+            msg.gameState
           ) {
             if (msg.gameState) {
               setGameState(msg.gameState);
