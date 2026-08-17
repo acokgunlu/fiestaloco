@@ -247,16 +247,16 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
   const isMyOnlineTurn = socket.isMyTurn;
 
   return (
-    <div className="w-full max-w-5xl mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-6 text-slate-900 animate-fade-in">
+    <div className="w-full max-w-5xl mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-6 text-slate-900 dark:text-slate-100 animate-fade-in">
       {/* Top Header Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-white rounded-2xl p-4 shadow-sm border border-slate-200">
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-white dark:bg-slate-900 rounded-2xl p-4 shadow-sm border border-slate-200 dark:border-slate-800">
         <button
           onClick={() => {
             playClickSound();
             socket.leaveRoom();
             onBackToHub();
           }}
-          className="flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-600 hover:text-rose-600 transition-colors cursor-pointer"
+          className="flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Oyun Merkezine Dön</span>
@@ -267,20 +267,20 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
             💣
           </div>
           <div>
-            <h1 className="text-sm sm:text-base font-black text-slate-900 flex items-center gap-1.5">
+            <h1 className="text-sm sm:text-base font-black text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
               <span>Saatli Bomba</span>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 text-red-700">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300">
                 Word Bomb
               </span>
             </h1>
-            <p className="text-[10px] sm:text-xs text-slate-500 font-medium">
+            <p className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium">
               Tik-tak patlamadan kelimeyi devret!
             </p>
           </div>
         </div>
 
         {/* Mode Selector Segment */}
-        <div className="flex items-center p-1 bg-slate-100 rounded-xl border border-slate-200">
+        <div className="flex items-center p-1 bg-slate-100 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-800">
           <button
             onClick={() => {
               playClickSound();
@@ -288,8 +288,8 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
             }}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
               playMode === 'online_host'
-                ? 'bg-white text-rose-700 shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-white dark:bg-slate-900 text-rose-700 dark:text-rose-300 shadow-xs'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
             }`}
           >
             <Tv className="w-3.5 h-3.5" />
@@ -302,8 +302,8 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
             }}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
               playMode === 'online_join'
-                ? 'bg-white text-rose-700 shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-white dark:bg-slate-900 text-rose-700 dark:text-rose-300 shadow-xs'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
             }`}
           >
             <Smartphone className="w-3.5 h-3.5" />
@@ -316,8 +316,8 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
             }}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
               playMode === 'local'
-                ? 'bg-white text-rose-700 shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-white dark:bg-slate-900 text-rose-700 dark:text-rose-300 shadow-xs'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
             }`}
           >
             <span>📲 Tek Cihaz</span>
@@ -362,15 +362,15 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
             /* TV Host Active Room Screen */
             <div className="space-y-6">
               {/* TV Room Code & Share Bar */}
-              <div className="bg-white text-slate-900 rounded-2xl p-4 border-2 border-red-200 flex flex-wrap items-center justify-between gap-4 shadow-md">
+              <div className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 rounded-2xl p-4 border-2 border-red-200 dark:border-red-900 flex flex-wrap items-center justify-between gap-4 shadow-md">
                 <div className="flex items-center gap-3">
                   <div className="px-3 py-1.5 bg-red-500 text-white rounded-xl font-black text-xs tracking-wider flex items-center gap-1.5 shadow-sm">
-                    <span className="w-2 h-2 rounded-full bg-white animate-ping" />
+                    <span className="w-2 h-2 rounded-full bg-white dark:bg-slate-900 animate-ping" />
                     <span>TV HOST CANLI</span>
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-500 font-bold uppercase block">Oda Kodu</span>
-                    <span className="text-xl sm:text-2xl font-black tracking-widest text-red-600 font-mono">
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase block">Oda Kodu</span>
+                    <span className="text-xl sm:text-2xl font-black tracking-widest text-red-600 dark:text-red-400 font-mono">
                       {socket.roomCode}
                     </span>
                   </div>
@@ -379,16 +379,16 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => handleCopyLink(socket.roomCode!)}
-                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold border border-slate-300 transition-all cursor-pointer"
+                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold border border-slate-300 dark:border-slate-700 transition-all cursor-pointer"
                   >
                     {copiedLink ? (
                       <>
-                        <Check className="w-4 h-4 text-emerald-600" />
-                        <span className="text-emerald-700">Kopyalandı!</span>
+                        <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                        <span className="text-emerald-700 dark:text-emerald-300">Kopyalandı!</span>
                       </>
                     ) : (
                       <>
-                        <Copy className="w-4 h-4 text-slate-600" />
+                        <Copy className="w-4 h-4 text-slate-600 dark:text-slate-400" />
                         <span>Davet Linki</span>
                       </>
                     )}
@@ -399,7 +399,7 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
                       playClickSound();
                       socket.leaveRoom();
                     }}
-                    className="px-3 py-2 rounded-xl bg-slate-100 hover:bg-red-50 text-slate-600 hover:text-red-600 text-xs font-bold border border-slate-200 transition-all cursor-pointer"
+                    className="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-red-50 dark:hover:bg-red-950/40 text-slate-600 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 text-xs font-bold border border-slate-200 dark:border-slate-800 transition-all cursor-pointer"
                   >
                     Odayı Kapat
                   </button>
@@ -408,15 +408,15 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
 
               {/* ONLINE PHASE 1: LOBBY */}
               {(!onlineGameState || onlineGameState.phase === 'LOBBY') && (
-                <div className="bg-white rounded-3xl p-6 sm:p-10 border-3 border-red-200 shadow-xl space-y-8 text-center">
+                <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-10 border-3 border-red-200 dark:border-red-900 shadow-xl space-y-8 text-center">
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
                     {/* Left: QR Code & Join Info */}
-                    <div className="md:col-span-5 bg-gradient-to-br from-red-50 to-amber-50 text-slate-900 p-6 rounded-3xl border-2 border-red-200 space-y-4 text-center shadow-md">
-                      <span className="text-xs font-black uppercase tracking-wider text-red-700 bg-red-100 px-3 py-1 rounded-full border border-red-300">
+                    <div className="md:col-span-5 bg-gradient-to-br from-red-50 to-amber-50 text-slate-900 dark:text-slate-100 p-6 rounded-3xl border-2 border-red-200 dark:border-red-900 space-y-4 text-center shadow-md">
+                      <span className="text-xs font-black uppercase tracking-wider text-red-700 dark:text-red-300 bg-red-100 dark:bg-red-900/40 px-3 py-1 rounded-full border border-red-300 dark:border-red-800">
                         TELEFONDAN KATIL
                       </span>
 
-                      <div className="p-3 bg-white rounded-2xl inline-block shadow-lg border-4 border-red-400">
+                      <div className="p-3 bg-white dark:bg-slate-900 rounded-2xl inline-block shadow-lg border-4 border-red-400">
                         <img
                           src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(
                             `${window.location.origin}${window.location.pathname}?game=bomb&room=${socket.roomCode}`
@@ -427,8 +427,8 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
                       </div>
 
                       <div className="space-y-1">
-                        <p className="text-xs text-slate-600 font-bold">Kamera ile QR Kodu Okutun</p>
-                        <p className="text-2xl font-black text-red-600 tracking-widest font-mono">
+                        <p className="text-xs text-slate-600 dark:text-slate-400 font-bold">Kamera ile QR Kodu Okutun</p>
+                        <p className="text-2xl font-black text-red-600 dark:text-red-400 tracking-widest font-mono">
                           {socket.roomCode}
                         </p>
                       </div>
@@ -438,14 +438,14 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
                     <div className="md:col-span-7 space-y-6 text-left">
                       <div>
                         <div className="flex items-center justify-between">
-                          <h3 className="text-xl font-black text-slate-900">
+                          <h3 className="text-xl font-black text-slate-900 dark:text-slate-100">
                             Katılan Oyuncular ({onlinePlayers.length})
                           </h3>
-                          <span className="text-xs text-slate-500 font-bold">
+                          <span className="text-xs text-slate-500 dark:text-slate-400 font-bold">
                             En az 2 oyuncu önerilir
                           </span>
                         </div>
-                        <p className="text-xs text-slate-500 mt-1">
+                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                           Herkes telefonundan katıldığında aşağıdaki butona basarak bombayı ateşleyin!
                         </p>
                       </div>
@@ -455,10 +455,10 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
                         {onlinePlayers.map((p) => (
                           <div
                             key={p.id}
-                            className="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-center space-y-1 relative"
+                            className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 text-center space-y-1 relative"
                           >
                             <span className="text-3xl">{p.avatar}</span>
-                            <p className="text-xs font-black text-slate-800 truncate">{p.name}</p>
+                            <p className="text-xs font-black text-slate-800 dark:text-slate-200 truncate">{p.name}</p>
                             <div className="flex justify-center gap-1">
                               {Array.from({ length: 3 }).map((_, i) => (
                                 <span key={i} className="text-xs">
@@ -471,7 +471,7 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
                         ))}
 
                         {onlinePlayers.length === 0 && (
-                          <div className="col-span-full flex flex-col items-center justify-center p-8 border-2 border-dashed border-slate-200 rounded-2xl text-slate-400 text-xs font-bold text-center space-y-2">
+                          <div className="col-span-full flex flex-col items-center justify-center p-8 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-2xl text-slate-400 dark:text-slate-500 text-xs font-bold text-center space-y-2">
                             <Smartphone className="w-8 h-8 text-slate-300 animate-bounce" />
                             <span>Oyuncuların telefonlarıyla katılması bekleniyor...</span>
                           </div>
@@ -487,7 +487,7 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
                         className={`w-full py-4 rounded-2xl font-black text-base transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer ${
                           onlinePlayers.length >= 2
                             ? 'bg-gradient-to-r from-red-600 via-rose-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white active:scale-98 shadow-red-600/30'
-                            : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                            : 'bg-slate-200 dark:bg-slate-700 text-slate-400 dark:text-slate-500 cursor-not-allowed'
                         }`}
                       >
                         <Flame className="w-5 h-5" />
@@ -613,19 +613,19 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
 
               {/* ONLINE PHASE 3: EXPLODED SCREEN */}
               {onlineGameState?.phase === 'EXPLODED' && (
-                <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-2xl text-center space-y-6 max-w-xl mx-auto animate-shake">
-                  <div className="w-24 h-24 rounded-3xl bg-red-100 text-red-600 flex items-center justify-center text-5xl mx-auto shadow-inner">
+                <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 shadow-2xl text-center space-y-6 max-w-xl mx-auto animate-shake">
+                  <div className="w-24 h-24 rounded-3xl bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400 flex items-center justify-center text-5xl mx-auto shadow-inner">
                     💥
                   </div>
 
                   <div className="space-y-1">
-                    <span className="text-xs font-black uppercase text-red-600 bg-red-50 px-3 py-1 rounded-full border border-red-200">
+                    <span className="text-xs font-black uppercase text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/40 px-3 py-1 rounded-full border border-red-200 dark:border-red-900">
                       BOOOOOOOM!
                     </span>
-                    <h2 className="text-3xl font-black text-slate-900">Bomba Patladı!</h2>
-                    <p className="text-sm text-slate-600 font-medium">
+                    <h2 className="text-3xl font-black text-slate-900 dark:text-slate-100">Bomba Patladı!</h2>
+                    <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">
                       Bomba elindeyken patlayan:{' '}
-                      <strong className="text-red-600 text-base">
+                      <strong className="text-red-600 dark:text-red-400 text-base">
                         {onlinePlayers.find((p) => p.id === onlineGameState.explodedPlayerId)?.name}
                       </strong>{' '}
                       (1 can kaybetti 💔)
@@ -639,11 +639,11 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
                         key={p.id}
                         className={`p-3 rounded-xl border text-center ${
                           p.id === onlineGameState.explodedPlayerId
-                            ? 'bg-red-50 border-red-300'
-                            : 'bg-slate-50 border-slate-200'
+                            ? 'bg-red-50 dark:bg-red-950/40 border-red-300 dark:border-red-800'
+                            : 'bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800'
                         }`}
                       >
-                        <p className="text-xs font-black text-slate-800 truncate">
+                        <p className="text-xs font-black text-slate-800 dark:text-slate-200 truncate">
                           {p.avatar} {p.name}
                         </p>
                         <div className="flex justify-center gap-1 mt-1">
@@ -671,16 +671,16 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
 
               {/* ONLINE PHASE 4: GAME OVER */}
               {onlineGameState?.phase === 'GAME_OVER' && (
-                <div className="bg-white rounded-3xl p-8 sm:p-10 border border-slate-200 shadow-2xl text-center space-y-6 max-w-xl mx-auto animate-fade-in">
-                  <div className="w-24 h-24 rounded-3xl bg-amber-100 text-amber-600 flex items-center justify-center text-5xl mx-auto shadow-inner animate-bounce">
+                <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 sm:p-10 border border-slate-200 dark:border-slate-800 shadow-2xl text-center space-y-6 max-w-xl mx-auto animate-fade-in">
+                  <div className="w-24 h-24 rounded-3xl bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 flex items-center justify-center text-5xl mx-auto shadow-inner animate-bounce">
                     🏆
                   </div>
 
                   <div className="space-y-1">
-                    <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
+                    <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-slate-100">
                       Bomba Arenası Şampiyonu!
                     </h2>
-                    <p className="text-xs sm:text-sm text-slate-500 font-medium">
+                    <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">
                       Tüm turlarda hayatta kalmayı başaran tek kurtulan:
                     </p>
                   </div>
@@ -710,7 +710,7 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
                         socket.leaveRoom();
                         onBackToHub();
                       }}
-                      className="px-6 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs cursor-pointer"
+                      className="px-6 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs cursor-pointer"
                     >
                       OYUN MERKEZİ
                     </button>
@@ -729,19 +729,19 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
         <div className="max-w-md mx-auto space-y-6">
           {!socket.myPlayer ? (
             /* Mobile Join Form */
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xl space-y-6">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-xl space-y-6">
               <div className="text-center space-y-2">
-                <div className="w-14 h-14 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center text-2xl mx-auto shadow-inner">
+                <div className="w-14 h-14 rounded-2xl bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400 flex items-center justify-center text-2xl mx-auto shadow-inner">
                   📱
                 </div>
-                <h2 className="text-xl font-black text-slate-900">Telefondan Katıl</h2>
-                <p className="text-xs text-slate-500">
+                <h2 className="text-xl font-black text-slate-900 dark:text-slate-100">Telefondan Katıl</h2>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                   TV ekranındaki 4 haneli oda kodunu girerek bombaya katılın.
                 </p>
               </div>
 
               {socket.errorMessage && (
-                <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-xs font-bold flex items-center gap-2">
+                <div className="p-3 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 rounded-xl text-red-700 dark:text-red-300 text-xs font-bold flex items-center gap-2">
                   <AlertTriangle className="w-4 h-4 flex-shrink-0" />
                   <span>{socket.errorMessage}</span>
                 </div>
@@ -757,7 +757,7 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
                 className="space-y-4"
               >
                 <div>
-                  <label className="text-[11px] font-black uppercase text-slate-600 block mb-1">
+                  <label className="text-[11px] font-black uppercase text-slate-600 dark:text-slate-400 block mb-1">
                     Oda Kodu
                   </label>
                   <input
@@ -767,12 +767,12 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
                     placeholder="Örn: FIRE42"
                     value={joinCodeInput}
                     onChange={(e) => setJoinCodeInput(e.target.value.toUpperCase())}
-                    className="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-red-500 font-black text-center text-lg uppercase tracking-widest focus:outline-none"
+                    className="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 dark:border-slate-800 focus:border-red-500 font-black text-center text-lg uppercase tracking-widest focus:outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-black uppercase text-slate-600 block mb-1">
+                  <label className="text-[11px] font-black uppercase text-slate-600 dark:text-slate-400 block mb-1">
                     Oyuncu Adınız
                   </label>
                   <input
@@ -782,12 +782,12 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
                     placeholder="Adınız..."
                     value={playerNameInput}
                     onChange={(e) => setPlayerNameInput(e.target.value)}
-                    className="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-red-500 font-bold text-sm focus:outline-none"
+                    className="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 dark:border-slate-800 focus:border-red-500 font-bold text-sm focus:outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-black uppercase text-slate-600 block mb-1.5">
+                  <label className="text-[11px] font-black uppercase text-slate-600 dark:text-slate-400 block mb-1.5">
                     Avatar Seçin
                   </label>
                   <div className="grid grid-cols-6 gap-2">
@@ -799,7 +799,7 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
                         className={`p-2 rounded-xl text-xl transition-all cursor-pointer ${
                           selectedAvatar === av
                             ? 'bg-red-500 text-white ring-2 ring-red-400 scale-110 shadow-sm'
-                            : 'bg-slate-100 hover:bg-slate-200'
+                            : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700'
                         }`}
                       >
                         {av}
@@ -838,19 +838,19 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
                 </div>
 
                 <div className="text-right">
-                  <span className="text-[10px] text-slate-400 font-bold block">Oda</span>
+                  <span className="text-[10px] text-slate-400 dark:text-slate-500 font-bold block">Oda</span>
                   <span className="text-xs font-black text-amber-400">{socket.roomCode}</span>
                 </div>
               </div>
 
               {/* Controller Screen per Phase */}
               {(!onlineGameState || onlineGameState.phase === 'LOBBY') && (
-                <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-xl text-center space-y-4">
-                  <div className="w-16 h-16 rounded-3xl bg-amber-100 text-amber-600 flex items-center justify-center text-3xl mx-auto animate-pulse">
+                <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 shadow-xl text-center space-y-4">
+                  <div className="w-16 h-16 rounded-3xl bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 flex items-center justify-center text-3xl mx-auto animate-pulse">
                     ⏳
                   </div>
-                  <h3 className="text-lg font-black text-slate-900">Lobiye Katıldınız!</h3>
-                  <p className="text-xs text-slate-500">
+                  <h3 className="text-lg font-black text-slate-900 dark:text-slate-100">Lobiye Katıldınız!</h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
                     TV ekranından oyunun başlatılması bekleniyor. Hazır olun!
                   </p>
                 </div>
@@ -926,18 +926,18 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
                     </div>
                   ) : (
                     /* Calm / Waiting for Turn */
-                    <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-xl text-center space-y-4">
-                      <div className="w-16 h-16 rounded-2xl bg-slate-100 text-slate-600 flex items-center justify-center text-3xl mx-auto">
+                    <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 shadow-xl text-center space-y-4">
+                      <div className="w-16 h-16 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 flex items-center justify-center text-3xl mx-auto">
                         ⏳
                       </div>
                       <div className="space-y-1">
-                        <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
+                        <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500">
                           ŞU AN BOMBA KİMDE?
                         </span>
-                        <h3 className="text-xl font-black text-slate-800">
+                        <h3 className="text-xl font-black text-slate-800 dark:text-slate-200">
                           {activeOnlinePlayer?.name}
                         </h3>
-                        <p className="text-xs text-slate-500 font-medium">
+                        <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
                           Sıran gelene kadar kelimeni düşün!
                         </p>
                       </div>
@@ -948,20 +948,20 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
 
               {/* Exploded / Game Over states on phone */}
               {onlineGameState?.phase === 'EXPLODED' && (
-                <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xl text-center space-y-3">
+                <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-xl text-center space-y-3">
                   <span className="text-4xl block">💥</span>
-                  <h3 className="text-lg font-black text-slate-900">Bomba Patladı!</h3>
-                  <p className="text-xs text-slate-500">
+                  <h3 className="text-lg font-black text-slate-900 dark:text-slate-100">Bomba Patladı!</h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
                     TV ekranından sonraki turun başlatılması bekleniyor.
                   </p>
                 </div>
               )}
 
               {onlineGameState?.phase === 'GAME_OVER' && (
-                <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xl text-center space-y-3">
+                <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-xl text-center space-y-3">
                   <span className="text-4xl block">🏆</span>
-                  <h3 className="text-lg font-black text-slate-900">Oyun Bitti!</h3>
-                  <p className="text-xs text-slate-500">
+                  <h3 className="text-lg font-black text-slate-900 dark:text-slate-100">Oyun Bitti!</h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
                     Şampiyon: {onlinePlayers.find((p) => p.id === onlineGameState.winnerPlayerId)?.name}
                   </p>
                 </div>
@@ -978,13 +978,13 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
         <div className="space-y-6">
           {/* LOCAL LOBBY */}
           {localGameState.phase === 'LOBBY' && (
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xl space-y-6 text-center">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-xl space-y-6 text-center">
               <div className="max-w-md mx-auto space-y-2">
-                <div className="w-16 h-16 rounded-3xl bg-red-100 text-red-600 flex items-center justify-center text-3xl mx-auto shadow-inner">
+                <div className="w-16 h-16 rounded-3xl bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400 flex items-center justify-center text-3xl mx-auto shadow-inner">
                   💣
                 </div>
-                <h2 className="text-2xl sm:text-3xl font-black text-slate-900">Saatli Bomba (Tek Cihaz)</h2>
-                <p className="text-xs sm:text-sm text-slate-600 font-medium">
+                <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-slate-100">Saatli Bomba (Tek Cihaz)</h2>
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium">
                   Cihazı elden ele gezdirin. Kurala uygun kelimeyi söyleyip hemen bombayı devredin!
                 </p>
               </div>
@@ -994,10 +994,10 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
                 {localPlayers.map((p) => (
                   <div
                     key={p.id}
-                    className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-center space-y-1"
+                    className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 text-center space-y-1"
                   >
                     <span className="text-2xl">{p.avatar}</span>
-                    <p className="text-xs font-black text-slate-800 truncate">{p.name}</p>
+                    <p className="text-xs font-black text-slate-800 dark:text-slate-200 truncate">{p.name}</p>
                     <div className="flex justify-center gap-1">
                       {Array.from({ length: 3 }).map((_, i) => (
                         <span key={i} className="text-xs">
@@ -1016,7 +1016,7 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
                   placeholder="Yeni oyuncu adı..."
                   value={newPlayerName}
                   onChange={(e) => setNewPlayerName(e.target.value)}
-                  className="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-bold focus:outline-none focus:border-red-500"
+                  className="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-bold focus:outline-none focus:border-red-500"
                 />
                 <button
                   type="submit"
@@ -1073,14 +1073,14 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
               </div>
 
               {/* Local interactive passing controller */}
-              <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xl space-y-4 max-w-lg mx-auto text-center">
+              <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-xl space-y-4 max-w-lg mx-auto text-center">
                 <form onSubmit={handlePassLocalBomb} className="flex gap-2">
                   <input
                     type="text"
                     placeholder="Kelime (isteğe bağlı)..."
                     value={localTypedWord}
                     onChange={(e) => setLocalTypedWord(e.target.value)}
-                    className="flex-1 px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-red-500 font-bold text-sm focus:outline-none"
+                    className="flex-1 px-4 py-3 rounded-2xl border-2 border-slate-200 dark:border-slate-800 focus:border-red-500 font-bold text-sm focus:outline-none"
                   />
                   <button
                     type="submit"
@@ -1105,14 +1105,14 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
                     key={p.id}
                     className={`p-3 rounded-2xl border transition-all text-center ${
                       idx === localGameState.activePlayerIndex
-                        ? 'bg-red-50 border-red-500 ring-2 ring-red-500/30'
+                        ? 'bg-red-50 dark:bg-red-950/40 border-red-500 ring-2 ring-red-500/30'
                         : p.isAlive
-                        ? 'bg-white border-slate-200'
-                        : 'bg-slate-100 border-slate-200 opacity-40'
+                        ? 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800'
+                        : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-800 opacity-40'
                     }`}
                   >
                     <span className="text-2xl">{p.avatar}</span>
-                    <p className="text-xs font-black text-slate-800 truncate">{p.name}</p>
+                    <p className="text-xs font-black text-slate-800 dark:text-slate-200 truncate">{p.name}</p>
                     <div className="flex justify-center gap-1 mt-1">
                       {Array.from({ length: 3 }).map((_, i) => (
                         <span key={i} className="text-xs">
@@ -1128,19 +1128,19 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
 
           {/* LOCAL EXPLODED */}
           {localGameState.phase === 'EXPLODED' && (
-            <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-xl text-center space-y-6 max-w-xl mx-auto animate-shake">
-              <div className="w-20 h-20 rounded-3xl bg-red-100 text-red-600 flex items-center justify-center text-4xl mx-auto shadow-inner">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 shadow-xl text-center space-y-6 max-w-xl mx-auto animate-shake">
+              <div className="w-20 h-20 rounded-3xl bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400 flex items-center justify-center text-4xl mx-auto shadow-inner">
                 💥
               </div>
 
               <div className="space-y-1">
-                <span className="text-xs font-black uppercase text-red-600 bg-red-50 px-3 py-1 rounded-full border border-red-200">
+                <span className="text-xs font-black uppercase text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/40 px-3 py-1 rounded-full border border-red-200 dark:border-red-900">
                   BOOOOM!
                 </span>
-                <h2 className="text-2xl sm:text-3xl font-black text-slate-900">Bomba Patladı!</h2>
-                <p className="text-xs sm:text-sm text-slate-600 font-medium">
+                <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-slate-100">Bomba Patladı!</h2>
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium">
                   Bomba elindeyken patlayan:{' '}
-                  <strong className="text-red-600">
+                  <strong className="text-red-600 dark:text-red-400">
                     {localPlayers.find((p) => p.id === localGameState.explodedPlayerId)?.name}
                   </strong>{' '}
                   (1 can kaybetti)
@@ -1164,16 +1164,16 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
 
           {/* LOCAL GAME OVER */}
           {localGameState.phase === 'GAME_OVER' && (
-            <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-xl text-center space-y-6 max-w-xl mx-auto">
-              <div className="w-20 h-20 rounded-3xl bg-amber-100 text-amber-600 flex items-center justify-center text-4xl mx-auto shadow-inner">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 shadow-xl text-center space-y-6 max-w-xl mx-auto">
+              <div className="w-20 h-20 rounded-3xl bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 flex items-center justify-center text-4xl mx-auto shadow-inner">
                 🏆
               </div>
 
               <div className="space-y-1">
-                <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
+                <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-slate-100">
                   Bomba Arenası Şampiyonu!
                 </h2>
-                <p className="text-xs sm:text-sm text-slate-500 font-medium">
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">
                   Hayatta kalmayı başaran tek oyuncu:
                 </p>
               </div>
@@ -1205,7 +1205,7 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
                 </button>
                 <button
                   onClick={onBackToHub}
-                  className="px-6 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs cursor-pointer"
+                  className="px-6 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs cursor-pointer"
                 >
                   OYUN MERKEZİ
                 </button>

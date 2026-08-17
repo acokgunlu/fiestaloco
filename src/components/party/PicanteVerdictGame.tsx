@@ -269,16 +269,16 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
   const isObserverHost = socket.clientRole === 'observer';
 
   return (
-    <div className="w-full max-w-5xl mx-auto px-3 sm:px-4 py-5 space-y-6 text-slate-900 animate-fade-in">
+    <div className="w-full max-w-5xl mx-auto px-3 sm:px-4 py-5 space-y-6 text-slate-900 dark:text-slate-100 animate-fade-in">
       {/* Top Header Bar */}
-      <div className="flex items-center justify-between bg-white rounded-3xl p-4 sm:p-5 shadow-sm border border-slate-200">
+      <div className="flex items-center justify-between bg-white dark:bg-slate-900 rounded-3xl p-4 sm:p-5 shadow-sm border border-slate-200 dark:border-slate-800">
         <button
           onClick={() => {
             playClickSound();
             socket.leaveRoom();
             onBackToHub();
           }}
-          className="flex items-center gap-2 text-xs sm:text-sm font-black text-slate-600 hover:text-purple-600 transition-colors cursor-pointer"
+          className="flex items-center gap-2 text-xs sm:text-sm font-black text-slate-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Oyun Merkezine Dön</span>
@@ -290,23 +290,23 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <h1 className="text-base sm:text-lg font-black text-slate-900">Grup Mahkemesi</h1>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-purple-100 text-purple-700 border border-purple-200 uppercase tracking-wide">
+              <h1 className="text-base sm:text-lg font-black text-slate-900 dark:text-slate-100">Grup Mahkemesi</h1>
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-900 uppercase tracking-wide">
                 Gizli Oylama
               </span>
             </div>
-            <p className="text-[11px] text-slate-500 font-bold">Kim Yapar? & Sıcak Koltuk</p>
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 font-bold">Kim Yapar? & Sıcak Koltuk</p>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
           {socket.roomCode && (
-            <div className="px-3 py-1.5 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-700 font-black text-xs">
+            <div className="px-3 py-1.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900 text-indigo-700 dark:text-indigo-300 font-black text-xs">
               Oda: <span className="font-mono tracking-widest">{socket.roomCode}</span>
             </div>
           )}
           {playMode === 'local' && (
-            <span className="text-xs font-black text-purple-600 bg-purple-50 border border-purple-200 px-3 py-1.5 rounded-xl">
+            <span className="text-xs font-black text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-900 px-3 py-1.5 rounded-xl">
               Duruşma {localGameState.currentRound}/{localGameState.totalRounds}
             </span>
           )}
@@ -315,7 +315,7 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
 
       {/* Mode Switcher Tabs (when not in active online room) */}
       {!isOnlineActive && (
-        <div className="flex p-1.5 bg-slate-200/70 backdrop-blur-md rounded-2xl border border-slate-300/80 gap-1.5 shadow-sm">
+        <div className="flex p-1.5 bg-slate-200/70 dark:bg-slate-800/70 backdrop-blur-md rounded-2xl border border-slate-300/80 dark:border-slate-700/80 gap-1.5 shadow-sm">
           <button
             onClick={() => {
               playClickSound();
@@ -324,7 +324,7 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
             className={`flex-1 py-3 px-3 rounded-xl text-xs sm:text-sm font-black flex items-center justify-center gap-2 transition-all cursor-pointer ${
               playMode === 'online_host'
                 ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-white/50 dark:hover:bg-slate-900/50'
             }`}
           >
             <Tv className="w-4 h-4 text-purple-300" />
@@ -339,7 +339,7 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
             className={`flex-1 py-3 px-3 rounded-xl text-xs sm:text-sm font-black flex items-center justify-center gap-2 transition-all cursor-pointer ${
               playMode === 'online_join'
                 ? 'bg-gradient-to-r from-pink-600 to-rose-600 text-white shadow-md'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-white/50 dark:hover:bg-slate-900/50'
             }`}
           >
             <Smartphone className="w-4 h-4 text-pink-300" />
@@ -354,7 +354,7 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
             className={`flex-1 py-3 px-3 rounded-xl text-xs sm:text-sm font-black flex items-center justify-center gap-2 transition-all cursor-pointer ${
               playMode === 'local'
                 ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-white/50 dark:hover:bg-slate-900/50'
             }`}
           >
             <Users className="w-4 h-4 text-emerald-300" />
@@ -365,8 +365,8 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
 
       {/* Socket Error notice if any */}
       {socket.errorMessage && (
-        <div className="p-4 bg-rose-50 border border-rose-300 text-rose-800 text-xs sm:text-sm font-black rounded-2xl text-center shadow-sm animate-shake flex items-center justify-center gap-2">
-          <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
+        <div className="p-4 bg-rose-50 dark:bg-rose-950/40 border border-rose-300 dark:border-rose-800 text-rose-800 dark:text-rose-300 text-xs sm:text-sm font-black rounded-2xl text-center shadow-sm animate-shake flex items-center justify-center gap-2">
+          <AlertTriangle className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0" />
           <span>{socket.errorMessage}</span>
         </div>
       )}
@@ -375,25 +375,25 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
       {/* 1. ONLINE HOST CREATION VIEW (Before Room Creation) */}
       {/* ========================================================================= */}
       {!isOnlineActive && playMode === 'online_host' && (
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xl space-y-6 animate-fade-in text-center">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-xl space-y-6 animate-fade-in text-center">
           <div className="max-w-md mx-auto space-y-3">
             <div className="w-20 h-20 rounded-3xl bg-gradient-to-tr from-purple-500 to-indigo-600 text-white flex items-center justify-center text-4xl mx-auto shadow-lg shadow-purple-500/20">
               ⚖️
             </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-slate-100">
               Online Grup Mahkemesi
             </h2>
-            <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
-              Herkes telefonundan odaya katılır ve sorulara <strong className="text-purple-700 font-bold">tamamen gizli</strong> oy verir. TV ekranında oylar açılır, sanık sıcak koltuğa oturur ve 30 saniye içinde kendini savunur!
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium leading-relaxed">
+              Herkes telefonundan odaya katılır ve sorulara <strong className="text-purple-700 dark:text-purple-300 font-bold">tamamen gizli</strong> oy verir. TV ekranında oylar açılır, sanık sıcak koltuğa oturur ve 30 saniye içinde kendini savunur!
             </p>
           </div>
 
-          <div className="bg-purple-50 border border-purple-200 rounded-2xl p-4 max-w-md mx-auto text-left space-y-2">
-            <div className="flex items-center gap-2 text-purple-900 font-black text-xs">
-              <ShieldCheck className="w-4 h-4 text-purple-600" />
+          <div className="bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-900 rounded-2xl p-4 max-w-md mx-auto text-left space-y-2">
+            <div className="flex items-center gap-2 text-purple-900 dark:text-purple-200 font-black text-xs">
+              <ShieldCheck className="w-4 h-4 text-purple-600 dark:text-purple-400" />
               <span>Gelişmiş Gizli Oylama Motoru:</span>
             </div>
-            <ul className="text-xs text-purple-800 space-y-1 font-medium pl-6 list-disc">
+            <ul className="text-xs text-purple-800 dark:text-purple-300 space-y-1 font-medium pl-6 list-disc">
               <li>Oylar gönderilene kadar kimin kime oy verdiği kesinlikle gizli tutulur.</li>
               <li>Tüm oyuncular oyunu verince mahkeme kararı (The Verdict) canlı açıklanır.</li>
               <li>Çoğunlukla aynı kişiyi seçen jüri üyeleri bonus puan kazanır!</li>
@@ -419,20 +419,20 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
       {/* 2. ONLINE JOIN VIEW (Phone Controller Join Screen) */}
       {/* ========================================================================= */}
       {!isOnlineActive && playMode === 'online_join' && (
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xl space-y-6 max-w-md mx-auto animate-fade-in">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-xl space-y-6 max-w-md mx-auto animate-fade-in">
           <div className="text-center space-y-2">
-            <div className="w-16 h-16 rounded-3xl bg-pink-100 text-pink-600 flex items-center justify-center text-3xl mx-auto shadow-inner">
+            <div className="w-16 h-16 rounded-3xl bg-pink-100 dark:bg-pink-900/40 text-pink-600 dark:text-pink-400 flex items-center justify-center text-3xl mx-auto shadow-inner">
               📱
             </div>
-            <h2 className="text-2xl font-black text-slate-900">Mahkemeye Katıl</h2>
-            <p className="text-xs text-slate-600 font-medium">
+            <h2 className="text-2xl font-black text-slate-900 dark:text-slate-100">Mahkemeye Katıl</h2>
+            <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
               TV ekranındaki 4 haneli oda kodunu girin ve gizli oylama kumandanızı hazırlayın!
             </p>
           </div>
 
           <div className="space-y-4">
             <div>
-              <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-black text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
                 4 Haneli Oda Kodu:
               </label>
               <input
@@ -441,12 +441,12 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
                 value={joinCodeInput}
                 onChange={(e) => setJoinCodeInput(e.target.value.toUpperCase())}
                 placeholder="Örn: WOLF"
-                className="w-full text-center tracking-widest text-2xl font-mono font-black py-3 px-4 rounded-2xl border-2 border-slate-200 focus:border-pink-500 focus:outline-hidden bg-slate-50 uppercase"
+                className="w-full text-center tracking-widest text-2xl font-mono font-black py-3 px-4 rounded-2xl border-2 border-slate-200 dark:border-slate-800 focus:border-pink-500 focus:outline-hidden bg-slate-50 dark:bg-slate-900/60 uppercase"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-black text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
                 Adınız / Lakabınız:
               </label>
               <input
@@ -455,15 +455,15 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
                 onChange={(e) => setPlayerNameInput(e.target.value)}
                 placeholder="Örn: Caner"
                 maxLength={15}
-                className="w-full text-base font-bold py-3 px-4 rounded-2xl border-2 border-slate-200 focus:border-pink-500 focus:outline-hidden bg-slate-50"
+                className="w-full text-base font-bold py-3 px-4 rounded-2xl border-2 border-slate-200 dark:border-slate-800 focus:border-pink-500 focus:outline-hidden bg-slate-50 dark:bg-slate-900/60"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-black text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
                 Profil İkonunuz:
               </label>
-              <div className="grid grid-cols-6 gap-2 p-2 bg-slate-50 rounded-2xl border border-slate-200">
+              <div className="grid grid-cols-6 gap-2 p-2 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800">
                 {avatarList.map((av) => (
                   <button
                     key={av}
@@ -475,7 +475,7 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
                     className={`h-11 rounded-xl flex items-center justify-center text-xl transition-all cursor-pointer ${
                       selectedAvatar === av
                         ? 'bg-pink-600 text-white scale-110 shadow-md ring-2 ring-pink-400/50'
-                        : 'bg-white hover:bg-slate-100 border border-slate-200'
+                        : 'bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800'
                     }`}
                   >
                     {av}
@@ -566,24 +566,24 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
           {currentOnlineState.phase === 'LOBBY' && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Left 2 Cols: Joined Players & Room Code */}
-              <div className="md:col-span-2 bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-xl space-y-6">
-                <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <div className="md:col-span-2 bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-xl space-y-6">
+                <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
                   <div>
-                    <h3 className="text-lg font-black text-slate-900">Katılan Jüri Üyeleri</h3>
-                    <p className="text-xs text-slate-500 font-medium">
+                    <h3 className="text-lg font-black text-slate-900 dark:text-slate-100">Katılan Jüri Üyeleri</h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
                       Gizli oylama için en az 2 oyuncu gereklidir (önerilen 3-8).
                     </p>
                   </div>
-                  <span className="px-3 py-1 bg-purple-50 border border-purple-200 text-purple-700 rounded-full font-black text-xs">
+                  <span className="px-3 py-1 bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-900 text-purple-700 dark:text-purple-300 rounded-full font-black text-xs">
                     {currentOnlinePlayers.length} Oyuncu Hazır
                   </span>
                 </div>
 
                 {currentOnlinePlayers.length === 0 ? (
-                  <div className="py-12 text-center text-slate-400 space-y-2">
+                  <div className="py-12 text-center text-slate-400 dark:text-slate-500 space-y-2">
                     <Smartphone className="w-10 h-10 mx-auto text-slate-300 animate-bounce" />
                     <p className="text-sm font-bold">Oyuncuların telefondan bağlanması bekleniyor...</p>
-                    <p className="text-xs text-slate-500">Sağdaki QR kodu taratarak hemen katılabilirsiniz.</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">Sağdaki QR kodu taratarak hemen katılabilirsiniz.</p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -593,15 +593,15 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
                         className={`p-4 rounded-2xl border flex items-center gap-3 transition-all ${
                           p.id === myPlayer?.id
                             ? 'bg-purple-50/80 border-purple-400 ring-2 ring-purple-400/30'
-                            : 'bg-slate-50 border-slate-200'
+                            : 'bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800'
                         }`}
                       >
-                        <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-2xl shadow-xs shrink-0">
+                        <div className="w-12 h-12 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-2xl shadow-xs shrink-0">
                           {p.avatar}
                         </div>
                         <div className="min-w-0">
-                          <p className="text-sm font-black text-slate-900 truncate">{p.name}</p>
-                          <p className="text-[10px] font-bold text-slate-500">
+                          <p className="text-sm font-black text-slate-900 dark:text-slate-100 truncate">{p.name}</p>
+                          <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400">
                             {p.isHost ? '👑 Oda Sahibi' : `Jüri #${idx + 1}`}
                           </p>
                         </div>
@@ -625,7 +625,7 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
                       <span>Duruşmayı Başlat (1. Soru)</span>
                     </button>
                     {currentOnlinePlayers.length < 2 && (
-                      <p className="text-[11px] text-center text-amber-600 font-bold mt-2">
+                      <p className="text-[11px] text-center text-amber-600 dark:text-amber-400 font-bold mt-2">
                         ⚠️ Başlatmak için en az 2 oyuncunun katılması gerekir.
                       </p>
                     )}
@@ -634,18 +634,18 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
               </div>
 
               {/* Right Col: QR Code Card */}
-              <div className="bg-gradient-to-b from-purple-50 to-indigo-50/60 rounded-3xl p-6 border border-purple-200 shadow-xl flex flex-col items-center justify-center text-center space-y-4">
+              <div className="bg-gradient-to-b from-purple-50 to-indigo-50/60 rounded-3xl p-6 border border-purple-200 dark:border-purple-900 shadow-xl flex flex-col items-center justify-center text-center space-y-4">
                 <div className="space-y-1">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-purple-600 bg-purple-100 px-2.5 py-1 rounded-full border border-purple-200">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-900/40 px-2.5 py-1 rounded-full border border-purple-200 dark:border-purple-900">
                     Telefonla Katıl
                   </span>
-                  <h4 className="text-xl font-black text-slate-900 font-mono tracking-wider">
+                  <h4 className="text-xl font-black text-slate-900 dark:text-slate-100 font-mono tracking-wider">
                     {socket.roomCode}
                   </h4>
                 </div>
 
                 {/* QR Code image */}
-                <div className="p-3 bg-white rounded-2xl shadow-md border border-purple-100">
+                <div className="p-3 bg-white dark:bg-slate-900 rounded-2xl shadow-md border border-purple-100 dark:border-purple-900">
                   <img
                     src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(
                       getRoomJoinUrl()
@@ -655,7 +655,7 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
                   />
                 </div>
 
-                <p className="text-xs text-slate-600 font-medium max-w-xs">
+                <p className="text-xs text-slate-600 dark:text-slate-400 font-medium max-w-xs">
                   Kameranızı açıp QR kodu okutun veya tarayıcınızdan bu koda katılın!
                 </p>
               </div>
@@ -666,17 +666,17 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
           {/* ONLINE PHASE: QUESTION REVEAL */}
           {/* ------------------------------------------------------------------- */}
           {currentOnlineState.phase === 'QUESTION_REVEAL' && currentOnlineState.currentQuestion && (
-            <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-2xl space-y-8 text-center animate-fade-in">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-100 text-purple-800 text-xs font-black uppercase tracking-wider border border-purple-200">
-                <Flame className="w-4 h-4 text-purple-600" />
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-10 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-8 text-center animate-fade-in">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-100 dark:bg-purple-900/40 text-purple-800 dark:text-purple-300 text-xs font-black uppercase tracking-wider border border-purple-200 dark:border-purple-900">
+                <Flame className="w-4 h-4 text-purple-600 dark:text-purple-400" />
                 <span>{currentOnlineState.currentQuestion.category}</span>
               </div>
 
               <div className="max-w-2xl mx-auto space-y-4">
-                <h2 className="text-2xl sm:text-4xl font-black text-slate-900 leading-snug">
+                <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-slate-100 leading-snug">
                   "{currentOnlineState.currentQuestion.question}"
                 </h2>
-                <p className="text-xs sm:text-sm text-slate-500 font-medium">
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">
                   Tüm jüri üyeleri aranızdan bu soruya en uygun kişiyi gizlice seçecek.
                 </p>
               </div>
@@ -696,7 +696,7 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
                   </button>
                 </div>
               ) : (
-                <div className="p-4 bg-purple-50 rounded-2xl border border-purple-200 max-w-md mx-auto text-purple-900 text-xs font-bold animate-pulse">
+                <div className="p-4 bg-purple-50 dark:bg-purple-950/40 rounded-2xl border border-purple-200 dark:border-purple-900 max-w-md mx-auto text-purple-900 dark:text-purple-200 text-xs font-bold animate-pulse">
                   ⏳ Oda yöneticisinin oylamayı başlatması bekleniyor...
                 </div>
               )}
@@ -709,11 +709,11 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
           {currentOnlineState.phase === 'VOTING' && (
             <div className="space-y-6">
               {/* Question Header Banner */}
-              <div className="bg-white rounded-3xl p-5 sm:p-7 border border-slate-200 shadow-md text-center space-y-2">
-                <span className="text-[10px] font-black uppercase tracking-widest text-purple-600 bg-purple-50 px-3 py-1 rounded-full border border-purple-200">
+              <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-md text-center space-y-2">
+                <span className="text-[10px] font-black uppercase tracking-widest text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/40 px-3 py-1 rounded-full border border-purple-200 dark:border-purple-900">
                   {currentOnlineState.currentQuestion?.category}
                 </span>
-                <h3 className="text-xl sm:text-2xl font-black text-slate-900 max-w-2xl mx-auto">
+                <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-slate-100 max-w-2xl mx-auto">
                   "{currentOnlineState.currentQuestion?.question}"
                 </h3>
               </div>
@@ -769,16 +769,16 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
               )}
 
               {/* TV Status View: Live Voting Progress and Voter Lock Status */}
-              <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xl space-y-6">
-                <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-xl space-y-6">
+                <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
                   <div className="flex items-center gap-2">
-                    <Lock className="w-5 h-5 text-purple-600" />
+                    <Lock className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                     <div>
-                      <h4 className="text-base font-black text-slate-900">Jüri Oy Durumu</h4>
-                      <p className="text-xs text-slate-500">Oylar verildikten sonra mahkeme kararı açıklanacaktır.</p>
+                      <h4 className="text-base font-black text-slate-900 dark:text-slate-100">Jüri Oy Durumu</h4>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">Oylar verildikten sonra mahkeme kararı açıklanacaktır.</p>
                     </div>
                   </div>
-                  <span className="text-xs font-black text-purple-700 bg-purple-50 border border-purple-200 px-3 py-1.5 rounded-full">
+                  <span className="text-xs font-black text-purple-700 dark:text-purple-300 bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-900 px-3 py-1.5 rounded-full">
                     {socket.votedPlayerIds.length} / {currentOnlinePlayers.length} Oy Kullanıldı
                   </span>
                 </div>
@@ -791,24 +791,24 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
                         key={p.id}
                         className={`p-4 rounded-2xl border transition-all flex items-center gap-3 ${
                           hasVoted
-                            ? 'bg-emerald-50/80 border-emerald-300 ring-2 ring-emerald-400/20'
-                            : 'bg-slate-50 border-slate-200'
+                            ? 'bg-emerald-50/80 border-emerald-300 dark:border-emerald-800 ring-2 ring-emerald-400/20'
+                            : 'bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800'
                         }`}
                       >
-                        <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-2xl shadow-xs shrink-0">
+                        <div className="w-12 h-12 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-2xl shadow-xs shrink-0">
                           {p.avatar}
                         </div>
                         <div className="min-w-0">
-                          <p className="text-xs sm:text-sm font-black text-slate-900 truncate">{p.name}</p>
+                          <p className="text-xs sm:text-sm font-black text-slate-900 dark:text-slate-100 truncate">{p.name}</p>
                           <div className="flex items-center gap-1 mt-0.5">
                             {hasVoted ? (
-                              <span className="text-[10px] font-black text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded-md flex items-center gap-1">
-                                <Check className="w-3 h-3 text-emerald-600" />
+                              <span className="text-[10px] font-black text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-900/40 px-1.5 py-0.5 rounded-md flex items-center gap-1">
+                                <Check className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                                 <span>Kilitlendi</span>
                               </span>
                             ) : (
-                              <span className="text-[10px] font-bold text-slate-400 flex items-center gap-1">
-                                <Clock className="w-3 h-3 text-slate-400 animate-spin" />
+                              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 flex items-center gap-1">
+                                <Clock className="w-3 h-3 text-slate-400 dark:text-slate-500 animate-spin" />
                                 <span>Bekleniyor</span>
                               </span>
                             )}
@@ -896,10 +896,10 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
           {/* ONLINE PHASE: DEFENSE TIME (SICAK KOLTUK) */}
           {/* ------------------------------------------------------------------- */}
           {currentOnlineState.phase === 'DEFENSE_TIME' && (
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-2xl space-y-6 animate-fade-in">
-              <div className="text-center space-y-2 border-b border-slate-100 pb-5">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-black border border-amber-200">
-                  <Mic className="w-4 h-4 text-amber-600" />
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-6 animate-fade-in">
+              <div className="text-center space-y-2 border-b border-slate-100 dark:border-slate-800 pb-5">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-900 dark:text-amber-200 text-xs font-black border border-amber-200 dark:border-amber-900">
+                  <Mic className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                   <span>SICAK KOLTUK & SAVUNMA KÜRSÜSÜ</span>
                 </div>
                 {(() => {
@@ -910,8 +910,8 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
                     <div className="flex items-center justify-center gap-3 pt-2">
                       <span className="text-4xl">{accused?.avatar}</span>
                       <div className="text-left">
-                        <h3 className="text-xl font-black text-slate-900">{accused?.name}</h3>
-                        <p className="text-xs text-slate-500 font-bold">Sanık Kendini Savunuyor</p>
+                        <h3 className="text-xl font-black text-slate-900 dark:text-slate-100">{accused?.name}</h3>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 font-bold">Sanık Kendini Savunuyor</p>
                       </div>
                     </div>
                   );
@@ -919,11 +919,11 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
               </div>
 
               {/* Accused Live Speech Box */}
-              <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl p-6 border-2 border-amber-200 shadow-inner text-center space-y-2">
-                <p className="text-[11px] font-black uppercase tracking-widest text-amber-800">
+              <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl p-6 border-2 border-amber-200 dark:border-amber-900 shadow-inner text-center space-y-2">
+                <p className="text-[11px] font-black uppercase tracking-widest text-amber-800 dark:text-amber-300">
                   Sanığın Canlı Savunması
                 </p>
-                <p className="text-lg sm:text-xl font-bold text-slate-800 italic">
+                <p className="text-lg sm:text-xl font-bold text-slate-800 dark:text-slate-200 italic">
                   "{currentOnlineState.defenseSpeech || 'Sanık kürsüde nefesini tuttu ve kendini savunmaya hazırlanıyor...'}"
                 </p>
               </div>
@@ -947,7 +947,7 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
                           setMobileDefenseSpeech(preset);
                           socket.submitDefense(preset);
                         }}
-                        className="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-left text-xs font-bold text-white border border-white/15 transition-all cursor-pointer"
+                        className="p-2.5 rounded-xl bg-white/10 dark:bg-slate-900/10 hover:bg-white/20 dark:hover:bg-slate-900/20 text-left text-xs font-bold text-white border border-white/15 dark:border-slate-700/15 transition-all cursor-pointer"
                       >
                         {preset}
                       </button>
@@ -961,14 +961,14 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
                       value={mobileDefenseSpeech}
                       onChange={(e) => setMobileDefenseSpeech(e.target.value)}
                       placeholder="Kendi savunmanı yaz..."
-                      className="flex-1 px-4 py-2.5 rounded-xl bg-white/15 border border-white/20 text-white placeholder:text-white/50 text-xs font-bold focus:outline-hidden"
+                      className="flex-1 px-4 py-2.5 rounded-xl bg-white/15 dark:bg-slate-900/15 border border-white/20 dark:border-slate-700/20 text-white placeholder:text-white/50 text-xs font-bold focus:outline-hidden"
                     />
                     <button
                       onClick={() => {
                         playClickSound();
                         socket.submitDefense(mobileDefenseSpeech);
                       }}
-                      className="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-900 font-black text-xs cursor-pointer flex items-center gap-1.5"
+                      className="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-900 dark:text-slate-100 font-black text-xs cursor-pointer flex items-center gap-1.5"
                     >
                       <Send className="w-3.5 h-3.5" />
                       <span>Gönder</span>
@@ -999,13 +999,13 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
           {/* ONLINE PHASE: ROUND SCORES */}
           {/* ------------------------------------------------------------------- */}
           {currentOnlineState.phase === 'ROUND_SCORES' && (
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xl space-y-6 animate-fade-in text-center">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-xl space-y-6 animate-fade-in text-center">
               <div className="space-y-1">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-100 text-purple-800 text-xs font-black">
-                  <Trophy className="w-4 h-4 text-purple-600" />
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-100 dark:bg-purple-900/40 text-purple-800 dark:text-purple-300 text-xs font-black">
+                  <Trophy className="w-4 h-4 text-purple-600 dark:text-purple-400" />
                   <span>Duruşma Puan Durumu</span>
                 </div>
-                <h3 className="text-2xl font-black text-slate-900">
+                <h3 className="text-2xl font-black text-slate-900 dark:text-slate-100">
                   {currentOnlineState.currentRound}. Duruşma Tamamlandı!
                 </h3>
               </div>
@@ -1018,19 +1018,19 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
                   .map((p, idx) => (
                     <div
                       key={p.id}
-                      className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between"
+                      className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between"
                     >
                       <div className="flex items-center gap-3">
-                        <span className="text-base font-black text-purple-600 w-5">#{idx + 1}</span>
+                        <span className="text-base font-black text-purple-600 dark:text-purple-400 w-5">#{idx + 1}</span>
                         <span className="text-2xl">{p.avatar}</span>
                         <div className="text-left">
-                          <p className="text-sm font-black text-slate-900">{p.name}</p>
-                          <p className="text-[10px] font-bold text-slate-500">
+                          <p className="text-sm font-black text-slate-900 dark:text-slate-100">{p.name}</p>
+                          <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400">
                             {p.votesReceived} Kez Sanık Oldu
                           </p>
                         </div>
                       </div>
-                      <span className="text-base font-black text-purple-600 bg-purple-50 px-3 py-1 rounded-xl border border-purple-100">
+                      <span className="text-base font-black text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/40 px-3 py-1 rounded-xl border border-purple-100 dark:border-purple-900">
                         {p.score} Puan
                       </span>
                     </div>
@@ -1113,13 +1113,13 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
         <div className="space-y-6">
           {/* LOCAL LOBBY */}
           {localGameState.phase === 'LOBBY' && (
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xl space-y-6 text-center animate-fade-in">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-xl space-y-6 text-center animate-fade-in">
               <div className="max-w-md mx-auto space-y-2">
-                <div className="w-16 h-16 rounded-3xl bg-purple-100 text-purple-600 flex items-center justify-center text-3xl mx-auto shadow-inner">
+                <div className="w-16 h-16 rounded-3xl bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-400 flex items-center justify-center text-3xl mx-auto shadow-inner">
                   👥
                 </div>
-                <h2 className="text-2xl sm:text-3xl font-black text-slate-900">Tek Cihazda Mahkeme</h2>
-                <p className="text-xs sm:text-sm text-slate-600 font-medium">
+                <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-slate-100">Tek Cihazda Mahkeme</h2>
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium">
                   Telefonu elden ele uzatarak gizli oy verin veya odadaki herkesle birlikte tartışarak oynayın!
                 </p>
               </div>
@@ -1129,11 +1129,11 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
                 {localPlayers.map((p) => (
                   <div
                     key={p.id}
-                    className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-center space-y-1"
+                    className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 text-center space-y-1"
                   >
                     <span className="text-2xl">{p.avatar}</span>
-                    <p className="text-xs font-black text-slate-800 truncate">{p.name}</p>
-                    <p className="text-[10px] font-bold text-purple-600">{p.score} Puan</p>
+                    <p className="text-xs font-black text-slate-800 dark:text-slate-200 truncate">{p.name}</p>
+                    <p className="text-[10px] font-bold text-purple-600 dark:text-purple-400">{p.score} Puan</p>
                   </div>
                 ))}
               </div>
@@ -1145,7 +1145,7 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
                   placeholder="Yeni oyuncu adı..."
                   value={newPlayerName}
                   onChange={(e) => setNewPlayerName(e.target.value)}
-                  className="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-bold focus:outline-hidden focus:border-purple-500"
+                  className="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-bold focus:outline-hidden focus:border-purple-500"
                 />
                 <button
                   type="submit"
@@ -1171,17 +1171,17 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
 
           {/* LOCAL QUESTION REVEAL */}
           {localGameState.phase === 'QUESTION_REVEAL' && localGameState.currentQuestion && (
-            <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-2xl space-y-8 text-center animate-fade-in">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-100 text-purple-800 text-xs font-black uppercase tracking-wider border border-purple-200">
-                <Flame className="w-4 h-4 text-purple-600" />
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-10 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-8 text-center animate-fade-in">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-100 dark:bg-purple-900/40 text-purple-800 dark:text-purple-300 text-xs font-black uppercase tracking-wider border border-purple-200 dark:border-purple-900">
+                <Flame className="w-4 h-4 text-purple-600 dark:text-purple-400" />
                 <span>{localGameState.currentQuestion.category}</span>
               </div>
 
               <div className="max-w-2xl mx-auto space-y-4">
-                <h2 className="text-2xl sm:text-4xl font-black text-slate-900 leading-snug">
+                <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-slate-100 leading-snug">
                   "{localGameState.currentQuestion.question}"
                 </h2>
-                <p className="text-xs sm:text-sm text-slate-500 font-medium">
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">
                   Tüm oyuncular telefonu sırayla alıp gizlice kurbanını seçecek!
                 </p>
               </div>
@@ -1251,9 +1251,9 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
 
           {/* LOCAL DEFENSE TIME */}
           {localGameState.phase === 'DEFENSE_TIME' && (
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xl space-y-6 text-center animate-fade-in">
-              <h3 className="text-2xl font-black text-slate-900">🎤 Savunma Kürsüsü</h3>
-              <p className="text-xs text-slate-600 font-medium">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-xl space-y-6 text-center animate-fade-in">
+              <h3 className="text-2xl font-black text-slate-900 dark:text-slate-100">🎤 Savunma Kürsüsü</h3>
+              <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
                 {localPlayers.find((p) => p.id === localGameState.accusedPlayerId)?.name}, kendini 30 saniye içinde jüriye savun!
               </p>
               <form onSubmit={handleLocalDefenseSubmit} className="space-y-4 max-w-md mx-auto">
@@ -1262,7 +1262,7 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
                   value={localDefenseInput}
                   onChange={(e) => setLocalDefenseInput(e.target.value)}
                   placeholder="Savunma konuşmanı yaz veya söyle..."
-                  className="w-full px-4 py-3 rounded-2xl border border-slate-200 text-sm font-bold focus:outline-hidden"
+                  className="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-800 text-sm font-bold focus:outline-hidden"
                 />
                 <button
                   type="submit"
@@ -1276,14 +1276,14 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
 
           {/* LOCAL ROUND SCORES */}
           {localGameState.phase === 'ROUND_SCORES' && (
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xl space-y-6 text-center animate-fade-in">
-              <h3 className="text-2xl font-black text-slate-900">Duruşma Puanları</h3>
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-xl space-y-6 text-center animate-fade-in">
+              <h3 className="text-2xl font-black text-slate-900 dark:text-slate-100">Duruşma Puanları</h3>
               <div className="grid grid-cols-2 gap-3 max-w-md mx-auto">
                 {localPlayers.map((p) => (
-                  <div key={p.id} className="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                  <div key={p.id} className="p-3 bg-slate-50 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-800">
                     <span className="text-2xl">{p.avatar}</span>
                     <p className="text-xs font-black">{p.name}</p>
-                    <p className="text-xs font-bold text-purple-600">{p.score} Puan</p>
+                    <p className="text-xs font-bold text-purple-600 dark:text-purple-400">{p.score} Puan</p>
                   </div>
                 ))}
               </div>
@@ -1314,7 +1314,7 @@ export const PicanteVerdictGame: React.FC<PicanteVerdictGameProps> = ({ onBackTo
                     roundVotes: {},
                   });
                 }}
-                className="px-6 py-3 rounded-2xl bg-amber-400 text-slate-900 font-black text-sm cursor-pointer"
+                className="px-6 py-3 rounded-2xl bg-amber-400 text-slate-900 dark:text-slate-100 font-black text-sm cursor-pointer"
               >
                 Yeniden Oyna
               </button>
