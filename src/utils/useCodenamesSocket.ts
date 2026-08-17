@@ -39,6 +39,8 @@ export interface UseCodenamesSocketReturn {
   revealCard: (cardId: string) => void;
   endTurn: () => void;
   newGame: (settings?: Partial<CodenamesSettings>) => void;
+  /** Lobiden oyuna gecis (TV/host tetikler). */
+  startGame: () => void;
   leaveRoom: () => void;
 }
 
@@ -135,6 +137,9 @@ export function useCodenamesSocket(): UseCodenamesSocketReturn {
             setGameState(msg.gameState);
             setPlayers(msg.players || []);
             setErrorMessage(null);
+          } else if (type === 'codenames:start_rejected') {
+            // Takim kurulumu eksik — sunucu oyunu baslatmadi
+            setErrorMessage(msg.message || 'Takımlar hazır değil.');
           } else if (type === 'codenames:state') {
             const nextState: CodenamesGameState = msg.gameState;
 
@@ -317,6 +322,11 @@ export function useCodenamesSocket(): UseCodenamesSocketReturn {
     [send]
   );
 
+  /** Lobiden oyuna gecis — yalnizca TV/host tetikler. */
+  const startGame = useCallback(() => {
+    send({ type: 'codenames:start_game' });
+  }, [send]);
+
   const leaveRoom = useCallback(() => {
     setRoomCode(null);
     setClientRole(null);
@@ -341,6 +351,7 @@ export function useCodenamesSocket(): UseCodenamesSocketReturn {
     revealCard,
     endTurn,
     newGame,
+    startGame,
     leaveRoom,
   };
 }

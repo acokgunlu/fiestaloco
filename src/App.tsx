@@ -25,6 +25,7 @@ import { PlayerControllerView } from './components/PlayerControllerView';
 import { CodenamesOnlinePicker } from './components/codenames/CodenamesOnlinePicker';
 import { CodenamesMobileControllerView } from './components/codenames/CodenamesMobileControllerView';
 import { CodenamesLobbyView } from './components/codenames/CodenamesLobbyView';
+import { CodenamesOnlineLobby } from './components/codenames/CodenamesOnlineLobby';
 import { CodenamesBoardView } from './components/codenames/CodenamesBoardView';
 import { CodenamesRulesModal } from './components/codenames/CodenamesRulesModal';
 import { BluffTriviaGame } from './components/party/BluffTriviaGame';
@@ -92,6 +93,7 @@ export default function App() {
     revealCard: revealCodenamesCard,
     endTurn: endCodenamesTurn,
     newGame: newCodenamesGame,
+    startGame: startCodenamesOnlineGame,
     leaveRoom: leaveCodenamesRoom,
   } = useCodenamesSocket();
 
@@ -436,8 +438,23 @@ export default function App() {
         {/* 2. CODENAMES (GİZLİ AJANLAR) MODULE */}
         {activeModule === 'codenames' && (
           <>
+            {/* ONLINE TV HOST — LOBI (oyun henuz baslamadi) */}
+            {codenamesSocketGameState &&
+              codenamesClientRole === 'observer' &&
+              codenamesSocketGameState.phase === 'LOBBY' && (
+                <CodenamesOnlineLobby
+                  roomCode={codenamesRoomCode || ''}
+                  players={codenamesPlayers}
+                  errorMessage={codenamesErrorMessage}
+                  onStartGame={startCodenamesOnlineGame}
+                  onReturnToHub={leaveCodenamesRoom}
+                />
+              )}
+
             {/* ONLINE TV HOST OBSERVER (BIG SCREEN / TV) */}
-            {codenamesSocketGameState && codenamesClientRole === 'observer' && (
+            {codenamesSocketGameState &&
+              codenamesClientRole === 'observer' &&
+              codenamesSocketGameState.phase !== 'LOBBY' && (
               <CodenamesBoardView
                 gameState={codenamesSocketGameState}
                 isTvHost={true}

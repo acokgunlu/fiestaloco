@@ -1391,7 +1391,9 @@ function createFreshCodenamesGame(settings?: Partial<CodenamesSettings>): Codena
     board,
     activeTeam: starting,
     startingTeam: starting,
-    phase: 'CLUE_PHASE',
+    // Oda acilinca oyun HEMEN baslamaz: once lobi. Oyuncular telefondan
+    // katilip takim/rol secer, host `codenames:start_game` ile baslatir.
+    phase: 'LOBBY',
     clues: [],
     currentClue: null,
     guessesRemaining: 0,
@@ -3917,6 +3919,42 @@ Return strictly a JSON array matching this schema:
             if (data.name) player.name = data.name.trim();
             broadcastCodenamesRoomState(room);
           }
+        }
+
+        // 3b. START GAME (host / TV ekrani) — lobiden ipucu asamasina gecis
+        else if (type === 'codenames:start_game') {
+          const client = clientMap.get(ws);
+          if (!client?.roomCode) return;
+          const room = codenamesRooms.get(client.roomCode);
+          if (!room) return;
+
+          if (room.gameState.phase !== 'LOBBY') return; // zaten basladi
+
+          // Her iki takimda da en az bir lider ve bir ajan olmali, yoksa
+          // oyun oynanamaz (lider ipucu veremez / ajan tahmin edemez).
+          const redTeam = room.players.filter((p) => p.team === 'red');
+          const blueTeam = room.players.filter((p) => p.team === 'blue');
+          const problems: string[] = [];
+          for (const [label, team] of [
+            ['Kırmızı', redTeam],
+            ['Mavi', blueTeam],
+          ] as const) {
+            if (!team.some((p) => p.role === 'spymaster')) problems.push(`${label} takımın lideri yok`);
+            if (!team.some((p) => p.role === 'operative')) problems.push(`${label} takımda ajan yok`);
+          }
+
+          if (problems.length > 0) {
+            ws.send(
+              JSON.stringify({
+                type: 'codenames:start_rejected',
+                message: problems.join(' · '),
+              })
+            );
+            return;
+          }
+
+          room.gameState.phase = 'CLUE_PHASE';
+          broadcastCodenamesRoomState(room);
         }
 
         // 4. GIVE CLUE (Spymaster)
