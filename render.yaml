@@ -1,0 +1,48 @@
+# =============================================================================
+# FiestaLoco oyun sunucusu — Render Blueprint
+# =============================================================================
+# Render panelinde: New + -> Blueprint -> repoyu secin. Bu dosya otomatik okunur.
+#
+# Frontend BU SERVISTE DEGIL — o Vercel'de ayri deploy edilir.
+# Burada yalnizca WebSocket + /api sunucusu calisir.
+#
+# Bolge frankfurt: Turkiye'ye en yakin Render bolgesi (~80 ms gidis-donus).
+# Plan free: 15 dk trafik olmazsa uyur, uyanmasi ~1 dk surer. Uyanik tutmak icin
+# DEPLOY.md'deki keep-alive adimina bakin (aylik 750 saat kotasina sigar).
+# =============================================================================
+
+services:
+  - type: web
+    name: fiestaloco-server
+    runtime: node
+    plan: free
+    region: frankfurt
+
+    buildCommand: npm install && npm run build:server
+    startCommand: node dist-server/server.cjs
+
+    healthCheckPath: /api/health
+
+    envVars:
+      - key: NODE_ENV
+        value: production
+
+      # Frontend'in Vercel adresi. Vercel deploy'undan sonra doldurun.
+      # Bos birakilirsa tum origin'lere izin verilir (calisir ama korumasiz).
+      # Preview deploy'lar icin joker ekleyin: https://*.vercel.app
+      - key: ALLOWED_ORIGINS
+        sync: false
+
+      # Supabase — leaderboard, mac gecmisi ve oda snapshot'lari.
+      # Bos birakilirsa sunucu salt bellek-ici calisir (oyunlar yine calisir).
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+
+      # Opsiyonel: AI kelime/ipucu/soru uretimi. Yoksa yerel bankaya duser.
+      - key: GEMINI_API_KEY
+        sync: false
+
+# sync: false -> deger repoda tutulmaz, Render panelinden elle girilir.
+# PORT'u Render kendisi atar; tanimlamayin.

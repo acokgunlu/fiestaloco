@@ -1,0 +1,6 @@
+{
+  "name": "FiestaLoco",
+  "description": "Çok oyunculu parti oyunları platformu: Quiplash, Codenames, Imposter, Fibbage (Bluff Trivia), Word Bomb, Verdict ve Trivia Pursuit.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

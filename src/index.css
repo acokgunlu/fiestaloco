@@ -1,0 +1,432 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    touch-action: manipulation;
+    background-color: #faf8f5;
+    background-image: radial-gradient(#e2e8f0 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+    color: #0f172a;
+    min-height: 100vh;
+  }
+}
+
+/* Party Game Tactile 3D Buttons */
+.btn-party {
+  transition: all 0.12s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
+}
+.btn-party:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.15);
+}
+.btn-party:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+}
+
+.btn-party-amber {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #ffffff;
+  box-shadow: 0 4px 0 #b45309;
+}
+.btn-party-amber:hover {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  box-shadow: 0 6px 0 #b45309;
+}
+.btn-party-amber:active {
+  box-shadow: 0 1px 0 #b45309;
+}
+
+.btn-party-rose {
+  background: linear-gradient(135deg, #f43f5e, #e11d48);
+  color: #ffffff;
+  box-shadow: 0 4px 0 #be123c;
+}
+.btn-party-rose:hover {
+  background: linear-gradient(135deg, #fb7185, #f43f5e);
+  box-shadow: 0 6px 0 #be123c;
+}
+.btn-party-rose:active {
+  box-shadow: 0 1px 0 #be123c;
+}
+
+.btn-party-indigo {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: #ffffff;
+  box-shadow: 0 4px 0 #3730a3;
+}
+.btn-party-indigo:hover {
+  background: linear-gradient(135deg, #818cf8, #6366f1);
+  box-shadow: 0 6px 0 #3730a3;
+}
+.btn-party-indigo:active {
+  box-shadow: 0 1px 0 #3730a3;
+}
+
+.btn-party-emerald {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #ffffff;
+  box-shadow: 0 4px 0 #047857;
+}
+.btn-party-emerald:hover {
+  background: linear-gradient(135deg, #34d399, #10b981);
+  box-shadow: 0 6px 0 #047857;
+}
+.btn-party-emerald:active {
+  box-shadow: 0 1px 0 #047857;
+}
+
+/* Tactile Game Card Style */
+.game-card-pop {
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 6px 16px -4px rgba(15, 23, 42, 0.06), 0 2px 6px -2px rgba(15, 23, 42, 0.04);
+}
+.game-card-pop:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 28px -6px rgba(15, 23, 42, 0.12), 0 6px 12px -3px rgba(15, 23, 42, 0.06);
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.2), inset 0 0 15px rgba(99, 102, 241, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(99, 102, 241, 0.5), inset 0 0 25px rgba(99, 102, 241, 0.2);
+  }
+}
+
+@keyframes shimmerEffect {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes rotateTurn {
+  0% {
+    transform: rotate(0deg) scale(0.9);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.1);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-float {
+  animation: floatSlow 3.5s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2.5s infinite;
+}
+
+.animate-rotate-turn {
+  animation: rotateTurn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes floatReaction {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.6) rotate(-10deg);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(0px) scale(1.2) rotate(5deg);
+  }
+  80% {
+    opacity: 0.9;
+    transform: translateY(-80px) scale(1) rotate(-5deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-130px) scale(0.8) rotate(10deg);
+  }
+}
+
+@keyframes stampSlam {
+  0% {
+    opacity: 0;
+    transform: scale(2.2) rotate(-25deg);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(0.92) rotate(-8deg);
+  }
+  80% {
+    transform: scale(1.05) rotate(-11deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(-10deg);
+  }
+}
+
+@keyframes spotlightSweep {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes podiumHop {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-reaction {
+  animation: floatReaction 1.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.animate-stamp-slam {
+  animation: stampSlam 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.animate-podium-hop {
+  animation: podiumHop 2s ease-in-out infinite;
+}
+
+.neon-glow-indigo {
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.45), 0 0 40px rgba(99, 102, 241, 0.2);
+}
+
+.neon-glow-rose {
+  box-shadow: 0 0 20px rgba(244, 63, 94, 0.45), 0 0 40px rgba(244, 63, 94, 0.2);
+}
+
+.neon-glow-amber {
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.45), 0 0 40px rgba(245, 158, 11, 0.2);
+}
+
+.neon-glow-emerald {
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.45), 0 0 40px rgba(16, 185, 129, 0.2);
+}
+
+.shimmer-badge {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%);
+  background-size: 200% 100%;
+  animation: shimmerEffect 2.5s infinite;
+}
+
+/* Custom drawing canvas textured background */
+.canvas-paper-bg {
+  background-color: #fafbfc;
+  background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.glass-panel-dark {
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(51, 65, 85, 0.6);
+}
+
+/* ==========================================================================
+   CODENAMES (GİZLİ AJANLAR) 3D BOARD & CARD FLIPPING ENGINE
+   ========================================================================== */
+
+/* 3D Perspective Container */
+.perspective-800 {
+  perspective: 800px;
+  -webkit-perspective: 800px;
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
+}
+
+/* 3D Card Inner Wrapper with Smooth Physics Flip */
+.transform-style-3d {
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transition: transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Card Front & Back Absolute Layers */
+.card-face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 1rem;
+}
+
+.card-face-front {
+  transform: rotateY(0deg);
+  -webkit-transform: rotateY(0deg);
+  z-index: 2;
+}
+
+.card-face-back {
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+  z-index: 1;
+}
+
+/* Physical Board Aesthetic Textures */
+.tabletop-wood-frame {
+  background: linear-gradient(135deg, #2c1810 0%, #3d2314 50%, #1f110b 100%);
+  box-shadow: 
+    inset 0 2px 4px rgba(255, 255, 255, 0.15),
+    inset 0 -3px 8px rgba(0, 0, 0, 0.7),
+    0 12px 30px rgba(0, 0, 0, 0.35);
+  border: 4px solid #4a2c1d;
+}
+
+.tabletop-felt-green {
+  background-color: #0f2e1e;
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(20, 83, 45, 0.7) 0%, rgba(5, 46, 22, 0.95) 100%),
+    repeating-linear-gradient(45deg, rgba(255,255,255,0.015) 0, rgba(255,255,255,0.015) 2px, transparent 2px, transparent 4px);
+  box-shadow: inset 0 4px 14px rgba(0, 0, 0, 0.6);
+}
+
+.tabletop-felt-slate {
+  background-color: #0f172a;
+  background-image: 
+    radial-gradient(circle at 50% 30%, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.98) 100%),
+    repeating-linear-gradient(45deg, rgba(255,255,255,0.015) 0, rgba(255,255,255,0.015) 2px, transparent 2px, transparent 4px);
+  box-shadow: inset 0 4px 14px rgba(0, 0, 0, 0.7);
+}
+
+/* Physical Tactile Word Tile Texture (Unrevealed Card) */
+.codenames-tile-paper {
+  background: linear-gradient(145deg, #fffbf5 0%, #f7efe2 60%, #ede2ce 100%);
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.08),
+    0 6px 16px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.1);
+  border: 1px solid #dfd2be;
+}
+
+.codenames-tile-paper:hover {
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.1),
+    0 10px 24px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* Agent Revealed Card Tiles */
+.agent-tile-red {
+  background: linear-gradient(135deg, #e11d48 0%, #be123c 55%, #881337 100%);
+  box-shadow: 
+    0 4px 12px rgba(225, 29, 72, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.3),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.4);
+  border: 2px solid #fda4af;
+}
+
+.agent-tile-blue {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 55%, #1e3a8a 100%);
+  box-shadow: 
+    0 4px 12px rgba(37, 99, 235, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.3),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.4);
+  border: 2px solid #93c5fd;
+}
+
+.agent-tile-neutral {
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 55%, #cbd5e1 100%);
+  box-shadow: 
+    0 3px 8px rgba(0, 0, 0, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6),
+    inset 0 -1px 3px rgba(0, 0, 0, 0.2);
+  border: 2px solid #cbd5e1;
+}
+
+.agent-tile-assassin {
+  background: linear-gradient(135deg, #09090b 0%, #18181b 50%, #000000 100%);
+  box-shadow: 
+    0 0 25px rgba(225, 29, 72, 0.6),
+    inset 0 0 15px rgba(225, 29, 72, 0.4);
+  border: 2px solid #e11d48;
+}
+
+@keyframes assassinPulse {
+  0%, 100% {
+    box-shadow: 0 0 25px rgba(225, 29, 72, 0.6), inset 0 0 15px rgba(225, 29, 72, 0.4);
+    border-color: #f43f5e;
+  }
+  50% {
+    box-shadow: 0 0 45px rgba(225, 29, 72, 0.9), inset 0 0 25px rgba(225, 29, 72, 0.7);
+    border-color: #fda4af;
+  }
+}
+
+.animate-assassin-alarm {
+  animation: assassinPulse 1.4s infinite;
+}
+
