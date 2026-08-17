@@ -27,15 +27,41 @@ SSH_TARGET="${FIESTA_SSH_USER}@${FIESTA_HOST}"
 SSH_OPTS=(-i "$KEY" -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15)
 
 if [ ! -f .env.server ]; then
-  cat >&2 <<'EOF'
-HATA: .env.server bulunamadi.
-
-Olusturmak icin:
   cp .env.server.example .env.server
-  # sonra Supabase panelinden service_role anahtarini yapistirin:
-  #   Project Settings -> API -> Project API keys -> service_role (secret)
-EOF
-  exit 1
+  chmod 600 .env.server
+  echo "==> .env.server olusturuldu (.env.server.example'dan)."
+fi
+
+# --- Panodan anahtar alma ----------------------------------------------------
+# `--from-clipboard`: Supabase (veya Vercel) panelinden service_role anahtarini
+# kopyalayip tek komutla yerlestirmek icin. Anahtar terminale BASILMAZ.
+if [ "${1:-}" = "--from-clipboard" ]; then
+  KEY="$(pbpaste 2>/dev/null | tr -d '[:space:]')"
+  if ! printf '%s' "$KEY" | grep -qE '^(eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\..+|sb_secret_.+)$'; then
+    echo "HATA: panoda gecerli bir Supabase service_role anahtari yok." >&2
+    echo "      Supabase -> Project Settings -> API -> service_role (secret) -> kopyala," >&2
+    echo "      sonra bu komutu tekrar calistirin." >&2
+    exit 1
+  fi
+  # Satiri guvenle degistir (anahtar ekrana yazilmaz)
+  python3 - "$KEY" <<'PY'
+import pathlib, sys
+key = sys.argv[1]
+p = pathlib.Path('.env.server')
+lines = p.read_text().split('\n')
+out, found = [], False
+for ln in lines:
+    if ln.startswith('SUPABASE_SERVICE_ROLE_KEY='):
+        out.append(f'SUPABASE_SERVICE_ROLE_KEY={key}')
+        found = True
+    else:
+        out.append(ln)
+if not found:
+    out.append(f'SUPABASE_SERVICE_ROLE_KEY={key}')
+p.write_text('\n'.join(out))
+PY
+  chmod 600 .env.server
+  echo "==> Anahtar panodan .env.server'a yazildi (${#KEY} karakter)."
 fi
 
 # Yalnizca beklenen anahtarlari gecir; yorum ve bos satirlari at.
