@@ -45,7 +45,8 @@ console.log(`  ortalama : ${avg.toFixed(3)} ms`);
 console.log(`  p95      : ${p95.toFixed(3)} ms`);
 console.log(`  en yavas : ${timings[timings.length - 1].toFixed(3)} ms`);
 
-const health = await fetch(TARGET.replace('ws://', 'http://') + '/api/health').then((r) => r.json());
+const healthBase = TARGET.replace(/^wss:\/\//, 'https://').replace(/^ws:\/\//, 'http://');
+const health = await fetch(healthBase + '/api/health').then((r) => r.json());
 console.log(`\nSunucu ayakta kalma suresi: ${health.uptimeSeconds}s (hic yeniden baslatilmadi)`);
 console.log(`Ayni anda tutulan oda sayisi: ${health.activeRooms}`);
 console.log(`Bellek: ${Math.round(process.memoryUsage().rss / 1024 / 1024)} MB (test istemcisi)\n`);

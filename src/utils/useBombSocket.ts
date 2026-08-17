@@ -45,6 +45,7 @@ export function useBombSocket(): UseBombSocketReturn {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const socketRef = useRef<WebSocket | null>(null);
+  const pingTimerRef = useRef<number | null>(null);
   const sessionRef = useRef<{
     roomCode?: string;
     role?: 'observer' | 'player';
@@ -68,6 +69,15 @@ export function useBombSocket(): UseBombSocketReturn {
       ws.onopen = () => {
         setIsConnected(true);
         setErrorMessage(null);
+
+      // Istemci -> sunucu keep-alive. 3-4 saatlik seanslarda uzun sessizlik
+      // aninda platformun baglantiyi "bosta" sayip dusurmesini engeller.
+      if (pingTimerRef.current) clearInterval(pingTimerRef.current);
+      pingTimerRef.current = window.setInterval(() => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send(JSON.stringify({ type: 'ping' }));
+        }
+      }, 15000);
 
         // Auto rejoin session
         if (sessionRef.current.roomCode) {
@@ -173,6 +183,7 @@ export function useBombSocket(): UseBombSocketReturn {
 
       ws.onclose = () => {
         setIsConnected(false);
+        if (pingTimerRef.current) clearInterval(pingTimerRef.current);
         // Attempt reconnection after 2 seconds
         setTimeout(() => {
           if (sessionRef.current.roomCode) {
@@ -193,6 +204,7 @@ export function useBombSocket(): UseBombSocketReturn {
   useEffect(() => {
     connect();
     return () => {
+      if (pingTimerRef.current) clearInterval(pingTimerRef.current);
       if (socketRef.current) {
         socketRef.current.close();
         socketRef.current = null;

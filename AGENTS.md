@@ -20,7 +20,7 @@
 
 ---
 
-## Deployment Architecture (Vercel + Railway + Supabase)
+## Deployment Architecture (Vercel + AWS EC2 + Supabase)
 
 The app is split across two hosts. **Do not try to move the WebSocket server into a
 serverless function** — Vercel Functions cap connection lifetime at 300s (Hobby) /
@@ -29,9 +29,14 @@ instance. All room state lives in RAM.
 
 | Piece | Host | Build | Entry |
 |---|---|---|---|
-| Frontend | Vercel | `npm run build` → `dist/` | `vercel.json` |
-| Game server | Railway | `npm run build:server` → `dist-server/` | `railway.json`, `Dockerfile` |
+| Frontend | Vercel (`fiestaloco.site`) | `npm run build` → `dist/` | `vercel.json` |
+| Game server | AWS EC2 t3.micro (`api.fiestaloco.site`) | `npm run build:server` → `dist-server/` | `deploy/ec2/`, `scripts/deploy-ec2.sh` |
 | Persistence | Supabase | — | `server/persistence.ts` |
+
+On the box: Caddy terminates TLS on :443 (automatic Let's Encrypt) and reverse-proxies
+to Node on :3000, which only listens on localhost. systemd (`fiestaloco.service`) keeps
+the process up with `Restart=always`. Deploy with `./scripts/deploy-ec2.sh` — it builds
+locally and rsyncs, so the 1 GB box never runs a heavy build.
 
 ### Rules when adding a new game mode
 

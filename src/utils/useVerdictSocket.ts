@@ -60,6 +60,7 @@ export function useVerdictSocket(): UseVerdictSocketReturn {
   }>({});
   const lastPhaseRef = useRef<string | null>(null);
   const reconnectTimerRef = useRef<number | null>(null);
+  const pingTimerRef = useRef<number | null>(null);
 
   const connect = useCallback(() => {
     if (
@@ -78,6 +79,15 @@ export function useVerdictSocket(): UseVerdictSocketReturn {
       ws.onopen = () => {
         setIsConnected(true);
         setErrorMessage(null);
+
+      // Istemci -> sunucu keep-alive. 3-4 saatlik seanslarda uzun sessizlik
+      // aninda platformun baglantiyi "bosta" sayip dusurmesini engeller.
+      if (pingTimerRef.current) clearInterval(pingTimerRef.current);
+      pingTimerRef.current = window.setInterval(() => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send(JSON.stringify({ type: 'ping' }));
+        }
+      }, 15000);
 
         // Auto rejoin session
         if (sessionRef.current.roomCode) {
@@ -189,6 +199,7 @@ export function useVerdictSocket(): UseVerdictSocketReturn {
 
       ws.onclose = () => {
         setIsConnected(false);
+        if (pingTimerRef.current) clearInterval(pingTimerRef.current);
         if (sessionRef.current.roomCode) {
           if (reconnectTimerRef.current) clearTimeout(reconnectTimerRef.current);
           reconnectTimerRef.current = window.setTimeout(() => {
@@ -218,6 +229,7 @@ export function useVerdictSocket(): UseVerdictSocketReturn {
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
+      if (pingTimerRef.current) clearInterval(pingTimerRef.current);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       if (reconnectTimerRef.current) clearTimeout(reconnectTimerRef.current);
       if (socketRef.current) {

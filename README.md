@@ -24,11 +24,11 @@ Frontend ve WebSocket sunucusu aynı portta çalışır — ek yapılandırma ge
 | Katman | Teknoloji | Nerede çalışır |
 |---|---|---|
 | Frontend | React 19 · Vite 6 · Tailwind 4 · Motion | Vercel (CDN) |
-| Gerçek zamanlı sunucu | Express · `ws` · in-memory oda state'i | Render Free, Frankfurt |
+| Gerçek zamanlı sunucu | Express · `ws` · in-memory oda state'i | AWS EC2 t3.micro + Caddy, Frankfurt |
 | Kalıcı veri | Supabase Postgres | Frankfurt (eu-central-1) |
 | AI (opsiyonel) | Gemini | Sunucu tarafı, yerel fallback'li |
 
-Toplam maliyet 0 ₺/ay. Platform değiştirmek kod değişikliği gerektirmez — `railway.json`, `render.yaml` ve `Dockerfile` üçü de repoda hazır.
+Toplam maliyet ~$10/ay (EC2 + EBS); Vercel Hobby ve Supabase Free ücretsiz. Platform değiştirmek kod değişikliği gerektirmez — `railway.json`, `render.yaml` ve `Dockerfile` üçü de repoda hazır.
 
 Oyun mantığının tamamı `server.ts` içinde: her oda RAM'de yaşar, sunucu TV ekranına genel state'i, her telefona ise yalnızca kendi gizli bilgisini gönderir.
 
@@ -56,7 +56,7 @@ scripts/               duman testi, origin testi, birim testler
 |---|---|
 | `npm run dev` | Geliştirme: Vite middleware + WS tek portta |
 | `npm run build` | Frontend build → `dist/` (Vercel) |
-| `npm run build:server` | Sunucu bundle → `dist-server/` (Railway) |
+| `npm run build:server` | Sunucu bundle → `dist-server/` (EC2) |
 | `npm start` | Sunucuyu production modda çalıştırır |
 | `npm run build:all` + `npm start` | Tek hostta frontend + sunucu birlikte |
 | `npm run lint` | `tsc --noEmit` |
@@ -93,9 +93,9 @@ Supabase yapılandırılmamışsa oyunlar sorunsuz çalışır; skorlar yalnızc
 Ayrıntılı adımlar için **[DEPLOY.md](./DEPLOY.md)**. Özet:
 
 1. Supabase `service_role` anahtarını alın
-2. Repoyu Render'a Blueprint olarak bağlayın (`render.yaml` hazır), ortam değişkenlerini girin
-3. Aynı repoyu Vercel'e bağlayın, `VITE_SERVER_URL`'i Render adresi yapın
-4. Render'daki `ALLOWED_ORIGINS`'e Vercel domainini ekleyin
+2. `./scripts/deploy-ec2.sh` ile oyun sunucusunu EC2'ye gönderin (`DEPLOY.md`)
+3. Repoyu Vercel'e bağlayın, `VITE_SERVER_URL=https://api.fiestaloco.site` yapın
+4. `.env.server` içindeki `ALLOWED_ORIGINS`'e Vercel domainini ekleyip `./scripts/set-secrets-ec2.sh` çalıştırın
 5. `/api/health` ucuna 10 dakikada bir ping atan ücretsiz bir uptime monitörü kurun (uyumayı önler)
 
 Ortam değişkenlerinin tam listesi için [`.env.example`](./.env.example).

@@ -7,5 +7,9 @@ coverage/
 *.log
 .env*
 !.env.example
+!.env.server.example
 .vercel
 .vite
+
+# JetBrains IDE
+.idea/

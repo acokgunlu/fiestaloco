@@ -1,0 +1,36 @@
+# =============================================================================
+# FiestaLoco — Caddy reverse proxy
+# =============================================================================
+# Bu dosya bir SABLON. __DOMAIN__ yerine gercek host adi yazilarak
+# /etc/caddy/Caddyfile'a kopyalanir (bkz. scripts/set-domain-ec2.sh).
+#
+# Caddy'nin tek isi:
+#   1. __DOMAIN__ icin Let's Encrypt sertifikasini otomatik almak/yenilemek
+#   2. 443'ten gelen HTTPS + WSS trafigini 127.0.0.1:3000'deki Node'a vermek
+#
+# Node sunucusu disariya HIC acilmiyor — yalnizca localhost'ta dinliyor.
+# Loglar journald'a gidiyor:  sudo journalctl -u caddy -f
+# =============================================================================
+
+{
+	# Sertifika yenilenemezse Let's Encrypt bu adrese uyari gonderir.
+	email cokgunluatakan@gmail.com
+}
+
+__DOMAIN__ {
+	encode zstd gzip
+
+	reverse_proxy 127.0.0.1:3000 {
+		# WebSocket yukseltmesini Caddy kendisi hallediyor, ek ayar gerekmez.
+		# Tek kritik nokta: 3-4 saatlik parti seanslarinda acik baglantiyi
+		# zaman asimina dusurmemek. 0 = sinirsiz.
+		transport http {
+			read_timeout 0
+			write_timeout 0
+			dial_timeout 10s
+		}
+
+		# Sunucu gercek istemci IP'sini gorebilsin.
+		header_up X-Real-IP {remote_host}
+	}
+}
