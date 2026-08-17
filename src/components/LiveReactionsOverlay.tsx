@@ -79,10 +79,10 @@ export const LiveReactionsOverlay: React.FC<LiveReactionsOverlayProps> = ({
 
       {/* Floating Reactions Bar */}
       <div
-        className={`flex items-center gap-1.5 p-1.5 bg-white/90 backdrop-blur-md rounded-2xl border border-slate-200 shadow-md ${className}`}
+        className={`flex items-center gap-1.5 p-1.5 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl border border-slate-200 dark:border-slate-800 shadow-md ${className}`}
       >
-        <span className="text-[11px] font-black text-slate-500 uppercase px-2 hidden sm:inline flex items-center gap-1">
-          <SmilePlus className="w-3 h-3 text-indigo-600" />
+        <span className="text-[11px] font-black text-slate-500 dark:text-slate-400 uppercase px-2 hidden sm:inline flex items-center gap-1">
+          <SmilePlus className="w-3 h-3 text-indigo-600 dark:text-indigo-400" />
           <span>Tepki Ver:</span>
         </span>
 
@@ -94,7 +94,7 @@ export const LiveReactionsOverlay: React.FC<LiveReactionsOverlayProps> = ({
               id={`reaction-btn-${item.emoji}`}
               onClick={() => spawnReaction(item.emoji)}
               title={item.label}
-              className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-slate-100 hover:bg-slate-200 active:scale-125 hover:scale-110 flex items-center justify-center text-base sm:text-lg transition-all border border-slate-200 shadow-2xs cursor-pointer"
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-125 hover:scale-110 flex items-center justify-center text-base sm:text-lg transition-all border border-slate-200 dark:border-slate-800 shadow-2xs cursor-pointer"
             >
               {item.emoji}
             </button>

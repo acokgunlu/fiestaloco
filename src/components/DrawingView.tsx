@@ -169,16 +169,16 @@ export const DrawingView: React.FC<DrawingViewProps> = ({
     <div id="drawing-view" className="w-full max-w-4xl mx-auto px-3 sm:px-4 py-4 space-y-4">
       {/* Dynamic Rotation Alert Notice */}
       {showOrderRotatedNotice && (
-        <div className="bg-amber-50 border border-amber-300 rounded-2xl p-3 text-center animate-scale-in flex items-center justify-center gap-2">
-          <RefreshCw className="w-4 h-4 text-amber-600 animate-spin" />
-          <span className="text-xs sm:text-sm font-black text-amber-900">
-            🔄 Sıra Döndü! {currentRoundNumber}. Çizim Turunda ilk çizen: <strong className="text-indigo-900 underline">{activePlayer.name}</strong>
+        <div className="bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 rounded-2xl p-3 text-center animate-scale-in flex items-center justify-center gap-2">
+          <RefreshCw className="w-4 h-4 text-amber-600 dark:text-amber-400 animate-spin" />
+          <span className="text-xs sm:text-sm font-black text-amber-900 dark:text-amber-200">
+            🔄 Sıra Döndü! {currentRoundNumber}. Çizim Turunda ilk çizen: <strong className="text-indigo-900 dark:text-indigo-200 underline">{activePlayer.name}</strong>
           </span>
         </div>
       )}
 
       {/* PERSISTENT TURN INDICATOR CARD */}
-      <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200 shadow-lg space-y-4 text-slate-900">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl p-4 sm:p-5 border border-slate-200 dark:border-slate-800 shadow-lg space-y-4 text-slate-900 dark:text-slate-100">
         <div className="flex flex-wrap items-center justify-between gap-3">
           {/* Active Drawer (Şu An Çizen) */}
           <div className="flex items-center gap-3">
@@ -192,8 +192,8 @@ export const DrawingView: React.FC<DrawingViewProps> = ({
 
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-[11px] font-black uppercase tracking-wider text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-lg border border-indigo-200 flex items-center gap-1.5 shadow-xs">
-                  <Paintbrush className="w-3 h-3 text-indigo-600" />
+                <span className="text-[11px] font-black uppercase tracking-wider text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-950/40 px-2.5 py-0.5 rounded-lg border border-indigo-200 dark:border-indigo-900 flex items-center gap-1.5 shadow-xs">
+                  <Paintbrush className="w-3 h-3 text-indigo-600 dark:text-indigo-400" />
                   <span>Şu An Çizen</span>
                 </span>
                 <span
@@ -203,9 +203,9 @@ export const DrawingView: React.FC<DrawingViewProps> = ({
                   {activePlayer?.colorName}
                 </span>
               </div>
-              <h2 className="text-xl sm:text-2xl font-black text-slate-900 leading-tight mt-1 flex items-center gap-2">
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-slate-100 leading-tight mt-1 flex items-center gap-2">
                 <span>{activePlayer?.name}</span>
-                {activePlayer?.isBot && <span className="text-xs text-indigo-600 font-bold">(AI Bot)</span>}
+                {activePlayer?.isBot && <span className="text-xs text-indigo-600 dark:text-indigo-400 font-bold">(AI Bot)</span>}
               </h2>
             </div>
           </div>
@@ -214,8 +214,8 @@ export const DrawingView: React.FC<DrawingViewProps> = ({
           <div className="flex items-center gap-3">
             {/* Up Next Drawer Card */}
             {nextPlayer ? (
-              <div className="hidden sm:flex items-center gap-2.5 bg-slate-50 px-3.5 py-2 rounded-2xl border border-slate-200 shadow-xs">
-                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wide">
+              <div className="hidden sm:flex items-center gap-2.5 bg-slate-50 dark:bg-slate-900/60 px-3.5 py-2 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs">
+                <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                   Sıradaki:
                 </span>
                 <div className="flex items-center gap-1.5">
@@ -225,14 +225,14 @@ export const DrawingView: React.FC<DrawingViewProps> = ({
                   >
                     {nextPlayer.avatar}
                   </span>
-                  <span className="text-xs font-black text-slate-800 truncate max-w-[100px]">
+                  <span className="text-xs font-black text-slate-800 dark:text-slate-200 truncate max-w-[100px]">
                     {nextPlayer.name}
                   </span>
                 </div>
               </div>
             ) : (
-              <div className="hidden sm:flex items-center gap-1.5 bg-emerald-50 text-emerald-800 text-xs font-black px-3 py-2 rounded-2xl border border-emerald-200">
-                <UserCheck className="w-4 h-4 text-emerald-600" />
+              <div className="hidden sm:flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 text-xs font-black px-3 py-2 rounded-2xl border border-emerald-200 dark:border-emerald-900">
+                <UserCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                 <span>Son Çizgi!</span>
               </div>
             )}
@@ -242,8 +242,8 @@ export const DrawingView: React.FC<DrawingViewProps> = ({
               <div
                 className={`flex items-center gap-1.5 px-3.5 py-2 rounded-2xl font-mono font-black text-base border shadow-xs ${
                   turnTimerSec <= 5
-                    ? 'bg-rose-50 border-rose-300 text-rose-700 animate-pulse'
-                    : 'bg-slate-50 border-slate-200 text-slate-800'
+                    ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-300 dark:border-rose-800 text-rose-700 dark:text-rose-300 animate-pulse'
+                    : 'bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200'
                 }`}
               >
                 <Clock className="w-4 h-4 text-amber-500" />
@@ -254,19 +254,19 @@ export const DrawingView: React.FC<DrawingViewProps> = ({
         </div>
 
         {/* Dynamic Rotating Turn Progression Queue */}
-        <div className="pt-2 border-t border-slate-100">
-          <div className="flex items-center justify-between text-xs font-bold text-slate-500 mb-2">
+        <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
+          <div className="flex items-center justify-between text-xs font-bold text-slate-500 dark:text-slate-400 mb-2">
             <div className="flex items-center gap-2">
-              <span className="flex items-center gap-1 text-indigo-700 font-black">
-                <RefreshCw className="w-3 h-3 text-indigo-600" />
+              <span className="flex items-center gap-1 text-indigo-700 dark:text-indigo-300 font-black">
+                <RefreshCw className="w-3 h-3 text-indigo-600 dark:text-indigo-400" />
                 <span>Tur {currentRoundNumber} / {maxRounds}</span>
               </span>
               <span>•</span>
               <span>Toplam Çizgi: {turnsCompleted + 1} / {totalTurnsInGame}</span>
             </div>
             {nextPlayer && (
-              <span className="sm:hidden text-[11px] text-slate-500">
-                Sırada: <strong className="text-slate-800">{nextPlayer.name}</strong>
+              <span className="sm:hidden text-[11px] text-slate-500 dark:text-slate-400">
+                Sırada: <strong className="text-slate-800 dark:text-slate-200">{nextPlayer.name}</strong>
               </span>
             )}
           </div>
@@ -282,12 +282,12 @@ export const DrawingView: React.FC<DrawingViewProps> = ({
                   key={`${p.id}-${idx}`}
                   className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border transition-all shrink-0 ${
                     isCurrent
-                      ? 'bg-indigo-50 border-indigo-300 ring-2 ring-indigo-500/20 text-indigo-950 font-black shadow-xs'
+                      ? 'bg-indigo-50 dark:bg-indigo-950/40 border-indigo-300 dark:border-indigo-800 ring-2 ring-indigo-500/20 text-indigo-950 font-black shadow-xs'
                       : isPast
-                      ? 'bg-slate-50 border-slate-200 opacity-60 text-slate-500'
+                      ? 'bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 opacity-60 text-slate-500 dark:text-slate-400'
                       : isNext
-                      ? 'bg-amber-50 border-amber-300 text-amber-900 font-bold'
-                      : 'bg-slate-50/50 border-slate-200 text-slate-400 opacity-50'
+                      ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200 font-bold'
+                      : 'bg-slate-50/50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500 opacity-50'
                   }`}
                 >
                   <span
@@ -300,8 +300,8 @@ export const DrawingView: React.FC<DrawingViewProps> = ({
                       Çiziyor
                     </span>
                   )}
-                  {isPast && <span className="text-[10px] text-emerald-600 font-black">✓</span>}
-                  {isNext && <span className="text-[10px] text-amber-600 font-black">Sırada</span>}
+                  {isPast && <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-black">✓</span>}
+                  {isNext && <span className="text-[10px] text-amber-600 dark:text-amber-400 font-black">Sırada</span>}
                 </div>
               );
             })}
@@ -311,8 +311,8 @@ export const DrawingView: React.FC<DrawingViewProps> = ({
 
       {/* Bot Thinking State */}
       {isBotThinking && (
-        <div className="bg-indigo-50 text-indigo-900 p-3 rounded-2xl border border-indigo-200 text-xs font-bold flex items-center justify-center gap-2 animate-pulse shadow-xs">
-          <Bot className="w-4 h-4 text-indigo-600" />
+        <div className="bg-indigo-50 dark:bg-indigo-950/40 text-indigo-900 dark:text-indigo-200 p-3 rounded-2xl border border-indigo-200 dark:border-indigo-900 text-xs font-bold flex items-center justify-center gap-2 animate-pulse shadow-xs">
+          <Bot className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
           <span>{activePlayer?.name} çizgisini planlıyor...</span>
         </div>
       )}
@@ -328,17 +328,17 @@ export const DrawingView: React.FC<DrawingViewProps> = ({
       />
 
       {/* Footer tips & pass turn button */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-3.5 flex items-center justify-between text-xs text-slate-600 shadow-xs">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3.5 flex items-center justify-between text-xs text-slate-600 dark:text-slate-400 shadow-xs">
         <div className="flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-indigo-600 shrink-0" />
+          <Sparkles className="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0" />
           <span>
-            Parmağınızı / farenizi kaldırmadan <strong className="text-slate-900">1 sürekli çizgi</strong> çizin!
+            Parmağınızı / farenizi kaldırmadan <strong className="text-slate-900 dark:text-slate-100">1 sürekli çizgi</strong> çizin!
           </span>
         </div>
         <button
           id="btn-skip-stroke"
           onClick={handleSkipOrAutoFinish}
-          className="text-slate-500 hover:text-slate-900 text-xs font-bold underline underline-offset-2 ml-2 cursor-pointer transition-colors"
+          className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 text-xs font-bold underline underline-offset-2 ml-2 cursor-pointer transition-colors"
         >
           Sırayı Pas Geç
         </button>

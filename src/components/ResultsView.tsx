@@ -59,25 +59,25 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
   const top3 = sortedPlayers[2];
 
   return (
-    <div id="results-view" className="w-full max-w-4xl mx-auto px-3 sm:px-4 py-5 space-y-6 animate-fade-in text-slate-900">
+    <div id="results-view" className="w-full max-w-4xl mx-auto px-3 sm:px-4 py-5 space-y-6 animate-fade-in text-slate-900 dark:text-slate-100">
       {/* Victory Header Game-Show Banner */}
       <div
         className={`rounded-3xl p-6 sm:p-8 text-center shadow-xl border-2 transition-all relative overflow-hidden ${
           imposterWon
-            ? 'bg-rose-50 border-rose-300 shadow-rose-200/50'
-            : 'bg-emerald-50 border-emerald-300 shadow-emerald-200/50'
+            ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-300 dark:border-rose-800 shadow-rose-200/50'
+            : 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-800 shadow-emerald-200/50'
         }`}
       >
-        <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white/80 text-slate-800 text-xs font-black uppercase tracking-wider mb-2.5 shadow-xs border border-slate-200">
+        <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-800 dark:text-slate-200 text-xs font-black uppercase tracking-wider mb-2.5 shadow-xs border border-slate-200 dark:border-slate-800">
           <Trophy className="w-4 h-4 text-amber-500" />
           <span>Tur {currentRoundNumber} Büyük Yüzleşme</span>
         </div>
 
-        <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-slate-900">
+        <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-slate-900 dark:text-slate-100">
           {imposterWon ? '🎭 SAHTEKÂR ZAFERİ!' : '🎉 MASUM RESSAMLAR KAZANDI!'}
         </h2>
 
-        <p className="text-sm sm:text-base text-slate-700 max-w-lg mx-auto mt-2 leading-relaxed font-medium">
+        <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 max-w-lg mx-auto mt-2 leading-relaxed font-medium">
           {imposterWon
             ? roundResult.imposterGuessedCorrectly
               ? `${imposter.name} yakalandı fakat gizli kelimeyi ("${roundResult.crewWord}") bilerek zaferi kaptı!`
@@ -87,31 +87,31 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
 
         {/* Word Reveal Chips */}
         <div className="flex flex-wrap items-center justify-center gap-3 mt-5">
-          <div className="bg-white px-5 py-3 rounded-2xl border border-slate-200 text-left shadow-xs">
-            <span className="text-[10px] uppercase tracking-wider text-slate-500 font-bold block">
+          <div className="bg-white dark:bg-slate-900 px-5 py-3 rounded-2xl border border-slate-200 dark:border-slate-800 text-left shadow-xs">
+            <span className="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-bold block">
               Gizli Kelime (Word)
             </span>
-            <span className="text-lg sm:text-2xl font-black text-emerald-700">{roundResult.crewWord}</span>
+            <span className="text-lg sm:text-2xl font-black text-emerald-700 dark:text-emerald-300">{roundResult.crewWord}</span>
           </div>
 
-          <div className="bg-white px-5 py-3 rounded-2xl border border-slate-200 text-left shadow-xs">
-            <span className="text-[10px] uppercase tracking-wider text-slate-500 font-bold block">
+          <div className="bg-white dark:bg-slate-900 px-5 py-3 rounded-2xl border border-slate-200 dark:border-slate-800 text-left shadow-xs">
+            <span className="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-bold block">
               Sahtekâr Ressam (Imposter)
             </span>
-            <span className="text-lg sm:text-2xl font-black text-rose-700">{imposter.name}</span>
+            <span className="text-lg sm:text-2xl font-black text-rose-700 dark:text-rose-300">{imposter.name}</span>
           </div>
         </div>
       </div>
 
       {/* 3D-Style Winner Podium for Top 3 Players */}
       {sortedPlayers.length >= 2 && (
-        <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-lg">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-200 dark:border-slate-800 shadow-lg">
           <div className="text-center mb-6">
-            <h3 className="text-lg font-black text-slate-900 flex items-center justify-center gap-2">
+            <h3 className="text-lg font-black text-slate-900 dark:text-slate-100 flex items-center justify-center gap-2">
               <Crown className="w-5 h-5 text-amber-500" />
               <span>Oyun Kürsüsü (Podium)</span>
             </h3>
-            <p className="text-xs text-slate-500">Genel puan durumunda zirveye yerleşen ressamlar</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Genel puan durumunda zirveye yerleşen ressamlar</p>
           </div>
 
           <div className="flex items-end justify-center gap-2 sm:gap-4 pt-8 pb-2 max-w-md mx-auto">
@@ -125,11 +125,11 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
                   <span className="absolute -top-3 -right-2 text-sm">🥈</span>
                   {top2.avatar}
                 </div>
-                <div className="text-xs font-black text-slate-800 truncate w-20 sm:w-24 text-center">
+                <div className="text-xs font-black text-slate-800 dark:text-slate-200 truncate w-20 sm:w-24 text-center">
                   {top2.name}
                 </div>
-                <div className="text-[11px] font-black text-slate-500 mb-1">{top2.score} pts</div>
-                <div className="w-full h-24 bg-gradient-to-t from-slate-200 to-slate-100 rounded-t-2xl border-t-2 border-slate-300 flex items-center justify-center text-slate-700 font-black text-lg shadow-xs">
+                <div className="text-[11px] font-black text-slate-500 dark:text-slate-400 mb-1">{top2.score} pts</div>
+                <div className="w-full h-24 bg-gradient-to-t from-slate-200 to-slate-100 rounded-t-2xl border-t-2 border-slate-300 dark:border-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-300 font-black text-lg shadow-xs">
                   2
                 </div>
               </div>
@@ -140,17 +140,17 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
               <div className="flex-1 flex flex-col items-center animate-podium-hop z-10">
                 <Crown className="w-6 h-6 text-amber-500 mb-1 animate-bounce" />
                 <div
-                  className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center text-3xl shadow-xl border-4 border-amber-300 mb-2 relative"
+                  className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center text-3xl shadow-xl border-4 border-amber-300 dark:border-amber-800 mb-2 relative"
                   style={{ backgroundColor: top1.color }}
                 >
                   <span className="absolute -top-3 -right-2 text-lg">🥇</span>
                   {top1.avatar}
                 </div>
-                <div className="text-sm font-black text-amber-900 truncate w-24 sm:w-28 text-center">
+                <div className="text-sm font-black text-amber-900 dark:text-amber-200 truncate w-24 sm:w-28 text-center">
                   {top1.name}
                 </div>
-                <div className="text-xs font-black text-amber-700 mb-1">{top1.score} pts</div>
-                <div className="w-full h-36 bg-gradient-to-t from-amber-400 via-amber-300 to-yellow-200 rounded-t-2xl border-t-4 border-amber-400 flex items-center justify-center text-slate-900 font-black text-2xl shadow-md">
+                <div className="text-xs font-black text-amber-700 dark:text-amber-300 mb-1">{top1.score} pts</div>
+                <div className="w-full h-36 bg-gradient-to-t from-amber-400 via-amber-300 to-yellow-200 rounded-t-2xl border-t-4 border-amber-400 flex items-center justify-center text-slate-900 dark:text-slate-100 font-black text-2xl shadow-md">
                   1
                 </div>
               </div>
@@ -166,11 +166,11 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
                   <span className="absolute -top-3 -right-2 text-sm">🥉</span>
                   {top3.avatar}
                 </div>
-                <div className="text-xs font-black text-slate-800 truncate w-20 sm:w-24 text-center">
+                <div className="text-xs font-black text-slate-800 dark:text-slate-200 truncate w-20 sm:w-24 text-center">
                   {top3.name}
                 </div>
-                <div className="text-[11px] font-black text-slate-500 mb-1">{top3.score} pts</div>
-                <div className="w-full h-16 bg-gradient-to-t from-amber-100 to-amber-50 rounded-t-2xl border-t-2 border-amber-300 flex items-center justify-center text-amber-800 font-black text-base shadow-xs">
+                <div className="text-[11px] font-black text-slate-500 dark:text-slate-400 mb-1">{top3.score} pts</div>
+                <div className="w-full h-16 bg-gradient-to-t from-amber-100 to-amber-50 rounded-t-2xl border-t-2 border-amber-300 dark:border-amber-800 flex items-center justify-center text-amber-800 dark:text-amber-300 font-black text-base shadow-xs">
                   3
                 </div>
               </div>
@@ -181,16 +181,16 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
 
       {/* Bonus Reward Badge for Correct Imposter Guessers (+50 pts) */}
       {correctVoters.length > 0 && (
-        <div className="bg-emerald-50 border border-emerald-200 rounded-3xl p-4 sm:p-5 shadow-xs">
+        <div className="bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 rounded-3xl p-4 sm:p-5 shadow-xs">
           <div className="flex items-center gap-2.5 mb-2.5">
             <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black shadow-xs shrink-0">
               <Target className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="font-black text-emerald-900 text-sm sm:text-base">
+              <h4 className="font-black text-emerald-900 dark:text-emerald-200 text-sm sm:text-base">
                 🎯 Sahtekârı Doğru Tespit Edenler (+50 Puan Bonus!)
               </h4>
-              <p className="text-xs text-emerald-700">
+              <p className="text-xs text-emerald-700 dark:text-emerald-300">
                 Sahtekârı doğru oylayan dedektifler fazladan +50 puan kazandı:
               </p>
             </div>
@@ -200,7 +200,7 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
             {correctVoters.map((voter) => (
               <div
                 key={voter.id}
-                className="flex items-center gap-2 bg-white px-3.5 py-1.5 rounded-xl border border-emerald-200 shadow-2xs text-xs font-bold text-slate-800"
+                className="flex items-center gap-2 bg-white dark:bg-slate-900 px-3.5 py-1.5 rounded-xl border border-emerald-200 dark:border-emerald-900 shadow-2xs text-xs font-bold text-slate-800 dark:text-slate-200"
               >
                 <span
                   className="w-5 h-5 rounded-md flex items-center justify-center text-xs text-white shadow-2xs"
@@ -209,7 +209,7 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
                   {voter.avatar}
                 </span>
                 <span>{voter.name}</span>
-                <span className="text-emerald-800 font-black bg-emerald-100 px-1.5 py-0.5 rounded text-[11px] border border-emerald-200">
+                <span className="text-emerald-800 dark:text-emerald-300 font-black bg-emerald-100 dark:bg-emerald-900/40 px-1.5 py-0.5 rounded text-[11px] border border-emerald-200 dark:border-emerald-900">
                   +50 pts
                 </span>
               </div>
@@ -220,13 +220,13 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Left: Artwork Showcase & Replay */}
-        <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-md flex flex-col justify-between space-y-4">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200 dark:border-slate-800 shadow-md flex flex-col justify-between space-y-4">
           <div>
-            <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-indigo-600" />
+            <h3 className="text-base font-black text-slate-900 dark:text-slate-100 flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
               <span>Ortak Çizim Başyapıtı & Tekrarı</span>
             </h3>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
               Çizimin nasıl oluştuğunu oynatın veya resim olarak indirin.
             </p>
           </div>
@@ -241,13 +241,13 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
         </div>
 
         {/* Right: Leaderboard & Points */}
-        <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-md space-y-4">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200 dark:border-slate-800 shadow-md space-y-4">
           <div>
-            <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
+            <h3 className="text-base font-black text-slate-900 dark:text-slate-100 flex items-center gap-2">
               <Award className="w-4 h-4 text-amber-500" />
               <span>Tüm Oyuncular Puan Tablosu</span>
             </h3>
-            <p className="text-xs text-slate-500 mt-0.5">Toplam kazanılan puan sıralaması.</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Toplam kazanılan puan sıralaması.</p>
           </div>
 
           <div className="space-y-2 max-h-[360px] overflow-y-auto pr-1">
@@ -260,10 +260,10 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
                 <div
                   key={player.id}
                   id={`score-row-${player.id}`}
-                  className="flex items-center justify-between p-3 rounded-2xl bg-slate-50 border border-slate-200 hover:bg-slate-100 transition-colors"
+                  className="flex items-center justify-between p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="w-6 text-center font-black text-sm text-slate-500">
+                    <span className="w-6 text-center font-black text-sm text-slate-500 dark:text-slate-400">
                       {rank === 0 ? '🥇' : rank === 1 ? '🥈' : rank === 2 ? '🥉' : `#${rank + 1}`}
                     </span>
                     <div
@@ -273,30 +273,30 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
                       {player.avatar}
                     </div>
                     <div>
-                      <div className="font-black text-slate-900 text-sm flex items-center gap-1.5">
+                      <div className="font-black text-slate-900 dark:text-slate-100 text-sm flex items-center gap-1.5">
                         <span>{player.name}</span>
                         {isCurrentImposter && (
-                          <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-rose-100 text-rose-800 font-black border border-rose-200">
+                          <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-rose-100 dark:bg-rose-900/40 text-rose-800 dark:text-rose-300 font-black border border-rose-200 dark:border-rose-900">
                             Sahtekâr
                           </span>
                         )}
                         {votedImposter && (
-                          <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 font-black flex items-center gap-0.5 border border-emerald-200">
+                          <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 font-black flex items-center gap-0.5 border border-emerald-200 dark:border-emerald-900">
                             <CheckCircle2 className="w-3 h-3" />
                             <span>+50</span>
                           </span>
                         )}
                       </div>
-                      <div className="text-[11px] font-bold text-slate-500">
+                      <div className="text-[11px] font-bold text-slate-500 dark:text-slate-400">
                         {player.colorName}
                       </div>
                     </div>
                   </div>
 
                   <div className="text-right">
-                    <div className="text-base font-black text-indigo-700">{player.score} pts</div>
+                    <div className="text-base font-black text-indigo-700 dark:text-indigo-300">{player.score} pts</div>
                     {pointsEarned > 0 && (
-                      <div className="text-[11px] font-black text-emerald-600">
+                      <div className="text-[11px] font-black text-emerald-600 dark:text-emerald-400">
                         +{pointsEarned} bu tur
                       </div>
                     )}
@@ -328,7 +328,7 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
             playClickSound();
             onBackToLobby();
           }}
-          className="w-full sm:w-auto px-6 py-4 bg-white hover:bg-slate-100 text-slate-700 hover:text-slate-900 font-bold text-sm rounded-2xl border border-slate-200 shadow-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+          className="w-full sm:w-auto px-6 py-4 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 font-bold text-sm rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
         >
           <RotateCcw className="w-4 h-4" />
           <span>Oyuncu / Ayarları Değiştir</span>

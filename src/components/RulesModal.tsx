@@ -18,7 +18,7 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
     >
       <div
         id="rules-modal-content"
-        className="bg-white w-full max-w-xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden"
+        className="bg-white dark:bg-slate-900 w-full max-w-xl rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -38,42 +38,42 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
               playClickSound();
               onClose();
             }}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 dark:text-slate-500 hover:text-white hover:bg-slate-800 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Body rules */}
-        <div className="p-6 space-y-4 text-slate-700 text-sm max-h-[75vh] overflow-y-auto">
+        <div className="p-6 space-y-4 text-slate-700 dark:text-slate-300 text-sm max-h-[75vh] overflow-y-auto">
           {/* Step 1 */}
-          <div className="flex items-start gap-3.5 p-3.5 rounded-xl bg-slate-50 border border-slate-100">
-            <div className="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center shrink-0">
+          <div className="flex items-start gap-3.5 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800">
+            <div className="w-8 h-8 rounded-lg bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 font-bold flex items-center justify-center shrink-0">
               1
             </div>
             <div>
-              <h3 className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
-                <EyeOff className="w-4 h-4 text-indigo-600" />
+              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center gap-1.5">
+                <EyeOff className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
                 The Secret Words
               </h3>
-              <p className="text-xs text-slate-600 mt-1 leading-relaxed">
-                Everyone is secretly shown the <span className="font-semibold text-indigo-700">SAME secret word</span> (e.g. <em>"Cat"</em>).
-                Except <strong>1 Imposter</strong> who secretly receives a <span className="font-semibold text-rose-600">DIFFERENT related word</span> (e.g. <em>"Fox"</em>) or is a blind imposter!
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+                Everyone is secretly shown the <span className="font-semibold text-indigo-700 dark:text-indigo-300">SAME secret word</span> (e.g. <em>"Cat"</em>).
+                Except <strong>1 Imposter</strong> who secretly receives a <span className="font-semibold text-rose-600 dark:text-rose-400">DIFFERENT related word</span> (e.g. <em>"Fox"</em>) or is a blind imposter!
               </p>
             </div>
           </div>
 
           {/* Step 2 */}
-          <div className="flex items-start gap-3.5 p-3.5 rounded-xl bg-slate-50 border border-slate-100">
-            <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 font-bold flex items-center justify-center shrink-0">
+          <div className="flex items-start gap-3.5 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800">
+            <div className="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 font-bold flex items-center justify-center shrink-0">
               2
             </div>
             <div>
-              <h3 className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
-                <Palette className="w-4 h-4 text-emerald-600" />
+              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center gap-1.5">
+                <Palette className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                 Draw Exactly ONE Continuous Line
               </h3>
-              <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
                 In turns, each player draws <strong>ONE single unbroken stroke</strong> on the shared canvas in their assigned color.
                 Once you lift your finger/mouse, your turn is done! (Usually 2 strokes per player per game).
               </p>
@@ -81,16 +81,16 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
           </div>
 
           {/* Step 3 */}
-          <div className="flex items-start gap-3.5 p-3.5 rounded-xl bg-slate-50 border border-slate-100">
-            <div className="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 font-bold flex items-center justify-center shrink-0">
+          <div className="flex items-start gap-3.5 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800">
+            <div className="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 font-bold flex items-center justify-center shrink-0">
               3
             </div>
             <div>
-              <h3 className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-amber-600" />
+              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center gap-1.5">
+                <ShieldCheck className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                 The Bluff Strategy
               </h3>
-              <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
                 <strong>Innocent Crew:</strong> Draw enough to prove you know the word, but don't draw too much or you'll give the exact word away to the Imposter!
                 <br />
                 <strong>The Imposter:</strong> Bluff along, follow the general shape, and try not to get caught!
@@ -99,16 +99,16 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
           </div>
 
           {/* Step 4 */}
-          <div className="flex items-start gap-3.5 p-3.5 rounded-xl bg-slate-50 border border-slate-100">
-            <div className="w-8 h-8 rounded-lg bg-rose-100 text-rose-700 font-bold flex items-center justify-center shrink-0">
+          <div className="flex items-start gap-3.5 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800">
+            <div className="w-8 h-8 rounded-lg bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300 font-bold flex items-center justify-center shrink-0">
               4
             </div>
             <div>
-              <h3 className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
-                <Trophy className="w-4 h-4 text-rose-600" />
+              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center gap-1.5">
+                <Trophy className="w-4 h-4 text-rose-600 dark:text-rose-400" />
                 Discussion, Voting & The Guess
               </h3>
-              <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
                 After drawing, everyone discusses and votes for who they think is the Imposter.
                 <br />
                 • If the innocent crew votes wrong, the <strong>Imposter wins (+100 pts)</strong>!
@@ -120,7 +120,7 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
         </div>
 
         {/* Footer button */}
-        <div className="p-4 bg-slate-50 border-t border-slate-200 flex justify-end">
+        <div className="p-4 bg-slate-50 dark:bg-slate-900/60 border-t border-slate-200 dark:border-slate-800 flex justify-end">
           <button
             id="btn-got-it-rules"
             onClick={() => {

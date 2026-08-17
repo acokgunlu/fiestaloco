@@ -107,14 +107,14 @@ export const VotingView: React.FC<VotingViewProps> = ({
   if (isTallying) {
     return (
       <div className="w-full max-w-md mx-auto px-4 py-16 text-center space-y-6 animate-pulse">
-        <div className="w-24 h-24 rounded-3xl bg-white mx-auto flex items-center justify-center text-rose-600 shadow-xl border-2 border-rose-200 ring-4 ring-rose-500/10">
+        <div className="w-24 h-24 rounded-3xl bg-white dark:bg-slate-900 mx-auto flex items-center justify-center text-rose-600 dark:text-rose-400 shadow-xl border-2 border-rose-200 dark:border-rose-900 ring-4 ring-rose-500/10">
           <Gavel className="w-12 h-12 animate-bounce text-amber-500" />
         </div>
         <div className="space-y-2">
-          <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
+          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-slate-100">
             Mahkeme Kararı Bekleniyor...
           </h2>
-          <p className="text-sm text-slate-600">Gizli oylar sayılıyor, Sahtekârın maskesi düşürülüyor!</p>
+          <p className="text-sm text-slate-600 dark:text-slate-400">Gizli oylar sayılıyor, Sahtekârın maskesi düşürülüyor!</p>
         </div>
       </div>
     );
@@ -127,14 +127,14 @@ export const VotingView: React.FC<VotingViewProps> = ({
     >
       {/* Courtroom Progress Pill & Badge */}
       <div className="flex flex-wrap items-center justify-center gap-2">
-        <div className="flex items-center gap-2 bg-white px-4 py-1 rounded-full text-xs font-bold text-slate-700 border border-slate-200 shadow-xs">
+        <div className="flex items-center gap-2 bg-white dark:bg-slate-900 px-4 py-1 rounded-full text-xs font-bold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-xs">
           <Scale className="w-3.5 h-3.5 text-amber-500" />
           <span>Teşhis Odası • Sıra: {currentVoterIndex + 1} / {players.length}</span>
         </div>
 
         {/* Bonus reward badge */}
-        <div className="flex items-center gap-1.5 bg-indigo-50 border border-indigo-200 text-indigo-800 px-3 py-1 rounded-full text-xs font-black shadow-2xs">
-          <Target className="w-3.5 h-3.5 text-indigo-600" />
+        <div className="flex items-center gap-1.5 bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900 text-indigo-800 dark:text-indigo-300 px-3 py-1 rounded-full text-xs font-black shadow-2xs">
+          <Target className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
           <span>Doğru Tahmine +50 Puan Bonus!</span>
         </div>
       </div>
@@ -147,10 +147,10 @@ export const VotingView: React.FC<VotingViewProps> = ({
         >
           <span>{currentVoter.avatar}</span>
         </div>
-        <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
+        <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-slate-100">
           <span style={{ color: currentVoter.color }}>{currentVoter.name}</span>, şüphelini seç!
         </h2>
-        <p className="text-xs sm:text-sm text-slate-600 max-w-xs mx-auto">
+        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-xs mx-auto">
           Çizgisi sence en sahte olan kimdi? Şüphe duyduğun oyuncuyu işaretle.
         </p>
       </div>
@@ -170,8 +170,8 @@ export const VotingView: React.FC<VotingViewProps> = ({
               onClick={() => handleSelectCandidate(candidate.id)}
               className={`relative p-3.5 rounded-2xl border flex items-center justify-between transition-all cursor-pointer overflow-hidden ${
                 isSelected
-                  ? 'border-rose-400 bg-rose-50 ring-2 ring-rose-500/30 shadow-md transform scale-[1.02] text-slate-900'
-                  : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-800 shadow-xs'
+                  ? 'border-rose-400 bg-rose-50 dark:bg-rose-950/40 ring-2 ring-rose-500/30 shadow-md transform scale-[1.02] text-slate-900 dark:text-slate-100'
+                  : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-900/60 text-slate-800 dark:text-slate-200 shadow-xs'
               }`}
             >
               <div className="flex items-center gap-3">
@@ -182,15 +182,15 @@ export const VotingView: React.FC<VotingViewProps> = ({
                   {candidate.avatar}
                 </div>
                 <div className="text-left">
-                  <div className="font-black text-slate-900 text-sm sm:text-base flex items-center gap-2">
+                  <div className="font-black text-slate-900 dark:text-slate-100 text-sm sm:text-base flex items-center gap-2">
                     <span>{candidate.name}</span>
                     {candidate.isBot && (
-                      <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-600 border border-slate-200">
+                      <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800">
                         BOT
                       </span>
                     )}
                   </div>
-                  <div className="text-[11px] font-bold text-slate-500 flex items-center gap-1.5 mt-0.5">
+                  <div className="text-[11px] font-bold text-slate-500 dark:text-slate-400 flex items-center gap-1.5 mt-0.5">
                     <span
                       className="w-2.5 h-2.5 rounded-full shrink-0 shadow-2xs"
                       style={{ backgroundColor: candidate.color }}
@@ -207,7 +207,7 @@ export const VotingView: React.FC<VotingViewProps> = ({
                   <span>ŞÜPHELİ!</span>
                 </div>
               ) : (
-                <div className="w-7 h-7 rounded-full border-2 border-slate-300 bg-slate-100 flex items-center justify-center text-slate-500">
+                <div className="w-7 h-7 rounded-full border-2 border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400">
                   <span className="text-[10px] font-mono">?</span>
                 </div>
               )}

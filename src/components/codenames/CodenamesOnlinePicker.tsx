@@ -101,31 +101,31 @@ export function CodenamesOnlinePicker({
   return (
     <div
       id="codenames-online-picker"
-      className="w-full max-w-2xl mx-auto px-3 sm:px-4 py-6 space-y-6 animate-fade-in text-slate-900"
+      className="w-full max-w-2xl mx-auto px-3 sm:px-4 py-6 space-y-6 animate-fade-in text-slate-900 dark:text-slate-100"
     >
       {/* Brand Hero Header */}
       <div className="text-center space-y-2.5">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-slate-700 border border-slate-200 text-xs font-black shadow-xs">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 text-xs font-black shadow-xs">
           <Sparkles className="w-4 h-4 text-amber-500" />
           <span>Gizli İstihbarat & İpucu Arenası • 2 - 12+ Oyuncu</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
+        <h1 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
           GİZLİ <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-purple-600 to-sky-600">AJANLAR</span>
         </h1>
-        <p className="text-slate-600 text-xs sm:text-sm max-w-md mx-auto leading-relaxed">
+        <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm max-w-md mx-auto leading-relaxed">
           TV veya büyük ekrana yansıtın, <strong>Kırmızı vs Mavi Takım</strong> telefonlarıyla katılıp gizli renkleri çözsün!
         </p>
       </div>
 
       {/* Error message */}
       {errorMessage && (
-        <div className="p-3.5 bg-rose-50 border border-rose-300 text-rose-800 text-xs font-black rounded-2xl text-center shadow-xs animate-shake">
+        <div className="p-3.5 bg-rose-50 dark:bg-rose-950/40 border border-rose-300 dark:border-rose-800 text-rose-800 dark:text-rose-300 text-xs font-black rounded-2xl text-center shadow-xs animate-shake">
           {errorMessage}
         </div>
       )}
 
       {/* Mode Navigation Tabs */}
-      <div className="flex p-1.5 bg-slate-200/80 backdrop-blur-md rounded-2xl border border-slate-300/80 gap-1.5 shadow-xs">
+      <div className="flex p-1.5 bg-slate-200/80 dark:bg-slate-800/80 backdrop-blur-md rounded-2xl border border-slate-300/80 dark:border-slate-700/80 gap-1.5 shadow-xs">
         <button
           onClick={() => {
             playClickSound();
@@ -134,7 +134,7 @@ export function CodenamesOnlinePicker({
           className={`flex-1 py-3 px-2.5 rounded-xl text-xs sm:text-sm font-black flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
             activeTab === 'tv_host'
               ? 'bg-gradient-to-r from-red-600 to-sky-600 text-white shadow-md'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
+              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-white/50 dark:hover:bg-slate-900/50'
           }`}
         >
           <Tv className="w-4 h-4" />
@@ -149,7 +149,7 @@ export function CodenamesOnlinePicker({
           className={`flex-1 py-3 px-2.5 rounded-xl text-xs sm:text-sm font-black flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
             activeTab === 'join_phone'
               ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
+              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-white/50 dark:hover:bg-slate-900/50'
           }`}
         >
           <Smartphone className="w-4 h-4" />
@@ -164,7 +164,7 @@ export function CodenamesOnlinePicker({
           className={`flex-1 py-3 px-2.5 rounded-xl text-xs sm:text-sm font-black flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
             activeTab === 'local'
               ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
+              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-white/50 dark:hover:bg-slate-900/50'
           }`}
         >
           <Users className="w-4 h-4" />
@@ -174,26 +174,26 @@ export function CodenamesOnlinePicker({
 
       {/* TAB 1: TV HOST (BIG SCREEN DISPLAY) */}
       {activeTab === 'tv_host' && (
-        <div className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-xl space-y-5 animate-fade-in">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-xl space-y-5 animate-fade-in">
           <div className="space-y-1">
-            <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
-              <Tv className="w-5 h-5 text-indigo-600" />
+            <h3 className="text-lg font-black text-slate-900 dark:text-slate-100 flex items-center gap-2">
+              <Tv className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
               <span>TV / Masaüstü Ekranı İçin Oda Aç</span>
             </h3>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               Bu ekranı TV veya büyük ekrana yansıtın. 25 kartlık ahşap masa panosu TV'de görünür, oyuncular telefonlarıyla liderlik eder veya tahmin yapar!
             </p>
           </div>
 
           <div className="space-y-4 pt-1">
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1.5">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                 Kelime Havuzu & Tema:
               </label>
               <select
                 value={hostCategory}
                 onChange={(e) => setHostCategory(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm font-bold text-slate-900 focus:outline-hidden focus:border-indigo-500"
+                className="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl px-4 py-3 text-sm font-bold text-slate-900 dark:text-slate-100 focus:outline-hidden focus:border-indigo-500"
               >
                 {CODENAMES_CATEGORIES.map((c) => (
                   <option key={c.id} value={c.id}>
@@ -205,13 +205,13 @@ export function CodenamesOnlinePicker({
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                   Başlangıç Takımı (9 Ajan):
                 </label>
                 <select
                   value={hostStartingTeam}
                   onChange={(e) => setHostStartingTeam(e.target.value as any)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3 py-2.5 text-xs font-bold text-slate-900 focus:outline-hidden"
+                  className="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl px-3 py-2.5 text-xs font-bold text-slate-900 dark:text-slate-100 focus:outline-hidden"
                 >
                   <option value="random">🎲 Rastgele Takım</option>
                   <option value="red">🔴 Kırmızı Takım</option>
@@ -220,13 +220,13 @@ export function CodenamesOnlinePicker({
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                   Tur Süresi:
                 </label>
                 <select
                   value={hostTimerSeconds}
                   onChange={(e) => setHostTimerSeconds(Number(e.target.value))}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3 py-2.5 text-xs font-bold text-slate-900 focus:outline-hidden"
+                  className="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl px-3 py-2.5 text-xs font-bold text-slate-900 dark:text-slate-100 focus:outline-hidden"
                 >
                   <option value={0}>Sınırsız (Rahat Mod)</option>
                   <option value={60}>60 Saniye (Hızlı)</option>
@@ -252,21 +252,21 @@ export function CodenamesOnlinePicker({
       {activeTab === 'join_phone' && (
         <form
           onSubmit={handleMobileJoinSubmit}
-          className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-xl space-y-5 animate-fade-in"
+          className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-xl space-y-5 animate-fade-in"
         >
           <div className="space-y-1">
-            <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
-              <Smartphone className="w-5 h-5 text-purple-600" />
+            <h3 className="text-lg font-black text-slate-900 dark:text-slate-100 flex items-center gap-2">
+              <Smartphone className="w-5 h-5 text-purple-600 dark:text-purple-400" />
               <span>Telefondan Katıl (Kumanda & Harita)</span>
             </h3>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               TV ekranındaki 4 veya 6 haneli Oda Kodunu girin, takımınızı ve rolünüzü seçin!
             </p>
           </div>
 
           <div className="space-y-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                 Oda Kodu (TV'deki Kod):
               </label>
               <input
@@ -276,12 +276,12 @@ export function CodenamesOnlinePicker({
                 placeholder="ÖRN: LION42"
                 maxLength={8}
                 required
-                className="w-full bg-slate-50 border-2 border-slate-200 focus:border-purple-500 rounded-2xl px-4 py-3.5 text-xl font-mono font-black text-slate-900 tracking-widest text-center uppercase focus:outline-hidden"
+                className="w-full bg-slate-50 dark:bg-slate-900/60 border-2 border-slate-200 dark:border-slate-800 focus:border-purple-500 rounded-2xl px-4 py-3.5 text-xl font-mono font-black text-slate-900 dark:text-slate-100 tracking-widest text-center uppercase focus:outline-hidden"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                 Oyuncu / Kod Adınız:
               </label>
               <input
@@ -291,13 +291,13 @@ export function CodenamesOnlinePicker({
                 placeholder="Ajan Adınız"
                 maxLength={16}
                 required
-                className="w-full bg-slate-50 border border-slate-200 focus:border-purple-500 rounded-2xl px-4 py-3 text-sm font-bold text-slate-900 focus:outline-hidden"
+                className="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 focus:border-purple-500 rounded-2xl px-4 py-3 text-sm font-bold text-slate-900 dark:text-slate-100 focus:outline-hidden"
               />
             </div>
 
             {/* Team Selection (Red vs Blue) */}
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1.5">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                 Takım Seçin:
               </label>
               <div className="grid grid-cols-2 gap-2.5">
@@ -309,18 +309,18 @@ export function CodenamesOnlinePicker({
                   }}
                   className={`p-3 rounded-2xl border text-left flex items-center justify-between transition-all cursor-pointer ${
                     selectedTeam === 'red'
-                      ? 'bg-rose-50 border-rose-500 ring-2 ring-rose-500/20'
-                      : 'bg-slate-50 border-slate-200 hover:bg-slate-100'
+                      ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-500 ring-2 ring-rose-500/20'
+                      : 'bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
                 >
                   <div className="flex items-center gap-2">
                     <span className="text-xl">🔴</span>
                     <div>
                       <div className="text-xs font-black text-rose-950">Kırmızı Takım</div>
-                      <div className="text-[10px] text-rose-700">Ajan Timi</div>
+                      <div className="text-[10px] text-rose-700 dark:text-rose-300">Ajan Timi</div>
                     </div>
                   </div>
-                  {selectedTeam === 'red' && <span className="text-rose-600 font-black">✓</span>}
+                  {selectedTeam === 'red' && <span className="text-rose-600 dark:text-rose-400 font-black">✓</span>}
                 </button>
 
                 <button
@@ -331,25 +331,25 @@ export function CodenamesOnlinePicker({
                   }}
                   className={`p-3 rounded-2xl border text-left flex items-center justify-between transition-all cursor-pointer ${
                     selectedTeam === 'blue'
-                      ? 'bg-sky-50 border-sky-500 ring-2 ring-sky-500/20'
-                      : 'bg-slate-50 border-slate-200 hover:bg-slate-100'
+                      ? 'bg-sky-50 dark:bg-sky-950/40 border-sky-500 ring-2 ring-sky-500/20'
+                      : 'bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
                 >
                   <div className="flex items-center gap-2">
                     <span className="text-xl">🔵</span>
                     <div>
                       <div className="text-xs font-black text-sky-950">Mavi Takım</div>
-                      <div className="text-[10px] text-sky-700">Ajan Timi</div>
+                      <div className="text-[10px] text-sky-700 dark:text-sky-300">Ajan Timi</div>
                     </div>
                   </div>
-                  {selectedTeam === 'blue' && <span className="text-sky-600 font-black">✓</span>}
+                  {selectedTeam === 'blue' && <span className="text-sky-600 dark:text-sky-400 font-black">✓</span>}
                 </button>
               </div>
             </div>
 
             {/* Role Selection (Spymaster vs Operative) */}
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1.5">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                 Rolünüzü Belirleyin:
               </label>
               <div className="grid grid-cols-2 gap-2.5">
@@ -361,15 +361,15 @@ export function CodenamesOnlinePicker({
                   }}
                   className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
                     selectedRole === 'spymaster'
-                      ? 'bg-amber-50 border-amber-500 ring-2 ring-amber-500/20'
-                      : 'bg-slate-50 border-slate-200 hover:bg-slate-100'
+                      ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-500 ring-2 ring-amber-500/20'
+                      : 'bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
                 >
                   <div className="text-sm font-black text-amber-950 flex items-center gap-1.5">
                     <span>👑</span>
                     <span>Ajan Lideri (Spymaster)</span>
                   </div>
-                  <p className="text-[10px] text-slate-600 mt-1">
+                  <p className="text-[10px] text-slate-600 dark:text-slate-400 mt-1">
                     Telefonunuzda gizli renk haritası görünür. İpucu verirsiniz.
                   </p>
                 </button>
@@ -382,15 +382,15 @@ export function CodenamesOnlinePicker({
                   }}
                   className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
                     selectedRole === 'operative'
-                      ? 'bg-indigo-50 border-indigo-500 ring-2 ring-indigo-500/20'
-                      : 'bg-slate-50 border-slate-200 hover:bg-slate-100'
+                      ? 'bg-indigo-50 dark:bg-indigo-950/40 border-indigo-500 ring-2 ring-indigo-500/20'
+                      : 'bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
                 >
                   <div className="text-sm font-black text-indigo-950 flex items-center gap-1.5">
                     <span>🕵️‍♂️</span>
                     <span>Saha Ajanı (Operative)</span>
                   </div>
-                  <p className="text-[10px] text-slate-600 mt-1">
+                  <p className="text-[10px] text-slate-600 dark:text-slate-400 mt-1">
                     İpuçlarını tartışıp TV'deki kartları telefonunuzdan açarsınız.
                   </p>
                 </button>
@@ -411,23 +411,23 @@ export function CodenamesOnlinePicker({
 
       {/* TAB 3: LOCAL PASS & PLAY */}
       {activeTab === 'local' && (
-        <div className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-xl space-y-5 animate-fade-in text-center">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-xl space-y-5 animate-fade-in text-center">
           <div className="space-y-1">
-            <h3 className="text-lg font-black text-slate-900">Tek Ekranda Masaüstü Oyunu</h3>
-            <p className="text-xs text-slate-500 max-w-sm mx-auto">
+            <h3 className="text-lg font-black text-slate-900 dark:text-slate-100">Tek Ekranda Masaüstü Oyunu</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
               Tablet veya bilgisayarınızı masanın ortasına koyun, liderler sırayla "Lider Haritası"na bakarak fiziksel ortamda ipucu versin!
             </p>
           </div>
 
           <div className="space-y-3 text-left">
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                 Kategori Seçimi:
               </label>
               <select
                 value={localCategory}
                 onChange={(e) => setLocalCategory(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm font-bold text-slate-900 focus:outline-hidden"
+                className="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl px-4 py-3 text-sm font-bold text-slate-900 dark:text-slate-100 focus:outline-hidden"
               >
                 {CODENAMES_CATEGORIES.map((c) => (
                   <option key={c.id} value={c.id}>
@@ -455,7 +455,7 @@ export function CodenamesOnlinePicker({
             playClickSound();
             onBackToHub();
           }}
-          className="text-xs font-bold text-slate-600 hover:text-slate-900 flex items-center gap-1 cursor-pointer"
+          className="text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 flex items-center gap-1 cursor-pointer"
         >
           <span>← Parti Kulübü Ana Menü</span>
         </button>
@@ -465,7 +465,7 @@ export function CodenamesOnlinePicker({
             playClickSound();
             onOpenRules();
           }}
-          className="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 cursor-pointer"
+          className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 flex items-center gap-1 cursor-pointer"
         >
           <HelpCircle className="w-3.5 h-3.5" />
           <span>Nasıl Oynanır & Kurallar</span>

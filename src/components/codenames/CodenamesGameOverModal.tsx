@@ -49,7 +49,7 @@ export function CodenamesGameOverModal({
       className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/70 backdrop-blur-xs animate-fade-in"
     >
       <div
-        className="bg-white text-slate-900 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-slate-200 overflow-hidden flex flex-col space-y-6 animate-scale-in text-center"
+        className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col space-y-6 animate-scale-in text-center"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Victory Icon / Banner */}
@@ -69,13 +69,13 @@ export function CodenamesGameOverModal({
           </div>
 
           <div className="space-y-1">
-            <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-slate-100 text-slate-700">
+            <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
               {winReason === 'assassin_triggered' ? '☠️ Kara Suikastçı Vakası' : '🏆 Kusursuz İstihbarat Operasyonu'}
             </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
               {isRedWinner ? '🔴 KIRMIZI TAKIM KAZANDI!' : '🔵 MAVİ TAKIM KAZANDI!'}
             </h2>
-            <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-md mx-auto leading-relaxed">
               {winReason === 'assassin_triggered'
                 ? `Rakip takım panodaki Kara Suikastçı kartını açarak tuzağa düştü ve zaferi ${
                     isRedWinner ? 'Kırmızı Takım' : 'Mavi Takım'
@@ -86,18 +86,18 @@ export function CodenamesGameOverModal({
         </div>
 
         {/* Match Statistics */}
-        <div className="grid grid-cols-3 gap-2.5 bg-slate-50 p-4 rounded-2xl border border-slate-200 text-center">
+        <div className="grid grid-cols-3 gap-2.5 bg-slate-50 dark:bg-slate-900/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 text-center">
           <div className="space-y-0.5">
-            <span className="text-[10px] uppercase font-bold text-slate-500">Kırmızı Ajanlar</span>
-            <div className="text-base sm:text-lg font-black text-rose-600">{redCount} Bulundu</div>
+            <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400">Kırmızı Ajanlar</span>
+            <div className="text-base sm:text-lg font-black text-rose-600 dark:text-rose-400">{redCount} Bulundu</div>
           </div>
           <div className="space-y-0.5">
-            <span className="text-[10px] uppercase font-bold text-slate-500">Mavi Ajanlar</span>
-            <div className="text-base sm:text-lg font-black text-blue-600">{blueCount} Bulundu</div>
+            <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400">Mavi Ajanlar</span>
+            <div className="text-base sm:text-lg font-black text-blue-600 dark:text-blue-400">{blueCount} Bulundu</div>
           </div>
           <div className="space-y-0.5">
-            <span className="text-[10px] uppercase font-bold text-slate-500">Toplam İpucu</span>
-            <div className="text-base sm:text-lg font-black text-indigo-700">{clues.length} Tur</div>
+            <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400">Toplam İpucu</span>
+            <div className="text-base sm:text-lg font-black text-indigo-700 dark:text-indigo-300">{clues.length} Tur</div>
           </div>
         </div>
 
@@ -125,7 +125,7 @@ export function CodenamesGameOverModal({
               playClickSound();
               onReturnToHub();
             }}
-            className="px-6 py-4 bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 font-bold text-sm rounded-2xl border border-slate-200 transition-colors flex items-center justify-center gap-2 cursor-pointer"
+            className="px-6 py-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 font-bold text-sm rounded-2xl border border-slate-200 dark:border-slate-800 transition-colors flex items-center justify-center gap-2 cursor-pointer"
           >
             <span>Parti Kulübü</span>
             <ArrowRight className="w-4 h-4" />

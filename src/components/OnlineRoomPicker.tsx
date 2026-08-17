@@ -75,36 +75,36 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
   };
 
   return (
-    <div id="room-picker-container" className="w-full max-w-2xl mx-auto px-3 sm:px-4 py-6 space-y-6 animate-fade-in text-slate-900">
+    <div id="room-picker-container" className="w-full max-w-2xl mx-auto px-3 sm:px-4 py-6 space-y-6 animate-fade-in text-slate-900 dark:text-slate-100">
       {/* Brand Hero Header */}
       <div className="text-center space-y-3">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-slate-700 border border-slate-200 text-xs font-black shadow-xs">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 text-xs font-black shadow-xs">
           <Sparkles className="w-4 h-4 text-amber-500" />
           <span>Gizli Çizim & Sahtekâr Parti Oyunu • 3 - 8 Oyuncu</span>
         </div>
-        <h1 className="text-4xl sm:text-6xl font-black text-slate-900 tracking-tight">
+        <h1 className="text-4xl sm:text-6xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
           SAHTEKÂR <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 via-rose-600 to-purple-600">RESSAM</span>
         </h1>
-        <p className="text-slate-600 text-sm sm:text-base max-w-md mx-auto leading-relaxed">
+        <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base max-w-md mx-auto leading-relaxed">
           Herkes gizli kelimeyi çizer, 1 kişi <strong>Sahtekâr</strong>'dır! Sırayla tek sürekli çizgi çekin ve sahtekârı yakalayın.
         </p>
       </div>
 
       {/* Error Notice if any */}
       {errorMessage && (
-        <div className="p-3.5 bg-rose-50 border border-rose-300 text-rose-800 text-xs font-black rounded-2xl text-center shadow-sm animate-shake">
+        <div className="p-3.5 bg-rose-50 dark:bg-rose-950/40 border border-rose-300 dark:border-rose-800 text-rose-800 dark:text-rose-300 text-xs font-black rounded-2xl text-center shadow-sm animate-shake">
           {errorMessage}
         </div>
       )}
 
       {/* Mode Navigation Tabs */}
-      <div className="flex p-1.5 bg-slate-200/70 backdrop-blur-md rounded-2xl border border-slate-300/80 gap-1.5 shadow-sm">
+      <div className="flex p-1.5 bg-slate-200/70 dark:bg-slate-800/70 backdrop-blur-md rounded-2xl border border-slate-300/80 dark:border-slate-700/80 gap-1.5 shadow-sm">
         <button
           onClick={() => setActiveTab('host')}
           className={`flex-1 py-3 px-3 rounded-xl text-xs sm:text-sm font-black flex items-center justify-center gap-2 transition-all cursor-pointer ${
             activeTab === 'host'
               ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white shadow-md'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
+              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-white/50 dark:hover:bg-slate-900/50'
           }`}
         >
           <Tv className="w-4 h-4 text-indigo-500" />
@@ -116,7 +116,7 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
           className={`flex-1 py-3 px-3 rounded-xl text-xs sm:text-sm font-black flex items-center justify-center gap-2 transition-all cursor-pointer ${
             activeTab === 'join'
               ? 'bg-gradient-to-r from-rose-600 to-pink-600 text-white shadow-md'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
+              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-white/50 dark:hover:bg-slate-900/50'
           }`}
         >
           <Smartphone className="w-4 h-4 text-rose-500" />
@@ -128,36 +128,36 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
           className={`flex-1 py-3 px-3 rounded-xl text-xs sm:text-sm font-black flex items-center justify-center gap-2 transition-all cursor-pointer ${
             activeTab === 'local'
               ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
+              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-white/50 dark:hover:bg-slate-900/50'
           }`}
         >
-          <Users className="w-4 h-4 text-emerald-600" />
+          <Users className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
           <span>Tek Cihaz (El Değiştir)</span>
         </button>
       </div>
 
       {/* TAB 1: HOST OBSERVER DISPLAY (TV / LAPTOP) */}
       {activeTab === 'host' && (
-        <div className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-xl space-y-5 animate-fade-in">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-xl space-y-5 animate-fade-in">
           <div className="space-y-1">
-            <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
-              <Tv className="w-5 h-5 text-indigo-600" />
+            <h3 className="text-lg font-black text-slate-900 dark:text-slate-100 flex items-center gap-2">
+              <Tv className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
               <span>TV / Ana Ekran Odası Oluştur</span>
             </h3>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               Bu ekranı TV veya monitöre yansıtın. Diğer oyuncular telefonlarıyla QR kodu taratarak katılır!
             </p>
           </div>
 
           <div className="space-y-4 pt-1">
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1.5">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                 Kelime Paketi / Kategori:
               </label>
               <select
                 value={hostCategory}
                 onChange={(e) => setHostCategory(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm font-bold text-slate-900 focus:outline-hidden focus:border-indigo-500"
+                className="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl px-4 py-3 text-sm font-bold text-slate-900 dark:text-slate-100 focus:outline-hidden focus:border-indigo-500"
               >
                 <option value="all">🌟 Tüm Kategoriler (Hayvanlar, Yiyecekler, Nesneler, Mekanlar)</option>
                 {CATEGORIES.map((c) => (
@@ -170,7 +170,7 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                   Tur Başına Çizgi Sayısı:
                 </label>
                 <div className="grid grid-cols-2 gap-1.5">
@@ -181,8 +181,8 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
                       onClick={() => setHostRoundsPerPlayer(r)}
                       className={`py-2.5 rounded-xl text-xs font-bold border transition-colors cursor-pointer ${
                         hostRoundsPerPlayer === r
-                          ? 'border-indigo-600 bg-indigo-50 text-indigo-900 ring-2 ring-indigo-500/20 font-black'
-                          : 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100'
+                          ? 'border-indigo-600 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-900 dark:text-indigo-200 ring-2 ring-indigo-500/20 font-black'
+                          : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                       }`}
                     >
                       {r} {r === 1 ? 'Çizgi' : 'Çizgi'}
@@ -192,13 +192,13 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                   Çizim Süresi Sınırı:
                 </label>
                 <select
                   value={hostDrawTimeLimit}
                   onChange={(e) => setHostDrawTimeLimit(Number(e.target.value))}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-3 py-2.5 text-xs font-bold text-slate-900 focus:outline-hidden focus:border-indigo-500"
+                  className="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl px-3 py-2.5 text-xs font-bold text-slate-900 dark:text-slate-100 focus:outline-hidden focus:border-indigo-500"
                 >
                   <option value={20}>20 Saniye (Hızlı)</option>
                   <option value={25}>25 Saniye (Standart)</option>
@@ -224,21 +224,21 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
       {activeTab === 'join' && (
         <form
           onSubmit={handleJoinSubmit}
-          className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-xl space-y-5 animate-fade-in"
+          className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-xl space-y-5 animate-fade-in"
         >
           <div className="space-y-1">
-            <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
+            <h3 className="text-lg font-black text-slate-900 dark:text-slate-100 flex items-center gap-2">
               <Smartphone className="w-5 h-5 text-rose-500" />
               <span>Odaya Katıl (Telefon Kontrolcüsü)</span>
             </h3>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               TV ekranında görünen 4 veya 6 haneli Oda Kodunu girin.
             </p>
           </div>
 
           <div className="space-y-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                 Oda Kodu (Örn: LION42):
               </label>
               <input
@@ -248,12 +248,12 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
                 placeholder="KODU GİRİN"
                 maxLength={8}
                 required
-                className="w-full bg-slate-50 border-2 border-slate-200 focus:border-rose-500 rounded-2xl px-4 py-3.5 text-xl font-mono font-black text-slate-900 tracking-widest text-center uppercase focus:outline-hidden"
+                className="w-full bg-slate-50 dark:bg-slate-900/60 border-2 border-slate-200 dark:border-slate-800 focus:border-rose-500 rounded-2xl px-4 py-3.5 text-xl font-mono font-black text-slate-900 dark:text-slate-100 tracking-widest text-center uppercase focus:outline-hidden"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                 Oyuncu Adınız:
               </label>
               <input
@@ -263,12 +263,12 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
                 placeholder="Adınız"
                 maxLength={16}
                 required
-                className="w-full bg-slate-50 border border-slate-200 focus:border-rose-500 rounded-2xl px-4 py-3 text-sm font-bold text-slate-900 focus:outline-hidden"
+                className="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 focus:border-rose-500 rounded-2xl px-4 py-3 text-sm font-bold text-slate-900 dark:text-slate-100 focus:outline-hidden"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1.5">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                 Avatar & Çizgi Rengi Seçin:
               </label>
               <div className="grid grid-cols-4 gap-2">
@@ -279,8 +279,8 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
                     onClick={() => setSelectedPaletteIdx(idx)}
                     className={`p-2.5 rounded-2xl border flex flex-col items-center gap-1 transition-all cursor-pointer ${
                       selectedPaletteIdx === idx
-                        ? 'border-indigo-600 bg-indigo-50 ring-2 ring-indigo-500/20 shadow-xs'
-                        : 'border-slate-200 bg-slate-50 hover:bg-slate-100'
+                        ? 'border-indigo-600 bg-indigo-50 dark:bg-indigo-950/40 ring-2 ring-indigo-500/20 shadow-xs'
+                        : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 hover:bg-slate-100 dark:hover:bg-slate-800'
                     }`}
                   >
                     <span
@@ -289,7 +289,7 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
                     >
                       {pal.avatar}
                     </span>
-                    <span className="text-[10px] font-bold text-slate-700 truncate w-full text-center">
+                    <span className="text-[10px] font-bold text-slate-700 dark:text-slate-300 truncate w-full text-center">
                       {pal.name.split(' ')[0]}
                     </span>
                   </button>
@@ -311,15 +311,15 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
 
       {/* TAB 3: PASS & PLAY (1 DEVICE) */}
       {activeTab === 'local' && (
-        <div className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-xl space-y-5 animate-fade-in text-center">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-xl space-y-5 animate-fade-in text-center">
           <div className="space-y-1">
-            <h3 className="text-lg font-black text-slate-900">Tek Cihazda Oyna (Pass & Play)</h3>
-            <p className="text-xs text-slate-500 max-w-sm mx-auto">
+            <h3 className="text-lg font-black text-slate-900 dark:text-slate-100">Tek Cihazda Oyna (Pass & Play)</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
               İkinci bir cihaza gerek olmadan, telefonu veya tableti elden ele geçirerek parti modunu oynayın!
             </p>
           </div>
 
-          <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-xs text-slate-700 space-y-1.5 text-left">
+          <div className="p-4 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300 space-y-1.5 text-left">
             <div>✓ Tek cihaz • İnternet veya ikinci telefon gerekmez</div>
             <div>✓ Oyuncular arası gizli kart ve sıra koruma ekranı</div>
             <div>✓ Eksik oyuncular için akıllı AI Bot ressamlar</div>
@@ -337,9 +337,9 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
       )}
 
       {/* Rules Quick Reference footer */}
-      <div className="bg-white rounded-3xl p-4 border border-slate-200 text-xs text-slate-600 space-y-1.5 shadow-xs">
-        <div className="font-black text-slate-800 flex items-center gap-1.5">
-          <HelpCircle className="w-4 h-4 text-indigo-600" />
+      <div className="bg-white dark:bg-slate-900 rounded-3xl p-4 border border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-400 space-y-1.5 shadow-xs">
+        <div className="font-black text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+          <HelpCircle className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
           <span>Nasıl Oynanır?</span>
         </div>
         <p>

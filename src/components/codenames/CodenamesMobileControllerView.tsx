@@ -103,14 +103,14 @@ export function CodenamesMobileControllerView({
   return (
     <div
       id="codenames-mobile-controller"
-      className="w-full max-w-lg mx-auto px-3 py-4 space-y-4 text-slate-900 animate-fade-in"
+      className="w-full max-w-lg mx-auto px-3 py-4 space-y-4 text-slate-900 dark:text-slate-100 animate-fade-in"
     >
       {/* Top Header Card: Player Profile & Room Info */}
       <div
         className={`p-4 rounded-3xl border shadow-md flex items-center justify-between transition-colors ${
           myPlayer.team === 'red'
-            ? 'bg-rose-50 border-rose-200 text-rose-950'
-            : 'bg-sky-50 border-sky-200 text-sky-950'
+            ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-200 dark:border-rose-900 text-rose-950'
+            : 'bg-sky-50 dark:bg-sky-950/40 border-sky-200 dark:border-sky-900 text-sky-950'
         }`}
       >
         <div className="flex items-center gap-3">
@@ -124,11 +124,11 @@ export function CodenamesMobileControllerView({
           <div>
             <div className="flex items-center gap-2">
               <span className="font-black text-sm">{myPlayer.name}</span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/80 border border-slate-200 font-bold">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 font-bold">
                 Oda: {roomCode}
               </span>
             </div>
-            <div className="text-xs font-bold text-slate-600 flex items-center gap-1.5 mt-0.5">
+            <div className="text-xs font-bold text-slate-600 dark:text-slate-400 flex items-center gap-1.5 mt-0.5">
               <span>{myPlayer.team === 'red' ? '🔴 Kırmızı Takım' : '🔵 Mavi Takım'}</span>
               <span>•</span>
               <span>{isSpymaster ? 'Lider (Spymaster)' : 'Saha Ajanı'}</span>
@@ -139,21 +139,21 @@ export function CodenamesMobileControllerView({
         <div className="flex items-center gap-1">
           <button
             onClick={() => setShowRoleSwitcher(!showRoleSwitcher)}
-            className="p-2 rounded-xl bg-white/80 hover:bg-white text-slate-700 text-xs font-bold border border-slate-200 transition-colors cursor-pointer"
+            className="p-2 rounded-xl bg-white/80 dark:bg-slate-900/80 hover:bg-white dark:hover:bg-slate-900 text-slate-700 dark:text-slate-300 text-xs font-bold border border-slate-200 dark:border-slate-800 transition-colors cursor-pointer"
             title="Takım / Rol Değiştir"
           >
             🔄
           </button>
           <button
             onClick={onOpenRules}
-            className="p-2 rounded-xl bg-white/80 hover:bg-white text-slate-700 text-xs font-bold border border-slate-200 transition-colors cursor-pointer"
+            className="p-2 rounded-xl bg-white/80 dark:bg-slate-900/80 hover:bg-white dark:hover:bg-slate-900 text-slate-700 dark:text-slate-300 text-xs font-bold border border-slate-200 dark:border-slate-800 transition-colors cursor-pointer"
             title="Kurallar"
           >
             <HelpCircle className="w-4 h-4" />
           </button>
           <button
             onClick={onLeave}
-            className="p-2 rounded-xl bg-white/80 hover:bg-white text-rose-600 text-xs font-bold border border-slate-200 transition-colors cursor-pointer"
+            className="p-2 rounded-xl bg-white/80 dark:bg-slate-900/80 hover:bg-white dark:hover:bg-slate-900 text-rose-600 dark:text-rose-400 text-xs font-bold border border-slate-200 dark:border-slate-800 transition-colors cursor-pointer"
             title="Odadan Ayrıl"
           >
             <LogOut className="w-4 h-4" />
@@ -163,8 +163,8 @@ export function CodenamesMobileControllerView({
 
       {/* Role Switcher Drawer (if open) */}
       {showRoleSwitcher && (
-        <div className="p-4 bg-white rounded-3xl border border-slate-200 shadow-lg space-y-3 animate-scale-in">
-          <h4 className="font-black text-xs text-slate-700 uppercase tracking-wider">
+        <div className="p-4 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-lg space-y-3 animate-scale-in">
+          <h4 className="font-black text-xs text-slate-700 dark:text-slate-300 uppercase tracking-wider">
             Takım ve Rolünü Güncelle:
           </h4>
           <div className="grid grid-cols-2 gap-2">
@@ -175,8 +175,8 @@ export function CodenamesMobileControllerView({
               }}
               className={`p-2.5 rounded-xl border text-xs font-bold text-left cursor-pointer ${
                 myPlayer.team === 'red' && myPlayer.role === 'spymaster'
-                  ? 'bg-rose-100 border-rose-500 text-rose-950 font-black'
-                  : 'bg-slate-50 border-slate-200'
+                  ? 'bg-rose-100 dark:bg-rose-900/40 border-rose-500 text-rose-950 font-black'
+                  : 'bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800'
               }`}
             >
               👑 Kırmızı Lider
@@ -188,8 +188,8 @@ export function CodenamesMobileControllerView({
               }}
               className={`p-2.5 rounded-xl border text-xs font-bold text-left cursor-pointer ${
                 myPlayer.team === 'red' && myPlayer.role === 'operative'
-                  ? 'bg-rose-100 border-rose-500 text-rose-950 font-black'
-                  : 'bg-slate-50 border-slate-200'
+                  ? 'bg-rose-100 dark:bg-rose-900/40 border-rose-500 text-rose-950 font-black'
+                  : 'bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800'
               }`}
             >
               🕵️‍♂️ Kırmızı Ajan
@@ -201,8 +201,8 @@ export function CodenamesMobileControllerView({
               }}
               className={`p-2.5 rounded-xl border text-xs font-bold text-left cursor-pointer ${
                 myPlayer.team === 'blue' && myPlayer.role === 'spymaster'
-                  ? 'bg-sky-100 border-sky-500 text-sky-950 font-black'
-                  : 'bg-slate-50 border-slate-200'
+                  ? 'bg-sky-100 dark:bg-sky-900/40 border-sky-500 text-sky-950 font-black'
+                  : 'bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800'
               }`}
             >
               👑 Mavi Lider
@@ -214,8 +214,8 @@ export function CodenamesMobileControllerView({
               }}
               className={`p-2.5 rounded-xl border text-xs font-bold text-left cursor-pointer ${
                 myPlayer.team === 'blue' && myPlayer.role === 'operative'
-                  ? 'bg-sky-100 border-sky-500 text-sky-950 font-black'
-                  : 'bg-slate-50 border-slate-200'
+                  ? 'bg-sky-100 dark:bg-sky-900/40 border-sky-500 text-sky-950 font-black'
+                  : 'bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800'
               }`}
             >
               🕵️‍♂️ Mavi Ajan
@@ -230,7 +230,7 @@ export function CodenamesMobileControllerView({
           className={`p-3 rounded-2xl border transition-all ${
             gameState.activeTeam === 'red'
               ? 'bg-red-600 text-white font-black shadow-md ring-2 ring-red-400/40'
-              : 'bg-red-50 text-red-900 border-red-200 font-bold'
+              : 'bg-red-50 dark:bg-red-950/40 text-red-900 dark:text-red-200 border-red-200 dark:border-red-900 font-bold'
           }`}
         >
           <div className="text-[11px] uppercase tracking-wider">Kırmızı Takım</div>
@@ -242,7 +242,7 @@ export function CodenamesMobileControllerView({
           className={`p-3 rounded-2xl border transition-all ${
             gameState.activeTeam === 'blue'
               ? 'bg-sky-600 text-white font-black shadow-md ring-2 ring-sky-400/40'
-              : 'bg-sky-50 text-sky-900 border-sky-200 font-bold'
+              : 'bg-sky-50 dark:bg-sky-950/40 text-sky-900 dark:text-sky-200 border-sky-200 dark:border-sky-900 font-bold'
           }`}
         >
           <div className="text-[11px] uppercase tracking-wider">Mavi Takım</div>
@@ -280,7 +280,7 @@ export function CodenamesMobileControllerView({
                   TOP SECRET: 5x5 Lider Anahtar Haritası
                 </span>
               </div>
-              <span className="text-[10px] text-slate-400">Sadece Liderler Görür</span>
+              <span className="text-[10px] text-slate-400 dark:text-slate-500">Sadece Liderler Görür</span>
             </div>
 
             {/* 5x5 Grid */}
@@ -289,7 +289,7 @@ export function CodenamesMobileControllerView({
                 let bgClass = 'bg-slate-800 text-slate-300';
                 if (card.type === 'red') bgClass = 'bg-red-600 text-white font-black';
                 if (card.type === 'blue') bgClass = 'bg-sky-600 text-white font-black';
-                if (card.type === 'neutral') bgClass = 'bg-amber-100 text-stone-900 font-bold';
+                if (card.type === 'neutral') bgClass = 'bg-amber-100 dark:bg-amber-900/40 text-stone-900 font-bold';
                 if (card.type === 'assassin') bgClass = 'bg-black text-rose-400 font-black border border-rose-500/50';
 
                 return (
@@ -308,7 +308,7 @@ export function CodenamesMobileControllerView({
               })}
             </div>
 
-            <div className="flex items-center justify-between text-[10px] text-slate-400 px-1">
+            <div className="flex items-center justify-between text-[10px] text-slate-400 dark:text-slate-500 px-1">
               <span className="flex items-center gap-1">🔴 Kırmızı ({gameState.redRemaining})</span>
               <span className="flex items-center gap-1">🔵 Mavi ({gameState.blueRemaining})</span>
               <span className="flex items-center gap-1">⚪ Sivil (7)</span>
@@ -320,17 +320,17 @@ export function CodenamesMobileControllerView({
           {isMyTeamTurn && (
             <form
               onSubmit={handleClueSubmit}
-              className="bg-white p-5 rounded-3xl border border-slate-200 shadow-lg space-y-4 animate-fade-in"
+              className="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-lg space-y-4 animate-fade-in"
             >
               <div className="flex items-center justify-between">
-                <h4 className="font-black text-slate-900 text-sm flex items-center gap-1.5">
-                  <Send className="w-4 h-4 text-indigo-600" />
+                <h4 className="font-black text-slate-900 dark:text-slate-100 text-sm flex items-center gap-1.5">
+                  <Send className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
                   <span>Sıra Sizde: İpucu Gönderin</span>
                 </h4>
                 <button
                   type="button"
                   onClick={handleSuggestAiClue}
-                  className="px-2.5 py-1 rounded-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-[11px] font-bold border border-indigo-200 flex items-center gap-1 transition-colors cursor-pointer"
+                  className="px-2.5 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/40 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 text-[11px] font-bold border border-indigo-200 dark:border-indigo-900 flex items-center gap-1 transition-colors cursor-pointer"
                 >
                   <Sparkles className="w-3 h-3 text-indigo-500" />
                   <span>AI Öneri</span>
@@ -339,7 +339,7 @@ export function CodenamesMobileControllerView({
 
               <div className="grid grid-cols-3 gap-2">
                 <div className="col-span-2">
-                  <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                  <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">
                     İpucu Kelimesi (Tek Kelime):
                   </label>
                   <input
@@ -348,18 +348,18 @@ export function CodenamesMobileControllerView({
                     onChange={(e) => setClueWord(e.target.value.toUpperCase())}
                     placeholder="ÖRN: ORMAN"
                     required
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm font-black text-slate-900 uppercase focus:outline-hidden focus:border-indigo-500"
+                    className="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2.5 text-sm font-black text-slate-900 dark:text-slate-100 uppercase focus:outline-hidden focus:border-indigo-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                  <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">
                     Kelime Sayısı:
                   </label>
                   <select
                     value={clueCount}
                     onChange={(e) => setClueCount(Number(e.target.value))}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2.5 text-sm font-black text-slate-900 focus:outline-hidden focus:border-indigo-500"
+                    className="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-xl px-2.5 py-2.5 text-sm font-black text-slate-900 dark:text-slate-100 focus:outline-hidden focus:border-indigo-500"
                   >
                     {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
                       <option key={n} value={n}>
@@ -402,15 +402,15 @@ export function CodenamesMobileControllerView({
               </div>
             </div>
           ) : (
-            <div className="p-4 rounded-3xl bg-slate-100 text-slate-600 text-center text-xs font-bold border border-slate-200">
+            <div className="p-4 rounded-3xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-center text-xs font-bold border border-slate-200 dark:border-slate-800">
               ⏳ {gameState.activeTeam === myPlayer.team ? 'Liderinizin ipucu vermesi bekleniyor...' : 'Rakip takımın lideri düşünüyor...'}
             </div>
           )}
 
           {/* Operative Tap to Reveal Word Tiles */}
-          <div className="bg-white p-4 rounded-3xl border border-slate-200 shadow-md space-y-2.5">
+          <div className="bg-white dark:bg-slate-900 p-4 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-md space-y-2.5">
             <div className="flex items-center justify-between">
-              <h4 className="font-black text-slate-900 text-xs uppercase tracking-wider">
+              <h4 className="font-black text-slate-900 dark:text-slate-100 text-xs uppercase tracking-wider">
                 Panodaki Kelimeler (Dokunarak Aç):
               </h4>
               {isMyTeamTurn && (
@@ -429,11 +429,11 @@ export function CodenamesMobileControllerView({
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {gameState.board.map((card) => {
-                let style = 'bg-slate-50 border-slate-200 text-slate-900 hover:bg-slate-100';
+                let style = 'bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800';
                 if (card.revealed) {
                   if (card.type === 'red') style = 'bg-red-600 text-white border-red-700 opacity-70';
                   else if (card.type === 'blue') style = 'bg-sky-600 text-white border-sky-700 opacity-70';
-                  else if (card.type === 'neutral') style = 'bg-amber-100 text-amber-950 border-amber-300 opacity-70';
+                  else if (card.type === 'neutral') style = 'bg-amber-100 dark:bg-amber-900/40 text-amber-950 border-amber-300 dark:border-amber-800 opacity-70';
                   else if (card.type === 'assassin') style = 'bg-stone-900 text-rose-400 border-stone-800 opacity-70';
                 }
 
@@ -457,13 +457,13 @@ export function CodenamesMobileControllerView({
       {/* Confirmation Modal before revealing card */}
       {confirmCard && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs animate-fade-in">
-          <div className="bg-white rounded-3xl p-6 max-w-sm w-full text-center space-y-4 shadow-2xl border border-slate-200 animate-scale-in">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 max-w-sm w-full text-center space-y-4 shadow-2xl border border-slate-200 dark:border-slate-800 animate-scale-in">
             <div className="text-3xl">🕵️‍♂️</div>
             <div>
-              <h4 className="text-lg font-black text-slate-900">
+              <h4 className="text-lg font-black text-slate-900 dark:text-slate-100">
                 "{confirmCard.word}" Kartını Aç?
               </h4>
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                 Bu kart TV ekranında tüm oyuncuların gözü önünde açılacak!
               </p>
             </div>
@@ -471,7 +471,7 @@ export function CodenamesMobileControllerView({
             <div className="grid grid-cols-2 gap-2 pt-2">
               <button
                 onClick={() => setConfirmCard(null)}
-                className="py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-black text-xs rounded-xl cursor-pointer"
+                className="py-3 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-black text-xs rounded-xl cursor-pointer"
               >
                 Vazgeç
               </button>

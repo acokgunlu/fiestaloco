@@ -470,10 +470,10 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
       <div
         ref={containerRef}
         id="game-canvas-container"
-        className={`relative w-full aspect-[4/3] max-h-[58vh] bg-white rounded-3xl shadow-xl border-4 overflow-hidden touch-none select-none transition-all ${
+        className={`relative w-full aspect-[4/3] max-h-[58vh] bg-white dark:bg-slate-900 rounded-3xl shadow-xl border-4 overflow-hidden touch-none select-none transition-all ${
           isDrawingEnabled && !strokeFinished
             ? 'border-indigo-500 ring-4 ring-indigo-500/20 shadow-indigo-500/10'
-            : 'border-slate-200 ring-1 ring-slate-200'
+            : 'border-slate-200 dark:border-slate-800 ring-1 ring-slate-200'
         }`}
       >
         <canvas
@@ -493,7 +493,7 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
 
         {/* Remote Live Drawing Active Indicator */}
         {liveRemoteStroke && liveRemoteStroke.points.length > 0 && !isDrawingEnabled && (
-          <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-md text-slate-800 text-xs px-3.5 py-1.5 rounded-full font-black shadow-lg flex items-center gap-2 border border-slate-200 animate-pulse z-10">
+          <div className="absolute top-3 left-3 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md text-slate-800 dark:text-slate-200 text-xs px-3.5 py-1.5 rounded-full font-black shadow-lg flex items-center gap-2 border border-slate-200 dark:border-slate-800 animate-pulse z-10">
             <Radio className="w-3.5 h-3.5 text-rose-500 animate-ping" />
             <span
               className="w-3 h-3 rounded-full shrink-0 shadow-xs"
@@ -528,9 +528,9 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
             <button
               id="btn-undo-stroke"
               onClick={handleUndo}
-              className="flex items-center gap-1.5 px-4 py-2.5 bg-white/95 hover:bg-slate-100 text-slate-700 hover:text-slate-900 text-xs sm:text-sm font-bold rounded-2xl border border-slate-200 shadow-lg transition-all active:scale-95 cursor-pointer"
+              className="flex items-center gap-1.5 px-4 py-2.5 bg-white/95 dark:bg-slate-900/95 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 text-xs sm:text-sm font-bold rounded-2xl border border-slate-200 dark:border-slate-800 shadow-lg transition-all active:scale-95 cursor-pointer"
             >
-              <RotateCcw className="w-4 h-4 text-slate-500" />
+              <RotateCcw className="w-4 h-4 text-slate-500 dark:text-slate-400" />
               <span>Yeniden Çiz</span>
             </button>
             <button
@@ -547,9 +547,9 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
 
       {/* Gamified Brush Style & Thickness Toolbar (Visible during active drawing) */}
       {isDrawingEnabled && !strokeFinished && (
-        <div className="w-full flex flex-wrap items-center justify-between gap-2 mt-3 p-2 bg-white rounded-2xl border border-slate-200 shadow-sm text-xs font-bold text-slate-800">
+        <div className="w-full flex flex-wrap items-center justify-between gap-2 mt-3 p-2 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm text-xs font-bold text-slate-800 dark:text-slate-200">
           <div className="flex items-center gap-1.5">
-            <span className="text-[11px] text-slate-500 uppercase tracking-wider px-1">Fırça Stili:</span>
+            <span className="text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-wider px-1">Fırça Stili:</span>
             <button
               type="button"
               onClick={() => {
@@ -559,7 +559,7 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
               className={`px-3 py-1.5 rounded-xl border flex items-center gap-1 transition-all cursor-pointer ${
                 brushStyle === 'classic'
                   ? 'bg-indigo-600 border-indigo-600 text-white shadow-xs'
-                  : 'bg-slate-50 border-slate-200 text-slate-600 hover:text-slate-900'
+                  : 'bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
               }`}
             >
               <Paintbrush className="w-3.5 h-3.5" />
@@ -575,7 +575,7 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
               className={`px-3 py-1.5 rounded-xl border flex items-center gap-1 transition-all cursor-pointer ${
                 brushStyle === 'neon'
                   ? 'bg-purple-600 border-purple-600 text-white shadow-xs neon-glow-indigo'
-                  : 'bg-slate-50 border-slate-200 text-slate-600 hover:text-slate-900'
+                  : 'bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
               }`}
             >
               <Zap className="w-3.5 h-3.5 text-amber-300" />
@@ -591,7 +591,7 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
               className={`px-3 py-1.5 rounded-xl border flex items-center gap-1 transition-all cursor-pointer ${
                 brushStyle === 'felt'
                   ? 'bg-emerald-600 border-emerald-600 text-white shadow-xs'
-                  : 'bg-slate-50 border-slate-200 text-slate-600 hover:text-slate-900'
+                  : 'bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
               }`}
             >
               <span>🖋️ Keçeli</span>
@@ -599,7 +599,7 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
           </div>
 
           <div className="flex items-center gap-1.5">
-            <span className="text-[11px] text-slate-500 uppercase tracking-wider px-1">Kalınlık:</span>
+            <span className="text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-wider px-1">Kalınlık:</span>
             {[5, 7, 11].map((w) => (
               <button
                 key={w}
@@ -611,7 +611,7 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
                 className={`w-7 h-7 rounded-xl border flex items-center justify-center transition-all cursor-pointer ${
                   strokeThickness === w
                     ? 'bg-indigo-600 border-indigo-600 text-white shadow-xs'
-                    : 'bg-slate-50 border-slate-200 text-slate-600 hover:text-slate-900'
+                    : 'bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
                 }`}
               >
                 <span
@@ -629,7 +629,7 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
         <div className="w-full mt-3 flex flex-wrap items-center justify-between gap-2.5 px-1">
           {/* Replay Controls with Timeline Scrubber */}
           {allowReplay && strokes.length > 0 && (
-            <div className="flex flex-wrap items-center gap-2 bg-white px-3 py-2 rounded-2xl border border-slate-200 shadow-xs">
+            <div className="flex flex-wrap items-center gap-2 bg-white dark:bg-slate-900 px-3 py-2 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs">
               <button
                 id="btn-toggle-replay"
                 onClick={toggleReplay}
@@ -642,7 +642,7 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
               <button
                 id="btn-toggle-replay-speed"
                 onClick={toggleReplaySpeed}
-                className="flex items-center gap-1 px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-black rounded-lg border border-slate-200 transition-colors cursor-pointer"
+                className="flex items-center gap-1 px-2 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-[11px] font-black rounded-lg border border-slate-200 dark:border-slate-800 transition-colors cursor-pointer"
                 title="Oynatma Hızı"
               >
                 <FastForward className="w-3 h-3" />
@@ -663,7 +663,7 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
                 className="w-24 sm:w-32 accent-indigo-600 cursor-pointer"
               />
 
-              <span className="text-[11px] text-slate-500 font-bold hidden sm:inline">
+              <span className="text-[11px] text-slate-500 dark:text-slate-400 font-bold hidden sm:inline">
                 {replayStrokeIndex}/{strokes.length} çizgi
               </span>
             </div>
@@ -673,10 +673,10 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
           <button
             id="btn-download-artwork"
             onClick={downloadCanvasImage}
-            className="flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 text-xs font-bold rounded-2xl border border-slate-200 shadow-xs transition-colors ml-auto cursor-pointer"
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-900/60 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 text-xs font-bold rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs transition-colors ml-auto cursor-pointer"
             title="Ortak Resmi PNG Olarak Kaydet"
           >
-            <Download className="w-4 h-4 text-emerald-600" />
+            <Download className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
             <span>Resmi İndir (PNG)</span>
           </button>
         </div>
@@ -684,8 +684,8 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
 
       {/* Attribution Chips */}
       {showAttribution && players.length > 0 && (
-        <div className="w-full flex flex-wrap items-center justify-center gap-2 mt-3 pt-2 border-t border-slate-200">
-          <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+        <div className="w-full flex flex-wrap items-center justify-center gap-2 mt-3 pt-2 border-t border-slate-200 dark:border-slate-800">
+          <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
             Çizenler:
           </span>
           {players.map((p) => (
@@ -693,8 +693,8 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
               key={p.id}
               className={`flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-bold transition-all border ${
                 highlightPlayerId === p.id
-                  ? 'bg-indigo-50 border-indigo-500 text-indigo-900 shadow-xs ring-2 ring-indigo-500'
-                  : 'bg-white border-slate-200 text-slate-700 shadow-2xs'
+                  ? 'bg-indigo-50 dark:bg-indigo-950/40 border-indigo-500 text-indigo-900 dark:text-indigo-200 shadow-xs ring-2 ring-indigo-500'
+                  : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 shadow-2xs'
               }`}
             >
               <span

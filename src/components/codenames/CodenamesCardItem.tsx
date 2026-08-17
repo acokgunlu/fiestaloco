@@ -57,7 +57,7 @@ export const CodenamesCardItem: React.FC<CodenamesCardItemProps> = ({
           className={`card-face card-face-front rounded-2xl p-2 sm:p-3 flex flex-col justify-between items-center text-center transition-all ${
             isSpymasterView
               ? getSpymasterFrontGlow()
-              : 'codenames-tile-paper text-slate-900 hover:border-indigo-400'
+              : 'codenames-tile-paper text-slate-900 dark:text-slate-100 hover:border-indigo-400'
           }`}
         >
           {/* Top upside-down mini word for table opposite players */}
@@ -77,7 +77,7 @@ export const CodenamesCardItem: React.FC<CodenamesCardItemProps> = ({
           <div className="my-auto px-1 w-full text-center">
             <span
               className={`text-xs sm:text-sm md:text-base font-black tracking-wide uppercase break-words line-clamp-2 ${
-                isSpymasterView && card.type === 'assassin' ? 'text-rose-400' : 'text-slate-900'
+                isSpymasterView && card.type === 'assassin' ? 'text-rose-400' : 'text-slate-900 dark:text-slate-100'
               }`}
             >
               {card.word}
@@ -86,7 +86,7 @@ export const CodenamesCardItem: React.FC<CodenamesCardItemProps> = ({
 
           {/* Bottom Card Index & Spymaster Role Tag */}
           <div className="w-full flex justify-between items-center text-[9px] sm:text-[10px] font-bold">
-            <span className="text-slate-400">#{card.orderIndex + 1}</span>
+            <span className="text-slate-400 dark:text-slate-500">#{card.orderIndex + 1}</span>
 
             {isSpymasterView ? (
               <span
@@ -106,7 +106,7 @@ export const CodenamesCardItem: React.FC<CodenamesCardItemProps> = ({
                 {card.type === 'neutral' && '⚪ SİVİL'}
               </span>
             ) : (
-              <span className="text-slate-400 font-medium tracking-wider text-[8px] uppercase">
+              <span className="text-slate-400 dark:text-slate-500 font-medium tracking-wider text-[8px] uppercase">
                 GİZLİ KOD
               </span>
             )}
@@ -123,7 +123,7 @@ export const CodenamesCardItem: React.FC<CodenamesCardItemProps> = ({
               : card.type === 'blue'
               ? 'agent-tile-blue text-white'
               : card.type === 'neutral'
-              ? 'agent-tile-neutral text-slate-800'
+              ? 'agent-tile-neutral text-slate-800 dark:text-slate-200'
               : 'agent-tile-assassin text-white animate-assassin-alarm'
           }`}
         >
