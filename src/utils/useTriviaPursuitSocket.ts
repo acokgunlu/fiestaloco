@@ -4,6 +4,7 @@ import {
   TriviaPursuitPlayer,
   TriviaPursuitSettings,
   TriviaCategory,
+  TriviaBoardPosition,
 } from '../types/triviaPursuit';
 import { playClickSound, playTurnSound, playFanfareSound } from './audio';
 import { recordMatchResult } from './leaderboardStore';
@@ -318,6 +319,19 @@ export function useTriviaPursuitSocket() {
     send({ type: 'trivia:spin_wheel' });
   }, [send]);
 
+  /** Tahta modu: zar at (yalnizca sirasi gelen oyuncu veya TV/host). */
+  const rollDie = useCallback(() => {
+    send({ type: 'trivia:roll_die' });
+  }, [send]);
+
+  /** Tahta modu: zar sonrasi hedef kareyi sec. */
+  const pickMove = useCallback(
+    (to: TriviaBoardPosition) => {
+      send({ type: 'trivia:pick_move', to });
+    },
+    [send]
+  );
+
   const selectCategory = useCallback(
     (category: TriviaCategory) => {
       send({
@@ -403,6 +417,8 @@ export function useTriviaPursuitSocket() {
     joinRoom,
     startGame,
     spinWheel,
+    rollDie,
+    pickMove,
     selectCategory,
     submitAnswer,
     nextRound,

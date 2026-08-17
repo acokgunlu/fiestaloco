@@ -4,9 +4,11 @@ import {
   TriviaPursuitPlayer,
   TRIVIA_CATEGORIES,
   TriviaCategory,
+  TriviaBoardPosition,
 } from '../../types/triviaPursuit';
 import { TriviaWedgePie } from './TriviaWedgePie';
 import { TriviaCategoryWheel } from './TriviaCategoryWheel';
+import { TriviaBoard } from './TriviaBoard';
 import {
   Trophy,
   Users,
@@ -33,6 +35,8 @@ interface TriviaTvViewProps {
   players: TriviaPursuitPlayer[];
   onStartGame: () => void;
   onSpinWheel: () => void;
+  onRollDie: () => void;
+  onPickMove: (to: TriviaBoardPosition) => void;
   onSelectCategory: (cat: TriviaCategory) => void;
   onNextRound: () => void;
   onRestartGame: () => void;
@@ -46,6 +50,8 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
   players,
   onStartGame,
   onSpinWheel,
+  onRollDie,
+  onPickMove,
   onSelectCategory,
   onNextRound,
   onRestartGame,
@@ -290,16 +296,50 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
               <span className="text-base font-black text-slate-900 dark:text-white">{activePlayer?.name}</span>
             </div>
 
-            {/* Spinning Wheel */}
-            <TriviaCategoryWheel
-              rotationDegrees={gameState.wheelRotationDegrees}
-              isSpinning={gameState.isSpinning}
-              selectedCategory={gameState.selectedCategory}
-              onSpinClick={onSpinWheel}
-              canSpin={true}
-              size={320}
-              onSelectCategoryDirectly={onSelectCategory}
+            {/* Tahta — sunucudaki pozisyonlar ve hamle secenekleri */}
+            <TriviaBoard
+              positions={gameState.boardPositions || {}}
+              players={players}
+              activePlayerId={gameState.activePlayerId}
+              moveOptions={gameState.moveOptions || []}
+              onPickMove={(opt) => onPickMove(opt.to)}
+              size={460}
             />
+
+            {/* Zar / hamle yonergesi. Zar TV'den de atilabilir, telefondan da. */}
+            {(gameState.moveOptions?.length || 0) === 0 ? (
+              <button
+                onClick={onRollDie}
+                className="flex items-center gap-3 px-7 py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-600 text-white font-black text-base shadow-xl hover:scale-105 active:scale-95 transition-transform cursor-pointer"
+              >
+                <span className="w-11 h-11 rounded-xl bg-white text-slate-900 flex items-center justify-center text-2xl font-black">
+                  {gameState.dieRoll ?? '🎲'}
+                </span>
+                ZAR AT
+              </button>
+            ) : (
+              <div className="flex flex-col items-center gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="w-11 h-11 rounded-xl bg-amber-400 text-slate-900 flex items-center justify-center text-2xl font-black shadow-md">
+                    {gameState.dieRoll}
+                  </span>
+                  <span className="text-sm font-black text-slate-900 dark:text-white">
+                    geldi — {activePlayer?.name} hedefini seçiyor
+                  </span>
+                </div>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {(gameState.moveOptions || []).map((opt, i) => (
+                    <button
+                      key={i}
+                      onClick={() => onPickMove(opt.to)}
+                      className="px-4 py-2 rounded-xl bg-white dark:bg-slate-800 border-2 border-amber-400 text-slate-900 dark:text-white text-xs font-black hover:bg-amber-50 dark:hover:bg-slate-700 transition-colors cursor-pointer"
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Selected Category Announce */}
             {gameState.selectedCategory && (

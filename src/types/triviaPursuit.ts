@@ -62,8 +62,34 @@ export interface TriviaPursuitSettings {
   difficulty: 'all' | 'easy' | 'medium' | 'hard';
 }
 
+/**
+ * Tahta durumu. Serializasyondan gecebilmesi icin duz obje/dizi olmali —
+ * Set/Map kullanmayin (bkz. AGENTS.md, serializeRoom).
+ * Tipler `src/data/triviaBoard.ts` ile ayni sekle sahiptir; dongusel import
+ * olmasin diye burada yapisal olarak tekrar tanimlandi.
+ */
+export type TriviaBoardPosition =
+  | { track: 'ring'; index: number }
+  | { track: 'spoke'; hq: number; step: number }
+  | { track: 'hub' };
+
+export interface TriviaMoveOption {
+  to: TriviaBoardPosition;
+  label: string;
+}
+
 export interface TriviaPursuitGameState {
   phase: TriviaPursuitPhase;
+  /** oyuncu id -> tahtadaki yeri */
+  boardPositions?: Record<string, TriviaBoardPosition>;
+  /** son atilan zar (null = henuz atilmadi) */
+  dieRoll?: number | null;
+  /** zar sonrasi gidilebilecek yerler */
+  moveOptions?: TriviaMoveOption[];
+  /** bu tur inilen kare kale mi (dilim yalnizca orada kazanilir) */
+  landedOnHq?: boolean;
+  /** merkeze varildi mi (dogru cevap oyunu bitirir) */
+  landedOnHub?: boolean;
   roomCode?: string;
   isOnline?: boolean;
   roundNumber: number;

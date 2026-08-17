@@ -23,6 +23,14 @@ import { getRandomWordPair, DEFAULT_PLAYER_PALETTE } from './src/data/wordPacks'
 import { Player, Stroke, WordPair, GamePhase, GameSettings, RoundResult, RoomState, Point } from './src/types';
 import { generateCodenamesBoard, CodenamesCard } from './src/data/codenamesWords';
 import {
+  getMoveOptions as getBoardMoveOptions,
+  rollDie as rollBoardDie,
+  samePosition as sameBoardPosition,
+  spaceAt as boardSpaceAt,
+  startingPosition as boardStartingPosition,
+  type BoardPosition,
+} from './src/data/triviaBoard';
+import {
   CodenamesGameState,
   CodenamesPlayer,
   CodenamesClue,
@@ -809,6 +817,11 @@ function createFreshTriviaGame(settings?: Partial<TriviaPursuitSettings>): Trivi
     settings: fullSettings,
     usedQuestionIds: [],
     isOnline: true,
+    boardPositions: {},
+    dieRoll: null,
+    moveOptions: [],
+    landedOnHq: false,
+    landedOnHub: false,
   };
 }
 
@@ -908,16 +921,22 @@ function resolveTriviaQuestionRound(room: TriviaServerRoom) {
       p.totalCorrect = (p.totalCorrect || 0) + 1;
       p.streak = (p.streak || 0) + 1;
 
-      // Check if active player earns a wedge
-      if (activePlayer && p.id === activePlayer.id) {
+      // Dilim YALNIZCA kale karesinde kazanilir (klasik Trivial Pursuit).
+      // Normal kategori karesinde dogru cevap sadece puan + tekrar zar hakki verir.
+      if (activePlayer && p.id === activePlayer.id && room.gameState.landedOnHq) {
         if (!p.wedges.includes(category)) {
           p.wedges.push(category);
           earnedWedge = true;
         }
       }
 
-      // Check win condition
-      if (p.wedges.length >= room.gameState.settings.wedgesToWin) {
+      // Kazanma sarti: tum dilimler toplanmis VE merkeze varilmisken dogru cevap.
+      if (
+        activePlayer &&
+        p.id === activePlayer.id &&
+        room.gameState.landedOnHub &&
+        p.wedges.length >= room.gameState.settings.wedgesToWin
+      ) {
         someoneWon = true;
         winnerId = p.id;
       }
@@ -3332,7 +3351,100 @@ Return strictly a JSON array matching this schema:
           room.gameState.selectedCategory = null;
           room.gameState.currentQuestion = null;
 
+          // Tahta: herkes baslangic karesinde
+          const startPositions: Record<string, BoardPosition> = {};
+          room.players.forEach((p) => {
+            startPositions[p.id] = boardStartingPosition();
+          });
+          room.gameState.boardPositions = startPositions;
+          room.gameState.dieRoll = null;
+          room.gameState.moveOptions = [];
+          room.gameState.landedOnHq = false;
+          room.gameState.landedOnHub = false;
+
           broadcastTriviaRoomState(room, 'trivia:game_started');
+        }
+
+        // 4a. ZAR AT (tahta modu) — yalnizca sirasi gelen oyuncu veya TV/host
+        else if (type === 'trivia:roll_die') {
+          const client = clientMap.get(ws);
+          if (!client?.roomCode) return;
+          const room = triviaRooms.get(client.roomCode);
+          if (!room || room.gameState.phase !== 'WHEEL_SPIN') return;
+          // Zaten atilmis ve hamle bekleniyorsa tekrar atma
+          if ((room.gameState.moveOptions?.length || 0) > 0) return;
+
+          const activePlayer = room.players[room.gameState.activePlayerIndex];
+          if (!activePlayer) return;
+          // Sadece sirasi gelen oyuncu (telefondan) ya da TV/host atabilir
+          if (client.role === 'player' && client.playerId !== activePlayer.id) return;
+
+          const pos =
+            room.gameState.boardPositions?.[activePlayer.id] || boardStartingPosition();
+          const roll = rollBoardDie();
+          const needed = room.gameState.settings.wedgesToWin || 6;
+          const hasAll = activePlayer.wedges.length >= needed;
+
+          room.gameState.dieRoll = roll;
+          room.gameState.moveOptions = getBoardMoveOptions(pos, roll, hasAll);
+
+          broadcastTriviaRoomState(room, 'trivia:die_rolled');
+        }
+
+        // 4b. HAMLE SEC (tahta modu)
+        else if (type === 'trivia:pick_move') {
+          const client = clientMap.get(ws);
+          if (!client?.roomCode) return;
+          const room = triviaRooms.get(client.roomCode);
+          if (!room || room.gameState.phase !== 'WHEEL_SPIN') return;
+
+          const activePlayer = room.players[room.gameState.activePlayerIndex];
+          if (!activePlayer) return;
+          if (client.role === 'player' && client.playerId !== activePlayer.id) return;
+
+          // Istemciye guvenme: hedef gercekten sunulan seceneklerden biri mi?
+          const target = data.to as BoardPosition | undefined;
+          const options = room.gameState.moveOptions || [];
+          if (!target || !options.some((o) => sameBoardPosition(o.to as BoardPosition, target))) {
+            return;
+          }
+
+          room.gameState.boardPositions = {
+            ...(room.gameState.boardPositions || {}),
+            [activePlayer.id]: target,
+          };
+          room.gameState.moveOptions = [];
+
+          const space = boardSpaceAt(target);
+          room.gameState.landedOnHq = space.kind === 'hq';
+          room.gameState.landedOnHub = space.kind === 'hub';
+
+          // "Tekrar at" karesi: soru sorulmaz, ayni oyuncu yeniden atar
+          if (space.kind === 'rollAgain') {
+            room.gameState.dieRoll = null;
+            broadcastTriviaRoomState(room, 'trivia:roll_again');
+            return;
+          }
+
+          const chosenCategory: TriviaCategory =
+            space.kind === 'hub'
+              ? TRIVIA_CATEGORY_KEYS[Math.floor(Math.random() * TRIVIA_CATEGORY_KEYS.length)]
+              : (space.category as TriviaCategory);
+
+          const q = getNextTriviaQuestion(chosenCategory, room.usedQuestionIds, room.questionPool);
+          if (!q) return;
+
+          room.usedQuestionIds.push(q.id);
+          room.gameState.selectedCategory = chosenCategory;
+          room.gameState.currentQuestion = q;
+          room.gameState.phase = 'QUESTION_ACTIVE';
+          room.players.forEach((p) => {
+            p.currentAnswer = undefined;
+            p.isCorrect = undefined;
+          });
+
+          broadcastTriviaRoomState(room, 'trivia:question_active');
+          startTriviaTurnTimer(room);
         }
 
         // 4. SPIN CATEGORY WHEEL
@@ -3460,14 +3572,25 @@ Return strictly a JSON array matching this schema:
           if (!room) return;
 
           clearTriviaTimers(room);
+
+          // Klasik kural: dogru cevap veren ayni oyuncu tekrar zar atar.
+          const prevActive = room.players[room.gameState.activePlayerIndex];
+          const keepTurn = prevActive?.isCorrect === true;
+
           room.gameState.roundNumber += 1;
-          room.gameState.activePlayerIndex =
-            (room.gameState.activePlayerIndex + 1) % (room.players.length || 1);
-          room.gameState.activePlayerId =
-            room.players[room.gameState.activePlayerIndex]?.id || null;
+          if (!keepTurn) {
+            room.gameState.activePlayerIndex =
+              (room.gameState.activePlayerIndex + 1) % (room.players.length || 1);
+            room.gameState.activePlayerId =
+              room.players[room.gameState.activePlayerIndex]?.id || null;
+          }
           room.gameState.phase = 'WHEEL_SPIN';
           room.gameState.selectedCategory = null;
           room.gameState.currentQuestion = null;
+          room.gameState.dieRoll = null;
+          room.gameState.moveOptions = [];
+          room.gameState.landedOnHq = false;
+          room.gameState.landedOnHub = false;
           room.players.forEach((p) => {
             p.currentAnswer = undefined;
             p.isCorrect = undefined;
