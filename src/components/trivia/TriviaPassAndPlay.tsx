@@ -10,6 +10,15 @@ import {
 import { INITIAL_TRIVIA_QUESTIONS, getNextTriviaQuestion } from '../../data/triviaPursuitQuestions';
 import { TriviaWedgePie } from './TriviaWedgePie';
 import { TriviaCategoryWheel } from './TriviaCategoryWheel';
+import { TriviaBoard } from './TriviaBoard';
+import {
+  BoardPosition,
+  MoveOption,
+  getMoveOptions,
+  rollDie,
+  spaceAt,
+  startingPosition,
+} from '../../data/triviaBoard';
 import {
   Trophy,
   Users,
@@ -87,6 +96,17 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
 
   const [questionPool, setQuestionPool] = useState<TriviaQuestion[]>([...INITIAL_TRIVIA_QUESTIONS]);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+
+  // --- Tahta durumu -----------------------------------------------------------
+  /** oyuncu id -> tahtadaki yeri */
+  const [positions, setPositions] = useState<Record<string, BoardPosition>>({});
+  const [dieRoll, setDieRoll] = useState<number | null>(null);
+  const [isRolling, setIsRolling] = useState(false);
+  const [moveOptions, setMoveOptions] = useState<MoveOption[]>([]);
+  /** Bu tur inilen kare KALE mi? Sadece o zaman dilim kazanilir. */
+  const [landedOnHq, setLandedOnHq] = useState(false);
+  /** Merkeze varildi mi? Dogru cevap oyunu bitirir. */
+  const [landedOnHub, setLandedOnHub] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const activePlayer = players[gameState.activePlayerIndex] || players[0];
@@ -141,6 +161,17 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
 
   const startGame = () => {
     playTurnSound();
+    // Herkes tahtanin tepesindeki kareden baslar
+    const start: Record<string, BoardPosition> = {};
+    players.forEach((p) => {
+      start[p.id] = startingPosition();
+    });
+    setPositions(start);
+    setDieRoll(null);
+    setMoveOptions([]);
+    setLandedOnHq(false);
+    setLandedOnHub(false);
+
     setGameState((prev) => ({
       ...prev,
       phase: 'WHEEL_SPIN',
@@ -151,6 +182,88 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
       currentQuestion: null,
       winnerPlayerId: null,
     }));
+  };
+
+  // --- Tahta: zar at ve hamle sec ---------------------------------------------
+
+  /** Soru asamasini baslat (zar/hamle sonrasi ortak yol). */
+  const beginQuestion = (cat: TriviaCategory) => {
+    const q = getNextTriviaQuestion(cat, gameState.usedQuestionIds, questionPool);
+    setSelectedAnswer(null);
+    setGameState((prev) => ({
+      ...prev,
+      selectedCategory: cat,
+      phase: 'QUESTION_ACTIVE',
+      currentQuestion: q,
+      usedQuestionIds: [...prev.usedQuestionIds, q.id],
+      timerSeconds: prev.settings.turnTimerSec,
+      isTimerRunning: true,
+    }));
+
+    clearTimer();
+    timerRef.current = setInterval(() => {
+      setGameState((prev) => {
+        if (prev.timerSeconds <= 1) {
+          clearTimer();
+          handleAnswerSubmit('');
+          return { ...prev, timerSeconds: 0, isTimerRunning: false };
+        }
+        return { ...prev, timerSeconds: prev.timerSeconds - 1 };
+      });
+    }, 1000);
+  };
+
+  const handleRollDie = () => {
+    if (isRolling || moveOptions.length > 0) return;
+    playTurnSound();
+    setIsRolling(true);
+
+    // Kisa bir "zar donuyor" animasyonu
+    let ticks = 0;
+    const spin = setInterval(() => {
+      setDieRoll(rollDie());
+      ticks += 1;
+      if (ticks >= 8) {
+        clearInterval(spin);
+        const final = rollDie();
+        setDieRoll(final);
+        setIsRolling(false);
+
+        const pos = positions[activePlayer.id] || startingPosition();
+        const needed = gameState.settings.wedgesToWin || 6;
+        const hasAll = activePlayer.wedges.length >= needed;
+        setMoveOptions(getMoveOptions(pos, final, hasAll));
+      }
+    }, 90);
+  };
+
+  const handlePickMove = (option: MoveOption) => {
+    playClickSound();
+    const target = option.to;
+    setPositions((prev) => ({ ...prev, [activePlayer.id]: target }));
+    setMoveOptions([]);
+
+    const space = spaceAt(target);
+    setLandedOnHq(space.kind === 'hq');
+    setLandedOnHub(space.kind === 'hub');
+
+    // "Tekrar at" karesi: soru yok, ayni oyuncu yeniden zar atar
+    if (space.kind === 'rollAgain') {
+      setDieRoll(null);
+      return;
+    }
+
+    if (space.kind === 'hub') {
+      // Final sorusu: eksigi olmayan oyuncu icin rastgele kategori
+      const cat =
+        TRIVIA_CATEGORY_KEYS[Math.floor(Math.random() * TRIVIA_CATEGORY_KEYS.length)];
+      beginQuestion(cat);
+      return;
+    }
+
+    if (space.category) {
+      beginQuestion(space.category);
+    }
   };
 
   const spinWheel = () => {
@@ -258,7 +371,9 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
         const newScore = isCorrect ? p.score + 100 : p.score;
         const newStreak = isCorrect ? p.streak + 1 : 0;
         let newWedges = [...p.wedges];
-        if (isCorrect && !newWedges.includes(q.category)) {
+        // Dilim YALNIZCA kale karesinde kazanilir — klasik Trivial Pursuit kurali.
+        // Normal kategori karesinde dogru cevap sadece puan ve tekrar zar hakki verir.
+        if (isCorrect && landedOnHq && !newWedges.includes(q.category)) {
           newWedges.push(q.category);
         }
         return {
@@ -281,14 +396,32 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
 
   const nextTurn = () => {
     playClickSound();
-    // Check if active player won
     const currentP = players[gameState.activePlayerIndex];
-    if (currentP.wedges.length >= (gameState.settings.wedgesToWin || 6)) {
+    const wasCorrect = selectedAnswer === gameState.currentQuestion?.correctAnswer;
+
+    // Oyunu kazanmanin TEK yolu: tum dilimler + merkeze varip dogru cevap.
+    if (landedOnHub && wasCorrect) {
       playWinSound();
       setGameState((prev) => ({
         ...prev,
         phase: 'GAME_OVER',
         winnerPlayerId: currentP.id,
+      }));
+      return;
+    }
+
+    setDieRoll(null);
+    setMoveOptions([]);
+    setLandedOnHq(false);
+    setLandedOnHub(false);
+
+    // Klasik kural: dogru cevap = ayni oyuncu tekrar zar atar.
+    if (wasCorrect) {
+      setGameState((prev) => ({
+        ...prev,
+        phase: 'WHEEL_SPIN',
+        currentQuestion: null,
+        selectedCategory: null,
       }));
       return;
     }
@@ -455,15 +588,66 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
               <span className="text-sm font-black text-slate-900 dark:text-white">{activePlayer?.name}</span>
             </div>
 
-            <TriviaCategoryWheel
-              rotationDegrees={gameState.wheelRotationDegrees}
-              isSpinning={gameState.isSpinning}
-              selectedCategory={gameState.selectedCategory}
-              onSpinClick={spinWheel}
-              canSpin={true}
-              size={320}
-              onSelectCategoryDirectly={handleSelectCategory}
+            <TriviaBoard
+              positions={positions}
+              players={players}
+              activePlayerId={gameState.activePlayerId}
+              moveOptions={moveOptions}
+              onPickMove={handlePickMove}
+              size={440}
             />
+
+            {/* Zar ve yonerge */}
+            <div className="flex flex-col items-center gap-3">
+              {moveOptions.length === 0 ? (
+                <button
+                  onClick={handleRollDie}
+                  disabled={isRolling}
+                  className="flex items-center gap-3 px-7 py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-600 text-white font-black text-base shadow-xl hover:scale-105 active:scale-95 transition-transform disabled:opacity-60 cursor-pointer"
+                >
+                  <span
+                    className={`w-11 h-11 rounded-xl bg-white text-slate-900 flex items-center justify-center text-2xl font-black ${
+                      isRolling ? 'animate-spin' : ''
+                    }`}
+                  >
+                    {dieRoll ?? '🎲'}
+                  </span>
+                  {isRolling ? 'ZAR DÖNÜYOR...' : 'ZAR AT'}
+                </button>
+              ) : (
+                <div className="flex flex-col items-center gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="w-11 h-11 rounded-xl bg-amber-400 text-slate-900 flex items-center justify-center text-2xl font-black shadow-md">
+                      {dieRoll}
+                    </span>
+                    <span className="text-sm font-black text-slate-900 dark:text-white">
+                      geldi — nereye gideceğini seç
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap justify-center gap-2">
+                    {moveOptions.map((opt, i) => (
+                      <button
+                        key={i}
+                        onClick={() => handlePickMove(opt)}
+                        className="px-4 py-2 rounded-xl bg-white dark:bg-slate-800 border-2 border-amber-400 text-slate-900 dark:text-white text-xs font-black hover:bg-amber-50 dark:hover:bg-slate-700 transition-colors cursor-pointer"
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
+                    Tahtadaki yanıp sönen kareye de dokunabilirsin
+                  </p>
+                </div>
+              )}
+
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium text-center max-w-sm">
+                Dilim yalnızca <strong>kale karelerinde</strong> (ikonlu, altın çerçeveli)
+                kazanılır. Doğru cevap tekrar zar hakkı verir.
+                {' '}
+                {gameState.settings.wedgesToWin} dilimi tamamlayınca kolu kullanıp merkeze çık.
+              </p>
+            </div>
           </div>
         )}
 
@@ -540,7 +724,14 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
                   onClick={nextTurn}
                   className="py-3 px-8 rounded-2xl font-black text-sm bg-emerald-600 hover:bg-emerald-500 text-white shadow-md flex items-center justify-center gap-2 mx-auto cursor-pointer"
                 >
-                  <span>SONRAKİ OYUNCUYA GEÇ</span>
+                  {/* Dogru cevap = ayni oyuncu tekrar atar; buton bunu soylemeli. */}
+                  <span>
+                    {selectedAnswer === currentQ.correctAnswer
+                      ? landedOnHub
+                        ? 'ZAFERİ İLAN ET 🏆'
+                        : 'TEKRAR ZAR AT 🎲'
+                      : 'SONRAKİ OYUNCUYA GEÇ'}
+                  </span>
                   <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
