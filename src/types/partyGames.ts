@@ -43,6 +43,8 @@ export interface BluffAnswerItem {
   text: string;
   authorPlayerId?: string; // undefined if it's the real answer or canned fake
   authorName?: string;
+  /** Ayni yalani yazan TUM oyuncular (birlestirilmis secenekler icin). */
+  authorPlayerIds?: string[];
   isReal: boolean;
   chosenByPlayerIds: string[];
   chosenByNames?: string[];

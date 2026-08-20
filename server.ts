@@ -1085,34 +1085,59 @@ function compileAndStartBluffVoting(room: BluffServerRoom) {
   // 1. Real answer
   rawAnswers.push({
     id: `real_${room.gameState.currentRound}`,
-    text: q.realAnswer,
+    text: normalizeBluffDisplay(q.realAnswer),
     isReal: true,
     chosenByPlayerIds: [],
     chosenByNames: [],
   });
 
-  // 2. Player bluffs
+  // 2. Player bluffs — AYNI yalani yazanlar tek secenekte birlesir.
+  // Onceden iki ozdes satir gorunuyordu; bu hem dogruyu ele veren bir isaret
+  // hem de puanlamada haksizlikti (oylar bolunuyordu).
+  const bluffByKey = new Map<string, BluffAnswerItem>();
   room.players.forEach((p) => {
-    if (p.currentBluff && p.currentBluff.trim()) {
-      rawAnswers.push({
-        id: `bluff_${p.id}`,
-        text: p.currentBluff.trim(),
-        authorPlayerId: p.id,
-        authorName: p.name,
-        isReal: false,
-        chosenByPlayerIds: [],
-        chosenByNames: [],
-      });
+    if (!p.currentBluff || !p.currentBluff.trim()) return;
+    const text = normalizeBluffDisplay(p.currentBluff);
+    const key = bluffCompareKey(text);
+    const existing = bluffByKey.get(key);
+    if (existing) {
+      existing.authorPlayerIds!.push(p.id);
+      existing.authorName = `${existing.authorName} & ${p.name}`;
+      return;
     }
+    const item: BluffAnswerItem = {
+      id: `bluff_${p.id}`,
+      text,
+      authorPlayerId: p.id,
+      authorPlayerIds: [p.id],
+      authorName: p.name,
+      isReal: false,
+      chosenByPlayerIds: [],
+      chosenByNames: [],
+    };
+    bluffByKey.set(key, item);
+    rawAnswers.push(item);
   });
 
   // 3. Fallback default fakes if needed
   if (rawAnswers.length < 4 && q.defaultFakes && q.defaultFakes.length > 0) {
     const needed = 4 - rawAnswers.length;
-    q.defaultFakes.slice(0, needed).forEach((fake, idx) => {
+    // Oyuncularin yazdigi yalanlarla cakisan ev yalanlarini ele
+    const takenKeys = new Set(rawAnswers.map((a) => bluffCompareKey(a.text)));
+    // Hep ilk N degil, RASTGELE N — ayni soru tekrar geldiginde ayni
+    // secenekler cikmasin, ezberlenmesin.
+    const pool = [...q.defaultFakes];
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+    pool
+      .filter((f) => !takenKeys.has(bluffCompareKey(f)))
+      .slice(0, needed)
+      .forEach((fake, idx) => {
       rawAnswers.push({
         id: `fake_${idx}`,
-        text: fake,
+        text: normalizeBluffDisplay(fake),
         isReal: false,
         chosenByPlayerIds: [],
         chosenByNames: [],
@@ -1125,6 +1150,14 @@ function compileAndStartBluffVoting(room: BluffServerRoom) {
     const j = Math.floor(Math.random() * (i + 1));
     [rawAnswers[i], rawAnswers[j]] = [rawAnswers[j], rawAnswers[i]];
   }
+
+  // Kimlikleri OPAK yap. Onceden id'ler `real_1` / `bluff_<oyuncuId>` / `fake_0`
+  // seklindeydi ve oylama sirasinda istemciye aynen gidiyordu — tarayici
+  // konsolunu acan biri dogru cevabi hicbir sey bilmeden gorebiliyordu.
+  // Karistirmadan SONRA yeniden adlandiriliyor ki sira da ipucu vermesin.
+  rawAnswers.forEach((a, idx) => {
+    a.id = `opt_${room.gameState.currentRound}_${idx}`;
+  });
 
   room.gameState.answers = rawAnswers;
   room.gameState.phase = 'VOTING';
@@ -1149,6 +1182,34 @@ function compileAndStartBluffVoting(room: BluffServerRoom) {
       broadcastBluffRoomState(currentRoom);
     }
   }, 1000);
+}
+
+/**
+ * Fibbage yazim tekbicimi.
+ *
+ * Gercek cevap elle kuratorlu ("Cilt kremi"), oyuncu yalanlari ham girdi
+ * ("cilt kremi", "CILT KREMI ", "cilt kremi."). Bu fark tek basina dogruyu
+ * ele veriyordu — hicbir sey bilmeden bicimden bulunabiliyordu.
+ * Tum secenekler ayni bicimde gosteriliyor.
+ */
+function normalizeBluffDisplay(text: string): string {
+  return text
+    .trim()
+    .replace(/\s+/g, ' ')
+    .replace(/[.!?,;]+$/, '')
+    .toLocaleUpperCase('tr-TR');
+}
+
+/** Karsilastirma anahtari: buyuk-kucuk, aksan ve noktalama farkini yok sayar. */
+function bluffCompareKey(text: string): string {
+  return normalizeBluffDisplay(text)
+    .replace(/[İI]/g, 'I')
+    .replace(/Ş/g, 'S')
+    .replace(/Ğ/g, 'G')
+    .replace(/Ü/g, 'U')
+    .replace(/Ö/g, 'O')
+    .replace(/Ç/g, 'C')
+    .replace(/[^A-Z0-9 ]/g, '');
 }
 
 function calculateAndRevealBluffScores(room: BluffServerRoom) {
@@ -1177,13 +1238,19 @@ function calculateAndRevealBluffScores(room: BluffServerRoom) {
       voter.score += 1000;
       voter.roundScoreEarned = (voter.roundScoreEarned || 0) + 1000;
       voter.truthsFound = (voter.truthsFound || 0) + 1;
-    } else if (chosenAns.authorPlayerId && chosenAns.authorPlayerId !== voter.id) {
-      const author = room.players.find((p) => p.id === chosenAns.authorPlayerId);
-      if (author) {
-        author.score += 500;
-        author.roundScoreEarned = (author.roundScoreEarned || 0) + 500;
-        author.foolsCount = (author.foolsCount || 0) + 1;
-      }
+    } else {
+      // Birlesmis yalanlarda yazarlarin HEPSI puan alir (kendine oy veren haric)
+      const authorIds = chosenAns.authorPlayerIds || (chosenAns.authorPlayerId ? [chosenAns.authorPlayerId] : []);
+      authorIds
+        .filter((id) => id !== voter.id)
+        .forEach((id) => {
+          const author = room.players.find((p) => p.id === id);
+          if (author) {
+            author.score += 500;
+            author.roundScoreEarned = (author.roundScoreEarned || 0) + 500;
+            author.foolsCount = (author.foolsCount || 0) + 1;
+          }
+        });
     }
   });
 
@@ -3019,7 +3086,7 @@ Return strictly a JSON array matching this schema:
 
           // Check if user accidentally wrote the exact real answer!
           const realAns = room.gameState.currentQuestion?.realAnswer || '';
-          if (rawBluff.toLowerCase() === realAns.toLowerCase()) {
+          if (bluffCompareKey(rawBluff) === bluffCompareKey(realAns)) {
             ws.send(
               JSON.stringify({
                 type: 'bluff:bluff_rejected',
@@ -3068,7 +3135,11 @@ Return strictly a JSON array matching this schema:
 
           // Prevent voting for self bluff
           const chosenAnswer = room.gameState.answers.find((a) => a.id === answerId);
-          if (chosenAnswer?.authorPlayerId === player.id) {
+          // Birlesmis yalanlarda YAZARLARIN HICBIRI kendi seceneğine oy veremez
+          const chosenAuthorIds =
+            chosenAnswer?.authorPlayerIds ||
+            (chosenAnswer?.authorPlayerId ? [chosenAnswer.authorPlayerId] : []);
+          if (chosenAuthorIds.includes(player.id)) {
             ws.send(
               JSON.stringify({
                 type: 'bluff:vote_rejected',

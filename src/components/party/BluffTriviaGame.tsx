@@ -51,6 +51,19 @@ const COLOR_LIST = [
   { hex: '#14b8a6', name: 'Teal' },
 ];
 
+/**
+ * Fibbage yazim tekbicimi (tek cihaz modu). Sunucu tarafiyla AYNI kural:
+ * gercek cevap ile oyuncu yalanlari bicimden ayirt edilemesin.
+ */
+const normalizeBluffDisplay = (text: string): string =>
+  text.trim().replace(/\s+/g, ' ').replace(/[.!?,;]+$/, '').toLocaleUpperCase('tr-TR');
+
+const bluffCompareKey = (text: string): string =>
+  normalizeBluffDisplay(text)
+    .replace(/[İI]/g, 'I').replace(/Ş/g, 'S').replace(/Ğ/g, 'G')
+    .replace(/Ü/g, 'U').replace(/Ö/g, 'O').replace(/Ç/g, 'C')
+    .replace(/[^A-Z0-9 ]/g, '');
+
 export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub }) => {
   // Mode: 'online_host' (TV) | 'online_join' (Phone) | 'local' (Pass & Play)
   const [playMode, setPlayMode] = useState<'online_host' | 'online_join' | 'local'>('online_host');
@@ -164,31 +177,48 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
 
       compiled.push({
         id: 'real_ans',
-        text: currentQ.realAnswer,
+        text: normalizeBluffDisplay(currentQ.realAnswer),
         isReal: true,
         chosenByPlayerIds: [],
         chosenByNames: [],
       });
 
+      // Ayni yalani yazanlar tek secenekte birlesir (sunucu modeliyle ayni)
+      const byKey = new Map<string, BluffAnswerItem>();
       updated.forEach((p) => {
-        if (p.currentBluff) {
-          compiled.push({
-            id: `bluff_${p.id}`,
-            text: p.currentBluff,
-            authorPlayerId: p.id,
-            authorName: p.name,
-            isReal: false,
-            chosenByPlayerIds: [],
-            chosenByNames: [],
-          });
+        if (!p.currentBluff) return;
+        const text = normalizeBluffDisplay(p.currentBluff);
+        const key = bluffCompareKey(text);
+        const existing = byKey.get(key);
+        if (existing) {
+          existing.authorPlayerIds!.push(p.id);
+          existing.authorName = `${existing.authorName} & ${p.name}`;
+          return;
         }
+        const item: BluffAnswerItem = {
+          id: `bluff_${p.id}`,
+          text,
+          authorPlayerId: p.id,
+          authorPlayerIds: [p.id],
+          authorName: p.name,
+          isReal: false,
+          chosenByPlayerIds: [],
+          chosenByNames: [],
+        };
+        byKey.set(key, item);
+        compiled.push(item);
       });
 
       if (compiled.length < 4 && currentQ.defaultFakes && currentQ.defaultFakes.length > 0) {
-        currentQ.defaultFakes.slice(0, 4 - compiled.length).forEach((fake, idx) => {
+        const taken = new Set(compiled.map((a) => bluffCompareKey(a.text)));
+        const pool = [...currentQ.defaultFakes].sort(() => Math.random() - 0.5);
+        pool
+          .filter((f) => !taken.has(bluffCompareKey(f)))
+          .slice(0, 4 - compiled.length)
+          .forEach((fake, idx) => {
           compiled.push({
             id: `fake_${idx}`,
-            text: fake,
+            text: normalizeBluffDisplay(fake),
             isReal: false,
             chosenByPlayerIds: [],
             chosenByNames: [],
