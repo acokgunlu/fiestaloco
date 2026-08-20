@@ -17,6 +17,7 @@ import {
   rollDie,
   spaceAt,
   startingPosition,
+  isFinalQuestionTurn,
 } from '../../data/triviaBoard';
 import {
   Trophy,
@@ -214,6 +215,20 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
 
   const handleRollDie = () => {
     if (isRolling || moveOptions.length > 0) return;
+
+    // MERKEZDE zar atilmaz — sira dogrudan final sorusudur. (Onceden merkezde
+    // hic secenek uretilmiyor, ekran yine "ZAR AT" gosteriyordu: sonsuz dongu.)
+    const here = positions[activePlayer.id] || startingPosition();
+    if (isFinalQuestionTurn(here)) {
+      playTurnSound();
+      setLandedOnHq(false);
+      setLandedOnHub(true);
+      beginQuestion(
+        TRIVIA_CATEGORY_KEYS[Math.floor(Math.random() * TRIVIA_CATEGORY_KEYS.length)]
+      );
+      return;
+    }
+
     playTurnSound();
     setIsRolling(true);
 
@@ -611,7 +626,11 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
                   >
                     {dieRoll ?? '🎲'}
                   </span>
-                  {isRolling ? 'ZAR DÖNÜYOR...' : 'ZAR AT'}
+                  {isRolling
+                    ? 'ZAR DÖNÜYOR...'
+                    : isFinalQuestionTurn(positions[activePlayer.id] || startingPosition())
+                      ? 'FİNAL SORUSU 🏆'
+                      : 'ZAR AT'}
                 </button>
               ) : (
                 <div className="flex flex-col items-center gap-2">

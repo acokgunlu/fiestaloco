@@ -61,6 +61,9 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
   const [showQr, setShowQr] = useState(false);
 
   const activePlayer = players[gameState.activePlayerIndex] || players[0];
+  /** Sirasi gelen oyuncu merkezdeyse zar yok, dogrudan final sorusu. */
+  const onHub =
+    gameState.boardPositions?.[gameState.activePlayerId || '']?.track === 'hub';
   const currentQ = gameState.currentQuestion;
   const currentCat = currentQ ? TRIVIA_CATEGORIES[currentQ.category] : null;
 
@@ -312,9 +315,9 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                 className="flex items-center gap-3 px-7 py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-600 text-white font-black text-base shadow-xl hover:scale-105 active:scale-95 transition-transform cursor-pointer"
               >
                 <span className="w-11 h-11 rounded-xl bg-white text-slate-900 flex items-center justify-center text-2xl font-black">
-                  {gameState.dieRoll ?? '🎲'}
+                  {gameState.dieRoll ?? (onHub ? '🏆' : '🎲')}
                 </span>
-                ZAR AT
+                {onHub ? 'FİNAL SORUSU' : 'ZAR AT'}
               </button>
             ) : (
               <div className="flex flex-col items-center gap-2">

@@ -69,9 +69,13 @@ function ringCategoryFor(index: number): TriviaCategory {
   return TRIVIA_CATEGORY_KEYS[(index * 5 + 2) % TRIVIA_CATEGORY_KEYS.length];
 }
 
-/** Her kalenin ortasindaki kare "tekrar at" olsun (halkada 6 tane). */
+/**
+ * "Tekrar at" kareleri. Onceden her 4 karede birdi (6 adet = %25) ve turlarin
+ * dortte biri soru sormadan geciyordu. Orijinal Trivial Pursuit'te bu oran
+ * ~%14; simdi 3 adet (%12.5).
+ */
 function isRollAgain(index: number): boolean {
-  return !isHqIndex(index) && index % 4 === 2;
+  return !isHqIndex(index) && index % 8 === 2;
 }
 
 /** Dis halkanin 24 karesi. */
@@ -153,7 +157,12 @@ export function getMoveOptions(
 ): MoveOption[] {
   const options: MoveOption[] = [];
 
-  if (pos.track === 'hub') return options; // merkezde hareket yok
+  // Merkezde hareket YOKTUR — orada sira, zar atmadan dogrudan final sorusudur.
+  // Cagiran taraf bunu `isFinalQuestionTurn()` ile kontrol etmek ZORUNDA.
+  // (Onceden burasi bos dizi donuyordu ve final sorusunu yanlis cevaplayan
+  //  oyuncu merkezde kilitleniyordu: zar at -> secenek yok -> yine zar at,
+  //  sonsuz dongu, oyun bitirilemiyordu.)
+  if (pos.track === 'hub') return options;
 
   if (pos.track === 'spoke') {
     const step = pos.step + roll;
@@ -194,4 +203,9 @@ export function rollDie(): number {
 /** Baslangic pozisyonu: merkeze en yakin degil, halkanin tepesi. */
 export function startingPosition(): BoardPosition {
   return { track: 'ring', index: 0 };
+}
+
+/** Oyuncu merkezdeyse sirasi zar degil, dogrudan FINAL sorusudur. */
+export function isFinalQuestionTurn(pos: BoardPosition): boolean {
+  return pos.track === 'hub';
 }

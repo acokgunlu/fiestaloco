@@ -50,6 +50,8 @@ export const TriviaControllerView: React.FC<TriviaControllerViewProps> = ({
   const isMyTurn = myPlayer && activePlayer && myPlayer.id === activePlayer.id;
   /** Zar atildi, hedef bekleniyor. */
   const waitingForMove = (gameState.moveOptions?.length || 0) > 0;
+  /** Merkezdeysen zar atmazsin — sira dogrudan final sorusudur. */
+  const onHub = gameState.boardPositions?.[myPlayer?.id || '']?.track === 'hub';
   const currentQ = gameState.currentQuestion;
   const currentCat = currentQ ? TRIVIA_CATEGORIES[currentQ.category] : null;
 
@@ -168,7 +170,7 @@ export const TriviaControllerView: React.FC<TriviaControllerViewProps> = ({
               ) : (
                 <div className="space-y-4">
                   <div className="p-3 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-700 text-amber-900 dark:text-amber-200 text-xs font-black">
-                    Sıra sende! Zarı at ve tahtada ilerle.
+                    {onHub ? 'Merkezdesin! Final sorusunu cevapla.' : 'Sıra sende! Zarı at ve tahtada ilerle.'}
                   </div>
 
                   <button
@@ -179,8 +181,8 @@ export const TriviaControllerView: React.FC<TriviaControllerViewProps> = ({
                     }}
                     className="w-full py-8 rounded-3xl font-black text-xl tracking-wider text-white shadow-xl transition-all transform active:scale-95 flex flex-col items-center justify-center gap-2 border-3 border-amber-300 dark:border-amber-500 bg-gradient-to-br from-amber-500 via-orange-500 to-rose-600 hover:scale-[1.02] cursor-pointer"
                   >
-                    <span className="text-4xl">🎲</span>
-                    <span>ZAR AT!</span>
+                    <span className="text-4xl">{onHub ? '🏆' : '🎲'}</span>
+                    <span>{onHub ? 'FİNAL SORUSU!' : 'ZAR AT!'}</span>
                   </button>
                 </div>
               )

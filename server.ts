@@ -28,6 +28,7 @@ import {
   samePosition as sameBoardPosition,
   spaceAt as boardSpaceAt,
   startingPosition as boardStartingPosition,
+  isFinalQuestionTurn as isBoardFinalTurn,
   type BoardPosition,
 } from './src/data/triviaBoard';
 import {
@@ -813,6 +814,23 @@ function clearTriviaTimers(room: TriviaServerRoom) {
     clearInterval(room.roundTimer);
     room.roundTimer = null;
   }
+}
+
+/** Tahtada inilen kareye gore soru asamasini baslatir. */
+function startTriviaQuestion(room: TriviaServerRoom, category: TriviaCategory): boolean {
+  const q = getNextTriviaQuestion(category, room.usedQuestionIds, room.questionPool);
+  if (!q) return false;
+  room.usedQuestionIds.push(q.id);
+  room.gameState.selectedCategory = category;
+  room.gameState.currentQuestion = q;
+  room.gameState.phase = 'QUESTION_ACTIVE';
+  room.players.forEach((p) => {
+    p.currentAnswer = undefined;
+    p.isCorrect = undefined;
+  });
+  broadcastTriviaRoomState(room, 'trivia:question_active');
+  startTriviaTurnTimer(room);
+  return true;
 }
 
 function broadcastTriviaRoomState(
@@ -3059,6 +3077,21 @@ Return strictly a JSON array matching this schema:
 
           const pos =
             room.gameState.boardPositions?.[activePlayer.id] || boardStartingPosition();
+
+          // MERKEZDE zar atilmaz: sira dogrudan final sorusudur. Onceden burada
+          // getMoveOptions bos dizi donuyor, ekran yine "ZAR AT" gosteriyor ve
+          // oyuncu sonsuz zar dongusunde kiliteniyordu (oyun bitirilemiyordu).
+          if (isBoardFinalTurn(pos)) {
+            room.gameState.dieRoll = null;
+            room.gameState.moveOptions = [];
+            room.gameState.landedOnHq = false;
+            room.gameState.landedOnHub = true;
+            const finalCat =
+              TRIVIA_CATEGORY_KEYS[Math.floor(Math.random() * TRIVIA_CATEGORY_KEYS.length)];
+            startTriviaQuestion(room, finalCat);
+            return;
+          }
+
           const roll = rollBoardDie();
           const needed = room.gameState.settings.wedgesToWin || 6;
           const hasAll = activePlayer.wedges.length >= needed;
@@ -3109,20 +3142,7 @@ Return strictly a JSON array matching this schema:
               ? TRIVIA_CATEGORY_KEYS[Math.floor(Math.random() * TRIVIA_CATEGORY_KEYS.length)]
               : (space.category as TriviaCategory);
 
-          const q = getNextTriviaQuestion(chosenCategory, room.usedQuestionIds, room.questionPool);
-          if (!q) return;
-
-          room.usedQuestionIds.push(q.id);
-          room.gameState.selectedCategory = chosenCategory;
-          room.gameState.currentQuestion = q;
-          room.gameState.phase = 'QUESTION_ACTIVE';
-          room.players.forEach((p) => {
-            p.currentAnswer = undefined;
-            p.isCorrect = undefined;
-          });
-
-          broadcastTriviaRoomState(room, 'trivia:question_active');
-          startTriviaTurnTimer(room);
+          startTriviaQuestion(room, chosenCategory);
         }
 
         // 4. SPIN CATEGORY WHEEL
