@@ -38,7 +38,6 @@ const GAME_FILTER_OPTIONS: { id: 'all' | GameModuleType; label: string; icon: st
   { id: 'imposter', label: 'Imposter', icon: '🎨' },
   { id: 'bluff', label: 'Fibbage', icon: '🤥' },
   { id: 'bomb', label: 'Word Bomb', icon: '💣' },
-  { id: 'verdict', label: 'Verdict', icon: '⚖️' },
   { id: 'trivia_pursuit', label: 'Trivia Pursuit', icon: '🧠' },
 ];
 

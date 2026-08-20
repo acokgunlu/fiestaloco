@@ -211,27 +211,6 @@ export function detectFinishedMatch(gameType: PersistedGameType, room: AnyRoom):
   // ---------------------------------------------------------------------------
   // VERDICT — en yuksek skor kazanir
   // ---------------------------------------------------------------------------
-  if (gameType === 'verdict') {
-    if (gs.phase !== 'GAME_OVER') return null;
-    const winners = topScorerIds(players, (p) => num(p.score));
-    const recordPlayers = players.map((p) => basePlayer(p, num(p.score), winners.has(String(p.id))));
-    const winnerEntry = [...recordPlayers].sort((a, b) => (b.score ?? 0) - (a.score ?? 0))[0];
-
-    return {
-      dedupeKey: `verdict:${room.code}:${num(gs.currentRound)}:${[...winners].sort().join('|')}`,
-      record: {
-        gameType,
-        gameTitle: meta.title,
-        gameIcon: meta.icon,
-        roomCode: room.code,
-        winnerName: winnerEntry?.name,
-        winnerAvatar: winnerEntry?.avatar,
-        winnerScore: winnerEntry?.score,
-        details: winnerEntry ? `Mahkemenin galibi: ${winnerEntry.name} (${winnerEntry.score} puan)` : undefined,
-        players: recordPlayers,
-      },
-    };
-  }
 
   // ---------------------------------------------------------------------------
   // TRIVIA PURSUIT — winnerPlayerId; wedges -> wedgesEarned

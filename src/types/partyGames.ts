@@ -1,4 +1,4 @@
-export type PartyGameType = 'imposter' | 'codenames' | 'bluff' | 'bomb' | 'verdict' | 'trivia_pursuit' | 'quiplash';
+export type PartyGameType = 'imposter' | 'codenames' | 'bluff' | 'bomb' | 'trivia_pursuit' | 'quiplash';
 
 // ==========================================
 // 1. YALAN USTASI (BLUFF TRIVIA / FIBBAGE)
@@ -118,57 +118,7 @@ export interface BombGameState {
 // 3. KİM YAPAR? / MAHKEME (PICANTE VERDICT)
 // ==========================================
 
-export interface VerdictQuestion {
-  id: string;
-  category: string;
-  question: string; // e.g. "Issız bir adaya düşsek ilk kimi feda ederiz?"
-  spiceLevel: 'mild' | 'spicy' | 'insane';
-}
 
-export type VerdictPhase =
-  | 'LOBBY'
-  | 'QUESTION_REVEAL'
-  | 'VOTING'
-  | 'THE_VERDICT'
-  | 'DEFENSE_TIME'
-  | 'ROUND_SCORES'
-  | 'GAME_OVER';
 
-export interface VerdictPlayer {
-  id: string;
-  name: string;
-  avatar: string;
-  color?: string;
-  colorName?: string;
-  score: number;
-  votedTargetPlayerId?: string;
-  votesReceived: number;
-  isReady?: boolean;
-  connected?: boolean;
-  isHost?: boolean;
-}
 
-export interface VerdictVoteDetail {
-  targetPlayerId: string;
-  voterPlayerIds: string[];
-  voterNames: string[];
-  count: number;
-}
 
-export interface VerdictGameState {
-  phase: VerdictPhase;
-  currentRound: number;
-  totalRounds: number;
-  currentQuestion: VerdictQuestion | null;
-  accusedPlayerId: string | null;
-  tiedAccusedPlayerIds?: string[];
-  defenseSeconds: number;
-  defenseSpeech?: string;
-  roundVotes: Record<string, string>; // voterId -> targetId
-  votedPlayerIds?: string[]; // list of player IDs who already cast their vote
-  voteBreakdown?: Record<string, VerdictVoteDetail>; // shown during THE_VERDICT and DEFENSE_TIME
-  votingTimerSeconds?: number;
-  roomCode?: string;
-  isOnline?: boolean;
-  myVoteTargetId?: string; // Private to current player
-}

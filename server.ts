@@ -39,10 +39,6 @@ import {
   CodenamesSettings,
 } from './src/types/codenames';
 import {
-  VerdictGameState,
-  VerdictPlayer,
-  VerdictQuestion,
-  VerdictVoteDetail,
   BombGameState,
   BombPlayer,
   BombPrompt,
@@ -68,7 +64,6 @@ import {
   TRIVIA_CATEGORY_KEYS,
 } from './src/types/triviaPursuit';
 import { INITIAL_TRIVIA_QUESTIONS, getNextTriviaQuestion } from './src/data/triviaPursuitQuestions';
-import { VERDICT_QUESTIONS, getRandomVerdictQuestion } from './src/data/verdictPrompts';
 import { BOMB_PROMPTS, getRandomBombPrompt } from './src/data/bombPrompts';
 import { BLUFF_QUESTIONS, getRandomBluffQuestion } from './src/data/bluffQuestions';
 import {
@@ -84,7 +79,7 @@ interface ConnectedClient {
   roomCode?: string;
   role?: 'observer' | 'player';
   playerId?: string;
-  gameType?: 'imposter' | 'codenames' | 'verdict' | 'bomb' | 'bluff' | 'trivia' | 'quiplash';
+  gameType?: 'imposter' | 'codenames' | 'bomb' | 'bluff' | 'trivia' | 'quiplash';
 }
 
 interface ServerRoom {
@@ -116,16 +111,6 @@ interface CodenamesServerRoom {
   gameState: CodenamesGameState;
 }
 
-interface VerdictServerRoom {
-  code: string;
-  observers: Set<WebSocket>;
-  playerSockets: Map<string, WebSocket>; // playerId -> ws
-  players: VerdictPlayer[];
-  gameState: VerdictGameState;
-  usedQuestionIds: string[];
-  votingTimer: NodeJS.Timeout | null;
-  defenseTimer: NodeJS.Timeout | null;
-}
 
 interface BombServerRoom {
   code: string;
@@ -172,7 +157,6 @@ interface QuiplashServerRoom {
 
 const rooms = new Map<string, ServerRoom>();
 const codenamesRooms = new Map<string, CodenamesServerRoom>();
-const verdictRooms = new Map<string, VerdictServerRoom>();
 const bombRooms = new Map<string, BombServerRoom>();
 const bluffRooms = new Map<string, BluffServerRoom>();
 const triviaRooms = new Map<string, TriviaServerRoom>();
@@ -236,7 +220,6 @@ type AnyServerRoom = {
 const ROOM_REGISTRY: Array<{ gameType: PersistedGameType; map: Map<string, any> }> = [
   { gameType: 'imposter', map: rooms },
   { gameType: 'codenames', map: codenamesRooms },
-  { gameType: 'verdict', map: verdictRooms },
   { gameType: 'bomb', map: bombRooms },
   { gameType: 'bluff', map: bluffRooms },
   { gameType: 'trivia', map: triviaRooms },
@@ -1383,75 +1366,6 @@ function startBombServerTicker(room: BombServerRoom) {
   }, 500);
 }
 
-function createFreshVerdictGame(totalRounds: number = 3): VerdictGameState {
-  const q = getRandomVerdictQuestion([]);
-  return {
-    phase: 'LOBBY',
-    currentRound: 1,
-    totalRounds,
-    currentQuestion: q,
-    accusedPlayerId: null,
-    defenseSeconds: 30,
-    roundVotes: {},
-    votedPlayerIds: [],
-    votingTimerSeconds: 45,
-    isOnline: true,
-  };
-}
-
-function broadcastVerdictRoomState(room: VerdictServerRoom) {
-  maybeRecordMatch('verdict', room as any);
-  const isRevealOrLater =
-    room.gameState.phase === 'THE_VERDICT' ||
-    room.gameState.phase === 'DEFENSE_TIME' ||
-    room.gameState.phase === 'ROUND_SCORES' ||
-    room.gameState.phase === 'GAME_OVER';
-
-  const votedPlayerIds = Object.keys(room.gameState.roundVotes);
-
-  // 1. Observer / TV State
-  const observerPayload = JSON.stringify({
-    type: 'verdict:state',
-    gameState: {
-      ...room.gameState,
-      roomCode: room.code,
-      roundVotes: isRevealOrLater ? room.gameState.roundVotes : {},
-      votedPlayerIds,
-    },
-    players: room.players,
-    votedPlayerIds,
-  });
-
-  room.observers.forEach((ws) => {
-    if (ws.readyState === WebSocket.OPEN) {
-      ws.send(observerPayload);
-    }
-  });
-
-  // 2. Secret Player Phone State
-  room.players.forEach((player) => {
-    const ws = room.playerSockets.get(player.id);
-    if (ws && ws.readyState === WebSocket.OPEN) {
-      const myVoteTarget = room.gameState.roundVotes[player.id] || null;
-      ws.send(
-        JSON.stringify({
-          type: 'verdict:state',
-          gameState: {
-            ...room.gameState,
-            roomCode: room.code,
-            roundVotes: isRevealOrLater ? room.gameState.roundVotes : {},
-            votedPlayerIds,
-            myVoteTargetId: myVoteTarget,
-          },
-          players: room.players,
-          myPlayer: player,
-          votedPlayerIds,
-          myVoteTargetId: myVoteTarget,
-        })
-      );
-    }
-  });
-}
 
 
 function createFreshCodenamesGame(settings?: Partial<CodenamesSettings>): CodenamesGameState {
@@ -1542,7 +1456,6 @@ function generateRoomCode(): string {
     if (
       !rooms.has(code) &&
       !bluffRooms.has(code) &&
-      !verdictRooms.has(code) &&
       !bombRooms.has(code) &&
       !codenamesRooms.has(code) &&
       !triviaRooms.has(code)
@@ -1983,7 +1896,6 @@ async function startServer() {
     const totals = {
       imposter: rooms.size,
       codenames: codenamesRooms.size,
-      verdict: verdictRooms.size,
       bomb: bombRooms.size,
       bluff: bluffRooms.size,
       trivia: triviaRooms.size,
@@ -2294,316 +2206,11 @@ Return strictly a JSON array matching this schema:
         const data = JSON.parse(raw.toString());
         const { type } = data;
 
-        // =====================================================================
-        // GRUP MAHKEMESİ / PICANTE VERDICT ONLINE MULTIPLAYER DISPATCHER
-        // =====================================================================
-
-        // 1. CREATE VERDICT ROOM (TV Screen / Observer Host)
-        if (type === 'verdict:create_room') {
-          const roomCode = generateRoomCode();
-          const totalRounds = Number(data.totalRounds) || 3;
-          const initialGameState = createFreshVerdictGame(totalRounds);
-
-          const newRoom: VerdictServerRoom = {
-            code: roomCode,
-            observers: new Set([ws]),
-            playerSockets: new Map(),
-            players: [],
-            gameState: initialGameState,
-            usedQuestionIds: [initialGameState.currentQuestion?.id || 'verdict_1'],
-            votingTimer: null,
-            defenseTimer: null,
-          };
-
-          verdictRooms.set(roomCode, newRoom);
-          clientMap.set(ws, { ws, roomCode, role: 'observer', gameType: 'verdict' });
-
-          ws.send(
-            JSON.stringify({
-              type: 'verdict:room_created',
-              roomCode,
-              gameState: newRoom.gameState,
-              players: newRoom.players,
-            })
-          );
-        }
-
-        // 2. JOIN VERDICT ROOM (Mobile Phone Controller or Secondary TV Screen)
-        else if (type === 'verdict:join_room') {
-          const roomCode = (data.roomCode || '').toUpperCase().trim();
-          const room = verdictRooms.get(roomCode);
-
-          if (!room) {
-            ws.send(JSON.stringify({ type: 'error', message: `Oda bulunamadı: "${roomCode}"` }));
-            return;
-          }
-
-          const role = data.role === 'observer' ? 'observer' : 'player';
-
-          if (role === 'observer') {
-            room.observers.add(ws);
-            clientMap.set(ws, { ws, roomCode, role: 'observer', gameType: 'verdict' });
-            ws.send(
-              JSON.stringify({
-                type: 'verdict:room_joined',
-                role: 'observer',
-                roomCode,
-                gameState: room.gameState,
-                players: room.players,
-              })
-            );
-          } else {
-            const playerId =
-              data.playerId || `vp-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
-            let player = room.players.find((p) => p.id === playerId);
-
-            const paletteIdx = room.players.length % DEFAULT_PLAYER_PALETTE.length;
-            const pal = DEFAULT_PLAYER_PALETTE[paletteIdx];
-
-            if (!player) {
-              player = {
-                id: playerId,
-                name: data.playerName?.trim() || `Oyuncu ${room.players.length + 1}`,
-                avatar: data.avatar || pal.avatar,
-                color: data.color || pal.color,
-                colorName: data.colorName || pal.name,
-                score: 0,
-                votesReceived: 0,
-                connected: true,
-                isHost: room.players.length === 0,
-              };
-              room.players.push(player);
-            } else {
-              player.connected = true;
-              if (data.playerName) player.name = data.playerName.trim();
-              if (data.avatar) player.avatar = data.avatar;
-              if (data.color) player.color = data.color;
-            }
-
-            room.playerSockets.set(playerId, ws);
-            clientMap.set(ws, { ws, roomCode, role: 'player', playerId, gameType: 'verdict' });
-
-            ws.send(
-              JSON.stringify({
-                type: 'verdict:room_joined',
-                role: 'player',
-                roomCode,
-                player,
-                gameState: room.gameState,
-                players: room.players,
-              })
-            );
-            broadcastVerdictRoomState(room);
-          }
-        }
-
-        // 3. START GAME / NEXT QUESTION
-        else if (type === 'verdict:start_game') {
-          const client = clientMap.get(ws);
-          if (!client?.roomCode) return;
-          const room = verdictRooms.get(client.roomCode);
-          if (!room) return;
-
-          const q = getRandomVerdictQuestion(room.usedQuestionIds);
-          room.usedQuestionIds.push(q.id);
-
-          room.gameState.phase = 'QUESTION_REVEAL';
-          room.gameState.currentQuestion = q;
-          room.gameState.roundVotes = {};
-          room.gameState.accusedPlayerId = null;
-          room.gameState.defenseSpeech = undefined;
-          room.gameState.voteBreakdown = undefined;
-          room.gameState.defenseSeconds = 30;
-
-          // Reset round votes for players
-          room.players.forEach((p) => {
-            p.votedTargetPlayerId = undefined;
-            p.votesReceived = 0;
-          });
-
-          broadcastVerdictRoomState(room);
-        }
-
-        // 4. START SECRET VOTING PHASE
-        else if (type === 'verdict:start_voting') {
-          const client = clientMap.get(ws);
-          if (!client?.roomCode) return;
-          const room = verdictRooms.get(client.roomCode);
-          if (!room) return;
-
-          room.gameState.phase = 'VOTING';
-          room.gameState.roundVotes = {};
-          room.gameState.votingTimerSeconds = 45;
-
-          broadcastVerdictRoomState(room);
-        }
-
-        // 5. CAST SECRET VOTE FROM PHONE
-        else if (type === 'verdict:cast_vote') {
-          const client = clientMap.get(ws);
-          if (!client?.roomCode || !client.playerId) return;
-          const room = verdictRooms.get(client.roomCode);
-          if (!room || room.gameState.phase !== 'VOTING') return;
-
-          const { targetPlayerId } = data;
-          if (!targetPlayerId) return;
-
-          // Record secret vote
-          room.gameState.roundVotes[client.playerId] = targetPlayerId;
-
-          ws.send(
-            JSON.stringify({
-              type: 'verdict:vote_confirmed',
-              targetPlayerId,
-            })
-          );
-
-          // Check if all connected players have voted
-          const connectedPlayers = room.players.filter((p) => p.connected !== false);
-          const allVoted =
-            connectedPlayers.length >= 2 &&
-            connectedPlayers.every((p) => !!room.gameState.roundVotes[p.id]);
-
-          if (allVoted) {
-            // Count votes for each target
-            const voteCounts: Record<string, number> = {};
-            const voterNamesMap: Record<string, string[]> = {};
-            const voterIdsMap: Record<string, string[]> = {};
-
-            Object.entries(room.gameState.roundVotes).forEach(([voterId, targetId]) => {
-              voteCounts[targetId] = (voteCounts[targetId] || 0) + 1;
-              const voter = room.players.find((p) => p.id === voterId);
-              if (voter) {
-                if (!voterNamesMap[targetId]) voterNamesMap[targetId] = [];
-                if (!voterIdsMap[targetId]) voterIdsMap[targetId] = [];
-                voterNamesMap[targetId].push(voter.name);
-                voterIdsMap[targetId].push(voter.id);
-              }
-            });
-
-            // Build breakdown
-            const voteBreakdown: Record<string, VerdictVoteDetail> = {};
-            Object.keys(voteCounts).forEach((targetId) => {
-              voteBreakdown[targetId] = {
-                targetPlayerId: targetId,
-                voterPlayerIds: voterIdsMap[targetId] || [],
-                voterNames: voterNamesMap[targetId] || [],
-                count: voteCounts[targetId] || 0,
-              };
-            });
-            room.gameState.voteBreakdown = voteBreakdown;
-
-            // Find top voted player(s)
-            let maxVotes = 0;
-            Object.entries(voteCounts).forEach(([_, count]) => {
-              if (count > maxVotes) maxVotes = count;
-            });
-
-            const topAccused = Object.keys(voteCounts).filter((id) => voteCounts[id] === maxVotes);
-            const primaryAccusedId = topAccused[0] || room.players[0]?.id || null;
-
-            room.gameState.accusedPlayerId = primaryAccusedId;
-            room.gameState.tiedAccusedPlayerIds = topAccused.length > 1 ? topAccused : undefined;
-
-            // Award points: Voters who voted for the accused get +50 points!
-            room.players.forEach((p) => {
-              p.votesReceived = voteCounts[p.id] || 0;
-              const votedFor = room.gameState.roundVotes[p.id];
-              if (votedFor && topAccused.includes(votedFor)) {
-                p.score += 50; // Correct majority consensus bonus
-              }
-            });
-
-            room.gameState.phase = 'THE_VERDICT';
-            broadcastVerdictRoomState(room);
-
-            // Transition to DEFENSE_TIME after 4.5 seconds
-            if (room.defenseTimer) clearTimeout(room.defenseTimer);
-            room.defenseTimer = setTimeout(() => {
-              const currentRoom = verdictRooms.get(room.code);
-              if (currentRoom && currentRoom.gameState.phase === 'THE_VERDICT') {
-                currentRoom.gameState.phase = 'DEFENSE_TIME';
-                currentRoom.gameState.defenseSeconds = 30;
-                broadcastVerdictRoomState(currentRoom);
-              }
-            }, 4500);
-          } else {
-            // Still waiting for remaining votes - broadcast updated count
-            broadcastVerdictRoomState(room);
-          }
-        }
-
-        // 6. SUBMIT LIVE DEFENSE SPEECH FROM ACCUSED PHONE
-        else if (type === 'verdict:submit_defense') {
-          const client = clientMap.get(ws);
-          if (!client?.roomCode) return;
-          const room = verdictRooms.get(client.roomCode);
-          if (!room) return;
-
-          room.gameState.defenseSpeech = (data.defenseSpeech || '').trim();
-          broadcastVerdictRoomState(room);
-        }
-
-        // 7. NEXT ROUND / ADVANCE TO ROUND SCORES OR NEXT QUESTION
-        else if (type === 'verdict:next_round') {
-          const client = clientMap.get(ws);
-          if (!client?.roomCode) return;
-          const room = verdictRooms.get(client.roomCode);
-          if (!room) return;
-
-          if (room.gameState.phase === 'DEFENSE_TIME') {
-            room.gameState.phase = 'ROUND_SCORES';
-            broadcastVerdictRoomState(room);
-          } else if (room.gameState.phase === 'ROUND_SCORES') {
-            if (room.gameState.currentRound >= room.gameState.totalRounds) {
-              room.gameState.phase = 'GAME_OVER';
-              broadcastVerdictRoomState(room);
-            } else {
-              room.gameState.currentRound += 1;
-              const q = getRandomVerdictQuestion(room.usedQuestionIds);
-              room.usedQuestionIds.push(q.id);
-
-              room.gameState.phase = 'QUESTION_REVEAL';
-              room.gameState.currentQuestion = q;
-              room.gameState.roundVotes = {};
-              room.gameState.accusedPlayerId = null;
-              room.gameState.defenseSpeech = undefined;
-              room.gameState.voteBreakdown = undefined;
-              room.gameState.defenseSeconds = 30;
-
-              room.players.forEach((p) => {
-                p.votedTargetPlayerId = undefined;
-                p.votesReceived = 0;
-              });
-
-              broadcastVerdictRoomState(room);
-            }
-          }
-        }
-
-        // 8. RESTART VERDICT GAME
-        else if (type === 'verdict:restart_game') {
-          const client = clientMap.get(ws);
-          if (!client?.roomCode) return;
-          const room = verdictRooms.get(client.roomCode);
-          if (!room) return;
-
-          room.players.forEach((p) => {
-            p.score = 0;
-            p.votesReceived = 0;
-            p.votedTargetPlayerId = undefined;
-          });
-
-          room.gameState = createFreshVerdictGame(room.gameState.totalRounds);
-          broadcastVerdictRoomState(room);
-        }
-
-        // =====================================================================
         // SAATLİ BOMBA / WORD BOMB MULTIPLAYER WEBSOCKET DISPATCHER
         // =====================================================================
 
         // 1. CREATE BOMB ROOM (TV / Observer Host)
-        else if (type === 'bomb:create_room') {
+        if (type === 'bomb:create_room') {
           const roomCode = generateRoomCode();
           const initialGameState = createFreshBombGame();
 
@@ -4673,31 +4280,7 @@ Return strictly a JSON array matching this schema:
     ws.on('close', () => {
       const client = clientMap.get(ws);
       if (client?.roomCode) {
-        if (client.gameType === 'verdict') {
-          const room = verdictRooms.get(client.roomCode);
-          if (room) {
-            if (client.role === 'observer') {
-              room.observers.delete(ws);
-            } else if (client.playerId) {
-              room.playerSockets.delete(client.playerId);
-              const p = room.players.find((pl) => pl.id === client.playerId);
-              if (p) p.connected = false;
-            }
-            broadcastVerdictRoomState(room);
-
-            if (room.observers.size === 0 && room.playerSockets.size === 0) {
-              setTimeout(() => {
-                const current = verdictRooms.get(client.roomCode!);
-                if (current && current.observers.size === 0 && current.playerSockets.size === 0) {
-                  if (current.defenseTimer) clearTimeout(current.defenseTimer);
-                  if (current.votingTimer) clearTimeout(current.votingTimer);
-                  verdictRooms.delete(client.roomCode!);
-                  forgetRoom('verdict', client.roomCode!);
-                }
-              }, 180000);
-            }
-          }
-        } else if (client.gameType === 'bomb') {
+        if (client.gameType === 'bomb') {
           const room = bombRooms.get(client.roomCode);
           if (room) {
             if (client.role === 'observer') {

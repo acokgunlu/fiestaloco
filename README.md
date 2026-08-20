@@ -2,7 +2,7 @@
 
 Jackbox tarzı çok oyunculu parti oyunları platformu. TV/laptop ekranı sunucu (host) olur, herkes telefonundan QR okutup katılır.
 
-**7 oyun modu:** Imposter Line · Codenames · Quiplash · Yalan Ustası (Bluff Trivia) · Saatli Bomba · Grup Mahkemesi · Trivia Pursuit
+**6 oyun modu:** Imposter Line · Codenames · Quiplash · Yalan Ustası (Bluff Trivia) · Saatli Bomba · Trivia Pursuit
 
 Her mod üç şekilde oynanabilir: **Online TV Host + telefon kumandası**, **tek cihaz pass-and-play**, veya gözlemci ekranı.
 
@@ -60,7 +60,7 @@ scripts/               duman testi, origin testi, birim testler
 | `npm start` | Sunucuyu production modda çalıştırır |
 | `npm run build:all` + `npm start` | Tek hostta frontend + sunucu birlikte |
 | `npm run lint` | `tsc --noEmit` |
-| `npm run smoke` | 7 oyun modunu uçtan uca test eder |
+| `npm run smoke` | 6 oyun modunu uçtan uca test eder |
 
 ---
 

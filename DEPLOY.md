@@ -35,7 +35,7 @@ Frontend **Vercel**'de, gerçek zamanlı oyun sunucusu **AWS EC2**'de (Frankfurt
 
 **Neden EC2, neden Vercel'e tek başına konmuyor?** Vercel Functions bağlantı ömrünü 300 s
 (Hobby) / 800 s (Pro) ile sınırlıyor ve TV ekranı ile telefonların aynı instance'a düşeceğini
-garanti etmiyor. Oda state'i tamamen RAM'de (7 mod, 27 timer) olduğu için gerçek zamanlı katman
+garanti etmiyor. Oda state'i tamamen RAM'de (6 mod, 24 timer) olduğu için gerçek zamanlı katman
 kalıcı bir process'te koşmak zorunda. Render'ın ücretsiz planı da 15 dakikada uyuyordu; EC2
 hiç uyumaz.
 
@@ -187,7 +187,7 @@ cp .env.server.example .env.server
 # Sunucu ayakta ve Supabase bağlı mı?
 curl https://api.fiestaloco.site/api/health
 
-# 7 oyun modunun tamamı uçtan uca çalışıyor mu?
+# 6 oyun modunun tamamı uçtan uca çalışıyor mu?
 SMOKE_TARGET=https://api.fiestaloco.site npm run smoke
 
 # Origin kısıtlaması doğru mu?

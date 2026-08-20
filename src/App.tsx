@@ -30,7 +30,6 @@ import { CodenamesBoardView } from './components/codenames/CodenamesBoardView';
 import { CodenamesRulesModal } from './components/codenames/CodenamesRulesModal';
 import { BluffTriviaGame } from './components/party/BluffTriviaGame';
 import { WordBombGame } from './components/party/WordBombGame';
-import { PicanteVerdictGame } from './components/party/PicanteVerdictGame';
 import { TriviaPursuitGame } from './components/party/TriviaPursuitGame';
 import { QuiplashGame } from './components/party/QuiplashGame';
 import { UnifiedLeaderboardModal } from './components/leaderboard/UnifiedLeaderboardModal';
@@ -44,7 +43,7 @@ export default function App() {
   const { theme, toggleTheme } = useAppTheme();
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
 
-  // Active Game Module: 'arcade_hub' | 'imposter' | 'codenames' | 'bluff' | 'bomb' | 'verdict'
+  // Active Game Module: 'arcade_hub' | 'imposter' | 'codenames' | 'bluff' | 'bomb'
   const [activeModule, setActiveModule] = useState<'arcade_hub' | PartyGameType>(
     'arcade_hub'
   );
@@ -233,15 +232,13 @@ export default function App() {
   const [rulesOpen, setRulesOpen] = useState(false);
   const [soundActive, setSoundActive] = useState(true);
 
-  // Check URL query parameters for ?room=CODE or ?game=verdict / codenames
+  // Check URL query parameters for ?room=CODE or ?game=codenames
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const roomParam = params.get('room');
     const gameParam = params.get('game');
 
-    if (gameParam === 'verdict') {
-      setActiveModule('verdict');
-    } else if (gameParam === 'quiplash') {
+    if (gameParam === 'quiplash') {
       setActiveModule('quiplash');
     } else if (gameParam === 'codenames') {
       setActiveModule('codenames');
@@ -668,9 +665,6 @@ export default function App() {
         )}
 
         {/* 6. KİM YAPAR? / MAHKEME (PICANTE VERDICT) MODULE */}
-        {activeModule === 'verdict' && (
-          <PicanteVerdictGame onBackToHub={() => setActiveModule('arcade_hub')} />
-        )}
 
         {/* 7. TRIVIA PURSUIT (BİLGİ ÇARKI & 6 ROZET) MODULE */}
         {activeModule === 'trivia_pursuit' && (

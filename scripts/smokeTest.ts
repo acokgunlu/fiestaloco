@@ -41,12 +41,6 @@ const GAMES: GameSpec[] = [
     stateTypes: ['codenames:room_created', 'codenames:room_joined', 'codenames:state'],
   },
   {
-    name: 'verdict',
-    createType: 'verdict:create_room',
-    joinType: 'verdict:join_room',
-    stateTypes: ['verdict:room_created', 'verdict:room_joined', 'verdict:state'],
-  },
-  {
     name: 'bomb',
     createType: 'bomb:create_room',
     joinType: 'bomb:join_room',

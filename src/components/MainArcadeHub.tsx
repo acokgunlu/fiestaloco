@@ -149,7 +149,7 @@ export function MainArcadeHub({
             </div>
           </div>
           <span className="hidden sm:inline-flex px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 text-xs font-black border border-indigo-200 dark:border-indigo-800">
-            7 Canlı Modül
+            6 Canlı Modül
           </span>
         </div>
 
@@ -455,67 +455,7 @@ export function MainArcadeHub({
             </div>
           </div>
 
-          {/* GAME 5: KİM YAPAR? / MAHKEME (PICANTE VERDICT) */}
-          <div
-            id="card-game-verdict"
-            className="bg-white dark:bg-slate-900 rounded-3xl p-6 border-3 border-purple-100 dark:border-slate-800 hover:border-purple-400 dark:hover:border-purple-500 shadow-md hover:shadow-xl transition-all duration-200 flex flex-col justify-between group game-card-pop relative overflow-hidden"
-          >
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-600 to-indigo-700 text-white flex items-center justify-center text-2xl font-black shadow-md border-2 border-white dark:border-slate-700">
-                  ⚖️
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="px-2.5 py-1 rounded-full bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300 text-[11px] font-black border border-purple-200 dark:border-purple-800">
-                    SICAK KOLTUK
-                  </span>
-                  <span className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[11px] font-bold">
-                    3-10 Oyuncu
-                  </span>
-                </div>
-              </div>
-
-              <div className="space-y-1.5">
-                <h3 className="text-xl font-black text-slate-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
-                  Verdict
-                </h3>
-                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
-                  Komik ve baharatlı senaryolara aranızdan kimi seçeceğinizi oylayın. Sanık kürsüye çıksın ve kendini savunsun!
-                </p>
-              </div>
-
-              <div className="flex flex-wrap gap-1.5 pt-1">
-                <span className="px-2 py-0.5 rounded-lg bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300 text-[10px] font-bold">
-                  📺 TV Host
-                </span>
-                <span className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold">
-                  📱 Telefon Kumandası
-                </span>
-                <span className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold">
-                  🗳️ Gizli Oy
-                </span>
-                <span className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold">
-                  🎙️ 30s Savunma
-                </span>
-              </div>
-            </div>
-
-            <div className="pt-6">
-              <button
-                id="btn-launch-verdict"
-                onClick={() => {
-                  playTurnSound();
-                  onSelectGame('verdict');
-                }}
-                className="w-full py-3.5 bg-purple-600 hover:bg-purple-500 text-white font-black text-xs rounded-2xl shadow-md btn-party flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <Play className="w-4 h-4 fill-white" />
-                <span>MAHKEMEYİ BAŞLAT</span>
-              </button>
-            </div>
-          </div>
-
-          {/* GAME 6: TRIVIA PURSUIT (BİLGİ ÇARKI & 6 ROZET) */}
+          {/* GAME 5: TRIVIA PURSUIT (BİLGİ ÇARKI & 6 ROZET) */}
           <div
             id="card-game-trivia"
             className="bg-white dark:bg-slate-900 rounded-3xl p-6 border-3 border-emerald-100 dark:border-slate-800 hover:border-emerald-400 dark:hover:border-emerald-500 shadow-md hover:shadow-xl transition-all duration-200 flex flex-col justify-between group game-card-pop relative overflow-hidden"
