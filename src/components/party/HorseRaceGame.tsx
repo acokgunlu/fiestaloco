@@ -50,6 +50,7 @@ export const HorseRaceGame: React.FC<HorseRaceGameProps> = ({ onBackToHub }) => 
     return (
       <HorseRaceControllerView
         roomCode={socket.roomCode || ''}
+        players={socket.players}
         myPlayer={socket.myPlayer}
         myBet={socket.myBet}
         gameState={socket.gameState}

@@ -12,6 +12,7 @@ import { HorseRaceTrack } from './HorseRaceTrack';
 
 interface Props {
   roomCode: string;
+  players: HorseRacePlayer[];
   myPlayer: HorseRacePlayer | null;
   myBet: HorseRaceBet | null;
   gameState: HorseRaceGameState;
@@ -28,6 +29,7 @@ const KIND_INFO: Record<BetKind, { label: string; hint: string }> = {
 
 export const HorseRaceControllerView: React.FC<Props> = ({
   roomCode,
+  players,
   myPlayer,
   myBet,
   gameState,
@@ -133,6 +135,50 @@ export const HorseRaceControllerView: React.FC<Props> = ({
             </h3>
             <span className="text-2xl font-black text-amber-500 tabular-nums">{gameState.timerSeconds}</span>
           </div>
+
+          {/*
+            SIRALAMA — kuponu doldururken görünmeli.
+            Ölçümde turnuva stratejisi (geride yüksek varyans, önde korumacı)
+            düz oynamaya karşı %54-%45 üstünlük veriyor. Ama oyuncu kimin
+            önde olduğunu görmezse bu beceriyi kullanamıyordu; şans oyununa
+            dönüşüyordu. Bilgi olmadan strateji olmaz.
+          */}
+          {(() => {
+            const sorted = [...players].sort((a, b) => b.money - a.money);
+            const lead = sorted[0]?.money ?? 0;
+            const mine = myPlayer?.money ?? 0;
+            const gap = lead - mine;
+            const lastRace = gameState.currentRace >= gameState.settings.totalRaces;
+            return (
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  {sorted.map((p, i) => (
+                    <span
+                      key={p.id}
+                      className={`px-2 py-1 rounded-lg text-[10px] font-black border ${
+                        p.id === myPlayer?.id
+                          ? 'bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 border-amber-400'
+                          : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700'
+                      }`}
+                    >
+                      {i + 1}. {p.name} {money(p.money)}₺
+                    </span>
+                  ))}
+                </div>
+                {gap > 0 && (
+                  <p className="text-[11px] font-black text-rose-600 dark:text-rose-400">
+                    Liderden {money(gap)} ₺ geridesin
+                    {lastRace ? ' · son yarış, riski yükseltmezsen yetişemezsin' : ''}
+                  </p>
+                )}
+                {gap === 0 && players.length > 1 && (
+                  <p className="text-[11px] font-black text-emerald-600 dark:text-emerald-400">
+                    Lidersin{lastRace ? ' · korumaya çekilmek mantıklı (plase)' : ''}
+                  </p>
+                )}
+              </div>
+            );
+          })()}
 
           {myBet ? (
             <div className="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 text-center space-y-1">
