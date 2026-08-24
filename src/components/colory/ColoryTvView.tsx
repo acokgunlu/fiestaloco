@@ -189,12 +189,59 @@ export const ColoryTvView: React.FC<Props> = ({
               {t('SONRAKİ TUR →')}</button>
           )}
           {gameState.phase === 'GAME_OVER' && (
-            <div className="text-center space-y-3 py-2">
-              <Trophy className="w-12 h-12 mx-auto text-amber-500" />
-              <h3 className="text-2xl font-black">{players.find((p) => p.id === gameState.winnerPlayerId)?.name} kazandı!</h3>
-              <button onClick={onRestartGame}
-                className="px-8 py-3.5 rounded-2xl bg-slate-900 dark:bg-slate-800 text-white font-black text-sm shadow-xl hover:scale-105 transition-transform inline-flex items-center gap-2 cursor-pointer">
-                <RotateCcw className="w-4 h-4" />  {t('YENİDEN OYNA')}</button>
+            <div className="space-y-5 py-2">
+              {/*
+                SON TURUN BUYUK KARSILASTIRMASI
+
+                Her kart ORTADAN IKIYE bolunmus: sol yari hedef renk, sag yari
+                oyuncunun tahmini. Tam tutturan kart tek duz renk gibi gorunur —
+                ayrim cizgisi gozden kaybolur. Iki rengi yan yana ayri kutularda
+                gostermek yerine BITISIK gostermenin sebebi bu: goz, kenarlarin
+                birlestigi yerdeki farki cok daha keskin secer (simultane
+                kontrast). "Ne kadar yakinmisim" sorusu sayiya bakmadan cevaplanir.
+              */}
+              {(gameState.results || []).length > 0 && gameState.target && (
+                <div className="p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl">
+                  <div className="text-center mb-4">
+                    <p className="text-xs font-black uppercase tracking-[0.25em] text-slate-500 dark:text-slate-400">
+                      {t('Hedefle karşılaştırma')}
+                    </p>
+                    <p className="text-[11px] font-bold text-slate-400 dark:text-slate-500">
+                      {t('Sol yarı doğru renk · sağ yarı tahmin — tam tutturanda çizgi kaybolur')}
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    {(gameState.results || []).map((g) => {
+                      const p = players.find((x) => x.id === g.playerId);
+                      return (
+                        <div key={g.playerId} className="space-y-1.5">
+                          <div className={`relative w-full rounded-2xl overflow-hidden shadow-lg border-4 ${
+                            g.rank === 1 ? 'border-amber-400' : 'border-white dark:border-slate-800'}`} style={{ height: '15vh', minHeight: 96 }}>
+                            <div className="absolute inset-y-0 left-0 w-1/2" style={{ backgroundColor: targetHex }} />
+                            <div className="absolute inset-y-0 right-0 w-1/2" style={{ backgroundColor: hslToHex(g.hsl) }} />
+                          </div>
+                          <div className="flex items-center justify-between px-1">
+                            <span className="text-sm font-black truncate">
+                              {g.rank === 1 ? '🥇 ' : `${g.rank}. `}{p?.avatar} {p?.name}
+                            </span>
+                            <span className="text-[11px] font-black text-slate-500 dark:text-slate-400 tabular-nums shrink-0">
+                              ΔE {g.deltaE}
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              <div className="text-center space-y-3">
+                <Trophy className="w-12 h-12 mx-auto text-amber-500" />
+                <h3 className="text-2xl font-black">{players.find((p) => p.id === gameState.winnerPlayerId)?.name} kazandı!</h3>
+                <button onClick={onRestartGame}
+                  className="px-8 py-3.5 rounded-2xl bg-slate-900 dark:bg-slate-800 text-white font-black text-sm shadow-xl hover:scale-105 transition-transform inline-flex items-center gap-2 cursor-pointer">
+                  <RotateCcw className="w-4 h-4" />  {t('YENİDEN OYNA')}</button>
+              </div>
             </div>
           )}
         </div>

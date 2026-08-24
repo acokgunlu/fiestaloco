@@ -9,13 +9,14 @@ import {
   Trophy,
   Sun,
   Moon,
+  Languages,
 } from 'lucide-react';
 import { GamePhase } from '../types';
 import { PartyGameType } from '../types/partyGames';
 import { playClickSound } from '../utils/audio';
 import { AppTheme } from '../utils/theme';
 
-import { t } from '../i18n';
+import { t, getLang, toggleLang } from '../i18n';
 interface HeaderBarProps {
   activeModule?: 'arcade_hub' | PartyGameType;
   phase?: GamePhase | string;
@@ -211,6 +212,20 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
             </button>
           )}
 
+          {/* Dil Secici — TR / EN. Oyun ya tamamen Turkce ya tamamen Ingilizce. */}
+          <button
+            id="btn-lang-toggle"
+            onClick={() => {
+              playClickSound();
+              toggleLang();
+            }}
+            className="px-2.5 py-1.5 rounded-xl text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 transition-all flex items-center gap-1 text-[11px] font-black shadow-xs cursor-pointer active:scale-95"
+            title={getLang() === 'tr' ? 'Switch to English' : "Türkçe'ye geç"}
+          >
+            <Languages className="w-3.5 h-3.5" />
+            <span>{getLang() === 'tr' ? 'TR' : 'EN'}</span>
+          </button>
+
           {/* Light / Dark Mode Toggle */}
           {onToggleTheme && (
             <button
@@ -220,7 +235,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
                 onToggleTheme();
               }}
               className="p-2 rounded-xl text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 transition-all flex items-center justify-center shadow-xs cursor-pointer active:scale-95"
-              title={theme === 'dark' ? 'Aydınlık Moda Geç' : 'Karanlık Moda Geç'}
+              title={theme === 'dark' ? t('Aydınlık Moda Geç') : t('Karanlık Moda Geç')}
             >
               {theme === 'dark' ? (
                 <Sun className="w-4 h-4 text-amber-400 fill-amber-400/20" />

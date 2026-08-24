@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useSyncExternalStore } from 'react';
 import { Player, Stroke, WordPair, GamePhase, GameSettings, RoundResult } from './types';
 import { CodenamesGameState, CodenamesSettings, CodenamesTeam } from './types/codenames';
 import { PartyGameType } from './types/partyGames';
@@ -40,11 +40,23 @@ import { useSocketRoom } from './utils/useSocketRoom';
 import { useCodenamesSocket } from './utils/useCodenamesSocket';
 import { isSoundEnabled, toggleSound } from './utils/audio';
 import { useAppTheme } from './utils/theme';
+import { subscribe as subscribeLang, getSnapshot as langSnapshot } from './i18n';
 
 import { t } from './i18n';
 export default function App() {
   // Theme handling (Light / Dark mode)
   const { theme, toggleTheme } = useAppTheme();
+
+  /**
+   * Dil degisimine abone ol.
+   *
+   * t() modul seviyesinde calisiyor; React'in dil degistigini anlamasi icin
+   * tek bir yerden haber vermek yetiyor. Kod tabaninda hic React.memo/useMemo
+   * olmadigi icin App'in yeniden render olmasi TUM agaci tazeliyor.
+   * MOUNT DEGIL RENDER: WebSocket baglantisi ve oyun durumu ayakta kaliyor,
+   * oyunun ortasinda dil degistiren kimse odadan dusmuyor.
+   */
+  useSyncExternalStore(subscribeLang, langSnapshot, langSnapshot);
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
 
   // Active Game Module: 'arcade_hub' | 'imposter' | 'codenames' | 'bluff' | 'bomb'

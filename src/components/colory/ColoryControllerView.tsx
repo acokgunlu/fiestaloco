@@ -68,12 +68,37 @@ export const ColoryControllerView: React.FC<Props> = ({
         </div>
       )}
 
+      {/*
+        HEDEF RENK TELEFONDA DA GOSTERILIR — bilerek.
+
+        TV paneliyle telefon paneli ayni rengi ayni gostermez (farkli panel
+        teknolojisi, farkli renk profili, TV'nin "canli mod" doygunluk
+        yukseltmesi). Oyuncu rengi TV'de gorup telefonda sectiginde, olctugumuz
+        seye iki ekran arasindaki kalibrasyon farki karisiyor ve bu oyuncunun
+        kontrol edemeyecegi bir hata kaynagi oluyor.
+        Hedefi SECIM YAPILACAK EKRANDA gostererek o farki devreden cikariyoruz.
+
+        Gizlilik acisindan yeni bir sey acilmiyor: sunucu SHOWING fazinda
+        hedefi zaten telefona gonderiyordu (yalniz GUESSING'de gizler).
+      */}
       {gameState.phase === 'SHOWING' && (
-        <div className="py-12 text-center space-y-3 rounded-3xl bg-white dark:bg-slate-900 border-2 border-fuchsia-300 dark:border-fuchsia-800 shadow-lg">
-          <Eye className="w-10 h-10 mx-auto text-fuchsia-500" />
-          <h3 className="text-xl font-black">{t("TV'ye bak!")}</h3>
-          <div className="text-5xl font-black text-fuchsia-600 dark:text-fuchsia-400 tabular-nums">{gameState.timerSeconds}</div>
-          <p className="text-xs font-bold text-slate-500 dark:text-slate-400">{t('Rengi aklında tut…')}</p>
+        <div className="space-y-3">
+          <div
+            className="relative w-full rounded-[2rem] border-8 border-white dark:border-slate-800 shadow-2xl flex items-start justify-end p-4"
+            style={{ backgroundColor: gameState.target ? hslToHex(gameState.target) : '#334155', height: '52vh' }}
+          >
+            <span className="px-4 py-1.5 rounded-2xl bg-slate-950/70 text-white text-3xl font-black tabular-nums backdrop-blur-sm">
+              {gameState.timerSeconds}
+            </span>
+          </div>
+          <div className="text-center space-y-1">
+            <h3 className="text-lg font-black flex items-center justify-center gap-2">
+              <Eye className="w-5 h-5 text-fuchsia-500" /> {t('Bu rengi aklında tut')}
+            </h3>
+            <p className="text-[11px] font-bold text-slate-500 dark:text-slate-400">
+              {t('Kendi ekranında gösteriliyor — TV rengi farklı gösterebilir')}
+            </p>
+          </div>
         </div>
       )}
 
