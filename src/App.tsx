@@ -28,6 +28,7 @@ import { CodenamesLobbyView } from './components/codenames/CodenamesLobbyView';
 import { CodenamesOnlineLobby } from './components/codenames/CodenamesOnlineLobby';
 import { HorseRaceGame } from './components/party/HorseRaceGame';
 import { ColoryGame } from './components/party/ColoryGame';
+import { TimingGame } from './components/party/TimingGame';
 import { CodenamesBoardView } from './components/codenames/CodenamesBoardView';
 import { CodenamesRulesModal } from './components/codenames/CodenamesRulesModal';
 import { BluffTriviaGame } from './components/party/BluffTriviaGame';
@@ -240,7 +241,9 @@ export default function App() {
     const roomParam = params.get('room');
     const gameParam = params.get('game');
 
-    if (gameParam === 'colory') {
+    if (gameParam === 'timing') {
+      setActiveModule('timing');
+    } else if (gameParam === 'colory') {
       setActiveModule('colory');
     } else if (gameParam === 'race') {
       setActiveModule('race');
@@ -680,6 +683,10 @@ export default function App() {
         {/* 8. QUIPLASH (MİZAH & KAPIŞMA) MODULE */}
         {activeModule === 'colory' && (
           <ColoryGame onBackToHub={() => setActiveModule('arcade_hub')} />
+        )}
+
+        {activeModule === 'timing' && (
+          <TimingGame onBackToHub={() => setActiveModule('arcade_hub')} />
         )}
 
         {activeModule === 'race' && (

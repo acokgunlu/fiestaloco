@@ -85,7 +85,8 @@ export type PersistedGameType =
   | 'trivia'
   | 'quiplash'
   | 'race'
-  | 'colory';
+  | 'colory'
+  | 'timing';
 
 // -----------------------------------------------------------------------------
 // Leaderboard / mac gecmisi

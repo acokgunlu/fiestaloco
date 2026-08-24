@@ -25,6 +25,7 @@ const GAME_META: Record<PersistedGameType, { title: string; icon: string }> = {
   quiplash: { title: 'Quiplash', icon: '🥊' },
   race: { title: 'At Yarışı', icon: '🏇' },
   colory: { title: 'Colory', icon: '🎨' },
+  timing: { title: 'Tam Zamanında', icon: '⏱️' },
 };
 
 type AnyPlayer = Record<string, any>;
@@ -150,7 +151,10 @@ export function detectFinishedMatch(gameType: PersistedGameType, room: AnyRoom):
   // ---------------------------------------------------------------------------
   // BOMB — son hayatta kalan kazanir
   // ---------------------------------------------------------------------------
-  if (gameType === 'colory') {
+  // ---------------------------------------------------------------------------
+  // COLORY / TAM ZAMANINDA — en yuksek toplam puan kazanir
+  // ---------------------------------------------------------------------------
+  if (gameType === 'colory' || gameType === 'timing') {
     if (gs.phase !== 'GAME_OVER') return null;
     const winnerId = gs.winnerPlayerId ? String(gs.winnerPlayerId) : null;
 
@@ -160,7 +164,7 @@ export function detectFinishedMatch(gameType: PersistedGameType, room: AnyRoom):
     const winnerEntry = recordPlayers.find((p) => p.isWinner);
 
     return {
-      dedupeKey: `colory:${room.code}:${winnerId ?? 'none'}:${num(gs.currentRound)}`,
+      dedupeKey: `${gameType}:${room.code}:${winnerId ?? 'none'}:${num(gs.currentRound)}`,
       record: {
         gameType,
         gameTitle: meta.title,

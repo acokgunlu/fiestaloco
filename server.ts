@@ -45,6 +45,19 @@ import {
   scoreFromDelta,
 } from './src/data/coloryLogic';
 import {
+  TimingGameState,
+  TimingPlayer,
+  TimingSettings,
+} from './src/types/timing';
+import {
+  latencyCorrection,
+  maxRunMs,
+  pickTargetMs,
+  pickMode as pickTimingMode,
+  scoreRound as scoreTimingRound,
+  type RawPress as TimingRawPress,
+} from './src/data/timingLogic';
+import {
   MAX_RACE_MS,
   TICK_MS,
   createRaceCard,
@@ -112,7 +125,7 @@ interface ConnectedClient {
   roomCode?: string;
   role?: 'observer' | 'player';
   playerId?: string;
-  gameType?: 'imposter' | 'codenames' | 'bomb' | 'bluff' | 'trivia' | 'quiplash' | 'race' | 'colory';
+  gameType?: 'imposter' | 'codenames' | 'bomb' | 'bluff' | 'trivia' | 'quiplash' | 'race' | 'colory' | 'timing';
 }
 
 interface ServerRoom {
@@ -215,6 +228,31 @@ interface ColoryServerRoom {
   phaseTimer: NodeJS.Timeout | null;
 }
 
+interface TimingServerRoom {
+  code: string;
+  observers: Set<WebSocket>;
+  playerSockets: Map<string, WebSocket>; // playerId -> ws
+  players: TimingPlayer[];
+  gameState: TimingGameState;
+  /** BRIEFING / COUNTDOWN saniye sayaci. */
+  phaseTimer: NodeJS.Timeout | null;
+  /** RUNNING tavani — kimse basmazsa turu bitirir. */
+  runTimeout: NodeJS.Timeout | null;
+  /** Gecikme olcum dongusu. RUNNING sirasinda mesaj gondermez. */
+  probeTimer: NodeJS.Timeout | null;
+  /**
+   * RUNNING yayininin gonderildigi an. TUM OLCUMUN SIFIR NOKTASI.
+   * 0 = su an olculen bir tur yok.
+   */
+  roundStartAt: number;
+  /** playerId -> olculmus EN DUSUK gidis-donus suresi (ms). */
+  rttMinMs: Record<string, number>;
+  /** playerId -> bekleyen olcumun gonderilme damgasi. */
+  probeSentAt: Record<string, number>;
+  /** playerId -> bu turdaki ham olcum (ms, telafi oncesi). */
+  pressRawMs: Record<string, number>;
+}
+
 const rooms = new Map<string, ServerRoom>();
 const codenamesRooms = new Map<string, CodenamesServerRoom>();
 const bombRooms = new Map<string, BombServerRoom>();
@@ -223,6 +261,7 @@ const triviaRooms = new Map<string, TriviaServerRoom>();
 const quiplashRooms = new Map<string, QuiplashServerRoom>();
 const raceRooms = new Map<string, HorseRaceServerRoom>();
 const coloryRooms = new Map<string, ColoryServerRoom>();
+const timingRooms = new Map<string, TimingServerRoom>();
 const clientMap = new Map<WebSocket, ConnectedClient>();
 
 // =============================================================================
@@ -288,6 +327,7 @@ const ROOM_REGISTRY: Array<{ gameType: PersistedGameType; map: Map<string, any> 
   { gameType: 'quiplash', map: quiplashRooms },
   { gameType: 'race', map: raceRooms },
   { gameType: 'colory', map: coloryRooms },
+  { gameType: 'timing', map: timingRooms },
 ];
 
 /** Ayni mac sonucunun tekrar tekrar yazilmasini engeller. */
@@ -1920,6 +1960,278 @@ function revealColory(room: ColoryServerRoom) {
   broadcastColoryRoomState(room, 'colory:reveal');
 }
 
+// =============================================================================
+// TAM ZAMANINDA — sure hissi oyunu
+// =============================================================================
+// Oyun milisaniyeyle olculuyor; bu yuzden buradaki iki sey kritik:
+//
+//   1) OLCUMUN SIFIR NOKTASI  room.roundStartAt — RUNNING yayininin gonderildigi an.
+//   2) GECIKME TELAFISI       her oyuncunun gidis-donus suresi ayri olculur ve
+//                             suresinden dusulur (bkz. src/data/timingLogic.ts).
+//
+// RUNNING sirasinda sunucu HICBIR YAYIN YAPMAZ (basana ozel tek onay disinda):
+// saniyede bir gelen paket telefonda metronom gorevi gorur ve oyunun tamamini
+// anlamsizlastirir.
+
+/** Gecikme olcum araligi (ms). RUNNING sirasinda calismaz. */
+const TIMING_PROBE_MS = 1000;
+
+function createFreshTimingGame(settings?: Partial<TimingSettings>): TimingGameState {
+  return {
+    phase: 'LOBBY',
+    currentRound: 1,
+    settings: {
+      totalRounds: Math.max(1, Math.min(15, settings?.totalRounds || 6)),
+      briefingSeconds: Math.max(2, Math.min(10, settings?.briefingSeconds || 4)),
+      countdownSeconds: Math.max(2, Math.min(6, settings?.countdownSeconds || 3)),
+    },
+    mode: 'EXACT',
+    targetMs: 10000,
+    timerSeconds: 0,
+    activePlayerIds: [],
+    pressedPlayerIds: [],
+    winnerPlayerId: null,
+    isOnline: true,
+  };
+}
+
+/** Faz sayaclarini durdurur. Gecikme olcumu (probeTimer) calismaya devam eder. */
+function clearTimingPhaseTimers(room: TimingServerRoom) {
+  if (room.phaseTimer) {
+    clearInterval(room.phaseTimer);
+    room.phaseTimer = null;
+  }
+  if (room.runTimeout) {
+    clearTimeout(room.runTimeout);
+    room.runTimeout = null;
+  }
+}
+
+/** Oda oldugunde her seyi durdurur. */
+function clearTimingAllTimers(room: TimingServerRoom) {
+  clearTimingPhaseTimers(room);
+  if (room.probeTimer) {
+    clearInterval(room.probeTimer);
+    room.probeTimer = null;
+  }
+}
+
+/**
+ * Gecikme olcum dongusu.
+ *
+ * Yankilanan deger sunucunun kendi damgasi DEGIL, sunucuda saklanan damgayla
+ * KARSILASTIRILIR. Istemcinin gonderdigi sayiya guvenseydik, eski bir damga
+ * yankilayan biri kendine 900 ms'e kadar sahte telafi yazdirabilirdi.
+ */
+function startTimingProbes(room: TimingServerRoom) {
+  if (room.probeTimer) return;
+  room.probeTimer = setInterval(() => {
+    const cur = timingRooms.get(room.code);
+    if (!cur) return;
+    if (cur.gameState.phase === 'RUNNING') return; // metronom olmasin
+    const now = Date.now();
+    cur.players.forEach((p) => {
+      const ws = cur.playerSockets.get(p.id);
+      if (!ws || ws.readyState !== WebSocket.OPEN) return;
+      cur.probeSentAt[p.id] = now;
+      ws.send(JSON.stringify({ type: 'timing:probe', n: now }));
+    });
+  }, TIMING_PROBE_MS);
+}
+
+/** Tek bir oyuncuya durum gonderir (yayin yapmadan). */
+function timingPayloadFor(room: TimingServerRoom, player: TimingPlayer, eventType: string): string {
+  const { publicState, publicPlayers } = timingPublicView(room);
+  return JSON.stringify({
+    type: eventType,
+    gameState: publicState,
+    players: publicPlayers,
+    myPlayer: { ...player },
+    myPressed: !!player.pressed,
+  });
+}
+
+/**
+ * Istemciye gidecek kirpilmis gorunum.
+ *
+ * RUNNING sirasinda `pressedPlayerIds` BOSALTILIR. "3 kisi basti" bilgisi tek
+ * basina bir saattir: masadakilerin ortalamasini bilen biri, ucuncu basisi
+ * gorup kendi zamanlamasini ona gore ayarlar ve olcmek istedigimiz sey
+ * (kendi zaman hissi) devre disi kalir.
+ */
+function timingPublicView(room: TimingServerRoom) {
+  const running = room.gameState.phase === 'RUNNING';
+  const publicState: TimingGameState = {
+    ...room.gameState,
+    roomCode: room.code,
+    pressedPlayerIds: running ? [] : room.gameState.pressedPlayerIds,
+  };
+  const publicPlayers = room.players.map((p) => ({
+    ...p,
+    pressed: running ? false : !!p.pressed,
+  }));
+  return { publicState, publicPlayers };
+}
+
+/**
+ * Durum yayini.
+ *
+ * Oyuncular ONCE, gozlemciler (TV) SONRA yazilir: olculen taraf oyuncular,
+ * onlarin "basla" isaretini almasi bir kac mikrosaniye bile olsa once olsun.
+ */
+function broadcastTimingRoomState(room: TimingServerRoom, eventType = 'timing:state') {
+  maybeRecordMatch('timing', room as any);
+  const { publicState, publicPlayers } = timingPublicView(room);
+
+  room.players.forEach((player) => {
+    const ws = room.playerSockets.get(player.id);
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(
+        JSON.stringify({
+          type: eventType,
+          gameState: publicState,
+          players: publicPlayers,
+          myPlayer: { ...player },
+          myPressed: !!player.pressed,
+        })
+      );
+    }
+  });
+
+  const tvPayload = JSON.stringify({ type: eventType, gameState: publicState, players: publicPlayers });
+  room.observers.forEach((ws) => {
+    if (ws.readyState === WebSocket.OPEN) ws.send(tvPayload);
+  });
+}
+
+/** Turun hedefini ve modunu duyurur. */
+function startTimingBriefing(room: TimingServerRoom) {
+  clearTimingPhaseTimers(room);
+  const gs = room.gameState;
+
+  gs.mode = pickTimingMode(gs.currentRound);
+  gs.targetMs = pickTargetMs(gs.targetMs);
+  gs.results = undefined;
+  gs.pressedPlayerIds = [];
+  gs.activePlayerIds = [];
+  room.pressRawMs = {};
+  room.roundStartAt = 0;
+  room.players.forEach((p) => {
+    p.pressed = false;
+    p.lastPoints = 0;
+  });
+
+  gs.phase = 'BRIEFING';
+  gs.timerSeconds = gs.settings.briefingSeconds;
+  broadcastTimingRoomState(room, 'timing:briefing');
+
+  room.phaseTimer = setInterval(() => {
+    const cur = timingRooms.get(room.code);
+    if (!cur || cur.gameState.phase !== 'BRIEFING') {
+      if (cur) clearTimingPhaseTimers(cur);
+      return;
+    }
+    cur.gameState.timerSeconds -= 1;
+    if (cur.gameState.timerSeconds <= 0) startTimingCountdown(cur);
+    else broadcastTimingRoomState(cur);
+  }, 1000);
+}
+
+/** 3 · 2 · 1. Bu turun oyuncu listesi burada kilitlenir. */
+function startTimingCountdown(room: TimingServerRoom) {
+  clearTimingPhaseTimers(room);
+  const gs = room.gameState;
+
+  // Tura dahil olanlar: su an gercekten bagli olanlar. Sonradan katilan
+  // "basla" isaretini almadigi icin bu turda olculemez.
+  gs.activePlayerIds = room.players
+    .filter((p) => p.connected !== false && room.playerSockets.has(p.id))
+    .map((p) => p.id);
+
+  gs.phase = 'COUNTDOWN';
+  gs.timerSeconds = gs.settings.countdownSeconds;
+  broadcastTimingRoomState(room, 'timing:countdown');
+
+  room.phaseTimer = setInterval(() => {
+    const cur = timingRooms.get(room.code);
+    if (!cur || cur.gameState.phase !== 'COUNTDOWN') {
+      if (cur) clearTimingPhaseTimers(cur);
+      return;
+    }
+    cur.gameState.timerSeconds -= 1;
+    if (cur.gameState.timerSeconds <= 0) startTimingRunning(cur);
+    else broadcastTimingRoomState(cur);
+  }, 1000);
+}
+
+/** Sayac gizli, herkes basiyor. */
+function startTimingRunning(room: TimingServerRoom) {
+  clearTimingPhaseTimers(room);
+  const gs = room.gameState;
+
+  gs.phase = 'RUNNING';
+  gs.timerSeconds = 0;
+  gs.pressedPlayerIds = [];
+  room.pressRawMs = {};
+  room.players.forEach((p) => { p.pressed = false; });
+
+  // Olcumun sifir noktasi. Yayindan hemen once damgalanir; aradaki JSON
+  // serilestirme mikrosaniyeler surer, ag gecikmesinin yaninda gorunmez.
+  room.roundStartAt = Date.now();
+  broadcastTimingRoomState(room, 'timing:running');
+
+  // Kimse basmazsa tur burada biter.
+  room.runTimeout = setTimeout(() => {
+    const cur = timingRooms.get(room.code);
+    if (cur && cur.gameState.phase === 'RUNNING') revealTiming(cur);
+  }, maxRunMs(gs.targetMs));
+}
+
+/** Basislari puanla, sirala, goster. */
+function revealTiming(room: TimingServerRoom) {
+  clearTimingPhaseTimers(room);
+  const gs = room.gameState;
+
+  const raw: TimingRawPress[] = gs.activePlayerIds
+    .filter((id) => room.pressRawMs[id] !== undefined)
+    .map((id) => ({
+      playerId: id,
+      rawMs: room.pressRawMs[id],
+      latencyMs: latencyCorrection(room.rttMinMs[id]),
+    }));
+
+  const results = scoreTimingRound(raw, gs.targetMs, gs.mode);
+
+  results.forEach((r) => {
+    const player = room.players.find((p) => p.id === r.playerId);
+    if (!player) return;
+    player.score += r.points;
+    player.lastPoints = r.points;
+    if (r.rank === 1) player.roundsWon = (player.roundsWon || 0) + 1;
+    if (!r.burned) {
+      player.bestErrorMs =
+        player.bestErrorMs === undefined ? r.absErrorMs : Math.min(player.bestErrorMs, r.absErrorMs);
+    }
+  });
+
+  // Hic basmayanlar 0 alir
+  room.players.forEach((p) => {
+    if (!results.some((r) => r.playerId === p.id)) p.lastPoints = 0;
+  });
+
+  gs.results = results;
+
+  const isLast = gs.currentRound >= gs.settings.totalRounds;
+  if (isLast) {
+    const best = [...room.players].sort((a, b) => b.score - a.score)[0];
+    gs.winnerPlayerId = best?.id || null;
+    gs.phase = 'GAME_OVER';
+  } else {
+    gs.phase = 'REVEAL';
+  }
+  broadcastTimingRoomState(room, 'timing:reveal');
+}
+
 function generateRoomCode(): string {
   for (let i = 0; i < 30; i++) {
     const word = ROOM_CODE_WORDS[Math.floor(Math.random() * ROOM_CODE_WORDS.length)];
@@ -1931,7 +2243,8 @@ function generateRoomCode(): string {
       !codenamesRooms.has(code) &&
       !triviaRooms.has(code) &&
       !raceRooms.has(code) &&
-      !coloryRooms.has(code)
+      !coloryRooms.has(code) &&
+      !timingRooms.has(code)
     ) {
       return code;
     }
@@ -2375,6 +2688,7 @@ async function startServer() {
       quiplash: quiplashRooms.size,
       race: raceRooms.size,
       colory: coloryRooms.size,
+      timing: timingRooms.size,
     };
     res.json({
       status: 'ok',
@@ -2677,15 +2991,228 @@ Return strictly a JSON array matching this schema:
     clientMap.set(ws, { ws });
 
     ws.on('message', (raw: string) => {
+      // Mesajin GELDIGI an. "Tam Zamaninda" oyunu sureyi milisaniyeyle
+      // olcuyor; damgayi ayristirmadan ONCE almak, JSON.parse ve uzun
+      // dispatcher zincirinin olcume karismasini onler.
+      const receivedAt = Date.now();
       try {
         const data = JSON.parse(raw.toString());
         const { type } = data;
 
         // =====================================================================
+        // TAM ZAMANINDA DISPATCHER
+        // =====================================================================
+
+        if (type === 'timing:create_room') {
+          const roomCode = generateRoomCode();
+          const newRoom: TimingServerRoom = {
+            code: roomCode,
+            observers: new Set([ws]),
+            playerSockets: new Map(),
+            players: [],
+            gameState: createFreshTimingGame(data.settings),
+            phaseTimer: null,
+            runTimeout: null,
+            probeTimer: null,
+            roundStartAt: 0,
+            rttMinMs: {},
+            probeSentAt: {},
+            pressRawMs: {},
+          };
+          timingRooms.set(roomCode, newRoom);
+          clientMap.set(ws, { ws, roomCode, role: 'observer', gameType: 'timing' });
+          ws.send(
+            JSON.stringify({
+              type: 'timing:room_created',
+              roomCode,
+              gameState: newRoom.gameState,
+              players: newRoom.players,
+            })
+          );
+        }
+
+        else if (type === 'timing:join_room') {
+          const roomCode = (data.roomCode || '').toUpperCase().trim();
+          const room = timingRooms.get(roomCode);
+          if (!room) {
+            ws.send(JSON.stringify({ type: 'timing:error', message: `Oda bulunamadi: "${roomCode}"` }));
+            return;
+          }
+
+          const role = data.role === 'observer' ? 'observer' : 'player';
+          if (role === 'observer') {
+            room.observers.add(ws);
+            clientMap.set(ws, { ws, roomCode, role: 'observer', gameType: 'timing' });
+            ws.send(
+              JSON.stringify({
+                type: 'timing:room_joined',
+                roomCode,
+                role: 'observer',
+                gameState: room.gameState,
+                players: room.players,
+              })
+            );
+            return;
+          }
+
+          // Gec katilim serbest: yeni oyuncu SIRADAKI turdan itibaren oynar
+          // (bu turun "basla" isaretini almadigi icin olculemez).
+          const playerId = data.playerId || `tm-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+          let player = room.players.find((p) => p.id === playerId);
+          if (!player) {
+            player = {
+              id: playerId,
+              name: (data.playerName || data.name || 'Oyuncu').trim().substring(0, 18),
+              avatar: data.avatar || '\u{23F1}',
+              color: data.color || '#0ea5e9',
+              colorName: data.colorName || 'Mavi',
+              score: 0,
+              roundsWon: 0,
+              pressed: false,
+              connected: true,
+              isHost: room.players.length === 0,
+            };
+            room.players.push(player);
+          } else {
+            player.connected = true;
+          }
+
+          room.playerSockets.set(player.id, ws);
+          clientMap.set(ws, { ws, roomCode, role: 'player', playerId: player.id, gameType: 'timing' });
+          // Yeni oyuncunun gecikmesi olculmeye baslasin — ilk turuna kadar
+          // bir suru ornek toplanir.
+          startTimingProbes(room);
+          ws.send(
+            JSON.stringify({
+              type: 'timing:room_joined',
+              roomCode,
+              role: 'player',
+              playerId: player.id,
+              player,
+              gameState: room.gameState,
+              players: room.players,
+            })
+          );
+          broadcastTimingRoomState(room);
+        }
+
+        /**
+         * Gecikme olcumunun yaniti.
+         *
+         * `data.n` yalnizca ESLESTIRME icin kullanilir; sure sunucudaki
+         * damgadan hesaplanir. Istemcinin gonderdigi sayiya guvenilseydi,
+         * eski bir damga yankilayan biri kendine sahte telafi yazdirabilirdi.
+         */
+        else if (type === 'timing:probe_ack') {
+          const client = clientMap.get(ws);
+          if (!client?.roomCode || !client.playerId) return;
+          const room = timingRooms.get(client.roomCode);
+          if (!room) return;
+          const sentAt = room.probeSentAt[client.playerId];
+          if (!sentAt || Number(data.n) !== sentAt) return;
+          delete room.probeSentAt[client.playerId]; // tekrar yankilanamasin
+          const rtt = receivedAt - sentAt;
+          if (!Number.isFinite(rtt) || rtt < 0 || rtt > 10000) return;
+          const prev = room.rttMinMs[client.playerId];
+          // MINIMUM filtresi (NTP mantigi): ortalama, anlik ag tikanmalarini
+          // ve cop toplayici duraklamalarini iceri alip gecikmeyi oldugundan
+          // buyuk gosterir. Minimum gercek ag tabanina yakinsar.
+          room.rttMinMs[client.playerId] = prev === undefined ? rtt : Math.min(prev, rtt);
+        }
+
+        else if (type === 'timing:start_game') {
+          const client = clientMap.get(ws);
+          if (!client?.roomCode) return;
+          const room = timingRooms.get(client.roomCode);
+          if (!room) return;
+          if (room.players.length < 1) {
+            ws.send(JSON.stringify({ type: 'timing:error', message: 'En az 1 oyuncu gerekli.' }));
+            return;
+          }
+          room.players.forEach((p) => {
+            p.score = 0;
+            p.roundsWon = 0;
+            p.pressed = false;
+            p.lastPoints = 0;
+            p.bestErrorMs = undefined;
+          });
+          room.gameState.currentRound = 1;
+          room.gameState.winnerPlayerId = null;
+          room.gameState.targetMs = 0; // ilk hedef serbestce secilsin
+          startTimingProbes(room);
+          startTimingBriefing(room);
+        }
+
+        else if (type === 'timing:press') {
+          const client = clientMap.get(ws);
+          if (!client?.roomCode || !client.playerId) return;
+          const room = timingRooms.get(client.roomCode);
+          if (!room || room.gameState.phase !== 'RUNNING') return;
+          if (!room.roundStartAt) return;
+
+          const playerId = client.playerId;
+          const player = room.players.find((p) => p.id === playerId);
+          if (!player) return;
+          // Tura dahil olmayan (sonradan katilan) olculemez
+          if (!room.gameState.activePlayerIds.includes(playerId)) return;
+          // Tek basis — ikincisi yok sayilir
+          if (room.pressRawMs[playerId] !== undefined) return;
+
+          const rawMs = receivedAt - room.roundStartAt;
+          // Sunucu yeniden basladiysa roundStartAt bayat kalmis olabilir;
+          // makul araligin disindaki olcumu kabul etme.
+          if (!Number.isFinite(rawMs) || rawMs < 0 || rawMs > maxRunMs(room.gameState.targetMs) + 5000) return;
+
+          room.pressRawMs[playerId] = rawMs;
+          room.gameState.pressedPlayerIds.push(playerId);
+          player.pressed = true;
+
+          // YAYIN YOK — yalnizca basana onay. Yayin yapsaydik hem "kim basti"
+          // sizardi hem de digerlerinin telefonuna o anda bir paket duserdi.
+          const ownWs = room.playerSockets.get(playerId);
+          if (ownWs && ownWs.readyState === WebSocket.OPEN) {
+            ownWs.send(timingPayloadFor(room, player, 'timing:press_ok'));
+          }
+
+          const active = room.gameState.activePlayerIds;
+          if (active.length > 0 && active.every((id) => room.pressRawMs[id] !== undefined)) {
+            revealTiming(room);
+          }
+        }
+
+        else if (type === 'timing:next_round') {
+          const client = clientMap.get(ws);
+          if (!client?.roomCode) return;
+          const room = timingRooms.get(client.roomCode);
+          if (!room || room.gameState.phase !== 'REVEAL') return;
+          room.gameState.currentRound += 1;
+          startTimingBriefing(room);
+        }
+
+        else if (type === 'timing:restart_game') {
+          const client = clientMap.get(ws);
+          if (!client?.roomCode) return;
+          const room = timingRooms.get(client.roomCode);
+          if (!room) return;
+          clearTimingPhaseTimers(room);
+          room.players.forEach((p) => {
+            p.score = 0;
+            p.roundsWon = 0;
+            p.pressed = false;
+            p.lastPoints = 0;
+            p.bestErrorMs = undefined;
+          });
+          room.gameState = createFreshTimingGame(room.gameState.settings);
+          room.pressRawMs = {};
+          room.roundStartAt = 0;
+          broadcastTimingRoomState(room);
+        }
+
+        // =====================================================================
         // COLORY DISPATCHER
         // =====================================================================
 
-        if (type === 'colory:create_room') {
+        else if (type === 'colory:create_room') {
           const roomCode = generateRoomCode();
           const newRoom: ColoryServerRoom = {
             code: roomCode,
@@ -5106,7 +5633,31 @@ Return strictly a JSON array matching this schema:
     ws.on('close', () => {
       const client = clientMap.get(ws);
       if (client?.roomCode) {
-        if (client.gameType === 'colory') {
+        if (client.gameType === 'timing') {
+          const room = timingRooms.get(client.roomCode);
+          if (room) {
+            if (client.role === 'observer') {
+              room.observers.delete(ws);
+            } else if (client.playerId) {
+              room.playerSockets.delete(client.playerId);
+              delete room.probeSentAt[client.playerId];
+              const p = room.players.find((pl) => pl.id === client.playerId);
+              if (p) p.connected = false;
+            }
+            broadcastTimingRoomState(room);
+
+            if (room.observers.size === 0 && room.playerSockets.size === 0) {
+              setTimeout(() => {
+                const current = timingRooms.get(client.roomCode!);
+                if (current && current.observers.size === 0 && current.playerSockets.size === 0) {
+                  clearTimingAllTimers(current);
+                  timingRooms.delete(client.roomCode!);
+                  forgetRoom('timing', client.roomCode!);
+                }
+              }, 180000);
+            }
+          }
+        } else if (client.gameType === 'colory') {
           const room = coloryRooms.get(client.roomCode);
           if (room) {
             if (client.role === 'observer') {

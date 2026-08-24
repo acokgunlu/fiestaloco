@@ -60,6 +60,8 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
         return '🏇';
       case 'colory':
         return '🎨';
+      case 'timing':
+        return '⏱️';
       default:
         return '🎮';
     }
@@ -81,6 +83,8 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
         return 'At Yarışı';
       case 'colory':
         return 'Colory';
+      case 'timing':
+        return 'Tam Zamanında';
       default:
         return 'Parti Merkezi';
     }
@@ -102,6 +106,8 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
         return 'Ganyan · plase · ikili — kuponunu yatır';
       case 'colory':
         return 'Rengi hatırla, en yakınını bul';
+      case 'timing':
+        return 'İçinden say, tam vaktinde bas';
       default:
         return 'Çok oyunculu parti oyunları';
     }
