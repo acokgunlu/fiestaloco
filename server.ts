@@ -31,6 +31,20 @@ import {
   TRACK_LENGTH,
 } from './src/types/horseRace';
 import {
+  ColoryGameState,
+  ColoryGuess,
+  ColoryPlayer,
+  ColorySettings,
+  Hsl,
+} from './src/types/colory';
+import {
+  colorDistance,
+  defaultGuess,
+  randomTarget,
+  rankBonus,
+  scoreFromDelta,
+} from './src/data/coloryLogic';
+import {
   MAX_RACE_MS,
   TICK_MS,
   createRaceCard,
@@ -98,7 +112,7 @@ interface ConnectedClient {
   roomCode?: string;
   role?: 'observer' | 'player';
   playerId?: string;
-  gameType?: 'imposter' | 'codenames' | 'bomb' | 'bluff' | 'trivia' | 'quiplash' | 'race';
+  gameType?: 'imposter' | 'codenames' | 'bomb' | 'bluff' | 'trivia' | 'quiplash' | 'race' | 'colory';
 }
 
 interface ServerRoom {
@@ -192,6 +206,15 @@ interface HorseRaceServerRoom {
   raceElapsedMs: number;
 }
 
+interface ColoryServerRoom {
+  code: string;
+  observers: Set<WebSocket>;
+  playerSockets: Map<string, WebSocket>; // playerId -> ws
+  players: ColoryPlayer[];
+  gameState: ColoryGameState;
+  phaseTimer: NodeJS.Timeout | null;
+}
+
 const rooms = new Map<string, ServerRoom>();
 const codenamesRooms = new Map<string, CodenamesServerRoom>();
 const bombRooms = new Map<string, BombServerRoom>();
@@ -199,6 +222,7 @@ const bluffRooms = new Map<string, BluffServerRoom>();
 const triviaRooms = new Map<string, TriviaServerRoom>();
 const quiplashRooms = new Map<string, QuiplashServerRoom>();
 const raceRooms = new Map<string, HorseRaceServerRoom>();
+const coloryRooms = new Map<string, ColoryServerRoom>();
 const clientMap = new Map<WebSocket, ConnectedClient>();
 
 // =============================================================================
@@ -263,6 +287,7 @@ const ROOM_REGISTRY: Array<{ gameType: PersistedGameType; map: Map<string, any> 
   { gameType: 'trivia', map: triviaRooms },
   { gameType: 'quiplash', map: quiplashRooms },
   { gameType: 'race', map: raceRooms },
+  { gameType: 'colory', map: coloryRooms },
 ];
 
 /** Ayni mac sonucunun tekrar tekrar yazilmasini engeller. */
@@ -1728,6 +1753,173 @@ function finishRace(room: HorseRaceServerRoom) {
   broadcastHorseRaceRoomState(room, 'race:results');
 }
 
+// =============================================================================
+// COLORY — renk hafizasi oyunu
+// =============================================================================
+
+function createFreshColoryGame(settings?: Partial<ColorySettings>): ColoryGameState {
+  return {
+    phase: 'LOBBY',
+    currentRound: 1,
+    settings: {
+      totalRounds: Math.max(1, Math.min(15, settings?.totalRounds || 5)),
+      showSeconds: Math.max(2, Math.min(15, settings?.showSeconds || 5)),
+      guessSeconds: Math.max(5, Math.min(60, settings?.guessSeconds || 20)),
+    },
+    target: null,
+    guessedPlayerIds: [],
+    timerSeconds: 0,
+    winnerPlayerId: null,
+    isOnline: true,
+  };
+}
+
+function clearColoryTimer(room: ColoryServerRoom) {
+  if (room.phaseTimer) {
+    clearInterval(room.phaseTimer);
+    room.phaseTimer = null;
+  }
+}
+
+/**
+ * Durum yayini.
+ *
+ * HEDEF RENK GIZLILIGI: `target` yalnizca SHOWING ve REVEAL fazlarinda
+ * gonderilir. GUESSING sirasinda gonderilseydi oyuncu tarayici konsolundan
+ * bakip birebir tutturabilirdi — oyunun tamami anlamsiz kalirdi.
+ * Ayni sekilde baskalarinin tahmini de GUESSING'de sizmaz.
+ */
+function broadcastColoryRoomState(room: ColoryServerRoom, eventType = 'colory:state') {
+  maybeRecordMatch('colory', room as any);
+  const hideTarget = room.gameState.phase === 'GUESSING';
+  const hideGuesses = room.gameState.phase !== 'REVEAL' && room.gameState.phase !== 'GAME_OVER';
+
+  const publicState = {
+    ...room.gameState,
+    roomCode: room.code,
+    target: hideTarget ? null : room.gameState.target ?? null,
+  };
+  const publicPlayers = room.players.map((p) => ({
+    ...p,
+    guess: hideGuesses ? null : p.guess ?? null,
+  }));
+
+  const base = { gameState: publicState, players: publicPlayers };
+  const tvPayload = JSON.stringify({ type: eventType, ...base });
+  room.observers.forEach((ws) => {
+    if (ws.readyState === WebSocket.OPEN) ws.send(tvPayload);
+  });
+
+  room.players.forEach((player) => {
+    const ws = room.playerSockets.get(player.id);
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(
+        JSON.stringify({
+          type: eventType,
+          ...base,
+          myPlayer: { ...player, guess: player.guess ?? null },
+          myGuess: player.guess ?? null,
+        })
+      );
+    }
+  });
+}
+
+/** Hedefi uret ve TV'de goster. */
+function startColoryShowing(room: ColoryServerRoom) {
+  clearColoryTimer(room);
+  room.gameState.target = randomTarget();
+  room.gameState.guessedPlayerIds = [];
+  room.gameState.results = undefined;
+  room.players.forEach((p) => {
+    p.guess = null;
+    p.lastPoints = 0;
+  });
+  room.gameState.phase = 'SHOWING';
+  room.gameState.timerSeconds = room.gameState.settings.showSeconds;
+  broadcastColoryRoomState(room, 'colory:showing');
+
+  room.phaseTimer = setInterval(() => {
+    const cur = coloryRooms.get(room.code);
+    if (!cur || cur.gameState.phase !== 'SHOWING') {
+      if (cur) clearColoryTimer(cur);
+      return;
+    }
+    cur.gameState.timerSeconds -= 1;
+    if (cur.gameState.timerSeconds <= 0) startColoryGuessing(cur);
+    else broadcastColoryRoomState(cur);
+  }, 1000);
+}
+
+function startColoryGuessing(room: ColoryServerRoom) {
+  clearColoryTimer(room);
+  room.gameState.phase = 'GUESSING';
+  room.gameState.timerSeconds = room.gameState.settings.guessSeconds;
+  broadcastColoryRoomState(room, 'colory:guessing');
+
+  room.phaseTimer = setInterval(() => {
+    const cur = coloryRooms.get(room.code);
+    if (!cur || cur.gameState.phase !== 'GUESSING') {
+      if (cur) clearColoryTimer(cur);
+      return;
+    }
+    cur.gameState.timerSeconds -= 1;
+    if (cur.gameState.timerSeconds <= 0) revealColory(cur);
+    else broadcastColoryRoomState(cur);
+  }, 1000);
+}
+
+/** Tahminleri olcup puanla, sirala, goster. */
+function revealColory(room: ColoryServerRoom) {
+  clearColoryTimer(room);
+  const target = room.gameState.target;
+  if (!target) return;
+
+  const scored: ColoryGuess[] = room.players
+    .filter((p) => !!p.guess)
+    .map((p) => {
+      const d = colorDistance(target, p.guess as Hsl);
+      return {
+        playerId: p.id,
+        hsl: p.guess as Hsl,
+        deltaE: Math.round(d * 10) / 10,
+        points: scoreFromDelta(d),
+        rank: 0,
+      };
+    })
+    .sort((a, b) => a.deltaE - b.deltaE);
+
+  scored.forEach((g, i) => {
+    g.rank = i + 1;
+    g.points += rankBonus(g.rank);
+    const player = room.players.find((p) => p.id === g.playerId);
+    if (player) {
+      player.score += g.points;
+      player.lastPoints = g.points;
+      if (g.rank === 1) player.roundsWon = (player.roundsWon || 0) + 1;
+      player.bestDeltaE =
+        player.bestDeltaE === undefined ? g.deltaE : Math.min(player.bestDeltaE, g.deltaE);
+    }
+  });
+
+  // Tahmin vermeyenler 0 alir
+  room.players.forEach((p) => {
+    if (!p.guess) p.lastPoints = 0;
+  });
+
+  room.gameState.results = scored;
+
+  const isLast = room.gameState.currentRound >= room.gameState.settings.totalRounds;
+  if (isLast) {
+    const best = [...room.players].sort((a, b) => b.score - a.score)[0];
+    room.gameState.winnerPlayerId = best?.id || null;
+    room.gameState.phase = 'GAME_OVER';
+  } else {
+    room.gameState.phase = 'REVEAL';
+  }
+  broadcastColoryRoomState(room, 'colory:reveal');
+}
+
 function generateRoomCode(): string {
   for (let i = 0; i < 30; i++) {
     const word = ROOM_CODE_WORDS[Math.floor(Math.random() * ROOM_CODE_WORDS.length)];
@@ -1738,7 +1930,8 @@ function generateRoomCode(): string {
       !bombRooms.has(code) &&
       !codenamesRooms.has(code) &&
       !triviaRooms.has(code) &&
-      !raceRooms.has(code)
+      !raceRooms.has(code) &&
+      !coloryRooms.has(code)
     ) {
       return code;
     }
@@ -2181,6 +2374,7 @@ async function startServer() {
       trivia: triviaRooms.size,
       quiplash: quiplashRooms.size,
       race: raceRooms.size,
+      colory: coloryRooms.size,
     };
     res.json({
       status: 'ok',
@@ -2488,10 +2682,176 @@ Return strictly a JSON array matching this schema:
         const { type } = data;
 
         // =====================================================================
+        // COLORY DISPATCHER
+        // =====================================================================
+
+        if (type === 'colory:create_room') {
+          const roomCode = generateRoomCode();
+          const newRoom: ColoryServerRoom = {
+            code: roomCode,
+            observers: new Set([ws]),
+            playerSockets: new Map(),
+            players: [],
+            gameState: createFreshColoryGame(data.settings),
+            phaseTimer: null,
+          };
+          coloryRooms.set(roomCode, newRoom);
+          clientMap.set(ws, { ws, roomCode, role: 'observer', gameType: 'colory' });
+          ws.send(
+            JSON.stringify({
+              type: 'colory:room_created',
+              roomCode,
+              gameState: newRoom.gameState,
+              players: newRoom.players,
+            })
+          );
+        }
+
+        else if (type === 'colory:join_room') {
+          const roomCode = (data.roomCode || '').toUpperCase().trim();
+          const room = coloryRooms.get(roomCode);
+          if (!room) {
+            ws.send(JSON.stringify({ type: 'colory:error', message: `Oda bulunamadi: "${roomCode}"` }));
+            return;
+          }
+
+          const role = data.role === 'observer' ? 'observer' : 'player';
+          if (role === 'observer') {
+            room.observers.add(ws);
+            clientMap.set(ws, { ws, roomCode, role: 'observer', gameType: 'colory' });
+            ws.send(
+              JSON.stringify({
+                type: 'colory:room_joined',
+                roomCode,
+                role: 'observer',
+                gameState: room.gameState,
+                players: room.players,
+              })
+            );
+            return;
+          }
+
+          // Gec katilim serbest: yeni oyuncu siradaki turdan itibaren oynar.
+          const playerId = data.playerId || `cl-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+          let player = room.players.find((p) => p.id === playerId);
+          if (!player) {
+            player = {
+              id: playerId,
+              name: (data.playerName || data.name || 'Oyuncu').trim().substring(0, 18),
+              avatar: data.avatar || '\u{1F3A8}',
+              color: data.color || '#8b5cf6',
+              colorName: data.colorName || 'Mor',
+              score: 0,
+              roundsWon: 0,
+              guess: null,
+              connected: true,
+              isHost: room.players.length === 0,
+            };
+            room.players.push(player);
+          } else {
+            player.connected = true;
+          }
+
+          room.playerSockets.set(player.id, ws);
+          clientMap.set(ws, { ws, roomCode, role: 'player', playerId: player.id, gameType: 'colory' });
+          ws.send(
+            JSON.stringify({
+              type: 'colory:room_joined',
+              roomCode,
+              role: 'player',
+              playerId: player.id,
+              player,
+              gameState: room.gameState,
+              players: room.players,
+            })
+          );
+          broadcastColoryRoomState(room);
+        }
+
+        else if (type === 'colory:start_game') {
+          const client = clientMap.get(ws);
+          if (!client?.roomCode) return;
+          const room = coloryRooms.get(client.roomCode);
+          if (!room) return;
+          if (room.players.length < 1) {
+            ws.send(JSON.stringify({ type: 'colory:error', message: 'En az 1 oyuncu gerekli.' }));
+            return;
+          }
+          room.players.forEach((p) => {
+            p.score = 0;
+            p.roundsWon = 0;
+            p.guess = null;
+            p.lastPoints = 0;
+            p.bestDeltaE = undefined;
+          });
+          room.gameState.currentRound = 1;
+          room.gameState.winnerPlayerId = null;
+          startColoryShowing(room);
+        }
+
+        else if (type === 'colory:submit_guess') {
+          const client = clientMap.get(ws);
+          if (!client?.roomCode || !client.playerId) return;
+          const room = coloryRooms.get(client.roomCode);
+          if (!room || room.gameState.phase !== 'GUESSING') return;
+
+          const player = room.players.find((p) => p.id === client.playerId);
+          if (!player) return;
+
+          // Istemciye guvenme: HSL araligi disi deger gelirse kirp
+          const g = data.hsl || {};
+          const hsl: Hsl = {
+            h: ((Number(g.h) % 360) + 360) % 360 || 0,
+            s: Math.max(0, Math.min(100, Number(g.s))),
+            l: Math.max(0, Math.min(100, Number(g.l))),
+          };
+          if (!Number.isFinite(hsl.h) || !Number.isFinite(hsl.s) || !Number.isFinite(hsl.l)) return;
+
+          player.guess = hsl;
+          if (!room.gameState.guessedPlayerIds.includes(player.id)) {
+            room.gameState.guessedPlayerIds.push(player.id);
+          }
+
+          // Herkes verdiyse beklemeye gerek yok
+          const connected = room.players.filter((p) => p.connected !== false);
+          if (connected.length > 0 && connected.every((p) => !!p.guess)) {
+            revealColory(room);
+          } else {
+            broadcastColoryRoomState(room);
+          }
+        }
+
+        else if (type === 'colory:next_round') {
+          const client = clientMap.get(ws);
+          if (!client?.roomCode) return;
+          const room = coloryRooms.get(client.roomCode);
+          if (!room || room.gameState.phase !== 'REVEAL') return;
+          room.gameState.currentRound += 1;
+          startColoryShowing(room);
+        }
+
+        else if (type === 'colory:restart_game') {
+          const client = clientMap.get(ws);
+          if (!client?.roomCode) return;
+          const room = coloryRooms.get(client.roomCode);
+          if (!room) return;
+          clearColoryTimer(room);
+          room.players.forEach((p) => {
+            p.score = 0;
+            p.roundsWon = 0;
+            p.guess = null;
+            p.lastPoints = 0;
+            p.bestDeltaE = undefined;
+          });
+          room.gameState = createFreshColoryGame(room.gameState.settings);
+          broadcastColoryRoomState(room);
+        }
+
+        // =====================================================================
         // AT YARIŞI / HORSE RACE DISPATCHER
         // =====================================================================
 
-        if (type === 'race:create_room') {
+        else if (type === 'race:create_room') {
           const roomCode = generateRoomCode();
           const newRoom: HorseRaceServerRoom = {
             code: roomCode,
@@ -4746,7 +5106,30 @@ Return strictly a JSON array matching this schema:
     ws.on('close', () => {
       const client = clientMap.get(ws);
       if (client?.roomCode) {
-        if (client.gameType === 'race') {
+        if (client.gameType === 'colory') {
+          const room = coloryRooms.get(client.roomCode);
+          if (room) {
+            if (client.role === 'observer') {
+              room.observers.delete(ws);
+            } else if (client.playerId) {
+              room.playerSockets.delete(client.playerId);
+              const p = room.players.find((pl) => pl.id === client.playerId);
+              if (p) p.connected = false;
+            }
+            broadcastColoryRoomState(room);
+
+            if (room.observers.size === 0 && room.playerSockets.size === 0) {
+              setTimeout(() => {
+                const current = coloryRooms.get(client.roomCode!);
+                if (current && current.observers.size === 0 && current.playerSockets.size === 0) {
+                  clearColoryTimer(current);
+                  coloryRooms.delete(client.roomCode!);
+                  forgetRoom('colory', client.roomCode!);
+                }
+              }, 180000);
+            }
+          }
+        } else if (client.gameType === 'race') {
           const room = raceRooms.get(client.roomCode);
           if (room) {
             if (client.role === 'observer') {

@@ -84,7 +84,8 @@ export type PersistedGameType =
   | 'bluff'
   | 'trivia'
   | 'quiplash'
-  | 'race';
+  | 'race'
+  | 'colory';
 
 // -----------------------------------------------------------------------------
 // Leaderboard / mac gecmisi

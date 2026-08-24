@@ -8,7 +8,8 @@ export type GameModuleType =
   | 'verdict'
   | 'trivia_pursuit'
   | 'quiplash'
-  | 'race';
+  | 'race'
+  | 'colory';
 
 export interface PlayerStats {
   name: string;
@@ -130,6 +131,7 @@ export function recordMatchResult(entry: Omit<MatchHistoryEntry, 'id' | 'playedA
       if (entry.gameType === 'imposter' && p.isWinner) newBadges.add('🎨 Sanat Dedektifi');
       if (entry.gameType === 'verdict' && p.isWinner) newBadges.add('⚖️ Grup Yargıcı');
       if (entry.gameType === 'race' && p.isWinner) newBadges.add('🏇 Pist Kralı');
+      if (entry.gameType === 'colory' && p.isWinner) newBadges.add('🎨 Renk Ustası');
       if (entry.gameType === 'quiplash' && p.isWinner) newBadges.add('🥊 Mizah Şampiyonu');
 
       existing.badges = Array.from(newBadges);
@@ -168,6 +170,7 @@ const GAME_LABELS: Record<GameModuleType, { title: string; icon: string }> = {
   trivia_pursuit: { title: 'Trivia Pursuit', icon: '🧠' },
   quiplash: { title: 'Quiplash', icon: '🥊' },
   race: { title: 'At Yarışı', icon: '🏇' },
+  colory: { title: 'Colory', icon: '🎨' },
 };
 
 /**

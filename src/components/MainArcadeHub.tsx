@@ -149,7 +149,7 @@ export function MainArcadeHub({
             </div>
           </div>
           <span className="hidden sm:inline-flex px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 text-xs font-black border border-indigo-200 dark:border-indigo-800">
-            7 Canlı Modül
+            8 Canlı Modül
           </span>
         </div>
 
@@ -571,6 +571,66 @@ export function MainArcadeHub({
               >
                 <Play className="w-4 h-4 fill-white" />
                 <span>PİSTE ÇIK</span>
+              </button>
+            </div>
+          </div>
+
+          {/* GAME 7: COLORY (RENK HAFIZASI) */}
+          <div
+            id="card-game-colory"
+            className="bg-white dark:bg-slate-900 rounded-3xl p-6 border-3 border-fuchsia-100 dark:border-slate-800 hover:border-fuchsia-400 dark:hover:border-fuchsia-500 shadow-md hover:shadow-xl transition-all duration-200 flex flex-col justify-between group game-card-pop relative overflow-hidden"
+          >
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-fuchsia-500 via-amber-400 to-cyan-400 text-white flex items-center justify-center text-2xl font-black shadow-md border-2 border-white dark:border-slate-700">
+                  🎨
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="px-2.5 py-1 rounded-full bg-fuchsia-100 dark:bg-fuchsia-950 text-fuchsia-800 dark:text-fuchsia-300 text-[11px] font-black border border-fuchsia-300 dark:border-fuchsia-800">
+                    RENK HAFIZASI
+                  </span>
+                  <span className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[11px] font-bold">
+                    2-12 Oyuncu
+                  </span>
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <h3 className="text-xl font-black text-slate-900 dark:text-white group-hover:text-fuchsia-600 dark:group-hover:text-fuchsia-400 transition-colors">
+                  Colory
+                </h3>
+                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
+                  TV'de bir renk birkaç saniye görünür ve kaybolur. Telefonundan aynısını seçmeye çalış — en yakın tutturan turu alır. Gözüne ne kadar güveniyorsun?
+                </p>
+              </div>
+
+              <div className="flex flex-wrap gap-1.5 pt-1">
+                <span className="px-2 py-0.5 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 text-[10px] font-bold">
+                  📺 TV Host
+                </span>
+                <span className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold">
+                  📱 Telefon Paleti
+                </span>
+                <span className="px-2 py-0.5 rounded-lg bg-cyan-50 dark:bg-cyan-950 text-cyan-700 dark:text-cyan-300 text-[10px] font-bold">
+                  👁️ Algısal Ölçüm
+                </span>
+                <span className="px-2 py-0.5 rounded-lg bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300 text-[10px] font-bold">
+                  ♾️ Hiç Tekrar Etmez
+                </span>
+              </div>
+            </div>
+
+            <div className="pt-6">
+              <button
+                id="btn-launch-colory"
+                onClick={() => {
+                  playTurnSound();
+                  onSelectGame('colory');
+                }}
+                className="w-full py-3.5 bg-gradient-to-r from-fuchsia-600 to-cyan-500 hover:from-fuchsia-500 hover:to-cyan-400 text-white font-black text-xs rounded-2xl shadow-md btn-party flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <Play className="w-4 h-4 fill-white" />
+                <span>PALETİ AÇ</span>
               </button>
             </div>
           </div>

@@ -24,6 +24,7 @@ const GAME_META: Record<PersistedGameType, { title: string; icon: string }> = {
   trivia: { title: 'Trivia Pursuit', icon: '🧠' },
   quiplash: { title: 'Quiplash', icon: '🥊' },
   race: { title: 'At Yarışı', icon: '🏇' },
+  colory: { title: 'Colory', icon: '🎨' },
 };
 
 type AnyPlayer = Record<string, any>;
@@ -149,6 +150,30 @@ export function detectFinishedMatch(gameType: PersistedGameType, room: AnyRoom):
   // ---------------------------------------------------------------------------
   // BOMB — son hayatta kalan kazanir
   // ---------------------------------------------------------------------------
+  if (gameType === 'colory') {
+    if (gs.phase !== 'GAME_OVER') return null;
+    const winnerId = gs.winnerPlayerId ? String(gs.winnerPlayerId) : null;
+
+    const recordPlayers: MatchPlayerRecord[] = players.map((p) =>
+      basePlayer(p, num(p.score), winnerId ? String(p.id) === winnerId : false)
+    );
+    const winnerEntry = recordPlayers.find((p) => p.isWinner);
+
+    return {
+      dedupeKey: `colory:${room.code}:${winnerId ?? 'none'}:${num(gs.currentRound)}`,
+      record: {
+        gameType,
+        gameTitle: meta.title,
+        gameIcon: meta.icon,
+        roomCode: room.code,
+        winnerName: winnerEntry?.name,
+        winnerAvatar: winnerEntry?.avatar,
+        winnerScore: winnerEntry?.score,
+        players: recordPlayers,
+      },
+    };
+  }
+
   if (gameType === 'race') {
     if (gs.phase !== 'GAME_OVER') return null;
     const winnerId = gs.winnerPlayerId ? String(gs.winnerPlayerId) : null;

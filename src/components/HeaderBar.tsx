@@ -58,6 +58,8 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
         return '💣';
       case 'race':
         return '🏇';
+      case 'colory':
+        return '🎨';
       default:
         return '🎮';
     }
@@ -77,6 +79,8 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
         return 'Saatli Bomba';
       case 'race':
         return 'At Yarışı';
+      case 'colory':
+        return 'Colory';
       default:
         return 'Parti Merkezi';
     }
@@ -96,6 +100,8 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
         return 'Tik tak bomba & kelime hecesi';
       case 'race':
         return 'Ganyan · plase · ikili — kuponunu yatır';
+      case 'colory':
+        return 'Rengi hatırla, en yakınını bul';
       default:
         return 'Çok oyunculu parti oyunları';
     }
