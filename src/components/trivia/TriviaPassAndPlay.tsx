@@ -625,9 +625,9 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
                     {dieRoll ?? '🎲'}
                   </span>
                   {isRolling
-                    ? 'ZAR DÖNÜYOR...'
+                    ? t('ZAR DÖNÜYOR...')
                     : isFinalQuestionTurn(positions[activePlayer.id] || startingPosition())
-                      ? 'FİNAL SORUSU 🏆'
+                      ? t('FİNAL SORUSU 🏆')
                       : 'ZAR AT'}
                 </button>
               ) : (
@@ -742,9 +742,9 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
                   <span>
                     {selectedAnswer === currentQ.correctAnswer
                       ? landedOnHub
-                        ? 'ZAFERİ İLAN ET 🏆'
+                        ? t('ZAFERİ İLAN ET 🏆')
                         : 'TEKRAR ZAR AT 🎲'
-                      : 'SONRAKİ OYUNCUYA GEÇ'}
+                      : t('SONRAKİ OYUNCUYA GEÇ')}
                   </span>
                   <ChevronRight className="w-4 h-4" />
                 </button>

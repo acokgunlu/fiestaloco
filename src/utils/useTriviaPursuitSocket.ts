@@ -10,6 +10,7 @@ import { playClickSound, playTurnSound, playFanfareSound } from './audio';
 import { recordMatchResult } from './leaderboardStore';
 import { getApiUrl, getWsUrl } from './serverUrl';
 
+import { t } from '../i18n';
 export function useTriviaPursuitSocket() {
   const [isConnected, setIsConnected] = useState(false);
   const [roomCode, setRoomCode] = useState<string | null>(null);
@@ -120,7 +121,7 @@ export function useTriviaPursuitSocket() {
           if (type === 'heartbeat' || type === 'pong') return;
 
           if (type === 'error') {
-            setErrorMessage(msg.message || 'Bir hata oluştu');
+            setErrorMessage(msg.message || t('Bir hata oluştu'));
             return;
           }
 

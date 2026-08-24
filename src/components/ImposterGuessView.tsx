@@ -133,7 +133,7 @@ export const ImposterGuessView: React.FC<ImposterGuessViewProps> = ({
 
           <div className="space-y-1.5">
             <h3 className="text-2xl font-black">
-              {isCorrect ? 'HARİKA! DOĞRU TAHMİN ETTİN!' : 'YANLIŞ TAHMİN!'}
+              {isCorrect ? t('HARİKA! DOĞRU TAHMİN ETTİN!') : t('YANLIŞ TAHMİN!')}
             </h3>
             <p className="text-sm text-slate-700 dark:text-slate-300">
               Senin Tahminin: <strong className="text-slate-900 dark:text-slate-100">"{guessInput}"</strong> • Gerçek Kelime: <strong className="text-emerald-700 dark:text-emerald-300">"{roundResult.crewWord}"</strong>

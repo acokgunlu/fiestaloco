@@ -146,7 +146,7 @@ export const ColoryGame: React.FC<Props> = ({ onBackToHub }) => {
             </div>
             <button type="submit" disabled={!socket.isConnected}
               className="w-full mt-6 py-4 rounded-2xl bg-gradient-to-r from-fuchsia-600 via-violet-600 to-cyan-500 text-white font-black text-base shadow-xl hover:scale-105 active:scale-95 transition-all disabled:opacity-50 cursor-pointer">
-              {!socket.isConnected ? 'Bağlanıyor…' : 'PALETİ AÇ'}
+              {!socket.isConnected ? t('Bağlanıyor…') : t('PALETİ AÇ')}
             </button>
           </form>
         </div>

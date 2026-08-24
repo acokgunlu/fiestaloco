@@ -524,7 +524,7 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
               onClick={handleNextRoundOrEnd}
               className="w-full py-4 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-amber-600 text-white font-black text-base shadow-xl hover:scale-105 transition-all flex items-center justify-center gap-2"
             >
-              {currentRound < totalRounds ? 'Sonraki Tura Geç (2x Puan)' : 'Oyun Sonucunu Gör'}
+              {currentRound < totalRounds ? t('Sonraki Tura Geç (2x Puan)') : t('Oyun Sonucunu Gör')}
             </button>
           </div>
         )}

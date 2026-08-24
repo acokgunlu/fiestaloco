@@ -522,7 +522,7 @@ export const PlayerControllerView: React.FC<PlayerControllerViewProps> = ({
           <div className="space-y-1">
             <Trophy className="w-10 h-10 text-amber-500 mx-auto" />
             <h2 className="text-2xl font-black text-slate-900 dark:text-slate-100">
-              {roomState.roundResult.imposterWon ? '🎭 Sahtekâr Kazandı!' : '🎉 Masum Ressamlar Kazandı!'}
+              {roomState.roundResult.imposterWon ? t('🎭 Sahtekâr Kazandı!') : t('🎉 Masum Ressamlar Kazandı!')}
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400">
               {t('Toplam Puanınız:')} <strong className="text-indigo-600 dark:text-indigo-400 text-sm">{me?.score} pts</strong>

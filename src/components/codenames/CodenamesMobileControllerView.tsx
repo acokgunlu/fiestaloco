@@ -130,9 +130,9 @@ export function CodenamesMobileControllerView({
               </span>
             </div>
             <div className="text-xs font-bold text-slate-600 dark:text-slate-400 flex items-center gap-1.5 mt-0.5">
-              <span>{myPlayer.team === 'red' ? '🔴 Kırmızı Takım' : '🔵 Mavi Takım'}</span>
+              <span>{myPlayer.team === 'red' ? t('🔴 Kırmızı Takım') : t('🔵 Mavi Takım')}</span>
               <span>•</span>
-              <span>{isSpymaster ? 'Lider (Spymaster)' : 'Saha Ajanı'}</span>
+              <span>{isSpymaster ? 'Lider (Spymaster)' : t('Saha Ajanı')}</span>
             </div>
           </div>
         </div>
@@ -236,7 +236,7 @@ export function CodenamesMobileControllerView({
                 : 'bg-sky-50 dark:bg-sky-950/40 border-sky-300 dark:border-sky-800 text-sky-800 dark:text-sky-300'
             }`}
           >
-            {myPlayer.team === 'red' ? '🔴 Kırmızı' : '🔵 Mavi'} takım ·{' '}
+            {myPlayer.team === 'red' ? t('🔴 Kırmızı') : '🔵 Mavi'} takım ·{' '}
             {isSpymaster ? '👑 Lider' : '🕵️ Ajan'}
           </div>
 
@@ -288,12 +288,12 @@ export function CodenamesMobileControllerView({
         <div className="p-5 rounded-3xl bg-slate-900 text-white text-center space-y-2 border border-slate-800 shadow-xl animate-fade-in">
           <div className="text-3xl">🏆</div>
           <h3 className="text-xl font-black text-amber-400">
-            {gameState.winner === 'red' ? '🔴 KIRMIZI TAKIM KAZANDI!' : '🔵 MAVİ TAKIM KAZANDI!'}
+            {gameState.winner === 'red' ? '🔴 KIRMIZI TAKIM KAZANDI!' : t('🔵 MAVİ TAKIM KAZANDI!')}
           </h3>
           <p className="text-xs text-slate-300">
             {gameState.winReason === 'assassin_triggered'
-              ? '☠️ Rakip Kara Suikastçı kartını açtığı için zafer elde edildi!'
-              : '🎉 Tüm gizli ajanlar başarıyla açığa çıkarıldı!'}
+              ? t('☠️ Rakip Kara Suikastçı kartını açtığı için zafer elde edildi!')
+              : t('🎉 Tüm gizli ajanlar başarıyla açığa çıkarıldı!')}
           </p>
         </div>
       )}
@@ -431,7 +431,7 @@ export function CodenamesMobileControllerView({
             </div>
           ) : (
             <div className="p-4 rounded-3xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-center text-xs font-bold border border-slate-200 dark:border-slate-800">
-              ⏳ {gameState.activeTeam === myPlayer.team ? 'Liderinizin ipucu vermesi bekleniyor...' : 'Rakip takımın lideri düşünüyor...'}
+              ⏳ {gameState.activeTeam === myPlayer.team ? 'Liderinizin ipucu vermesi bekleniyor...' : t('Rakip takımın lideri düşünüyor...')}
             </div>
           )}
 

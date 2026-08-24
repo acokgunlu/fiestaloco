@@ -5,7 +5,7 @@ import { TimingGameState, TimingPlayer } from '../../types/timing';
 import { formatError, formatSec, modeHint, modeLabel } from '../../data/timingLogic';
 import { TimingTimeline } from './TimingTimeline';
 
-import { t } from '../../i18n';
+import { t, withLang } from '../../i18n';
 interface Props {
   roomCode: string;
   gameState: TimingGameState;
@@ -21,7 +21,7 @@ export const TimingTvView: React.FC<Props> = ({
 }) => {
   const [qr, setQr] = useState<string | null>(null);
   useEffect(() => {
-    const url = `${window.location.origin}${window.location.pathname}?game=timing&room=${roomCode}`;
+    const url = withLang(`${window.location.origin}${window.location.pathname}?game=timing&room=${roomCode}`);
     QRCode.toDataURL(url, { width: 320, margin: 1 }).then(setQr).catch(() => setQr(null));
   }, [roomCode]);
 
@@ -144,7 +144,7 @@ export const TimingTvView: React.FC<Props> = ({
           <div>
             <h3 className="text-5xl sm:text-7xl font-black tracking-tight text-slate-900 dark:text-white">{t('SAY')}</h3>
             <p className="text-lg font-bold text-slate-500 dark:text-slate-400 mt-3">
-              {isNoOver ? 'Geçersen yanarsın — erken kal.' : 'Vakti geldiğini düşündüğünde bas.'}
+              {isNoOver ? t('Geçersen yanarsın — erken kal.') : t('Vakti geldiğini düşündüğünde bas.')}
             </p>
           </div>
           <p className="text-xs font-black uppercase tracking-[0.25em] text-slate-400 dark:text-slate-600">
@@ -164,7 +164,7 @@ export const TimingTvView: React.FC<Props> = ({
                 <span className="text-xs font-black text-amber-600 dark:text-amber-400">
                   {(() => {
                     const w = (gameState.results || []).find((r) => r.rank === 1);
-                    if (!w) return 'Herkes yandı — bu turda puan yok';
+                    if (!w) return t('Herkes yandı — bu turda puan yok');
                     const p = players.find((x) => x.id === w.playerId);
                     return `🥇 ${p?.name} · ${formatError(w.errorMs)}`;
                   })()}

@@ -245,7 +245,7 @@ export const HorseRaceGame: React.FC<HorseRaceGameProps> = ({ onBackToHub }) => 
               disabled={!socket.isConnected}
               className="w-full mt-6 py-4 rounded-2xl bg-gradient-to-r from-emerald-600 via-lime-600 to-amber-600 text-white font-black text-base shadow-xl hover:scale-105 active:scale-95 transition-all disabled:opacity-50 cursor-pointer"
             >
-              {!socket.isConnected ? 'Bağlanıyor…' : 'PİSTE ÇIK'}
+              {!socket.isConnected ? t('Bağlanıyor…') : t('PİSTE ÇIK')}
             </button>
           </form>
         </div>

@@ -130,7 +130,7 @@ export function CodenamesClueInputModal({
             </div>
             <div>
               <h3 className="font-black text-slate-900 dark:text-slate-100 text-base sm:text-lg">
-                {isRed ? '🔴 Kırmızı Lider İpucu Formu' : '🔵 Mavi Lider İpucu Formu'}
+                {isRed ? t('🔴 Kırmızı Lider İpucu Formu') : t('🔵 Mavi Lider İpucu Formu')}
               </h3>
               <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">{t('Sahadaki ajanlarınıza yön verin')}</p>
             </div>

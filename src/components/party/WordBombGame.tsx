@@ -32,7 +32,7 @@ import {
 } from '../../utils/audio';
 import { useBombSocket } from '../../utils/useBombSocket';
 
-import { t } from '../../i18n';
+import { t, withLang } from '../../i18n';
 interface WordBombGameProps {
   onBackToHub: () => void;
 }
@@ -96,7 +96,7 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
   // Copy Room Link to clipboard
   const handleCopyLink = (code: string) => {
     playClickSound();
-    const url = `${window.location.origin}${window.location.pathname}?game=bomb&room=${code}`;
+    const url = withLang(`${window.location.origin}${window.location.pathname}?game=bomb&room=${code}`);
     navigator.clipboard.writeText(url);
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2500);
@@ -205,7 +205,7 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
     if (localGameState.phase !== 'TICKING') return;
 
     playClickSound();
-    const word = localTypedWord.trim() || '✓ Pas Geçildi';
+    const word = localTypedWord.trim() || t('✓ Pas Geçildi');
     const nextUsedWords = [...localGameState.usedWords, word];
     setLocalTypedWord('');
 
@@ -414,7 +414,7 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
                       <div className="p-3 bg-white dark:bg-slate-900 rounded-2xl inline-block shadow-lg border-4 border-red-400">
                         <img
                           src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(
-                            `${window.location.origin}${window.location.pathname}?game=bomb&room=${socket.roomCode}`
+                            withLang(`${window.location.origin}${window.location.pathname}?game=bomb&room=${socket.roomCode}`)
                           )}`}
                           alt={t('Room QR Code')}
                           className="w-36 h-36 sm:w-44 sm:h-44 rounded-lg"

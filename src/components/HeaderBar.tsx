@@ -78,15 +78,15 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
       case 'imposter':
         return 'Sahtekâr Ressam';
       case 'bluff':
-        return 'Yalan Ustası';
+        return t('Yalan Ustası');
       case 'bomb':
         return 'Saatli Bomba';
       case 'race':
-        return 'At Yarışı';
+        return t('At Yarışı');
       case 'colory':
         return 'Colory';
       case 'timing':
-        return 'Tam Zamanında';
+        return t('Tam Zamanında');
       default:
         return 'Parti Merkezi';
     }
@@ -95,23 +95,23 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
   const getGameSubtitle = () => {
     switch (activeModule) {
       case 'trivia_pursuit':
-        return 'Bilgi çarkı & 6 kategori rozet savaşı';
+        return t('Bilgi çarkı & 6 kategori rozet savaşı');
       case 'codenames':
-        return 'Kırmızı vs Mavi Takım İstihbarat Savaşı';
+        return t('Kırmızı vs Mavi Takım İstihbarat Savaşı');
       case 'imposter':
-        return 'Her oyuncuya 1 sürekli çizgi';
+        return t('Her oyuncuya 1 sürekli çizgi');
       case 'bluff':
-        return 'Yaratıcı yalanlar & gerçek trivia';
+        return t('Yaratıcı yalanlar & gerçek trivia');
       case 'bomb':
         return 'Tik tak bomba & kelime hecesi';
       case 'race':
-        return 'Ganyan · plase · ikili — kuponunu yatır';
+        return t('Ganyan · plase · ikili — kuponunu yatır');
       case 'colory':
-        return 'Rengi hatırla, en yakınını bul';
+        return t('Rengi hatırla, en yakınını bul');
       case 'timing':
-        return 'İçinden say, tam vaktinde bas';
+        return t('İçinden say, tam vaktinde bas');
       default:
-        return 'Çok oyunculu parti oyunları';
+        return t('Çok oyunculu parti oyunları');
     }
   };
 
@@ -169,12 +169,12 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
           <div className="hidden md:flex items-center gap-2 bg-slate-100/90 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 px-3.5 py-1.5 rounded-full text-xs font-bold text-slate-700 dark:text-slate-300 shadow-xs">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-xs" />
             <span>
-              {phase === 'WORD_REVEAL' && 'Rol & Kelime Kartı Aşaması'}
-              {phase === 'DRAWING' && 'Çizim Sırası Canlı Devam Ediyor'}
-              {phase === 'DISCUSSION' && 'Çizgileri İnceleyin & Tartışın'}
-              {phase === 'VOTING' && 'Sahtekâr İçin Gizli Oylama'}
-              {phase === 'IMPOSTER_GUESS' && 'Sahtekâr Kelime Tahmin Düellosu'}
-              {phase === 'RESULTS' && 'Tur Sonuçları & Puan Durumu'}
+              {phase === 'WORD_REVEAL' && t('Rol & Kelime Kartı Aşaması')}
+              {phase === 'DRAWING' && t('Çizim Sırası Canlı Devam Ediyor')}
+              {phase === 'DISCUSSION' && t('Çizgileri İnceleyin & Tartışın')}
+              {phase === 'VOTING' && t('Sahtekâr İçin Gizli Oylama')}
+              {phase === 'IMPOSTER_GUESS' && t('Sahtekâr Kelime Tahmin Düellosu')}
+              {phase === 'RESULTS' && t('Tur Sonuçları & Puan Durumu')}
             </span>
           </div>
         )}
@@ -220,7 +220,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
               toggleLang();
             }}
             className="px-2.5 py-1.5 rounded-xl text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 transition-all flex items-center gap-1 text-[11px] font-black shadow-xs cursor-pointer active:scale-95"
-            title={getLang() === 'tr' ? 'Switch to English' : "Türkçe'ye geç"}
+            title={getLang() === 'tr' ? 'Switch to English' : t("Türkçe'ye geç")}
           >
             <Languages className="w-3.5 h-3.5" />
             <span>{getLang() === 'tr' ? 'TR' : 'EN'}</span>
@@ -265,7 +265,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
               playClickSound();
             }}
             className="p-2 sm:px-2.5 rounded-xl text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 transition-all flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95"
-            title={soundActive ? 'Sesi Kapat' : 'Sesi Aç'}
+            title={soundActive ? 'Sesi Kapat' : t('Sesi Aç')}
           >
             {soundActive ? (
               <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">

@@ -24,7 +24,7 @@ import { TriviaPassAndPlay } from '../trivia/TriviaPassAndPlay';
 import { TriviaCategory, TRIVIA_CATEGORIES } from '../../types/triviaPursuit';
 import { playClickSound, playTurnSound } from '../../utils/audio';
 
-import { t } from '../../i18n';
+import { t, withLang } from '../../i18n';
 interface TriviaPursuitGameProps {
   onBackToHub: () => void;
 }
@@ -67,7 +67,7 @@ export const TriviaPursuitGame: React.FC<TriviaPursuitGameProps> = ({ onBackToHu
 
   const handleCopyLink = (code: string) => {
     playClickSound();
-    const url = `${window.location.origin}${window.location.pathname}?game=trivia_pursuit&room=${code}`;
+    const url = withLang(`${window.location.origin}${window.location.pathname}?game=trivia_pursuit&room=${code}`);
     navigator.clipboard.writeText(url);
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2500);
@@ -355,7 +355,7 @@ export const TriviaPursuitGame: React.FC<TriviaPursuitGameProps> = ({ onBackToHu
                           : 'bg-white/20 text-white'
                       }`}
                     >
-                      {enableAiQuestions ? 'AÇIK ✨' : 'KAPALI'}
+                      {enableAiQuestions ? t('AÇIK ✨') : 'KAPALI'}
                     </button>
                   </div>
                 </div>
@@ -389,7 +389,7 @@ export const TriviaPursuitGame: React.FC<TriviaPursuitGameProps> = ({ onBackToHu
                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-black border border-slate-300 dark:border-slate-700 transition-all cursor-pointer"
                   >
                     {copiedLink ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
-                    <span>{copiedLink ? 'Kopyalandı!' : 'Bağlantıyı Kopyala'}</span>
+                    <span>{copiedLink ? t('Kopyalandı!') : t('Bağlantıyı Kopyala')}</span>
                   </button>
                 </div>
               </div>

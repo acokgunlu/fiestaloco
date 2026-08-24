@@ -221,7 +221,7 @@ export const VotingView: React.FC<VotingViewProps> = ({
         className="w-full py-4 bg-gradient-to-r from-rose-600 via-red-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 disabled:opacity-40 disabled:hover:from-rose-600 text-white font-black text-sm sm:text-base rounded-2xl shadow-xl shadow-rose-600/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer mt-1"
       >
         <Gavel className="w-5 h-5 text-amber-300" />
-        <span>{isLastVoter ? 'Mahkeme Kararını Açıkla 🔨' : 'Oyu Damgala & Gönder'}</span>
+        <span>{isLastVoter ? t('Mahkeme Kararını Açıkla 🔨') : t('Oyu Damgala & Gönder')}</span>
         <ArrowRight className="w-5 h-5" />
       </button>
     </div>

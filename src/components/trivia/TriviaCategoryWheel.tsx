@@ -137,7 +137,7 @@ export const TriviaCategoryWheel: React.FC<TriviaCategoryWheelProps> = ({
               }`}
             >
               <Disc className={`w-5 h-5 mb-0.5 ${isSpinning ? 'animate-spin' : ''}`} />
-              <span>{isSpinning ? 'ÇEVRİLİYOR' : 'ÇEVİR!'}</span>
+              <span>{isSpinning ? t('ÇEVRİLİYOR') : t('ÇEVİR!')}</span>
             </button>
           ) : (
             <div className="w-18 h-18 rounded-full bg-slate-900/90 border border-slate-700 text-slate-400 flex flex-col items-center justify-center text-[10px] font-bold text-center px-1">

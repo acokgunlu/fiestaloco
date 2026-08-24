@@ -23,7 +23,7 @@ import {
 import { playTurnSound, playGongSound, playSuspenseSound, playFanfareSound } from '../utils/audio';
 import confetti from 'canvas-confetti';
 
-import { t } from '../i18n';
+import { t, withLang } from '../i18n';
 interface ObserverDisplayViewProps {
   roomState: RoomState;
   liveStroke: LiveStrokeState | null;
@@ -63,7 +63,7 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
     (roomState.currentDrawingRound - 1) * roomState.players.length + roomState.activePlayerIndex;
   const totalTurnsInGame = roomState.players.length * maxRounds;
 
-  const joinUrl = `${window.location.origin}/?room=${roomState.roomCode}`;
+  const joinUrl = withLang(`${window.location.origin}/?room=${roomState.roomCode}`);
 
   // Generate QR Code
   useEffect(() => {

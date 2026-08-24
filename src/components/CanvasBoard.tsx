@@ -637,7 +637,7 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
                 className="flex items-center gap-1.5 px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-xl shadow-xs transition-colors cursor-pointer"
               >
                 {isReplaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
-                <span>{isReplaying ? 'Durdur' : 'Çizimi Yeniden Oynat'}</span>
+                <span>{isReplaying ? 'Durdur' : t('Çizimi Yeniden Oynat')}</span>
               </button>
 
               <button

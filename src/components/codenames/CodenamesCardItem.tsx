@@ -102,9 +102,9 @@ export const CodenamesCardItem: React.FC<CodenamesCardItemProps> = ({
                 }`}
               >
                 {card.type === 'red' && '🔴 KIRMIZI'}
-                {card.type === 'blue' && '🔵 MAVİ'}
-                {card.type === 'assassin' && '☠️ SUİKASTÇI'}
-                {card.type === 'neutral' && '⚪ SİVİL'}
+                {card.type === 'blue' && t('🔵 MAVİ')}
+                {card.type === 'assassin' && t('☠️ SUİKASTÇI')}
+                {card.type === 'neutral' && t('⚪ SİVİL')}
               </span>
             ) : (
               <span className="text-slate-400 dark:text-slate-500 font-medium tracking-wider text-[8px] uppercase">
@@ -141,9 +141,9 @@ export const CodenamesCardItem: React.FC<CodenamesCardItemProps> = ({
               }`}
             >
               {card.type === 'red' && 'KIRMIZI AJAN'}
-              {card.type === 'blue' && 'MAVİ AJAN'}
-              {card.type === 'neutral' && 'MASUM SİVİL'}
-              {card.type === 'assassin' && 'KARA SUİKASTÇI'}
+              {card.type === 'blue' && t('MAVİ AJAN')}
+              {card.type === 'neutral' && t('MASUM SİVİL')}
+              {card.type === 'assassin' && t('KARA SUİKASTÇI')}
             </span>
 
             <div className="w-4 h-4 flex items-center justify-center">

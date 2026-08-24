@@ -122,8 +122,8 @@ export const UnifiedLeaderboardModal: React.FC<UnifiedLeaderboardModalProps> = (
                   }`}
                   title={
                     isGlobal
-                      ? 'Skorlar sunucuda saklanıyor, tüm cihazlarda ortak'
-                      : 'Skorlar yalnızca bu cihazda saklanıyor'
+                      ? t('Skorlar sunucuda saklanıyor, tüm cihazlarda ortak')
+                      : t('Skorlar yalnızca bu cihazda saklanıyor')
                   }
                 >
                   {isGlobal ? '🌍 Global' : '📱 Bu cihaz'}

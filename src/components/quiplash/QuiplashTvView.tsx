@@ -24,7 +24,7 @@ import {
 } from '../../types/quiplash';
 import { isSoundEnabled, toggleSound, playCorrectSound, playClickSound } from '../../utils/audio';
 
-import { t } from '../../i18n';
+import { t, withLang } from '../../i18n';
 interface QuiplashTvViewProps {
   roomCode: string;
   gameState: QuiplashGameState;
@@ -53,7 +53,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
 
   useEffect(() => {
     const origin = window.location.origin;
-    const joinUrl = `${origin}/?game=quiplash&room=${roomCode}`;
+    const joinUrl = withLang(`${origin}/?game=quiplash&room=${roomCode}`);
     QRCode.toDataURL(joinUrl, {
       margin: 1,
       width: 280,
@@ -117,7 +117,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
               {gameState.phase === 'LAST_LASH_WRITING' ||
               gameState.phase === 'LAST_LASH_VOTING' ||
               gameState.phase === 'LAST_LASH_RESULT'
-                ? 'BÜYÜK FİNAL (THE LAST LASH)'
+                ? t('BÜYÜK FİNAL (THE LAST LASH)')
                 : `TUR ${gameState.currentRound} / ${gameState.totalRounds}`}
             </div>
 
@@ -201,7 +201,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
                     </h3>
                   </div>
                   <span className="text-xs text-slate-400 font-bold">
-                    {players.length < 2 ? 'En az 2 oyuncu gerekli' : 'Oyuna hazır!'}
+                    {players.length < 2 ? 'En az 2 oyuncu gerekli' : t('Oyuna hazır!')}
                   </span>
                 </div>
 
@@ -301,7 +301,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
                       <div className="overflow-hidden text-left flex-1">
                         <div className="text-xs font-bold truncate text-white">{p.name}</div>
                         <div className="text-[10px] font-semibold">
-                          {isDone ? '✓ Gönderdi' : '⏳ Yazıyor...'}
+                          {isDone ? t('✓ Gönderdi') : t('⏳ Yazıyor...')}
                         </div>
                       </div>
                     </div>
@@ -365,7 +365,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
                   <span className="text-xs font-black tracking-widest uppercase text-cyan-400 block mb-2">
                     {t('SEÇENEK A')}</span>
                   <p className="text-2xl sm:text-3xl font-black text-white leading-snug">
-                    "{activeMatchup.answer1.text || 'Hiçbir yanıt yok'}"
+                    "{activeMatchup.answer1.text || t('Hiçbir yanıt yok')}"
                   </p>
                 </div>
 
@@ -418,7 +418,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
                   <span className="text-xs font-black tracking-widest uppercase text-rose-400 block mb-2">
                     {t('SEÇENEK B')}</span>
                   <p className="text-2xl sm:text-3xl font-black text-white leading-snug">
-                    "{activeMatchup.answer2.text || 'Hiçbir yanıt yok'}"
+                    "{activeMatchup.answer2.text || t('Hiçbir yanıt yok')}"
                   </p>
                 </div>
 

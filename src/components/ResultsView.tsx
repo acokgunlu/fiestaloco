@@ -75,7 +75,7 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
         </div>
 
         <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-slate-900 dark:text-slate-100">
-          {imposterWon ? '🎭 SAHTEKÂR ZAFERİ!' : '🎉 MASUM RESSAMLAR KAZANDI!'}
+          {imposterWon ? t('🎭 SAHTEKÂR ZAFERİ!') : '🎉 MASUM RESSAMLAR KAZANDI!'}
         </h2>
 
         <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 max-w-lg mx-auto mt-2 leading-relaxed font-medium">

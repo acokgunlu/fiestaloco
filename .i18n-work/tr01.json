@@ -1,11 +1,4 @@
-/**
- * Kaynağı İNGİLİZCE olan dizelerin Türkçe karşılıkları.
- *
- * Uygulamada baştan beri İngilizce yazılmış metinler vardı ("Add Player",
- * "Game Rules"). "Tam Türkçe" modunda onların da Türkçe görünmesi için bu yön
- * gerekli. Kaynağı zaten Türkçe olan dize burada YER ALMAZ.
- */
-export const TR: Record<string, string> = {
+{
   "+ Add AI Bot": "+ Yapay Zekâ Botu Ekle",
   "+ Add Bot": "+ Bot Ekle",
   "+50 pts": "+50 puan",
@@ -119,5 +112,5 @@ export const TR: Record<string, string> = {
   "\"Fox\"": "\"Tilki\"",
   "\"Helicopter\"": "\"Helikopter\"",
   "Trivia Pursuit TV": "Trivia Pursuit TV",
-  "Word Bomb ": "Kelime Bombası",
-};
+  "Word Bomb ": "Kelime Bombası"
+}

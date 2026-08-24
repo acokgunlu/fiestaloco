@@ -359,11 +359,11 @@ export function CodenamesRulesModal({ isOpen, onClose }: CodenamesRulesModalProp
         {/* Footer */}
         <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
           <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
-            {activeTab === 'basics' && '1 / 5 • Temel Amaç'}
-            {activeTab === 'spymaster' && '2 / 5 • Lider Kuralları'}
-            {activeTab === 'operatives' && '3 / 5 • Saha Ajanları'}
+            {activeTab === 'basics' && t('1 / 5 • Temel Amaç')}
+            {activeTab === 'spymaster' && t('2 / 5 • Lider Kuralları')}
+            {activeTab === 'operatives' && t('3 / 5 • Saha Ajanları')}
             {activeTab === 'tv_mode' && '4 / 5 • TV & Telefon Modu'}
-            {activeTab === 'assassin' && '5 / 5 • Suikastçı'}
+            {activeTab === 'assassin' && t('5 / 5 • Suikastçı')}
           </span>
 
           <button

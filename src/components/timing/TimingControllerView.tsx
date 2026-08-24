@@ -145,7 +145,7 @@ export const TimingControllerView: React.FC<Props> = ({
                 </span>
               </button>
               <p className="text-center text-xs font-black text-slate-500 dark:text-slate-400">
-                {isNoOver ? '🚫 Geçersen yanarsın — erken kal.' : 'Vakti geldiğinde bas.'}
+                {isNoOver ? t('🚫 Geçersen yanarsın — erken kal.') : t('Vakti geldiğinde bas.')}
               </p>
             </>
           )}
@@ -162,11 +162,11 @@ export const TimingControllerView: React.FC<Props> = ({
                   {formatSec(myResult.elapsedMs)}
                 </div>
                 <p className="text-sm font-black text-slate-600 dark:text-slate-300">
-                  {myResult.burned ? 'YANDIN — hedefi geçtin' : formatError(myResult.errorMs)}
+                  {myResult.burned ? t('YANDIN — hedefi geçtin') : formatError(myResult.errorMs)}
                 </p>
               </div>
               <div className="flex items-center justify-center gap-4 pt-1">
-                <span className="text-lg font-black">{myResult.rank ? `${myResult.rank}. sıra` : 'sıralama dışı'}</span>
+                <span className="text-lg font-black">{myResult.rank ? `${myResult.rank}. sıra` : t('sıralama dışı')}</span>
                 <span className="text-3xl font-black text-emerald-600 dark:text-emerald-400">+{myResult.points}</span>
               </div>
               {myResult.latencyMs > 0 && (

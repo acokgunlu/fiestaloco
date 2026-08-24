@@ -146,7 +146,7 @@ export const TimingGame: React.FC<Props> = ({ onBackToHub }) => {
             </div>
             <button type="submit" disabled={!socket.isConnected}
               className="w-full mt-6 py-4 rounded-2xl bg-gradient-to-r from-sky-600 via-indigo-600 to-violet-600 text-white font-black text-base shadow-xl hover:scale-105 active:scale-95 transition-all disabled:opacity-50 cursor-pointer">
-              {!socket.isConnected ? 'Bağlanıyor…' : 'BUTONU AL'}
+              {!socket.isConnected ? t('Bağlanıyor…') : 'BUTONU AL'}
             </button>
           </form>
         </div>

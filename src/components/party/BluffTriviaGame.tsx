@@ -28,7 +28,7 @@ import {
 } from '../../utils/audio';
 import { useBluffSocket } from '../../utils/useBluffSocket';
 
-import { t } from '../../i18n';
+import { t, withLang } from '../../i18n';
 interface BluffTriviaGameProps {
   onBackToHub: () => void;
 }
@@ -115,7 +115,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
 
   const handleCopyLink = (code: string) => {
     playClickSound();
-    const url = `${window.location.origin}${window.location.pathname}?game=bluff&room=${code}`;
+    const url = withLang(`${window.location.origin}${window.location.pathname}?game=bluff&room=${code}`);
     navigator.clipboard.writeText(url);
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2500);
@@ -480,7 +480,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                     className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-black flex items-center gap-1.5 transition-colors cursor-pointer"
                   >
                     {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> : <Copy className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />}
-                    <span>{copiedLink ? 'Kopyalandı!' : 'Linki Kopyala'}</span>
+                    <span>{copiedLink ? t('Kopyalandı!') : 'Linki Kopyala'}</span>
                   </button>
                   <button
                     onClick={() => {
@@ -505,7 +505,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                     <div className="p-4 bg-amber-50 dark:bg-amber-950/40 rounded-2xl border-4 border-amber-400 inline-block shadow-md">
                       <img
                         src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(
-                          `${window.location.origin}${window.location.pathname}?game=bluff&room=${socket.roomCode}`
+                          withLang(`${window.location.origin}${window.location.pathname}?game=bluff&room=${socket.roomCode}`)
                         )}`}
                         alt={t('Bluff Room QR Code')}
                         className="w-40 h-40 mx-auto"
@@ -528,7 +528,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                           <span>Katılan Oyuncular ({socket.players.length})</span>
                         </span>
                         <span className="text-xs font-black text-amber-800 dark:text-amber-300 bg-amber-100 dark:bg-amber-900/40 px-2.5 py-0.5 rounded-full border border-amber-200 dark:border-amber-900">
-                          {socket.players.length < 2 ? 'En az 2 oyuncu gerekli' : '✓ Lobi hazır!'}
+                          {socket.players.length < 2 ? 'En az 2 oyuncu gerekli' : t('✓ Lobi hazır!')}
                         </span>
                       </div>
 
@@ -676,7 +676,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                                 hasSubmitted ? 'text-emerald-700 dark:text-emerald-300' : 'text-amber-600 dark:text-amber-400 animate-pulse'
                               }`}
                             >
-                              {hasSubmitted ? '✓ Yalanı Hazır' : '⏳ Yazıyor...'}
+                              {hasSubmitted ? t('✓ Yalanı Hazır') : t('⏳ Yazıyor...')}
                             </div>
                           </div>
                         </div>
@@ -816,7 +816,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                           {fools.length > 0 && (
                             <div className="pt-2 border-t border-slate-200 dark:border-slate-800 flex items-center gap-2 flex-wrap text-xs">
                               <span className="text-slate-600 dark:text-slate-400 font-bold">
-                                {ans.isReal ? 'Doğruyu bulanlar:' : 'Bu yalana inananlar:'}
+                                {ans.isReal ? t('Doğruyu bulanlar:') : 'Bu yalana inananlar:'}
                               </span>
                               {fools.map((f) => (
                                 <span
@@ -875,8 +875,8 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                     >
                       <span>
                         {socket.gameState.currentRound >= socket.gameState.totalRounds
-                          ? 'Şampiyonu Açıkla 🏆'
-                          : 'Sonraki Tura Geç ➔'}
+                          ? t('Şampiyonu Açıkla 🏆')
+                          : t('Sonraki Tura Geç ➔')}
                       </span>
                     </button>
                   </div>

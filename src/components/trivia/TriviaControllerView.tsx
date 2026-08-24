@@ -168,7 +168,7 @@ export const TriviaControllerView: React.FC<TriviaControllerViewProps> = ({
               ) : (
                 <div className="space-y-4">
                   <div className="p-3 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-700 text-amber-900 dark:text-amber-200 text-xs font-black">
-                    {onHub ? 'Merkezdesin! Final sorusunu cevapla.' : 'Sıra sende! Zarı at ve tahtada ilerle.'}
+                    {onHub ? 'Merkezdesin! Final sorusunu cevapla.' : t('Sıra sende! Zarı at ve tahtada ilerle.')}
                   </div>
 
                   <button
@@ -180,7 +180,7 @@ export const TriviaControllerView: React.FC<TriviaControllerViewProps> = ({
                     className="w-full py-8 rounded-3xl font-black text-xl tracking-wider text-white shadow-xl transition-all transform active:scale-95 flex flex-col items-center justify-center gap-2 border-3 border-amber-300 dark:border-amber-500 bg-gradient-to-br from-amber-500 via-orange-500 to-rose-600 hover:scale-[1.02] cursor-pointer"
                   >
                     <span className="text-4xl">{onHub ? '🏆' : '🎲'}</span>
-                    <span>{onHub ? 'FİNAL SORUSU!' : 'ZAR AT!'}</span>
+                    <span>{onHub ? t('FİNAL SORUSU!') : 'ZAR AT!'}</span>
                   </button>
                 </div>
               )
@@ -190,7 +190,7 @@ export const TriviaControllerView: React.FC<TriviaControllerViewProps> = ({
                   🎲
                 </div>
                 <h3 className="text-base font-black text-slate-800 dark:text-slate-200">
-                  {activePlayer?.name || 'Sıradaki oyuncu'} zar atıyor…
+                  {activePlayer?.name || t('Sıradaki oyuncu')} zar atıyor…
                 </h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400 font-bold">
                   {t('Sırası gelince telefonunda zar butonu çıkacak.')}</p>

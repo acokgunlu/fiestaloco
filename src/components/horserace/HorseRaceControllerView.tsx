@@ -166,12 +166,12 @@ export const HorseRaceControllerView: React.FC<Props> = ({
                 {gap > 0 && (
                   <p className="text-[11px] font-black text-rose-600 dark:text-rose-400">
                     Liderden {money(gap)} ₺ geridesin
-                    {lastRace ? ' · son yarış, riski yükseltmezsen yetişemezsin' : ''}
+                    {lastRace ? t(' · son yarış, riski yükseltmezsen yetişemezsin') : ''}
                   </p>
                 )}
                 {gap === 0 && players.length > 1 && (
                   <p className="text-[11px] font-black text-emerald-600 dark:text-emerald-400">
-                    Lidersin{lastRace ? ' · korumaya çekilmek mantıklı (plase)' : ''}
+                    Lidersin{lastRace ? t(' · korumaya çekilmek mantıklı (plase)') : ''}
                   </p>
                 )}
               </div>
@@ -309,7 +309,7 @@ export const HorseRaceControllerView: React.FC<Props> = ({
         return (
           <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 shadow-lg text-center space-y-3">
             <div className="text-5xl">{pay?.won ? '🎉' : '💸'}</div>
-            <h3 className="text-lg font-black">{pay?.won ? 'KUPON TUTTU!' : 'Kupon yattı'}</h3>
+            <h3 className="text-lg font-black">{pay?.won ? 'KUPON TUTTU!' : t('Kupon yattı')}</h3>
             {pay?.bet && (
               <p className="text-xs font-bold text-slate-500 dark:text-slate-400">
                 {describeBet(pay.bet, gameState.horses)} · {money(pay.bet.amount)} ₺

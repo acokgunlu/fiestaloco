@@ -27,9 +27,9 @@ export function CodenamesLobbyView({ onStartGame, onReturnToHub }: CodenamesLobb
   const [rulesOpen, setRulesOpen] = useState(false);
 
   const [redPlayers, setRedPlayers] = useState<string[]>([
-    'Kırmızı Lider',
+    t('Kırmızı Lider'),
     'Ajan Kemal',
-    'Ajan Ayşe',
+    t('Ajan Ayşe'),
   ]);
   const [bluePlayers, setBluePlayers] = useState<string[]>([
     'Mavi Lider',

@@ -42,7 +42,7 @@ export const CodenamesOnlineLobby: React.FC<CodenamesOnlineLobbyProps> = ({
   /** Sunucudaki kuralin aynisi — buton durumu ile gercek davranis uyusmali. */
   const missing: string[] = [];
   for (const [label, team] of [
-    ['Kırmızı', red],
+    [t('Kırmızı'), red],
     ['Mavi', blue],
   ] as const) {
     if (!team.some((p) => p.role === 'spymaster')) missing.push(`${label} lider`);
@@ -69,7 +69,7 @@ export const CodenamesOnlineLobby: React.FC<CodenamesOnlineLobbyProps> = ({
               isRed ? 'text-rose-700 dark:text-rose-300' : 'text-sky-700 dark:text-sky-300'
             }`}
           >
-            {isRed ? '🔴 Kırmızı Takım' : '🔵 Mavi Takım'}
+            {isRed ? t('🔴 Kırmızı Takım') : t('🔵 Mavi Takım')}
           </h3>
           <span className="text-xs font-black text-slate-500 dark:text-slate-400">
             {list.length} kişi

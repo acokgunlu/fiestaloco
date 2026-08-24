@@ -9,6 +9,7 @@ import {
 } from './audio';
 import { getWsUrl } from './serverUrl';
 
+import { t } from '../i18n';
 export interface UseBombSocketReturn {
   isConnected: boolean;
   roomCode: string | null;
@@ -116,7 +117,7 @@ export function useBombSocket(): UseBombSocketReturn {
           }
 
           if (type === 'error') {
-            setErrorMessage(data.message || 'Bilinmeyen bir hata oluştu');
+            setErrorMessage(data.message || t('Bilinmeyen bir hata oluştu'));
             return;
           }
 

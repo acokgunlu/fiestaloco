@@ -10,6 +10,7 @@ import {
 } from './audio';
 import { getWsUrl } from './serverUrl';
 
+import { t } from '../i18n';
 export interface UseBluffSocketReturn {
   isConnected: boolean;
   roomCode: string | null;
@@ -201,7 +202,7 @@ export function useBluffSocket(): UseBluffSocketReturn {
               playFanfareSound();
             }
           } else if (msg.type === 'bluff:bluff_rejected' || msg.type === 'bluff:vote_rejected') {
-            setRejectedReason(msg.reason || 'Geçersiz işlem');
+            setRejectedReason(msg.reason || t('Geçersiz işlem'));
             playAssassinSound();
           } else if (msg.type === 'bluff:error') {
             setErrorMessage(msg.message);

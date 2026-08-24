@@ -71,17 +71,17 @@ export function CodenamesGameOverModal({
 
           <div className="space-y-1">
             <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
-              {winReason === 'assassin_triggered' ? '☠️ Kara Suikastçı Vakası' : '🏆 Kusursuz İstihbarat Operasyonu'}
+              {winReason === 'assassin_triggered' ? t('☠️ Kara Suikastçı Vakası') : t('🏆 Kusursuz İstihbarat Operasyonu')}
             </div>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
-              {isRedWinner ? '🔴 KIRMIZI TAKIM KAZANDI!' : '🔵 MAVİ TAKIM KAZANDI!'}
+              {isRedWinner ? '🔴 KIRMIZI TAKIM KAZANDI!' : t('🔵 MAVİ TAKIM KAZANDI!')}
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-md mx-auto leading-relaxed">
               {winReason === 'assassin_triggered'
                 ? `Rakip takım panodaki Kara Suikastçı kartını açarak tuzağa düştü ve zaferi ${
-                    isRedWinner ? 'Kırmızı Takım' : 'Mavi Takım'
+                    isRedWinner ? t('Kırmızı Takım') : t('Mavi Takım')
                   }'a hediye etti!`
-                : `${isRedWinner ? 'Kırmızı' : 'Mavi'} Takım sahadaki tüm gizli ajanlarını başarıyla ortaya çıkardı!`}
+                : `${isRedWinner ? t('Kırmızı') : 'Mavi'} Takım sahadaki tüm gizli ajanlarını başarıyla ortaya çıkardı!`}
             </p>
           </div>
         </div>

@@ -369,7 +369,7 @@ export function CodenamesBoardView({
               }`}
             />
             <span className={isRed ? 'text-rose-700' : 'text-blue-700'}>
-              {isRed ? '🔴 Kırmızı Takım Sırası' : '🔵 Mavi Takım Sırası'}
+              {isRed ? t('🔴 Kırmızı Takım Sırası') : t('🔵 Mavi Takım Sırası')}
             </span>
           </div>
 
@@ -390,7 +390,7 @@ export function CodenamesBoardView({
             <div className="text-xs font-bold text-slate-500 italic pt-1">
               {isTvHost
                 ? 'Liderin telefonundan ipucu girmesi bekleniyor...'
-                : 'Ajan Lideri henüz ipucu vermedi.'}
+                : t('Ajan Lideri henüz ipucu vermedi.')}
             </div>
           )}
         </div>
@@ -441,7 +441,7 @@ export function CodenamesBoardView({
           >
             {isSpymasterMode ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             <span>
-              {isSpymasterMode ? 'Lider Haritasını Gizle' : '👁️ Lider Haritası (Spymaster)'}
+              {isSpymasterMode ? t('Lider Haritasını Gizle') : t('👁️ Lider Haritası (Spymaster)')}
             </span>
           </button>
 

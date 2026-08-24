@@ -28,7 +28,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { toggleSound, isSoundEnabled, playClickSound, playWinSound, playTurnSound } from '../../utils/audio';
 
-import { t } from '../../i18n';
+import { t, withLang } from '../../i18n';
 interface TriviaTvViewProps {
   roomCode: string;
   gameState: TriviaPursuitGameState;
@@ -69,7 +69,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
   const currentCat = currentQ ? TRIVIA_CATEGORIES[currentQ.category] : null;
 
   const joinUrl = typeof window !== 'undefined'
-    ? `${window.location.origin}${window.location.pathname}?game=trivia_pursuit&room=${roomCode}`
+    ? withLang(`${window.location.origin}${window.location.pathname}?game=trivia_pursuit&room=${roomCode}`)
     : `?room=${roomCode}`;
 
   const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(
@@ -269,7 +269,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                   title={t('Yapay Zeka ile Yeni Sorular Üret')}
                 >
                   <Sparkles className={`w-4 h-4 text-amber-500 ${isGeneratingAi ? 'animate-spin' : ''}`} />
-                  <span>{isGeneratingAi ? 'Sorular Üretiliyor...' : 'Yapay Zeka Soru Havuzu'}</span>
+                  <span>{isGeneratingAi ? t('Sorular Üretiliyor...') : 'Yapay Zeka Soru Havuzu'}</span>
                 </button>
               </div>
             </div>
@@ -311,7 +311,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                 <span className="w-11 h-11 rounded-xl bg-white text-slate-900 flex items-center justify-center text-2xl font-black">
                   {gameState.dieRoll ?? (onHub ? '🏆' : '🎲')}
                 </span>
-                {onHub ? 'FİNAL SORUSU' : 'ZAR AT'}
+                {onHub ? t('FİNAL SORUSU') : 'ZAR AT'}
               </button>
             ) : (
               <div className="flex flex-col items-center gap-2">
@@ -564,7 +564,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                       }`}
                     >
                       {isCorrect ? <CheckCircle2 className="w-3 h-3" /> : <XCircle className="w-3 h-3" />}
-                      {isCorrect ? '+100 Puan' : 'Yanlış'}
+                      {isCorrect ? '+100 Puan' : t('Yanlış')}
                     </span>
 
                     {earnedWedge && (
@@ -606,7 +606,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
               <span className="text-xs uppercase font-black tracking-widest text-amber-600 dark:text-amber-400">
                 {t('ŞAMPİYON BİLGİN')}</span>
               <h2 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white mt-1">
-                {players.find((p) => p.id === gameState.winnerPlayerId)?.name || 'Şampiyon'}
+                {players.find((p) => p.id === gameState.winnerPlayerId)?.name || t('Şampiyon')}
               </h2>
               <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1 font-medium">
                 {t("Tüm Kategori Rozetlerini toplayarak Trivia Pursuit'i fethetti!")}</p>

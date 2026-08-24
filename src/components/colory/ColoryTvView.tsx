@@ -5,7 +5,7 @@ import { ArrowLeft, Eye, Play, RotateCcw, Trophy, Users } from 'lucide-react';
 import { ColoryGameState, ColoryPlayer } from '../../types/colory';
 import { hslToHex } from '../../data/coloryLogic';
 
-import { t } from '../../i18n';
+import { t, withLang } from '../../i18n';
 interface Props {
   roomCode: string;
   gameState: ColoryGameState;
@@ -21,7 +21,7 @@ export const ColoryTvView: React.FC<Props> = ({
 }) => {
   const [qr, setQr] = useState<string | null>(null);
   useEffect(() => {
-    const url = `${window.location.origin}${window.location.pathname}?game=colory&room=${roomCode}`;
+    const url = withLang(`${window.location.origin}${window.location.pathname}?game=colory&room=${roomCode}`);
     QRCode.toDataURL(url, { width: 320, margin: 1 }).then(setQr).catch(() => setQr(null));
   }, [roomCode]);
 

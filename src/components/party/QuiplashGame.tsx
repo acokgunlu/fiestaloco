@@ -305,7 +305,7 @@ export const QuiplashGame: React.FC<QuiplashGameProps> = ({ onBackToHub }) => {
                 disabled={!socket.isConnected}
                 className="w-full mt-6 py-4 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-amber-600 text-white font-black text-base shadow-xl shadow-purple-900/50 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
               >
-                {!socket.isConnected ? 'Bağlanıyor...' : 'Odaya Gir ve Başla'}
+                {!socket.isConnected ? t('Bağlanıyor...') : t('Odaya Gir ve Başla')}
               </button>
             </form>
           </div>

@@ -10,6 +10,7 @@ import {
 import { recordMatchResult } from './leaderboardStore';
 import { getWsUrl } from './serverUrl';
 
+import { t } from '../i18n';
 export interface UseQuiplashSocketReturn {
   isConnected: boolean;
   roomCode: string | null;
@@ -129,7 +130,7 @@ export function useQuiplashSocket(): UseQuiplashSocketReturn {
           if (type === 'heartbeat' || type === 'pong') return;
 
           if (type === 'error') {
-            setErrorMessage(msg.message || 'Bir hata oluştu');
+            setErrorMessage(msg.message || t('Bir hata oluştu'));
             return;
           }
 

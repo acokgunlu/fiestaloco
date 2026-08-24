@@ -167,8 +167,8 @@ export const WordRevealView: React.FC<WordRevealViewProps> = ({
               </div>
               <p className="text-xs text-slate-700 dark:text-slate-300 max-w-xs mx-auto leading-relaxed mt-2">
                 {isImposter
-                  ? 'Gizli kelimeyi bilmiyorsun! Diğer oyuncuların ne çizdiğini çaktırmadan taklit et ve kimseye yakalanma!'
-                  : 'Sıran geldiğinde tek bir sürekli çizgi çiz. Kelimeyi bildiğini hissettir ama sahtekâra çok açık tüyo verme!'}
+                  ? t('Gizli kelimeyi bilmiyorsun! Diğer oyuncuların ne çizdiğini çaktırmadan taklit et ve kimseye yakalanma!')
+                  : t('Sıran geldiğinde tek bir sürekli çizgi çiz. Kelimeyi bildiğini hissettir ama sahtekâra çok açık tüyo verme!')}
               </p>
             </div>
 
@@ -195,7 +195,7 @@ export const WordRevealView: React.FC<WordRevealViewProps> = ({
         className="w-full py-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-rose-600 hover:from-indigo-500 hover:to-rose-500 text-white font-black text-sm sm:text-base rounded-2xl shadow-xl shadow-indigo-600/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
       >
         <span>
-          {isLastPlayer ? 'Herkes Hazır - Çizime Başla! 🎨' : 'Rolümü Ezberledim, Sıradakine Ver'}
+          {isLastPlayer ? t('Herkes Hazır - Çizime Başla! 🎨') : t('Rolümü Ezberledim, Sıradakine Ver')}
         </span>
         <ArrowRight className="w-5 h-5" />
       </button>

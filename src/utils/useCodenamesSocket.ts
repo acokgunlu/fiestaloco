@@ -18,6 +18,7 @@ import {
 } from './audio';
 import { getWsUrl } from './serverUrl';
 
+import { t } from '../i18n';
 export interface UseCodenamesSocketReturn {
   isConnected: boolean;
   roomCode: string | null;
@@ -139,7 +140,7 @@ export function useCodenamesSocket(): UseCodenamesSocketReturn {
             setErrorMessage(null);
           } else if (type === 'codenames:start_rejected') {
             // Takim kurulumu eksik — sunucu oyunu baslatmadi
-            setErrorMessage(msg.message || 'Takımlar hazır değil.');
+            setErrorMessage(msg.message || t('Takımlar hazır değil.'));
           } else if (type === 'codenames:state') {
             const nextState: CodenamesGameState = msg.gameState;
 
@@ -166,7 +167,7 @@ export function useCodenamesSocket(): UseCodenamesSocketReturn {
               sessionRef.current.player = msg.myPlayer;
             }
           } else if (type === 'error') {
-            setErrorMessage(msg.message || 'Bir bağlantı hatası oluştu.');
+            setErrorMessage(msg.message || t('Bir bağlantı hatası oluştu.'));
           }
         } catch (err) {
           // Silent catch for malformed messages

@@ -247,7 +247,7 @@ export const HorseRacePassAndPlay: React.FC<Props> = ({ onBackToLobby }) => {
           <button onClick={confirmBet} disabled={picks.length !== need}
             className="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-600 text-white font-black shadow-lg disabled:opacity-40 cursor-pointer flex items-center justify-center gap-2">
             <Ticket className="w-4 h-4" />
-            KUPONU YATIR → {bettor + 1 < players.length ? 'SIRADAKİNE VER' : 'YARIŞI BAŞLAT'}
+            KUPONU YATIR → {bettor + 1 < players.length ? t('SIRADAKİNE VER') : t('YARIŞI BAŞLAT')}
           </button>
         </div>
       )}
@@ -285,7 +285,7 @@ export const HorseRacePassAndPlay: React.FC<Props> = ({ onBackToLobby }) => {
 
               <button onClick={nextRace}
                 className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-lime-600 text-white font-black shadow-xl flex items-center justify-center gap-2 cursor-pointer">
-                {raceNo >= TOTAL_RACES ? (<><RotateCcw className="w-5 h-5" /> {leader?.name}  {t('kazandı — yeniden')}</>) : 'SONRAKİ YARIŞ →'}
+                {raceNo >= TOTAL_RACES ? (<><RotateCcw className="w-5 h-5" /> {leader?.name}  {t('kazandı — yeniden')}</>) : t('SONRAKİ YARIŞ →')}
               </button>
             </>
           )}
