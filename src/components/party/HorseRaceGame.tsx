@@ -7,6 +7,7 @@ import { HorseRacePassAndPlay } from '../horserace/HorseRacePassAndPlay';
 import { DEFAULT_PLAYER_PALETTE } from '../../data/wordPacks';
 import { playClickSound } from '../../utils/audio';
 
+import { t } from '../../i18n';
 interface HorseRaceGameProps {
   onBackToHub: () => void;
 }
@@ -77,7 +78,7 @@ export const HorseRaceGame: React.FC<HorseRaceGameProps> = ({ onBackToHub }) => 
             className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs font-black transition-all cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Parti Arenası</span>
+            <span>{t('Parti Arenası')}</span>
           </button>
           <div className="flex items-center gap-2.5">
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-500 via-lime-500 to-amber-400 text-white flex items-center justify-center text-xl shadow-md border-2 border-white dark:border-slate-700">
@@ -86,15 +87,12 @@ export const HorseRaceGame: React.FC<HorseRaceGameProps> = ({ onBackToHub }) => 
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white">
-                  At Yarışı
-                </h1>
+                  {t('At Yarışı')}</h1>
                 <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-[10px] font-black border border-emerald-300 dark:border-emerald-800">
-                  GANYAN
-                </span>
+                  {t('GANYAN')}</span>
               </div>
               <p className="text-xs text-slate-500 dark:text-slate-400 font-bold">
-                Ganyan, plase, ikili — kuponunu yatır, atları izle.
-              </p>
+                {t('Ganyan, plase, ikili — kuponunu yatır, atları izle.')}</p>
             </div>
           </div>
         </div>
@@ -107,10 +105,9 @@ export const HorseRaceGame: React.FC<HorseRaceGameProps> = ({ onBackToHub }) => 
               <div className="w-14 h-14 rounded-2xl bg-emerald-100 dark:bg-emerald-600/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <Tv className="w-7 h-7" />
               </div>
-              <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">TV Ekranı (Host)</h3>
+              <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">{t('TV Ekranı (Host)')}</h3>
               <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                Pisti büyük ekrana yansıtın. Oranlar ve yarış TV’de, kuponlar telefonlarda.
-              </p>
+                {t('Pisti büyük ekrana yansıtın. Oranlar ve yarış TV’de, kuponlar telefonlarda.')}</p>
             </div>
             <button
               onClick={() => {
@@ -121,8 +118,7 @@ export const HorseRaceGame: React.FC<HorseRaceGameProps> = ({ onBackToHub }) => 
               className="mt-6 w-full py-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-lime-600 text-white font-black text-sm shadow-xl hover:scale-105 transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
               <Tv className="w-4 h-4" />
-              TV ODANI KUR
-            </button>
+              {t('TV ODANI KUR')}</button>
           </div>
 
           <div className="flex flex-col justify-between p-7 rounded-3xl bg-white dark:bg-slate-900/80 hover:bg-slate-50 dark:hover:bg-slate-900 border-2 border-amber-500/30 hover:border-amber-500/70 shadow-2xl transition-all group">
@@ -130,10 +126,9 @@ export const HorseRaceGame: React.FC<HorseRaceGameProps> = ({ onBackToHub }) => 
               <div className="w-14 h-14 rounded-2xl bg-amber-100 dark:bg-amber-600/20 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <Smartphone className="w-7 h-7" />
               </div>
-              <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">Telefondan Katıl</h3>
+              <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">{t('Telefondan Katıl')}</h3>
               <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                TV'deki oda kodunu girin; telefonunuz bahis kuponunuz olsun.
-              </p>
+                {t("TV'deki oda kodunu girin; telefonunuz bahis kuponunuz olsun.")}</p>
             </div>
             <button
               onClick={() => {
@@ -143,8 +138,7 @@ export const HorseRaceGame: React.FC<HorseRaceGameProps> = ({ onBackToHub }) => 
               className="mt-6 w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-600 to-rose-600 text-white font-black text-sm shadow-xl hover:scale-105 transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
               <Smartphone className="w-4 h-4" />
-              ODAYA KATIL
-            </button>
+              {t('ODAYA KATIL')}</button>
           </div>
 
           <div className="flex flex-col justify-between p-7 rounded-3xl bg-white dark:bg-slate-900/80 hover:bg-slate-50 dark:hover:bg-slate-900 border-2 border-sky-500/30 hover:border-sky-500/70 shadow-2xl transition-all group">
@@ -152,10 +146,9 @@ export const HorseRaceGame: React.FC<HorseRaceGameProps> = ({ onBackToHub }) => 
               <div className="w-14 h-14 rounded-2xl bg-sky-100 dark:bg-sky-600/20 text-sky-600 dark:text-sky-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <Users className="w-7 h-7" />
               </div>
-              <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">Tek Cihaz</h3>
+              <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">{t('Tek Cihaz')}</h3>
               <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                İnternetsiz. Cihazı elden ele verip kuponları doldurun, atlar koşsun.
-              </p>
+                {t('İnternetsiz. Cihazı elden ele verip kuponları doldurun, atlar koşsun.')}</p>
             </div>
             <button
               onClick={() => {
@@ -165,20 +158,18 @@ export const HorseRaceGame: React.FC<HorseRaceGameProps> = ({ onBackToHub }) => 
               className="mt-6 w-full py-3.5 rounded-2xl bg-gradient-to-r from-sky-600 to-indigo-600 text-white font-black text-sm shadow-xl hover:scale-105 transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
               <Users className="w-4 h-4" />
-              TEK CİHAZDA BAŞLA
-            </button>
+              {t('TEK CİHAZDA BAŞLA')}</button>
           </div>
         </div>
       ) : (
         <div className="w-full max-w-md mx-auto p-8 rounded-3xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 shadow-2xl">
           <div className="flex items-center justify-between pb-4 mb-6 border-b border-slate-200 dark:border-slate-800">
-            <h3 className="text-lg font-black text-slate-900 dark:text-white">Telefondan Odaya Katıl</h3>
+            <h3 className="text-lg font-black text-slate-900 dark:text-white">{t('Telefondan Odaya Katıl')}</h3>
             <button
               onClick={() => setPlayMode('lobby')}
               className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white font-bold cursor-pointer"
             >
-              İptal
-            </button>
+              {t('İptal')}</button>
           </div>
 
           {socket.errorMessage && (
@@ -205,12 +196,11 @@ export const HorseRaceGame: React.FC<HorseRaceGameProps> = ({ onBackToHub }) => 
           >
             <div>
               <label className="block text-[11px] font-bold uppercase text-slate-500 dark:text-slate-400 mb-1">
-                Oda Kodu
-              </label>
+                {t('Oda Kodu')}</label>
               <input
                 value={joinCode}
                 onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
-                placeholder="ÖRN: RAIN75"
+                placeholder={t('ÖRN: RAIN75')}
                 className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-amber-600 dark:text-amber-400 font-mono font-black text-lg uppercase tracking-widest text-center focus:outline-none focus:border-amber-400"
                 required
               />
@@ -218,12 +208,11 @@ export const HorseRaceGame: React.FC<HorseRaceGameProps> = ({ onBackToHub }) => 
 
             <div>
               <label className="block text-[11px] font-bold uppercase text-slate-500 dark:text-slate-400 mb-1">
-                Bahisçi Adınız
-              </label>
+                {t('Bahisçi Adınız')}</label>
               <input
                 value={playerName}
                 onChange={(e) => setPlayerName(e.target.value)}
-                placeholder="Adınızı yazın…"
+                placeholder={t('Adınızı yazın…')}
                 className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white font-bold text-sm focus:outline-none focus:border-emerald-500"
                 required
               />
@@ -231,8 +220,7 @@ export const HorseRaceGame: React.FC<HorseRaceGameProps> = ({ onBackToHub }) => 
 
             <div>
               <label className="block text-[11px] font-bold uppercase text-slate-500 dark:text-slate-400 mb-2">
-                Renk Seçin
-              </label>
+                {t('Renk Seçin')}</label>
               <div className="grid grid-cols-6 gap-2">
                 {DEFAULT_PLAYER_PALETTE.map((pal) => (
                   <button

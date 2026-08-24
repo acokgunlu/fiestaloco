@@ -3,6 +3,7 @@ import { TriviaCategory, TRIVIA_CATEGORIES, TRIVIA_CATEGORY_KEYS } from '../../t
 import { motion } from 'motion/react';
 import { Sparkles, Disc } from 'lucide-react';
 
+import { t } from '../../i18n';
 interface TriviaCategoryWheelProps {
   rotationDegrees: number;
   isSpinning: boolean;
@@ -141,7 +142,7 @@ export const TriviaCategoryWheel: React.FC<TriviaCategoryWheelProps> = ({
           ) : (
             <div className="w-18 h-18 rounded-full bg-slate-900/90 border border-slate-700 text-slate-400 flex flex-col items-center justify-center text-[10px] font-bold text-center px-1">
               <Disc className="w-4 h-4 mb-0.5 text-amber-400" />
-              <span>TRIVIA</span>
+              <span>{t('TRIVIA')}</span>
             </div>
           )}
         </div>

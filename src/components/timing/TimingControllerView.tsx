@@ -4,6 +4,7 @@ import { TimingGameState, TimingPlayer } from '../../types/timing';
 import { formatError, formatSec, modeHint, modeLabel } from '../../data/timingLogic';
 import { TimingTimeline } from './TimingTimeline';
 
+import { t } from '../../i18n';
 interface Props {
   roomCode: string;
   myPlayer: TimingPlayer | null;
@@ -71,13 +72,13 @@ export const TimingControllerView: React.FC<Props> = ({
       {gameState.phase === 'LOBBY' && (
         <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 shadow-lg text-center space-y-3">
           <div className="text-4xl">⏱️</div>
-          <h3 className="text-lg font-black">Hazırsın!</h3>
-          <p className="text-xs font-bold text-slate-500 dark:text-slate-400">TV ekranından başlaması bekleniyor…</p>
+          <h3 className="text-lg font-black">{t('Hazırsın!')}</h3>
+          <p className="text-xs font-bold text-slate-500 dark:text-slate-400">{t('TV ekranından başlaması bekleniyor…')}</p>
           <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-left text-xs space-y-1 font-medium text-slate-600 dark:text-slate-300">
-            <p>1️⃣ Bir hedef süre açıklanır — "tam 10 saniye" gibi.</p>
-            <p>2️⃣ Geri sayım biter, telefon titrer. Hiçbir yerde sayaç YOK.</p>
-            <p>3️⃣ Vakti geldi dediğin an butona bas. En yakın basan turu alır.</p>
-            <p className="text-slate-400 dark:text-slate-500">Ağ gecikmen otomatik düşülür — yavaş bağlantı ceza değil.</p>
+            <p>{t('1️⃣ Bir hedef süre açıklanır — "tam 10 saniye" gibi.')}</p>
+            <p>{t('2️⃣ Geri sayım biter, telefon titrer. Hiçbir yerde sayaç YOK.')}</p>
+            <p>{t('3️⃣ Vakti geldi dediğin an butona bas. En yakın basan turu alır.')}</p>
+            <p className="text-slate-400 dark:text-slate-500">{t('Ağ gecikmen otomatik düşülür — yavaş bağlantı ceza değil.')}</p>
           </div>
         </div>
       )}
@@ -90,9 +91,9 @@ export const TimingControllerView: React.FC<Props> = ({
             <Target className="w-3.5 h-3.5" /> {modeLabel(gameState.mode)} MODU
           </div>
           <div>
-            <p className="text-[11px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Hedef</p>
+            <p className="text-[11px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">{t('Hedef')}</p>
             <div className="text-6xl font-black tabular-nums text-sky-600 dark:text-sky-400">{formatSec(gameState.targetMs, 0)}</div>
-            <p className="text-sm font-black text-slate-600 dark:text-slate-300">SANİYE</p>
+            <p className="text-sm font-black text-slate-600 dark:text-slate-300">{t('SANİYE')}</p>
           </div>
           <p className="text-xs font-bold text-slate-600 dark:text-slate-300">{modeHint(gameState.mode)}</p>
           <div className="text-2xl font-black text-slate-400 tabular-nums">{gameState.timerSeconds}</div>
@@ -101,7 +102,7 @@ export const TimingControllerView: React.FC<Props> = ({
 
       {gameState.phase === 'COUNTDOWN' && (
         <div className="py-12 text-center space-y-2 rounded-3xl bg-white dark:bg-slate-900 border-2 border-amber-300 dark:border-amber-800 shadow-lg">
-          <p className="text-xs font-black uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Hazır ol</p>
+          <p className="text-xs font-black uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">{t('Hazır ol')}</p>
           <div className="text-8xl font-black tabular-nums text-amber-500">{gameState.timerSeconds}</div>
           <p className="text-sm font-black text-slate-600 dark:text-slate-300">
             {formatSec(gameState.targetMs, 0)} saniye · {modeLabel(gameState.mode)}
@@ -118,16 +119,15 @@ export const TimingControllerView: React.FC<Props> = ({
         <div className="space-y-3">
           {!inRound ? (
             <div className="p-8 rounded-3xl bg-slate-100 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-center space-y-2">
-              <p className="text-lg font-black">Bu tura yetişemedin</p>
-              <p className="text-xs font-bold text-slate-500 dark:text-slate-400">Sonraki turdan itibaren oynuyorsun.</p>
+              <p className="text-lg font-black">{t('Bu tura yetişemedin')}</p>
+              <p className="text-xs font-bold text-slate-500 dark:text-slate-400">{t('Sonraki turdan itibaren oynuyorsun.')}</p>
             </div>
           ) : myPressed ? (
             <div className="p-10 rounded-[2rem] bg-emerald-50 dark:bg-emerald-950/50 border-4 border-emerald-400 dark:border-emerald-700 text-center space-y-3">
               <Check className="w-14 h-14 mx-auto text-emerald-600 dark:text-emerald-400" strokeWidth={3} />
-              <h3 className="text-2xl font-black text-emerald-800 dark:text-emerald-300">KİLİTLENDİ</h3>
+              <h3 className="text-2xl font-black text-emerald-800 dark:text-emerald-300">{t('KİLİTLENDİ')}</h3>
               <p className="text-xs font-bold text-slate-500 dark:text-slate-400">
-                Süren turun sonunda açıklanacak. Kimseye tüyo verme.
-              </p>
+                {t('Süren turun sonunda açıklanacak. Kimseye tüyo verme.')}</p>
             </div>
           ) : (
             <>
@@ -139,7 +139,7 @@ export const TimingControllerView: React.FC<Props> = ({
                     : 'bg-gradient-to-b from-sky-500 to-indigo-700 border-sky-300 dark:border-sky-900'}`}
                 style={{ height: '46vh', minHeight: 260 }}
               >
-                <span className="block text-6xl">ŞİMDİ</span>
+                <span className="block text-6xl">{t('ŞİMDİ')}</span>
                 <span className="block text-sm font-bold opacity-80 mt-3 tabular-nums">
                   hedef {formatSec(gameState.targetMs, 0)} sn
                 </span>
@@ -157,7 +157,7 @@ export const TimingControllerView: React.FC<Props> = ({
           {myResult ? (
             <>
               <div className="space-y-0.5">
-                <p className="text-[11px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Senin süren</p>
+                <p className="text-[11px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">{t('Senin süren')}</p>
                 <div className={`text-5xl font-black tabular-nums ${myResult.burned ? 'text-rose-600 dark:text-rose-400' : 'text-sky-600 dark:text-sky-400'}`}>
                   {formatSec(myResult.elapsedMs)}
                 </div>
@@ -176,7 +176,7 @@ export const TimingControllerView: React.FC<Props> = ({
               )}
             </>
           ) : (
-            <p className="text-sm font-black text-slate-500 dark:text-slate-400">Bu turda basmadın · +0</p>
+            <p className="text-sm font-black text-slate-500 dark:text-slate-400">{t('Bu turda basmadın · +0')}</p>
           )}
 
           {(gameState.results || []).length > 1 && (
@@ -202,7 +202,7 @@ export const TimingControllerView: React.FC<Props> = ({
           </div>
 
           {gameState.phase === 'GAME_OVER' && gameState.winnerPlayerId === myPlayer?.id && (
-            <p className="text-sm font-black text-amber-500">🏆 Zaman senin işine bakıyor!</p>
+            <p className="text-sm font-black text-amber-500">{t('🏆 Zaman senin işine bakıyor!')}</p>
           )}
         </div>
       )}

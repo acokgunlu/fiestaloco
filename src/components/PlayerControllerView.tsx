@@ -20,6 +20,7 @@ import {
 import { DEFAULT_PLAYER_PALETTE } from '../data/wordPacks';
 import { playClickSound, playTurnSound } from '../utils/audio';
 
+import { t } from '../i18n';
 interface PlayerControllerViewProps {
   roomState: RoomState;
   myPlayerId: string;
@@ -116,7 +117,7 @@ export const PlayerControllerView: React.FC<PlayerControllerViewProps> = ({
           <div>
             <div className="text-xs font-black text-slate-900 dark:text-slate-100 leading-none">{me?.name}</div>
             <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400 mt-0.5">
-              Room: <span className="font-mono text-slate-800 dark:text-slate-200">{roomState.roomCode}</span>
+              {t('Room:')} <span className="font-mono text-slate-800 dark:text-slate-200">{roomState.roomCode}</span>
             </div>
           </div>
         </div>
@@ -141,8 +142,7 @@ export const PlayerControllerView: React.FC<PlayerControllerViewProps> = ({
             onClick={onLeaveRoom}
             className="text-[11px] text-slate-400 dark:text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 font-bold px-1 py-1"
           >
-            Exit
-          </button>
+            {t('Exit')}</button>
         </div>
       </div>
 
@@ -150,7 +150,7 @@ export const PlayerControllerView: React.FC<PlayerControllerViewProps> = ({
       {isSecretCardRevealed && roomState.myAssignedWord && (
         <div className="p-4 rounded-2xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white border-2 border-indigo-500 shadow-2xl space-y-2 animate-scale-in text-center">
           <div className="flex items-center justify-between text-[11px] font-bold text-slate-400">
-            <span>Category: <strong className="text-white">{roomState.category}</strong></span>
+            <span>{t('Category:')} <strong className="text-white">{roomState.category}</strong></span>
             <span
               className={`px-2 py-0.5 rounded-full font-bold ${
                 roomState.myIsImposter ? 'bg-rose-500/30 text-rose-300' : 'bg-emerald-500/30 text-emerald-300'
@@ -170,8 +170,7 @@ export const PlayerControllerView: React.FC<PlayerControllerViewProps> = ({
             onClick={() => setIsSecretCardRevealed(false)}
             className="text-xs text-slate-400 hover:text-white font-semibold underline mt-1"
           >
-            Close Peek
-          </button>
+            {t('Close Peek')}</button>
         </div>
       )}
 
@@ -181,18 +180,17 @@ export const PlayerControllerView: React.FC<PlayerControllerViewProps> = ({
           <div className="text-center space-y-1">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 text-xs font-bold border border-emerald-200 dark:border-emerald-900">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Connected to Room</span>
+              <span>{t('Connected to Room')}</span>
             </div>
-            <h2 className="text-2xl font-black text-slate-900 dark:text-slate-100">You're in the Game!</h2>
+            <h2 className="text-2xl font-black text-slate-900 dark:text-slate-100">{t("You're in the Game!")}</h2>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Customize your profile while waiting for the host to start.
-            </p>
+              {t('Customize your profile while waiting for the host to start.')}</p>
           </div>
 
           {/* Player Profile Editor */}
           <div className="p-4 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-3">
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Your Nickname:</label>
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">{t('Your Nickname:')}</label>
               <input
                 type="text"
                 value={me?.name || ''}
@@ -205,7 +203,7 @@ export const PlayerControllerView: React.FC<PlayerControllerViewProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Choose Stroke Color:</label>
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">{t('Choose Stroke Color:')}</label>
               <div className="grid grid-cols-4 gap-2">
                 {DEFAULT_PLAYER_PALETTE.map((pal, idx) => (
                   <button
@@ -233,8 +231,7 @@ export const PlayerControllerView: React.FC<PlayerControllerViewProps> = ({
           </div>
 
           <div className="text-center p-3 bg-indigo-50 dark:bg-indigo-950/40 rounded-2xl border border-indigo-100 dark:border-indigo-900 text-xs text-indigo-800 dark:text-indigo-300 font-semibold animate-pulse">
-            Waiting for Host to start round on the main screen...
-          </div>
+            {t('Waiting for Host to start round on the main screen...')}</div>
         </div>
       )}
 
@@ -242,8 +239,8 @@ export const PlayerControllerView: React.FC<PlayerControllerViewProps> = ({
       {roomState.gamePhase === 'WORD_REVEAL' && (
         <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
           <div className="text-center space-y-1">
-            <h2 className="text-2xl font-black text-slate-900 dark:text-slate-100">Gizli Rolünüz (Secret Briefing)</h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400">Kelimenizi görmek için karta dokunun ve ezberleyin.</p>
+            <h2 className="text-2xl font-black text-slate-900 dark:text-slate-100">{t('Gizli Rolünüz (Secret Briefing)')}</h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400">{t('Kelimenizi görmek için karta dokunun ve ezberleyin.')}</p>
           </div>
 
           {/* Privacy Scratch / Peek Card */}
@@ -262,8 +259,8 @@ export const PlayerControllerView: React.FC<PlayerControllerViewProps> = ({
                 <div className="w-12 h-12 rounded-2xl bg-slate-800 flex items-center justify-center text-indigo-400 mx-auto">
                   <Lock className="w-6 h-6" />
                 </div>
-                <div className="text-base font-black">Gizli Rolü Görmek İçin Dokun</div>
-                <div className="text-[11px] text-slate-400 dark:text-slate-500">Diğer oyunculardan gizli tutun!</div>
+                <div className="text-base font-black">{t('Gizli Rolü Görmek İçin Dokun')}</div>
+                <div className="text-[11px] text-slate-400 dark:text-slate-500">{t('Diğer oyunculardan gizli tutun!')}</div>
               </div>
             ) : (
               <div className="space-y-2 animate-scale-in">
@@ -278,14 +275,13 @@ export const PlayerControllerView: React.FC<PlayerControllerViewProps> = ({
                   {roomState.myAssignedWord}
                 </div>
                 <p className="text-xs text-slate-300 max-w-xs">{roomState.myRoleDescription}</p>
-                <div className="text-[10px] text-slate-400 dark:text-slate-500 underline pt-2">Kapatmak için dokun</div>
+                <div className="text-[10px] text-slate-400 dark:text-slate-500 underline pt-2">{t('Kapatmak için dokun')}</div>
               </div>
             )}
           </div>
 
           <div className="text-center text-xs text-slate-500 dark:text-slate-400 font-bold">
-            Hazır olduğunuzda ana ekrana bakın!
-          </div>
+            {t('Hazır olduğunuzda ana ekrana bakın!')}</div>
         </div>
       )}
 
@@ -302,8 +298,7 @@ export const PlayerControllerView: React.FC<PlayerControllerViewProps> = ({
                     style={{ backgroundColor: me?.color }}
                   />
                   <span className="text-sm font-black text-slate-900 dark:text-slate-100 uppercase">
-                    Çizme Sırası Sende (Your Turn)!
-                  </span>
+                    {t('Çizme Sırası Sende (Your Turn)!')}</span>
                 </div>
 
                 {roomState.settings.drawTimeLimitSec > 0 && (
@@ -333,13 +328,12 @@ export const PlayerControllerView: React.FC<PlayerControllerViewProps> = ({
               />
 
               <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 px-1">
-                <span>Parmağınızı kaldırmadan 1 sürekli çizgi çizin</span>
+                <span>{t('Parmağınızı kaldırmadan 1 sürekli çizgi çizin')}</span>
                 <button
                   onClick={onSkipTurn}
                   className="text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 underline font-semibold"
                 >
-                  Pas Geç
-                </button>
+                  {t('Pas Geç')}</button>
               </div>
             </div>
           ) : (
@@ -353,7 +347,7 @@ export const PlayerControllerView: React.FC<PlayerControllerViewProps> = ({
                   {activePlayer?.avatar}
                 </div>
                 <div className="text-left">
-                  <div className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Şu An Çizen:</div>
+                  <div className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">{t('Şu An Çizen:')}</div>
                   <div className="text-lg font-black text-slate-900 dark:text-slate-100">{activePlayer?.name}</div>
                 </div>
               </div>
@@ -370,7 +364,7 @@ export const PlayerControllerView: React.FC<PlayerControllerViewProps> = ({
 
               <div className="p-3 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-400 font-semibold flex items-center justify-center gap-2">
                 <Radio className="w-3.5 h-3.5 text-rose-500 animate-pulse" />
-                <span>Çizgileri canlı olarak takip edin!</span>
+                <span>{t('Çizgileri canlı olarak takip edin!')}</span>
               </div>
             </div>
           )}
@@ -382,12 +376,10 @@ export const PlayerControllerView: React.FC<PlayerControllerViewProps> = ({
         <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4 text-center">
           <div className="space-y-1">
             <span className="text-xs font-black uppercase text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/40 px-2.5 py-0.5 rounded-full border border-amber-200 dark:border-amber-900">
-              Tartışma Aşaması
-            </span>
-            <h2 className="text-2xl font-black text-slate-900 dark:text-slate-100">Sahtekâr Kim?</h2>
+              {t('Tartışma Aşaması')}</span>
+            <h2 className="text-2xl font-black text-slate-900 dark:text-slate-100">{t('Sahtekâr Kim?')}</h2>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Gruptaki şüpheli çizgileri tartışın!
-            </p>
+              {t('Gruptaki şüpheli çizgileri tartışın!')}</p>
           </div>
 
           <CanvasBoard
@@ -405,12 +397,10 @@ export const PlayerControllerView: React.FC<PlayerControllerViewProps> = ({
         <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
           <div className="text-center space-y-1">
             <span className="text-xs font-black uppercase text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 px-2.5 py-0.5 rounded-full border border-rose-200 dark:border-rose-900">
-              Secret Ballot
-            </span>
-            <h2 className="text-2xl font-black text-slate-900 dark:text-slate-100">Vote for the Imposter</h2>
+              {t('Secret Ballot')}</span>
+            <h2 className="text-2xl font-black text-slate-900 dark:text-slate-100">{t('Vote for the Imposter')}</h2>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Select the player who drew the suspicious stroke.
-            </p>
+              {t('Select the player who drew the suspicious stroke.')}</p>
           </div>
 
           {!hasVoted ? (
@@ -460,17 +450,16 @@ export const PlayerControllerView: React.FC<PlayerControllerViewProps> = ({
                 disabled={!selectedVoteTargetId}
                 className="w-full py-4 bg-slate-900 hover:bg-slate-800 disabled:opacity-40 text-white font-black text-sm rounded-2xl shadow-xl flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer mt-3"
               >
-                <span>Submit Secret Vote</span>
+                <span>{t('Submit Secret Vote')}</span>
                 <Send className="w-4 h-4" />
               </button>
             </div>
           ) : (
             <div className="p-6 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800 text-center space-y-2">
               <CheckCircle2 className="w-12 h-12 text-emerald-600 dark:text-emerald-400 mx-auto" />
-              <h3 className="text-lg font-black text-slate-900 dark:text-slate-100">Vote Recorded!</h3>
+              <h3 className="text-lg font-black text-slate-900 dark:text-slate-100">{t('Vote Recorded!')}</h3>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                Waiting for other players to submit their ballots on the main screen...
-              </p>
+                {t('Waiting for other players to submit their ballots on the main screen...')}</p>
             </div>
           )}
         </div>
@@ -484,12 +473,10 @@ export const PlayerControllerView: React.FC<PlayerControllerViewProps> = ({
             <form onSubmit={handleImposterGuessSubmit} className="space-y-4">
               <div className="text-center space-y-1">
                 <span className="text-xs font-black uppercase text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 px-2.5 py-0.5 rounded-full border border-rose-200 dark:border-rose-900">
-                  Caught! Final Steal Attempt
-                </span>
-                <h2 className="text-2xl font-black text-slate-900 dark:text-slate-100">Guess the Crew's Word!</h2>
+                  {t('Caught! Final Steal Attempt')}</span>
+                <h2 className="text-2xl font-black text-slate-900 dark:text-slate-100">{t("Guess the Crew's Word!")}</h2>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
-                  If you guess what the innocent crew was drawing, you steal 120 points and win!
-                </p>
+                  {t('If you guess what the innocent crew was drawing, you steal 120 points and win!')}</p>
               </div>
 
               {!hasSubmittedGuess ? (
@@ -499,7 +486,7 @@ export const PlayerControllerView: React.FC<PlayerControllerViewProps> = ({
                     value={imposterGuessInput}
                     autoFocus
                     onChange={(e) => setImposterGuessInput(e.target.value)}
-                    placeholder="Enter crew word guess..."
+                    placeholder={t('Enter crew word guess...')}
                     className="w-full bg-slate-50 dark:bg-slate-900/60 border-2 border-slate-200 dark:border-slate-800 focus:border-rose-500 rounded-2xl px-4 py-3 text-base font-bold text-slate-900 dark:text-slate-100 focus:outline-hidden"
                   />
                   <button
@@ -507,21 +494,20 @@ export const PlayerControllerView: React.FC<PlayerControllerViewProps> = ({
                     disabled={!imposterGuessInput.trim()}
                     className="w-full py-4 bg-rose-600 hover:bg-rose-700 disabled:opacity-40 text-white font-black text-sm rounded-2xl shadow-xl flex items-center justify-center gap-2 cursor-pointer"
                   >
-                    <span>Submit Steal Guess</span>
+                    <span>{t('Submit Steal Guess')}</span>
                     <Send className="w-4 h-4" />
                   </button>
                 </div>
               ) : (
                 <div className="p-4 bg-slate-50 dark:bg-slate-900/60 rounded-2xl text-center text-xs font-bold text-slate-700 dark:text-slate-300">
-                  Guess submitted! Look up at the main screen for final results.
-                </div>
+                  {t('Guess submitted! Look up at the main screen for final results.')}</div>
               )}
             </form>
           ) : (
             /* IF THIS PHONE IS AN INNOCENT CREW MEMBER */
             <div className="text-center space-y-3 py-4">
               <ShieldAlert className="w-12 h-12 text-rose-600 dark:text-rose-400 mx-auto animate-bounce" />
-              <h2 className="text-2xl font-black text-slate-900 dark:text-slate-100">Imposter Showdown!</h2>
+              <h2 className="text-2xl font-black text-slate-900 dark:text-slate-100">{t('Imposter Showdown!')}</h2>
               <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xs mx-auto">
                 The crew correctly identified the Imposter! Watch the main screen to see if they can guess your word "{roomState.myAssignedWord}".
               </p>
@@ -539,7 +525,7 @@ export const PlayerControllerView: React.FC<PlayerControllerViewProps> = ({
               {roomState.roundResult.imposterWon ? '🎭 Sahtekâr Kazandı!' : '🎉 Masum Ressamlar Kazandı!'}
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Toplam Puanınız: <strong className="text-indigo-600 dark:text-indigo-400 text-sm">{me?.score} pts</strong>
+              {t('Toplam Puanınız:')} <strong className="text-indigo-600 dark:text-indigo-400 text-sm">{me?.score} pts</strong>
             </p>
           </div>
 
@@ -547,22 +533,21 @@ export const PlayerControllerView: React.FC<PlayerControllerViewProps> = ({
           {(roomState.roundResult.correctVoterIds || []).includes(myPlayerId) && (
             <div className="p-3 bg-emerald-50 dark:bg-emerald-950/40 border-2 border-emerald-300 dark:border-emerald-800 rounded-2xl flex items-center justify-center gap-2 text-emerald-800 dark:text-emerald-300 text-xs font-black">
               <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-              <span>🎯 Tebrikler! Sahtekârı doğru bildiniz (+50 Puan Kazandınız!)</span>
+              <span>{t('🎯 Tebrikler! Sahtekârı doğru bildiniz (+50 Puan Kazandınız!)')}</span>
             </div>
           )}
 
           <div className="p-4 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800 text-left space-y-1.5 text-xs">
             <div>
-              Gizli Kelime: <strong className="text-emerald-700 dark:text-emerald-300 font-bold">{roomState.roundResult.crewWord}</strong>
+              {t('Gizli Kelime:')} <strong className="text-emerald-700 dark:text-emerald-300 font-bold">{roomState.roundResult.crewWord}</strong>
             </div>
             <div>
-              Sahtekâr: <strong className="text-rose-700 dark:text-rose-300 font-bold">{roomState.players.find(p => p.id === roomState.roundResult?.imposterId)?.name || 'Sahtekâr'}</strong>
+              {t('Sahtekâr:')} <strong className="text-rose-700 dark:text-rose-300 font-bold">{roomState.players.find(p => p.id === roomState.roundResult?.imposterId)?.name || 'Sahtekâr'}</strong>
             </div>
           </div>
 
           <div className="text-xs text-slate-400 dark:text-slate-500 font-medium">
-            Yeni tur için ana ekrana bakın!
-          </div>
+            {t('Yeni tur için ana ekrana bakın!')}</div>
         </div>
       )}
     </div>

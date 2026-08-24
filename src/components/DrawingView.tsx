@@ -4,6 +4,7 @@ import { CanvasBoard } from './CanvasBoard';
 import { playTurnSound, playTimerTick, playBuzzer, playGongSound } from '../utils/audio';
 import { Clock, Palette, Bot, Paintbrush, RefreshCw, UserCheck, Sparkles } from 'lucide-react';
 
+import { t } from '../i18n';
 interface DrawingViewProps {
   players: Player[];
   wordPair: WordPair;
@@ -194,7 +195,7 @@ export const DrawingView: React.FC<DrawingViewProps> = ({
               <div className="flex items-center gap-2">
                 <span className="text-[11px] font-black uppercase tracking-wider text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-950/40 px-2.5 py-0.5 rounded-lg border border-indigo-200 dark:border-indigo-900 flex items-center gap-1.5 shadow-xs">
                   <Paintbrush className="w-3 h-3 text-indigo-600 dark:text-indigo-400" />
-                  <span>Şu An Çizen</span>
+                  <span>{t('Şu An Çizen')}</span>
                 </span>
                 <span
                   className="text-[10px] font-black px-2 py-0.5 rounded-full text-white shadow-xs"
@@ -205,7 +206,7 @@ export const DrawingView: React.FC<DrawingViewProps> = ({
               </div>
               <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-slate-100 leading-tight mt-1 flex items-center gap-2">
                 <span>{activePlayer?.name}</span>
-                {activePlayer?.isBot && <span className="text-xs text-indigo-600 dark:text-indigo-400 font-bold">(AI Bot)</span>}
+                {activePlayer?.isBot && <span className="text-xs text-indigo-600 dark:text-indigo-400 font-bold">{t('(AI Bot)')}</span>}
               </h2>
             </div>
           </div>
@@ -216,8 +217,7 @@ export const DrawingView: React.FC<DrawingViewProps> = ({
             {nextPlayer ? (
               <div className="hidden sm:flex items-center gap-2.5 bg-slate-50 dark:bg-slate-900/60 px-3.5 py-2 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs">
                 <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
-                  Sıradaki:
-                </span>
+                  {t('Sıradaki:')}</span>
                 <div className="flex items-center gap-1.5">
                   <span
                     className="w-6 h-6 rounded-lg flex items-center justify-center text-xs text-white shadow-xs font-bold"
@@ -233,7 +233,7 @@ export const DrawingView: React.FC<DrawingViewProps> = ({
             ) : (
               <div className="hidden sm:flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 text-xs font-black px-3 py-2 rounded-2xl border border-emerald-200 dark:border-emerald-900">
                 <UserCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                <span>Son Çizgi!</span>
+                <span>{t('Son Çizgi!')}</span>
               </div>
             )}
 
@@ -266,7 +266,7 @@ export const DrawingView: React.FC<DrawingViewProps> = ({
             </div>
             {nextPlayer && (
               <span className="sm:hidden text-[11px] text-slate-500 dark:text-slate-400">
-                Sırada: <strong className="text-slate-800 dark:text-slate-200">{nextPlayer.name}</strong>
+                {t('Sırada:')} <strong className="text-slate-800 dark:text-slate-200">{nextPlayer.name}</strong>
               </span>
             )}
           </div>
@@ -297,11 +297,10 @@ export const DrawingView: React.FC<DrawingViewProps> = ({
                   <span className="text-xs truncate max-w-[80px] sm:max-w-[110px]">{p.name}</span>
                   {isCurrent && (
                     <span className="text-[10px] px-1.5 py-0.5 bg-indigo-600 text-white font-black rounded-md animate-pulse">
-                      Çiziyor
-                    </span>
+                      {t('Çiziyor')}</span>
                   )}
                   {isPast && <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-black">✓</span>}
-                  {isNext && <span className="text-[10px] text-amber-600 dark:text-amber-400 font-black">Sırada</span>}
+                  {isNext && <span className="text-[10px] text-amber-600 dark:text-amber-400 font-black">{t('Sırada')}</span>}
                 </div>
               );
             })}
@@ -332,7 +331,7 @@ export const DrawingView: React.FC<DrawingViewProps> = ({
         <div className="flex items-center gap-2">
           <Sparkles className="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0" />
           <span>
-            Parmağınızı / farenizi kaldırmadan <strong className="text-slate-900 dark:text-slate-100">1 sürekli çizgi</strong> çizin!
+            Parmağınızı / farenizi kaldırmadan <strong className="text-slate-900 dark:text-slate-100">{t('1 sürekli çizgi')}</strong> çizin!
           </span>
         </div>
         <button
@@ -340,8 +339,7 @@ export const DrawingView: React.FC<DrawingViewProps> = ({
           onClick={handleSkipOrAutoFinish}
           className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 text-xs font-bold underline underline-offset-2 ml-2 cursor-pointer transition-colors"
         >
-          Sırayı Pas Geç
-        </button>
+          {t('Sırayı Pas Geç')}</button>
       </div>
     </div>
   );

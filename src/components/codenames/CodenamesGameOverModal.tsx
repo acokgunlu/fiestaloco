@@ -5,6 +5,7 @@ import { Trophy, Skull, RotateCcw, ArrowRight, ShieldCheck, Award, Users } from 
 import confetti from 'canvas-confetti';
 import { playFanfareSound, playAssassinSound, playClickSound } from '../../utils/audio';
 
+import { t } from '../../i18n';
 interface CodenamesGameOverModalProps {
   winner: CodenamesTeam;
   winReason: 'all_agents_found' | 'assassin_triggered';
@@ -88,15 +89,15 @@ export function CodenamesGameOverModal({
         {/* Match Statistics */}
         <div className="grid grid-cols-3 gap-2.5 bg-slate-50 dark:bg-slate-900/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 text-center">
           <div className="space-y-0.5">
-            <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400">Kırmızı Ajanlar</span>
+            <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400">{t('Kırmızı Ajanlar')}</span>
             <div className="text-base sm:text-lg font-black text-rose-600 dark:text-rose-400">{redCount} Bulundu</div>
           </div>
           <div className="space-y-0.5">
-            <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400">Mavi Ajanlar</span>
+            <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400">{t('Mavi Ajanlar')}</span>
             <div className="text-base sm:text-lg font-black text-blue-600 dark:text-blue-400">{blueCount} Bulundu</div>
           </div>
           <div className="space-y-0.5">
-            <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400">Toplam İpucu</span>
+            <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400">{t('Toplam İpucu')}</span>
             <div className="text-base sm:text-lg font-black text-indigo-700 dark:text-indigo-300">{clues.length} Tur</div>
           </div>
         </div>
@@ -116,7 +117,7 @@ export function CodenamesGameOverModal({
             }`}
           >
             <RotateCcw className="w-4 h-4" />
-            <span>YENİ TUR BAŞLAT 🚀</span>
+            <span>{t('YENİ TUR BAŞLAT 🚀')}</span>
           </button>
 
           <button
@@ -127,7 +128,7 @@ export function CodenamesGameOverModal({
             }}
             className="px-6 py-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 font-bold text-sm rounded-2xl border border-slate-200 dark:border-slate-800 transition-colors flex items-center justify-center gap-2 cursor-pointer"
           >
-            <span>Parti Kulübü</span>
+            <span>{t('Parti Kulübü')}</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>

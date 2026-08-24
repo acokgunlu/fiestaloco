@@ -13,6 +13,7 @@ import {
 import { CATEGORIES, DEFAULT_PLAYER_PALETTE } from '../data/wordPacks';
 import { GameSettings } from '../types';
 
+import { t } from '../i18n';
 interface OnlineRoomPickerProps {
   onHostObserver: (settings: GameSettings, hostName: string) => void;
   onJoinPlayer: (roomCode: string, name: string, color: string, avatar: string, colorName: string) => void;
@@ -80,13 +81,13 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
       <div className="text-center space-y-3">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 text-xs font-black shadow-xs">
           <Sparkles className="w-4 h-4 text-amber-500" />
-          <span>Gizli Çizim & Sahtekâr Parti Oyunu • 3 - 8 Oyuncu</span>
+          <span>{t('Gizli Çizim & Sahtekâr Parti Oyunu • 3 - 8 Oyuncu')}</span>
         </div>
         <h1 className="text-4xl sm:text-6xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
-          SAHTEKÂR <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 via-rose-600 to-purple-600">RESSAM</span>
+          {t('SAHTEKÂR')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 via-rose-600 to-purple-600">{t('RESSAM')}</span>
         </h1>
         <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base max-w-md mx-auto leading-relaxed">
-          Herkes gizli kelimeyi çizer, 1 kişi <strong>Sahtekâr</strong>'dır! Sırayla tek sürekli çizgi çekin ve sahtekârı yakalayın.
+          Herkes gizli kelimeyi çizer, 1 kişi <strong>{t('Sahtekâr')}</strong>'dır! Sırayla tek sürekli çizgi çekin ve sahtekârı yakalayın.
         </p>
       </div>
 
@@ -108,7 +109,7 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
           }`}
         >
           <Tv className="w-4 h-4 text-indigo-500" />
-          <span>Oda Aç (TV / Host)</span>
+          <span>{t('Oda Aç (TV / Host)')}</span>
         </button>
 
         <button
@@ -120,7 +121,7 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
           }`}
         >
           <Smartphone className="w-4 h-4 text-rose-500" />
-          <span>Telefondan Katıl</span>
+          <span>{t('Telefondan Katıl')}</span>
         </button>
 
         <button
@@ -132,7 +133,7 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
           }`}
         >
           <Users className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-          <span>Tek Cihaz (El Değiştir)</span>
+          <span>{t('Tek Cihaz (El Değiştir)')}</span>
         </button>
       </div>
 
@@ -142,24 +143,22 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
           <div className="space-y-1">
             <h3 className="text-lg font-black text-slate-900 dark:text-slate-100 flex items-center gap-2">
               <Tv className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-              <span>TV / Ana Ekran Odası Oluştur</span>
+              <span>{t('TV / Ana Ekran Odası Oluştur')}</span>
             </h3>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Bu ekranı TV veya monitöre yansıtın. Diğer oyuncular telefonlarıyla QR kodu taratarak katılır!
-            </p>
+              {t('Bu ekranı TV veya monitöre yansıtın. Diğer oyuncular telefonlarıyla QR kodu taratarak katılır!')}</p>
           </div>
 
           <div className="space-y-4 pt-1">
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
-                Kelime Paketi / Kategori:
-              </label>
+                {t('Kelime Paketi / Kategori:')}</label>
               <select
                 value={hostCategory}
                 onChange={(e) => setHostCategory(e.target.value)}
                 className="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl px-4 py-3 text-sm font-bold text-slate-900 dark:text-slate-100 focus:outline-hidden focus:border-indigo-500"
               >
-                <option value="all">🌟 Tüm Kategoriler (Hayvanlar, Yiyecekler, Nesneler, Mekanlar)</option>
+                <option value="all">{t('🌟 Tüm Kategoriler (Hayvanlar, Yiyecekler, Nesneler, Mekanlar)')}</option>
                 {CATEGORIES.map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.name}
@@ -171,8 +170,7 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
-                  Tur Başına Çizgi Sayısı:
-                </label>
+                  {t('Tur Başına Çizgi Sayısı:')}</label>
                 <div className="grid grid-cols-2 gap-1.5">
                   {[1, 2].map((r) => (
                     <button
@@ -193,17 +191,16 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
-                  Çizim Süresi Sınırı:
-                </label>
+                  {t('Çizim Süresi Sınırı:')}</label>
                 <select
                   value={hostDrawTimeLimit}
                   onChange={(e) => setHostDrawTimeLimit(Number(e.target.value))}
                   className="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl px-3 py-2.5 text-xs font-bold text-slate-900 dark:text-slate-100 focus:outline-hidden focus:border-indigo-500"
                 >
-                  <option value={20}>20 Saniye (Hızlı)</option>
-                  <option value={25}>25 Saniye (Standart)</option>
-                  <option value={35}>35 Saniye (Rahat)</option>
-                  <option value={0}>Sınırsız</option>
+                  <option value={20}>{t('20 Saniye (Hızlı)')}</option>
+                  <option value={25}>{t('25 Saniye (Standart)')}</option>
+                  <option value={35}>{t('35 Saniye (Rahat)')}</option>
+                  <option value={0}>{t('Sınırsız')}</option>
                 </select>
               </div>
             </div>
@@ -215,7 +212,7 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
             className="w-full py-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-rose-600 hover:from-indigo-500 hover:to-rose-500 text-white font-black text-base rounded-2xl shadow-xl shadow-indigo-600/20 flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-[0.98] mt-2"
           >
             <Play className="w-5 h-5 fill-white" />
-            <span>ODA OLUŞTUR & QR KODU GÖSTER</span>
+            <span>{t('ODA OLUŞTUR & QR KODU GÖSTER')}</span>
           </button>
         </div>
       )}
@@ -229,23 +226,21 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
           <div className="space-y-1">
             <h3 className="text-lg font-black text-slate-900 dark:text-slate-100 flex items-center gap-2">
               <Smartphone className="w-5 h-5 text-rose-500" />
-              <span>Odaya Katıl (Telefon Kontrolcüsü)</span>
+              <span>{t('Odaya Katıl (Telefon Kontrolcüsü)')}</span>
             </h3>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              TV ekranında görünen 4 veya 6 haneli Oda Kodunu girin.
-            </p>
+              {t('TV ekranında görünen 4 veya 6 haneli Oda Kodunu girin.')}</p>
           </div>
 
           <div className="space-y-4">
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                Oda Kodu (Örn: LION42):
-              </label>
+                {t('Oda Kodu (Örn: LION42):')}</label>
               <input
                 type="text"
                 value={joinRoomCode}
                 onChange={(e) => setJoinRoomCode(e.target.value.toUpperCase())}
-                placeholder="KODU GİRİN"
+                placeholder={t('KODU GİRİN')}
                 maxLength={8}
                 required
                 className="w-full bg-slate-50 dark:bg-slate-900/60 border-2 border-slate-200 dark:border-slate-800 focus:border-rose-500 rounded-2xl px-4 py-3.5 text-xl font-mono font-black text-slate-900 dark:text-slate-100 tracking-widest text-center uppercase focus:outline-hidden"
@@ -254,13 +249,12 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
 
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                Oyuncu Adınız:
-              </label>
+                {t('Oyuncu Adınız:')}</label>
               <input
                 type="text"
                 value={playerName}
                 onChange={(e) => setPlayerName(e.target.value)}
-                placeholder="Adınız"
+                placeholder={t('Adınız')}
                 maxLength={16}
                 required
                 className="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 focus:border-rose-500 rounded-2xl px-4 py-3 text-sm font-bold text-slate-900 dark:text-slate-100 focus:outline-hidden"
@@ -269,8 +263,7 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
 
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
-                Avatar & Çizgi Rengi Seçin:
-              </label>
+                {t('Avatar & Çizgi Rengi Seçin:')}</label>
               <div className="grid grid-cols-4 gap-2">
                 {DEFAULT_PLAYER_PALETTE.map((pal, idx) => (
                   <button
@@ -303,7 +296,7 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
             disabled={!joinRoomCode.trim()}
             className="w-full py-4 bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 disabled:opacity-40 text-white font-black text-base rounded-2xl shadow-xl flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
           >
-            <span>ODAYA KATIL</span>
+            <span>{t('ODAYA KATIL')}</span>
             <ArrowRight className="w-5 h-5" />
           </button>
         </form>
@@ -313,17 +306,16 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
       {activeTab === 'local' && (
         <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-xl space-y-5 animate-fade-in text-center">
           <div className="space-y-1">
-            <h3 className="text-lg font-black text-slate-900 dark:text-slate-100">Tek Cihazda Oyna (Pass & Play)</h3>
+            <h3 className="text-lg font-black text-slate-900 dark:text-slate-100">{t('Tek Cihazda Oyna (Pass & Play)')}</h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
-              İkinci bir cihaza gerek olmadan, telefonu veya tableti elden ele geçirerek parti modunu oynayın!
-            </p>
+              {t('İkinci bir cihaza gerek olmadan, telefonu veya tableti elden ele geçirerek parti modunu oynayın!')}</p>
           </div>
 
           <div className="p-4 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300 space-y-1.5 text-left">
-            <div>✓ Tek cihaz • İnternet veya ikinci telefon gerekmez</div>
-            <div>✓ Oyuncular arası gizli kart ve sıra koruma ekranı</div>
-            <div>✓ Eksik oyuncular için akıllı AI Bot ressamlar</div>
-            <div>✓ Turdan tura sürekli dönen dinamik çizim sırası</div>
+            <div>{t('✓ Tek cihaz • İnternet veya ikinci telefon gerekmez')}</div>
+            <div>{t('✓ Oyuncular arası gizli kart ve sıra koruma ekranı')}</div>
+            <div>{t('✓ Eksik oyuncular için akıllı AI Bot ressamlar')}</div>
+            <div>{t('✓ Turdan tura sürekli dönen dinamik çizim sırası')}</div>
           </div>
 
           <button
@@ -331,7 +323,7 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
             className="w-full py-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-base rounded-2xl shadow-xl flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-[0.98]"
           >
             <Users className="w-5 h-5" />
-            <span>TEK CİHAZ MODUNU BAŞLAT</span>
+            <span>{t('TEK CİHAZ MODUNU BAŞLAT')}</span>
           </button>
         </div>
       )}
@@ -340,16 +332,14 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
       <div className="bg-white dark:bg-slate-900 rounded-3xl p-4 border border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-400 space-y-1.5 shadow-xs">
         <div className="font-black text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
           <HelpCircle className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-          <span>Nasıl Oynanır?</span>
+          <span>{t('Nasıl Oynanır?')}</span>
         </div>
         <p>
-          1. <strong>Gizli Kelime:</strong> Masum oyuncular aynı kelimeyi alır. Sahtekâr ise gizli kelimeyi bilmez.
-        </p>
+          1. <strong>{t('Gizli Kelime:')}</strong>  {t('Masum oyuncular aynı kelimeyi alır. Sahtekâr ise gizli kelimeyi bilmez.')}</p>
         <p>
-          2. <strong>Tek Çizgi:</strong> Sırası gelen oyuncu tuvale tek bir sürekli çizgi ekler. Çizim sırası her turda döner!
-        </p>
+          2. <strong>{t('Tek Çizgi:')}</strong>  {t('Sırası gelen oyuncu tuvale tek bir sürekli çizgi ekler. Çizim sırası her turda döner!')}</p>
         <p>
-          3. <strong>Oylama & Bonus:</strong> Şüpheli çizgiyi çizen Sahtekârı doğru bulan masum oyuncular <strong>+50 Puan</strong> kazanır!
+          3. <strong>{t('Oylama & Bonus:')}</strong> Şüpheli çizgiyi çizen Sahtekârı doğru bulan masum oyuncular <strong>{t('+50 Puan')}</strong> kazanır!
         </p>
       </div>
     </div>

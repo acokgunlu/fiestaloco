@@ -22,6 +22,7 @@ import {
 import { getRandomQuiplashPrompts, getRandomLastLashPrompt } from '../../data/quiplashPrompts';
 import { DEFAULT_PLAYER_PALETTE } from '../../data/wordPacks';
 
+import { t } from '../../i18n';
 interface QuiplashPassAndPlayProps {
   onBackToHub: () => void;
   onOpenRules: () => void;
@@ -235,19 +236,16 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
             onClick={onBackToHub}
             className="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition-all border border-slate-700"
           >
-            ← Menü
-          </button>
+            {t('← Menü')}</button>
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-purple-600 via-pink-500 to-amber-500 flex items-center justify-center text-white text-lg">
               🥊
             </div>
             <div>
               <h1 className="text-sm font-black tracking-wider uppercase bg-gradient-to-r from-purple-400 to-pink-300 bg-clip-text text-transparent">
-                QUIPLASH
-              </h1>
+                {t('QUIPLASH')}</h1>
               <span className="text-[10px] text-slate-400 font-bold block -mt-0.5">
-                Tek Cihaz (Pass & Play)
-              </span>
+                {t('Tek Cihaz (Pass & Play)')}</span>
             </div>
           </div>
         </div>
@@ -255,7 +253,7 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
         <button
           onClick={onOpenRules}
           className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition-all border border-slate-700"
-          title="Kurallar"
+          title={t('Kurallar')}
         >
           <HelpCircle className="w-4 h-4" />
         </button>
@@ -270,9 +268,8 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
           <div className="w-full p-6 sm:p-8 rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl space-y-6">
             <div className="text-center">
               <span className="text-xs font-black uppercase text-pink-400 tracking-wider">
-                OYUNCU AYARLARI
-              </span>
-              <h2 className="text-2xl font-black text-white mt-1">Oyuncuları Belirleyin</h2>
+                {t('OYUNCU AYARLARI')}</span>
+              <h2 className="text-2xl font-black text-white mt-1">{t('Oyuncuları Belirleyin')}</h2>
             </div>
 
             <div className="space-y-3 max-h-64 overflow-y-auto pr-1">
@@ -296,8 +293,7 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
                       onClick={() => handleRemovePlayer(i)}
                       className="px-3 py-2 rounded-xl bg-rose-500/20 text-rose-300 font-black text-xs hover:bg-rose-500/30"
                     >
-                      Sil
-                    </button>
+                      {t('Sil')}</button>
                   )}
                 </div>
               ))}
@@ -308,8 +304,7 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
                 onClick={handleAddPlayer}
                 className="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs border border-dashed border-slate-700"
               >
-                + Oyuncu Ekle
-              </button>
+                {t('+ Oyuncu Ekle')}</button>
             )}
 
             <button
@@ -317,8 +312,7 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
               className="w-full py-4 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-amber-600 text-white font-black text-base shadow-xl hover:scale-105 transition-all flex items-center justify-center gap-2"
             >
               <Play className="w-5 h-5 fill-current" />
-              Oyunu Başlat
-            </button>
+              {t('Oyunu Başlat')}</button>
           </div>
         )}
 
@@ -338,14 +332,12 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
 
             <div>
               <span className="text-xs font-black uppercase text-pink-400 tracking-wider">
-                CİHAZI DEVREDİN
-              </span>
+                {t('CİHAZI DEVREDİN')}</span>
               <h2 className="text-3xl font-black text-white mt-1">
                 Sıra: {players[currentWritingPlayerIdx]?.name}
               </h2>
               <p className="text-xs text-slate-400 mt-2">
-                Diğer oyuncular ekrana bakmasın! Yalnızca sıradaki oyuncu butona bassın.
-              </p>
+                {t('Diğer oyuncular ekrana bakmasın! Yalnızca sıradaki oyuncu butona bassın.')}</p>
             </div>
 
             <button
@@ -356,8 +348,7 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
               className="w-full py-4 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-black text-base shadow-xl hover:scale-105 transition-all flex items-center justify-center gap-2"
             >
               <Eye className="w-5 h-5" />
-              Ben Hazırım, Soruları Göster
-            </button>
+              {t('Ben Hazırım, Soruları Göster')}</button>
           </div>
         )}
 
@@ -387,7 +378,7 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
                   onChange={(e) =>
                     setCurrentAnswers({ ...currentAnswers, [prompt.id]: e.target.value })
                   }
-                  placeholder="En komik yanıtını yaz..."
+                  placeholder={t('En komik yanıtını yaz...')}
                   className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm font-medium focus:outline-none focus:border-purple-500"
                 />
               </div>
@@ -398,8 +389,7 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
               className="w-full py-4 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-amber-600 text-white font-black text-base shadow-xl hover:scale-105 transition-all flex items-center justify-center gap-2"
             >
               <CheckCircle2 className="w-5 h-5" />
-              Tamamla ve Sıradakine Geç
-            </button>
+              {t('Tamamla ve Sıradakine Geç')}</button>
           </div>
         )}
 
@@ -419,8 +409,7 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
             </div>
 
             <p className="text-xs text-slate-400 font-bold">
-              Masa olarak en komik bulduğunuz seçeneğe tıklayın:
-            </p>
+              {t('Masa olarak en komik bulduğunuz seçeneğe tıklayın:')}</p>
 
             <div className="grid grid-cols-1 gap-3">
               <button
@@ -428,8 +417,7 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
                 className="p-5 rounded-2xl bg-slate-950 hover:bg-cyan-950/60 border-2 border-slate-700 hover:border-cyan-400 text-left transition-all group"
               >
                 <span className="text-[10px] font-black uppercase text-cyan-400 block mb-1">
-                  SEÇENEK A
-                </span>
+                  {t('SEÇENEK A')}</span>
                 <p className="text-base font-black text-white">
                   "{currentActiveMatchup.answer1.text || '...'}"
                 </p>
@@ -440,8 +428,7 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
                 className="p-5 rounded-2xl bg-slate-950 hover:bg-rose-950/60 border-2 border-slate-700 hover:border-rose-400 text-left transition-all group"
               >
                 <span className="text-[10px] font-black uppercase text-rose-400 block mb-1">
-                  SEÇENEK B
-                </span>
+                  {t('SEÇENEK B')}</span>
                 <p className="text-base font-black text-white">
                   "{currentActiveMatchup.answer2.text || '...'}"
                 </p>
@@ -456,8 +443,7 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
         {phase === 'MATCHUP_RESULT' && currentActiveMatchup && (
           <div className="w-full p-6 sm:p-8 rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl space-y-6 text-center">
             <span className="text-xs font-black uppercase tracking-widest text-emerald-400">
-              KAPIŞMA SONUCU
-            </span>
+              {t('KAPIŞMA SONUCU')}</span>
 
             <div className="grid grid-cols-2 gap-4">
               <div
@@ -501,7 +487,7 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
               onClick={handleNextMatchup}
               className="w-full py-4 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-black text-base shadow-xl hover:scale-105 transition-all flex items-center justify-center gap-2"
             >
-              <span>Sonraki Kapışma</span>
+              <span>{t('Sonraki Kapışma')}</span>
               <ArrowRight className="w-5 h-5" />
             </button>
           </div>
@@ -515,7 +501,7 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
             <span className="text-xs font-black uppercase text-pink-400 tracking-wider">
               TUR {currentRound} SKORLARI
             </span>
-            <h2 className="text-2xl font-black text-white">Liderlik Tablosu</h2>
+            <h2 className="text-2xl font-black text-white">{t('Liderlik Tablosu')}</h2>
 
             <div className="space-y-2.5">
               {[...players]
@@ -554,9 +540,8 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
 
             <div>
               <span className="text-xs font-black uppercase text-amber-400 tracking-wider">
-                OYUN BİTTİ
-              </span>
-              <h2 className="text-3xl font-black text-white mt-1">Şampiyon</h2>
+                {t('OYUN BİTTİ')}</span>
+              <h2 className="text-3xl font-black text-white mt-1">{t('Şampiyon')}</h2>
             </div>
 
             {(() => {
@@ -576,22 +561,19 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
                 onClick={() => setPhase('SETUP')}
                 className="flex-1 py-3.5 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-black text-sm hover:scale-105 transition-all"
               >
-                Yeniden Oyna
-              </button>
+                {t('Yeniden Oyna')}</button>
               <button
                 onClick={onBackToHub}
                 className="px-6 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-sm border border-slate-700"
               >
-                Menü
-              </button>
+                {t('Menü')}</button>
             </div>
           </div>
         )}
       </main>
 
       <footer className="text-center text-[10px] text-slate-600 font-bold uppercase tracking-widest pt-2">
-        FiestaLoco • Quiplash Pass & Play
-      </footer>
+        {t('FiestaLoco • Quiplash Pass & Play')}</footer>
     </div>
   );
 };

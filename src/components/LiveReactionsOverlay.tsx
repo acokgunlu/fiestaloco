@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { playPopSound } from '../utils/audio';
 import { SmilePlus, Flame, Laugh, Eye, HelpCircle, Palette, Sparkles } from 'lucide-react';
 
+import { t } from '../i18n';
 export interface FloatingEmoji {
   id: string;
   emoji: string;
@@ -83,7 +84,7 @@ export const LiveReactionsOverlay: React.FC<LiveReactionsOverlayProps> = ({
       >
         <span className="text-[11px] font-black text-slate-500 dark:text-slate-400 uppercase px-2 hidden sm:inline flex items-center gap-1">
           <SmilePlus className="w-3 h-3 text-indigo-600 dark:text-indigo-400" />
-          <span>Tepki Ver:</span>
+          <span>{t('Tepki Ver:')}</span>
         </span>
 
         <div className="flex items-center gap-1">

@@ -4,6 +4,7 @@ import { CanvasBoard } from './CanvasBoard';
 import { MessageSquare, Clock, ShieldAlert, Sparkles, Filter } from 'lucide-react';
 import { playClickSound, playTimerTick, playBuzzer, playTurnSound } from '../utils/audio';
 
+import { t } from '../i18n';
 interface DiscussionViewProps {
   players: Player[];
   strokes: Stroke[];
@@ -54,14 +55,12 @@ export const DiscussionView: React.FC<DiscussionViewProps> = ({
         <div>
           <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 text-amber-800 dark:text-amber-300 text-xs font-black mb-1.5 shadow-2xs">
             <MessageSquare className="w-3.5 h-3.5" />
-            <span>Tartışma & İnceleme Aşaması</span>
+            <span>{t('Tartışma & İnceleme Aşaması')}</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
-            Sahtekâr Kim? Çizgileri İnceleyin!
-          </h2>
+            {t('Sahtekâr Kim? Çizgileri İnceleyin!')}</h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-0.5">
-            Kimin çizgisi anlamsız veya uyumsuz görünüyor? Oyuncuların çizgilerini vurgulamak için alttaki butonlara tıklayın.
-          </p>
+            {t('Kimin çizgisi anlamsız veya uyumsuz görünüyor? Oyuncuların çizgilerini vurgulamak için alttaki butonlara tıklayın.')}</p>
         </div>
 
         {/* Timer */}
@@ -94,15 +93,14 @@ export const DiscussionView: React.FC<DiscussionViewProps> = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5 text-xs font-black text-slate-700 dark:text-slate-300 uppercase tracking-wider">
             <Filter className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
-            <span>Çizgi Analizi (Vurgulamak için seçin):</span>
+            <span>{t('Çizgi Analizi (Vurgulamak için seçin):')}</span>
           </div>
           {highlightPlayerId && (
             <button
               onClick={() => setHighlightPlayerId(null)}
               className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-bold cursor-pointer"
             >
-              Tüm Çizgileri Göster
-            </button>
+              {t('Tüm Çizgileri Göster')}</button>
           )}
         </div>
 
@@ -151,7 +149,7 @@ export const DiscussionView: React.FC<DiscussionViewProps> = ({
           className="w-full sm:w-auto min-w-[300px] px-8 py-4 bg-gradient-to-r from-rose-600 via-pink-600 to-indigo-600 hover:from-rose-500 hover:to-indigo-500 text-white text-base font-black rounded-2xl shadow-2xl shadow-rose-600/30 flex items-center justify-center gap-2.5 transition-all active:scale-[0.98] cursor-pointer"
         >
           <ShieldAlert className="w-5 h-5" />
-          <span>SAHTEKÂR OYLAMASINA GEÇ (VOTE)</span>
+          <span>{t('SAHTEKÂR OYLAMASINA GEÇ (VOTE)')}</span>
         </button>
       </div>
     </div>

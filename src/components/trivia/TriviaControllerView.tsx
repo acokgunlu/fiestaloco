@@ -21,6 +21,7 @@ import {
 import { motion } from 'motion/react';
 import { playClickSound, playTurnSound } from '../../utils/audio';
 
+import { t } from '../../i18n';
 interface TriviaControllerViewProps {
   roomCode: string;
   myPlayer: TriviaPursuitPlayer | null;
@@ -84,8 +85,7 @@ export const TriviaControllerView: React.FC<TriviaControllerViewProps> = ({
               </span>
               {isMyTurn && (
                 <span className="text-[9px] px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black animate-pulse">
-                  SENİN SIRAN
-                </span>
+                  {t('SENİN SIRAN')}</span>
               )}
             </div>
             <div className="flex items-center gap-2 mt-0.5">
@@ -119,15 +119,14 @@ export const TriviaControllerView: React.FC<TriviaControllerViewProps> = ({
             <div className="w-16 h-16 rounded-3xl bg-emerald-100 dark:bg-emerald-950 border-2 border-emerald-400 flex items-center justify-center mx-auto text-3xl">
               🎮
             </div>
-            <h3 className="text-xl font-black text-slate-900 dark:text-white">Odaya Bağlandınız!</h3>
+            <h3 className="text-xl font-black text-slate-900 dark:text-white">{t('Odaya Bağlandınız!')}</h3>
             <p className="text-xs text-slate-600 dark:text-slate-400 max-w-xs mx-auto font-medium">
               Oda Kodu: <span className="font-mono font-black text-emerald-600 dark:text-emerald-400 text-sm">{roomCode}</span>. TV ekranından oyunun başlaması bekleniyor...
             </p>
             <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-left text-xs space-y-2">
-              <p className="font-black text-emerald-700 dark:text-emerald-300">🎯 Oyun Hedefi:</p>
+              <p className="font-black text-emerald-700 dark:text-emerald-300">{t('🎯 Oyun Hedefi:')}</p>
               <p className="text-slate-600 dark:text-slate-300">
-                Sıranız gelince zarı atıp tahtada ilerleyin. Rozet yalnızca KALE karelerinde kazanılır; 6 rozeti toplayıp merkeze ulaşan şampiyon olur!
-              </p>
+                {t('Sıranız gelince zarı atıp tahtada ilerleyin. Rozet yalnızca KALE karelerinde kazanılır; 6 rozeti toplayıp merkeze ulaşan şampiyon olur!')}</p>
             </div>
           </div>
         )}
@@ -145,10 +144,9 @@ export const TriviaControllerView: React.FC<TriviaControllerViewProps> = ({
                       {gameState.dieRoll}
                     </span>
                     <div className="text-left">
-                      <div className="text-sm font-black text-slate-900 dark:text-white">geldi!</div>
+                      <div className="text-sm font-black text-slate-900 dark:text-white">{t('geldi!')}</div>
                       <div className="text-xs font-bold text-slate-500 dark:text-slate-400">
-                        Nereye gideceğini seç
-                      </div>
+                        {t('Nereye gideceğini seç')}</div>
                     </div>
                   </div>
 
@@ -195,8 +193,7 @@ export const TriviaControllerView: React.FC<TriviaControllerViewProps> = ({
                   {activePlayer?.name || 'Sıradaki oyuncu'} zar atıyor…
                 </h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400 font-bold">
-                  Sırası gelince telefonunda zar butonu çıkacak.
-                </p>
+                  {t('Sırası gelince telefonunda zar butonu çıkacak.')}</p>
               </div>
             )}
           </div>
@@ -219,8 +216,7 @@ export const TriviaControllerView: React.FC<TriviaControllerViewProps> = ({
                 <span className="uppercase tracking-wider">{currentCat.label}</span>
                 {currentQ.isWedgeQuestion && (
                   <span className="ml-1 text-[9px] px-1.5 py-0.2 rounded-full bg-amber-400 text-slate-950 font-black">
-                    ROZET
-                  </span>
+                    {t('ROZET')}</span>
                 )}
               </div>
 
@@ -273,11 +269,10 @@ export const TriviaControllerView: React.FC<TriviaControllerViewProps> = ({
               <div className="p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-800 text-center space-y-0.5">
                 <p className="text-xs font-black text-emerald-800 dark:text-emerald-300 flex items-center justify-center gap-1">
                   <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>Cevabınız iletildi!</span>
+                  <span>{t('Cevabınız iletildi!')}</span>
                 </p>
                 <p className="text-[11px] text-emerald-600 dark:text-emerald-400">
-                  TV ekranında turun bitmesini bekleyin...
-                </p>
+                  {t('TV ekranında turun bitmesini bekleyin...')}</p>
               </div>
             )}
           </div>
@@ -292,9 +287,8 @@ export const TriviaControllerView: React.FC<TriviaControllerViewProps> = ({
                   ✨
                 </div>
                 <h3 className="text-xl font-black text-emerald-700 dark:text-emerald-400">
-                  HARİKA! DOĞRU CEVAP
-                </h3>
-                <p className="text-xs text-slate-600 dark:text-slate-300 font-bold">+100 Puan Kazandınız!</p>
+                  {t('HARİKA! DOĞRU CEVAP')}</h3>
+                <p className="text-xs text-slate-600 dark:text-slate-300 font-bold">{t('+100 Puan Kazandınız!')}</p>
                 {gameState.lastRoundAnswerSummary?.playerAnswers[myPlayer?.id || '']?.earnedWedge && (
                   <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-amber-400 text-slate-950 text-xs font-black animate-pulse">
                     <Award className="w-4 h-4" />
@@ -308,8 +302,7 @@ export const TriviaControllerView: React.FC<TriviaControllerViewProps> = ({
                   ❌
                 </div>
                 <h3 className="text-xl font-black text-rose-600 dark:text-rose-400">
-                  YANLIŞ CEVAP
-                </h3>
+                  {t('YANLIŞ CEVAP')}</h3>
                 <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
                   Doğru cevap:{' '}
                   <span className="font-bold text-slate-900 dark:text-white">{currentQ.correctAnswer}</span>
@@ -325,12 +318,12 @@ export const TriviaControllerView: React.FC<TriviaControllerViewProps> = ({
             <div className="w-16 h-16 rounded-3xl bg-amber-100 dark:bg-amber-950 text-3xl flex items-center justify-center mx-auto border-2 border-amber-400">
               🏆
             </div>
-            <h3 className="text-2xl font-black text-slate-900 dark:text-white">Oyun Bitti!</h3>
+            <h3 className="text-2xl font-black text-slate-900 dark:text-white">{t('Oyun Bitti!')}</h3>
             <p className="text-xs text-slate-600 dark:text-slate-400">
-              Şampiyon: <span className="font-black text-slate-900 dark:text-white">{players.find((p) => p.id === gameState.winnerPlayerId)?.name}</span>
+              {t('Şampiyon:')} <span className="font-black text-slate-900 dark:text-white">{players.find((p) => p.id === gameState.winnerPlayerId)?.name}</span>
             </p>
             <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-              <span className="text-xs font-bold text-slate-500 dark:text-slate-400">Puanınız:</span>
+              <span className="text-xs font-bold text-slate-500 dark:text-slate-400">{t('Puanınız:')}</span>
               <p className="text-xl font-black text-emerald-600 dark:text-emerald-400">{myPlayer?.score || 0}P</p>
             </div>
           </div>
@@ -339,8 +332,7 @@ export const TriviaControllerView: React.FC<TriviaControllerViewProps> = ({
 
       {/* Footer info */}
       <footer className="text-center text-[10px] text-slate-400 font-bold">
-        FiestaLoco • Mobil Kumanda
-      </footer>
+        {t('FiestaLoco • Mobil Kumanda')}</footer>
     </div>
   );
 };

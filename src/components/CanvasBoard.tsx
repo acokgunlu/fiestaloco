@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { LiveReactionsOverlay } from './LiveReactionsOverlay';
 
+import { t } from '../i18n';
 interface CanvasBoardProps {
   strokes: Stroke[];
   players: Player[];
@@ -499,7 +500,7 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
               className="w-3 h-3 rounded-full shrink-0 shadow-xs"
               style={{ backgroundColor: liveRemoteStroke.color }}
             />
-            <span>Canlı Çizim Yayını...</span>
+            <span>{t('Canlı Çizim Yayını...')}</span>
           </div>
         )}
 
@@ -510,7 +511,7 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
               className="w-3 h-3 rounded-full shrink-0 shadow-xs"
               style={{ backgroundColor: activePlayer?.color }}
             />
-            <span>Parmağınızı kaldırmadan TEK bir sürekli çizgi çizin!</span>
+            <span>{t('Parmağınızı kaldırmadan TEK bir sürekli çizgi çizin!')}</span>
           </div>
         )}
 
@@ -531,7 +532,7 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
               className="flex items-center gap-1.5 px-4 py-2.5 bg-white/95 dark:bg-slate-900/95 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 text-xs sm:text-sm font-bold rounded-2xl border border-slate-200 dark:border-slate-800 shadow-lg transition-all active:scale-95 cursor-pointer"
             >
               <RotateCcw className="w-4 h-4 text-slate-500 dark:text-slate-400" />
-              <span>Yeniden Çiz</span>
+              <span>{t('Yeniden Çiz')}</span>
             </button>
             <button
               id="btn-confirm-stroke"
@@ -539,7 +540,7 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
               className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-sm sm:text-base font-black rounded-2xl shadow-xl ring-4 ring-emerald-500/20 transition-all transform hover:scale-105 active:scale-95 cursor-pointer"
             >
               <Check className="w-5 h-5 stroke-[3]" />
-              <span>Çizgiyi Onayla & Gönder</span>
+              <span>{t('Çizgiyi Onayla & Gönder')}</span>
             </button>
           </div>
         )}
@@ -549,7 +550,7 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
       {isDrawingEnabled && !strokeFinished && (
         <div className="w-full flex flex-wrap items-center justify-between gap-2 mt-3 p-2 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm text-xs font-bold text-slate-800 dark:text-slate-200">
           <div className="flex items-center gap-1.5">
-            <span className="text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-wider px-1">Fırça Stili:</span>
+            <span className="text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-wider px-1">{t('Fırça Stili:')}</span>
             <button
               type="button"
               onClick={() => {
@@ -563,7 +564,7 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
               }`}
             >
               <Paintbrush className="w-3.5 h-3.5" />
-              <span>Klasik</span>
+              <span>{t('Klasik')}</span>
             </button>
 
             <button
@@ -579,7 +580,7 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
               }`}
             >
               <Zap className="w-3.5 h-3.5 text-amber-300" />
-              <span>Neon Işık</span>
+              <span>{t('Neon Işık')}</span>
             </button>
 
             <button
@@ -594,12 +595,12 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
                   : 'bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
               }`}
             >
-              <span>🖋️ Keçeli</span>
+              <span>{t('🖋️ Keçeli')}</span>
             </button>
           </div>
 
           <div className="flex items-center gap-1.5">
-            <span className="text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-wider px-1">Kalınlık:</span>
+            <span className="text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-wider px-1">{t('Kalınlık:')}</span>
             {[5, 7, 11].map((w) => (
               <button
                 key={w}
@@ -643,7 +644,7 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
                 id="btn-toggle-replay-speed"
                 onClick={toggleReplaySpeed}
                 className="flex items-center gap-1 px-2 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-[11px] font-black rounded-lg border border-slate-200 dark:border-slate-800 transition-colors cursor-pointer"
-                title="Oynatma Hızı"
+                title={t('Oynatma Hızı')}
               >
                 <FastForward className="w-3 h-3" />
                 <span>{replaySpeed}x</span>
@@ -674,10 +675,10 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
             id="btn-download-artwork"
             onClick={downloadCanvasImage}
             className="flex items-center gap-1.5 px-3.5 py-2 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-900/60 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 text-xs font-bold rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs transition-colors ml-auto cursor-pointer"
-            title="Ortak Resmi PNG Olarak Kaydet"
+            title={t('Ortak Resmi PNG Olarak Kaydet')}
           >
             <Download className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-            <span>Resmi İndir (PNG)</span>
+            <span>{t('Resmi İndir (PNG)')}</span>
           </button>
         </div>
       )}
@@ -686,8 +687,7 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
       {showAttribution && players.length > 0 && (
         <div className="w-full flex flex-wrap items-center justify-center gap-2 mt-3 pt-2 border-t border-slate-200 dark:border-slate-800">
           <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-            Çizenler:
-          </span>
+            {t('Çizenler:')}</span>
           {players.map((p) => (
             <div
               key={p.id}

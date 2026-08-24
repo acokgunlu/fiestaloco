@@ -5,6 +5,7 @@ import { Sparkles, ShieldAlert, Send, CheckCircle2, XCircle, ArrowRight } from '
 import { playClickSound, playFanfareSound, playBuzzer } from '../utils/audio';
 import confetti from 'canvas-confetti';
 
+import { t } from '../i18n';
 interface ImposterGuessViewProps {
   imposter: Player;
   players: Player[];
@@ -67,15 +68,14 @@ export const ImposterGuessView: React.FC<ImposterGuessViewProps> = ({
       <div className="bg-rose-50 dark:bg-rose-950/40 rounded-3xl p-6 sm:p-7 text-center border-2 border-rose-300 dark:border-rose-800 shadow-xl space-y-3">
         <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-rose-100 dark:bg-rose-900/40 text-rose-800 dark:text-rose-300 text-xs font-black uppercase tracking-wider border border-rose-200 dark:border-rose-900">
           <ShieldAlert className="w-4 h-4 text-rose-600 dark:text-rose-400" />
-          <span>Sahtekâr Yakalandı! Son Çalma Girişimi</span>
+          <span>{t('Sahtekâr Yakalandı! Son Çalma Girişimi')}</span>
         </div>
 
         <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
-          <span style={{ color: imposter.color }}>{imposter.name}</span>, Gizli Kelimeyi Tahmin Edebilir Misin?
-        </h2>
+          <span style={{ color: imposter.color }}>{imposter.name}</span>{t(', Gizli Kelimeyi Tahmin Edebilir Misin?')}</h2>
 
         <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 max-w-lg mx-auto leading-relaxed">
-          Ressamlar seni tespit etti! Fakat diğerlerinin ne çizdiğini doğru tahmin edebilirsen tüm puanları çalar ve <strong className="text-amber-700 dark:text-amber-300">KAZANIRSIN!</strong>
+          {t('Ressamlar seni tespit etti! Fakat diğerlerinin ne çizdiğini doğru tahmin edebilirsen tüm puanları çalar ve')} <strong className="text-amber-700 dark:text-amber-300">{t('KAZANIRSIN!')}</strong>
         </p>
       </div>
 
@@ -93,8 +93,7 @@ export const ImposterGuessView: React.FC<ImposterGuessViewProps> = ({
       {!hasSubmitted ? (
         <form onSubmit={handleSubmitGuess} className="bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-md space-y-3.5">
           <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-            Masum Ressamların Gizli Kelimesini Tahmin Edin:
-          </label>
+            {t('Masum Ressamların Gizli Kelimesini Tahmin Edin:')}</label>
           <div className="flex gap-2">
             <input
               type="text"
@@ -102,7 +101,7 @@ export const ImposterGuessView: React.FC<ImposterGuessViewProps> = ({
               value={guessInput}
               autoFocus
               onChange={(e) => setGuessInput(e.target.value)}
-              placeholder="Örn: Pizza, Fil, Uçak, Kahve..."
+              placeholder={t('Örn: Pizza, Fil, Uçak, Kahve...')}
               className="flex-1 bg-slate-50 dark:bg-slate-900/60 border-2 border-slate-200 dark:border-slate-800 focus:border-rose-500 rounded-2xl px-4 py-3 text-base font-bold text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-hidden"
             />
             <button
@@ -112,12 +111,11 @@ export const ImposterGuessView: React.FC<ImposterGuessViewProps> = ({
               className="px-6 py-3 bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 disabled:opacity-40 text-white font-black rounded-2xl shadow-md flex items-center gap-2 transition-all active:scale-95 cursor-pointer"
             >
               <Send className="w-4 h-4" />
-              <span>Tahmin Et</span>
+              <span>{t('Tahmin Et')}</span>
             </button>
           </div>
           <p className="text-[11px] text-slate-500 dark:text-slate-400 italic">
-            İpucu: Yukarıdaki tuvaldeki çizgi ve formları dikkatlice inceleyin.
-          </p>
+            {t('İpucu: Yukarıdaki tuvaldeki çizgi ve formları dikkatlice inceleyin.')}</p>
         </form>
       ) : (
         <div className={`p-6 rounded-3xl text-center space-y-4 border-2 shadow-xl animate-scale-in ${
@@ -147,7 +145,7 @@ export const ImposterGuessView: React.FC<ImposterGuessViewProps> = ({
             onClick={handleFinish}
             className="px-8 py-3.5 bg-slate-900 text-white font-black rounded-2xl shadow-md hover:bg-slate-800 transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-2 mx-auto"
           >
-            <span>Sonuçları Görüntüle</span>
+            <span>{t('Sonuçları Görüntüle')}</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>

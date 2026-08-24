@@ -17,6 +17,7 @@ import { CODENAMES_CATEGORIES } from '../../data/codenamesWords';
 import { CodenamesSettings, CodenamesTeam, CodenamesRole } from '../../types/codenames';
 import { playClickSound, playTurnSound } from '../../utils/audio';
 
+import { t } from '../../i18n';
 interface CodenamesOnlinePickerProps {
   onHostTvRoom: (settings: CodenamesSettings) => void;
   onJoinMobileRoom: (
@@ -107,13 +108,13 @@ export function CodenamesOnlinePicker({
       <div className="text-center space-y-2.5">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 text-xs font-black shadow-xs">
           <Sparkles className="w-4 h-4 text-amber-500" />
-          <span>Gizli İstihbarat & İpucu Arenası • 2 - 12+ Oyuncu</span>
+          <span>{t('Gizli İstihbarat & İpucu Arenası • 2 - 12+ Oyuncu')}</span>
         </div>
         <h1 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
-          GİZLİ <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-purple-600 to-sky-600">AJANLAR</span>
+          {t('GİZLİ')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-purple-600 to-sky-600">{t('AJANLAR')}</span>
         </h1>
         <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm max-w-md mx-auto leading-relaxed">
-          TV veya büyük ekrana yansıtın, <strong>Kırmızı vs Mavi Takım</strong> telefonlarıyla katılıp gizli renkleri çözsün!
+          TV veya büyük ekrana yansıtın, <strong>{t('Kırmızı vs Mavi Takım')}</strong> telefonlarıyla katılıp gizli renkleri çözsün!
         </p>
       </div>
 
@@ -138,7 +139,7 @@ export function CodenamesOnlinePicker({
           }`}
         >
           <Tv className="w-4 h-4" />
-          <span>TV / Ekran Aç (Host)</span>
+          <span>{t('TV / Ekran Aç (Host)')}</span>
         </button>
 
         <button
@@ -153,7 +154,7 @@ export function CodenamesOnlinePicker({
           }`}
         >
           <Smartphone className="w-4 h-4" />
-          <span>Telefondan Katıl</span>
+          <span>{t('Telefondan Katıl')}</span>
         </button>
 
         <button
@@ -168,7 +169,7 @@ export function CodenamesOnlinePicker({
           }`}
         >
           <Users className="w-4 h-4" />
-          <span>Tek Cihaz (Masa)</span>
+          <span>{t('Tek Cihaz (Masa)')}</span>
         </button>
       </div>
 
@@ -178,18 +179,16 @@ export function CodenamesOnlinePicker({
           <div className="space-y-1">
             <h3 className="text-lg font-black text-slate-900 dark:text-slate-100 flex items-center gap-2">
               <Tv className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-              <span>TV / Masaüstü Ekranı İçin Oda Aç</span>
+              <span>{t('TV / Masaüstü Ekranı İçin Oda Aç')}</span>
             </h3>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Bu ekranı TV veya büyük ekrana yansıtın. 25 kartlık ahşap masa panosu TV'de görünür, oyuncular telefonlarıyla liderlik eder veya tahmin yapar!
-            </p>
+              {t("Bu ekranı TV veya büyük ekrana yansıtın. 25 kartlık ahşap masa panosu TV'de görünür, oyuncular telefonlarıyla liderlik eder veya tahmin yapar!")}</p>
           </div>
 
           <div className="space-y-4 pt-1">
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
-                Kelime Havuzu & Tema:
-              </label>
+                {t('Kelime Havuzu & Tema:')}</label>
               <select
                 value={hostCategory}
                 onChange={(e) => setHostCategory(e.target.value)}
@@ -206,32 +205,30 @@ export function CodenamesOnlinePicker({
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
-                  Başlangıç Takımı (9 Ajan):
-                </label>
+                  {t('Başlangıç Takımı (9 Ajan):')}</label>
                 <select
                   value={hostStartingTeam}
                   onChange={(e) => setHostStartingTeam(e.target.value as any)}
                   className="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl px-3 py-2.5 text-xs font-bold text-slate-900 dark:text-slate-100 focus:outline-hidden"
                 >
-                  <option value="random">🎲 Rastgele Takım</option>
-                  <option value="red">🔴 Kırmızı Takım</option>
-                  <option value="blue">🔵 Mavi Takım</option>
+                  <option value="random">{t('🎲 Rastgele Takım')}</option>
+                  <option value="red">{t('🔴 Kırmızı Takım')}</option>
+                  <option value="blue">{t('🔵 Mavi Takım')}</option>
                 </select>
               </div>
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
-                  Tur Süresi:
-                </label>
+                  {t('Tur Süresi:')}</label>
                 <select
                   value={hostTimerSeconds}
                   onChange={(e) => setHostTimerSeconds(Number(e.target.value))}
                   className="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl px-3 py-2.5 text-xs font-bold text-slate-900 dark:text-slate-100 focus:outline-hidden"
                 >
-                  <option value={0}>Sınırsız (Rahat Mod)</option>
-                  <option value={60}>60 Saniye (Hızlı)</option>
-                  <option value={90}>90 Saniye (Standart)</option>
-                  <option value={120}>120 Saniye (Taktiksel)</option>
+                  <option value={0}>{t('Sınırsız (Rahat Mod)')}</option>
+                  <option value={60}>{t('60 Saniye (Hızlı)')}</option>
+                  <option value={90}>{t('90 Saniye (Standart)')}</option>
+                  <option value={120}>{t('120 Saniye (Taktiksel)')}</option>
                 </select>
               </div>
             </div>
@@ -243,7 +240,7 @@ export function CodenamesOnlinePicker({
             className="w-full py-4 bg-gradient-to-r from-red-600 via-purple-600 to-sky-600 hover:from-red-500 hover:to-sky-500 text-white font-black text-base rounded-2xl shadow-xl shadow-indigo-600/20 flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-[0.98] mt-2"
           >
             <Play className="w-5 h-5 fill-white" />
-            <span>TV ODASI AÇ & QR KODU GÖSTER</span>
+            <span>{t('TV ODASI AÇ & QR KODU GÖSTER')}</span>
           </button>
         </div>
       )}
@@ -257,23 +254,21 @@ export function CodenamesOnlinePicker({
           <div className="space-y-1">
             <h3 className="text-lg font-black text-slate-900 dark:text-slate-100 flex items-center gap-2">
               <Smartphone className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-              <span>Telefondan Katıl (Kumanda & Harita)</span>
+              <span>{t('Telefondan Katıl (Kumanda & Harita)')}</span>
             </h3>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              TV ekranındaki 4 veya 6 haneli Oda Kodunu girin, takımınızı ve rolünüzü seçin!
-            </p>
+              {t('TV ekranındaki 4 veya 6 haneli Oda Kodunu girin, takımınızı ve rolünüzü seçin!')}</p>
           </div>
 
           <div className="space-y-4">
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                Oda Kodu (TV'deki Kod):
-              </label>
+                {t("Oda Kodu (TV'deki Kod):")}</label>
               <input
                 type="text"
                 value={joinRoomCode}
                 onChange={(e) => setJoinRoomCode(e.target.value.toUpperCase())}
-                placeholder="ÖRN: LION42"
+                placeholder={t('ÖRN: LION42')}
                 maxLength={8}
                 required
                 className="w-full bg-slate-50 dark:bg-slate-900/60 border-2 border-slate-200 dark:border-slate-800 focus:border-purple-500 rounded-2xl px-4 py-3.5 text-xl font-mono font-black text-slate-900 dark:text-slate-100 tracking-widest text-center uppercase focus:outline-hidden"
@@ -282,13 +277,12 @@ export function CodenamesOnlinePicker({
 
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                Oyuncu / Kod Adınız:
-              </label>
+                {t('Oyuncu / Kod Adınız:')}</label>
               <input
                 type="text"
                 value={playerName}
                 onChange={(e) => setPlayerName(e.target.value)}
-                placeholder="Ajan Adınız"
+                placeholder={t('Ajan Adınız')}
                 maxLength={16}
                 required
                 className="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 focus:border-purple-500 rounded-2xl px-4 py-3 text-sm font-bold text-slate-900 dark:text-slate-100 focus:outline-hidden"
@@ -298,8 +292,7 @@ export function CodenamesOnlinePicker({
             {/* Team Selection (Red vs Blue) */}
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
-                Takım Seçin:
-              </label>
+                {t('Takım Seçin:')}</label>
               <div className="grid grid-cols-2 gap-2.5">
                 <button
                   type="button"
@@ -316,8 +309,8 @@ export function CodenamesOnlinePicker({
                   <div className="flex items-center gap-2">
                     <span className="text-xl">🔴</span>
                     <div>
-                      <div className="text-xs font-black text-rose-950">Kırmızı Takım</div>
-                      <div className="text-[10px] text-rose-700 dark:text-rose-300">Ajan Timi</div>
+                      <div className="text-xs font-black text-rose-950">{t('Kırmızı Takım')}</div>
+                      <div className="text-[10px] text-rose-700 dark:text-rose-300">{t('Ajan Timi')}</div>
                     </div>
                   </div>
                   {selectedTeam === 'red' && <span className="text-rose-600 dark:text-rose-400 font-black">✓</span>}
@@ -338,8 +331,8 @@ export function CodenamesOnlinePicker({
                   <div className="flex items-center gap-2">
                     <span className="text-xl">🔵</span>
                     <div>
-                      <div className="text-xs font-black text-sky-950">Mavi Takım</div>
-                      <div className="text-[10px] text-sky-700 dark:text-sky-300">Ajan Timi</div>
+                      <div className="text-xs font-black text-sky-950">{t('Mavi Takım')}</div>
+                      <div className="text-[10px] text-sky-700 dark:text-sky-300">{t('Ajan Timi')}</div>
                     </div>
                   </div>
                   {selectedTeam === 'blue' && <span className="text-sky-600 dark:text-sky-400 font-black">✓</span>}
@@ -350,8 +343,7 @@ export function CodenamesOnlinePicker({
             {/* Role Selection (Spymaster vs Operative) */}
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
-                Rolünüzü Belirleyin:
-              </label>
+                {t('Rolünüzü Belirleyin:')}</label>
               <div className="grid grid-cols-2 gap-2.5">
                 <button
                   type="button"
@@ -367,11 +359,10 @@ export function CodenamesOnlinePicker({
                 >
                   <div className="text-sm font-black text-amber-950 flex items-center gap-1.5">
                     <span>👑</span>
-                    <span>Ajan Lideri (Spymaster)</span>
+                    <span>{t('Ajan Lideri (Spymaster)')}</span>
                   </div>
                   <p className="text-[10px] text-slate-600 dark:text-slate-400 mt-1">
-                    Telefonunuzda gizli renk haritası görünür. İpucu verirsiniz.
-                  </p>
+                    {t('Telefonunuzda gizli renk haritası görünür. İpucu verirsiniz.')}</p>
                 </button>
 
                 <button
@@ -388,11 +379,10 @@ export function CodenamesOnlinePicker({
                 >
                   <div className="text-sm font-black text-indigo-950 flex items-center gap-1.5">
                     <span>🕵️‍♂️</span>
-                    <span>Saha Ajanı (Operative)</span>
+                    <span>{t('Saha Ajanı (Operative)')}</span>
                   </div>
                   <p className="text-[10px] text-slate-600 dark:text-slate-400 mt-1">
-                    İpuçlarını tartışıp TV'deki kartları telefonunuzdan açarsınız.
-                  </p>
+                    {t("İpuçlarını tartışıp TV'deki kartları telefonunuzdan açarsınız.")}</p>
                 </button>
               </div>
             </div>
@@ -403,7 +393,7 @@ export function CodenamesOnlinePicker({
             disabled={!joinRoomCode.trim()}
             className="w-full py-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 disabled:opacity-40 text-white font-black text-base rounded-2xl shadow-xl flex items-center justify-center gap-2 transition-all active:scale-[0.98] cursor-pointer"
           >
-            <span>AJAN ODASINA GİRİŞ YAP</span>
+            <span>{t('AJAN ODASINA GİRİŞ YAP')}</span>
             <ArrowRight className="w-5 h-5" />
           </button>
         </form>
@@ -413,17 +403,15 @@ export function CodenamesOnlinePicker({
       {activeTab === 'local' && (
         <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-xl space-y-5 animate-fade-in text-center">
           <div className="space-y-1">
-            <h3 className="text-lg font-black text-slate-900 dark:text-slate-100">Tek Ekranda Masaüstü Oyunu</h3>
+            <h3 className="text-lg font-black text-slate-900 dark:text-slate-100">{t('Tek Ekranda Masaüstü Oyunu')}</h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
-              Tablet veya bilgisayarınızı masanın ortasına koyun, liderler sırayla "Lider Haritası"na bakarak fiziksel ortamda ipucu versin!
-            </p>
+              {t('Tablet veya bilgisayarınızı masanın ortasına koyun, liderler sırayla "Lider Haritası"na bakarak fiziksel ortamda ipucu versin!')}</p>
           </div>
 
           <div className="space-y-3 text-left">
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                Kategori Seçimi:
-              </label>
+                {t('Kategori Seçimi:')}</label>
               <select
                 value={localCategory}
                 onChange={(e) => setLocalCategory(e.target.value)}
@@ -443,7 +431,7 @@ export function CodenamesOnlinePicker({
             className="w-full py-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-base rounded-2xl shadow-xl flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-[0.98]"
           >
             <Play className="w-5 h-5 fill-white" />
-            <span>TEK EKRANDA OYUNU BAŞLAT</span>
+            <span>{t('TEK EKRANDA OYUNU BAŞLAT')}</span>
           </button>
         </div>
       )}
@@ -457,7 +445,7 @@ export function CodenamesOnlinePicker({
           }}
           className="text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 flex items-center gap-1 cursor-pointer"
         >
-          <span>← Parti Kulübü Ana Menü</span>
+          <span>{t('← Parti Kulübü Ana Menü')}</span>
         </button>
 
         <button
@@ -468,7 +456,7 @@ export function CodenamesOnlinePicker({
           className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 flex items-center gap-1 cursor-pointer"
         >
           <HelpCircle className="w-3.5 h-3.5" />
-          <span>Nasıl Oynanır & Kurallar</span>
+          <span>{t('Nasıl Oynanır & Kurallar')}</span>
         </button>
       </div>
     </div>

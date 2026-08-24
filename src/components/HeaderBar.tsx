@@ -15,6 +15,7 @@ import { PartyGameType } from '../types/partyGames';
 import { playClickSound } from '../utils/audio';
 import { AppTheme } from '../utils/theme';
 
+import { t } from '../i18n';
 interface HeaderBarProps {
   activeModule?: 'arcade_hub' | PartyGameType;
   phase?: GamePhase | string;
@@ -127,7 +128,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
               if (onSelectGameHub) onSelectGameHub();
             }}
             className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 via-rose-500 to-indigo-600 flex items-center justify-center shadow-md shadow-rose-500/20 text-white font-black text-lg ring-2 ring-amber-500/30 transition-transform active:scale-95 cursor-pointer"
-            title="FiestaLoco Ana Menü"
+            title={t('FiestaLoco Ana Menü')}
           >
             {getGameIcon()}
           </button>
@@ -187,10 +188,10 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
                 onSelectGameHub();
               }}
               className="px-2.5 py-1.5 sm:px-3 rounded-xl text-indigo-700 dark:text-indigo-300 hover:text-indigo-900 dark:hover:text-white bg-indigo-50 dark:bg-indigo-950/80 hover:bg-indigo-100 dark:hover:bg-indigo-900 border border-indigo-200 dark:border-indigo-800 transition-all flex items-center gap-1.5 text-xs font-black shadow-xs cursor-pointer active:scale-95"
-              title="Oyun Seçim Menüsü"
+              title={t('Oyun Seçim Menüsü')}
             >
               <Grid className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-              <span className="hidden sm:inline">Oyunlar</span>
+              <span className="hidden sm:inline">{t('Oyunlar')}</span>
             </button>
           )}
 
@@ -203,10 +204,10 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
                 onOpenLeaderboard();
               }}
               className="px-2.5 py-1.5 sm:px-3 rounded-xl text-amber-700 dark:text-amber-300 hover:text-amber-900 dark:hover:text-white bg-amber-50 dark:bg-amber-950/80 hover:bg-amber-100 dark:hover:bg-amber-900 border border-amber-200 dark:border-amber-800 transition-all flex items-center gap-1.5 text-xs font-black shadow-xs cursor-pointer active:scale-95"
-              title="Skor Tablosu & Geçmiş"
+              title={t('Skor Tablosu & Geçmiş')}
             >
               <Trophy className="w-4 h-4 text-amber-500 fill-amber-500/20" />
-              <span className="hidden sm:inline">Skorlar</span>
+              <span className="hidden sm:inline">{t('Skorlar')}</span>
             </button>
           )}
 
@@ -236,10 +237,10 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
               onOpenRules();
             }}
             className="px-2.5 py-1.5 sm:px-3 rounded-xl text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 transition-all flex items-center gap-1.5 text-xs font-bold shadow-xs cursor-pointer active:scale-95"
-            title="Nasıl Oynanır?"
+            title={t('Nasıl Oynanır?')}
           >
             <HelpCircle className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-            <span className="hidden sm:inline">Kurallar</span>
+            <span className="hidden sm:inline">{t('Kurallar')}</span>
           </button>
 
           <button
@@ -275,10 +276,10 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
                 }
               }}
               className="p-2 sm:px-3 sm:py-1.5 rounded-xl text-rose-700 dark:text-rose-300 hover:text-rose-800 bg-rose-50 dark:bg-rose-950/80 hover:bg-rose-100 dark:hover:bg-rose-900 border border-rose-200 dark:border-rose-800 transition-all flex items-center gap-1 text-xs font-bold cursor-pointer active:scale-95"
-              title="Lobiye Dön"
+              title={t('Lobiye Dön')}
             >
               <RotateCcw className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Lobiye Dön</span>
+              <span className="hidden sm:inline">{t('Lobiye Dön')}</span>
             </button>
           )}
         </div>

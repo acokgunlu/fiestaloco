@@ -24,6 +24,7 @@ import { TriviaPassAndPlay } from '../trivia/TriviaPassAndPlay';
 import { TriviaCategory, TRIVIA_CATEGORIES } from '../../types/triviaPursuit';
 import { playClickSound, playTurnSound } from '../../utils/audio';
 
+import { t } from '../../i18n';
 interface TriviaPursuitGameProps {
   onBackToHub: () => void;
 }
@@ -159,7 +160,7 @@ export const TriviaPursuitGame: React.FC<TriviaPursuitGameProps> = ({ onBackToHu
             className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs font-black transition-all shadow-xs cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Parti Arenası</span>
+            <span>{t('Parti Arenası')}</span>
           </button>
 
           <div className="flex items-center gap-2.5">
@@ -169,15 +170,12 @@ export const TriviaPursuitGame: React.FC<TriviaPursuitGameProps> = ({ onBackToHu
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
-                  Trivia Pursuit
-                </h1>
+                  {t('Trivia Pursuit')}</h1>
                 <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-[10px] font-black border border-emerald-300 dark:border-emerald-800">
-                  BİLGİ ÇARKI & 6 ROZET
-                </span>
+                  {t('BİLGİ ÇARKI & 6 ROZET')}</span>
               </div>
               <p className="text-xs text-slate-500 dark:text-slate-400 font-bold">
-                Tekrar etmeyen zengin soru havuzu & AI desteği
-              </p>
+                {t('Tekrar etmeyen zengin soru havuzu & AI desteği')}</p>
             </div>
           </div>
         </div>
@@ -185,12 +183,12 @@ export const TriviaPursuitGame: React.FC<TriviaPursuitGameProps> = ({ onBackToHu
         <div className="flex items-center gap-2">
           {socket.roomCode && (
             <div className="px-3.5 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950 border border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 font-black text-xs">
-              Oda: <span className="font-mono tracking-widest">{socket.roomCode}</span>
+              {t('Oda:')} <span className="font-mono tracking-widest">{socket.roomCode}</span>
             </div>
           )}
           <span className="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 text-xs font-bold border border-indigo-200 dark:border-indigo-800">
             <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-            <span>6 Kategori</span>
+            <span>{t('6 Kategori')}</span>
           </span>
         </div>
       </div>
@@ -211,7 +209,7 @@ export const TriviaPursuitGame: React.FC<TriviaPursuitGameProps> = ({ onBackToHu
             }`}
           >
             <Tv className="w-4 h-4" />
-            <span>📺 TV / Ana Ekran Odası Aç</span>
+            <span>{t('📺 TV / Ana Ekran Odası Aç')}</span>
           </button>
 
           <button
@@ -227,7 +225,7 @@ export const TriviaPursuitGame: React.FC<TriviaPursuitGameProps> = ({ onBackToHu
             }`}
           >
             <Smartphone className="w-4 h-4" />
-            <span>📱 Telefondan Katıl (Kumanda)</span>
+            <span>{t('📱 Telefondan Katıl (Kumanda)')}</span>
           </button>
 
           <button
@@ -243,7 +241,7 @@ export const TriviaPursuitGame: React.FC<TriviaPursuitGameProps> = ({ onBackToHu
             }`}
           >
             <Users className="w-4 h-4" />
-            <span>📲 Tek Cihaz (Elden Ele)</span>
+            <span>{t('📲 Tek Cihaz (Elden Ele)')}</span>
           </button>
         </div>
       )}
@@ -268,11 +266,9 @@ export const TriviaPursuitGame: React.FC<TriviaPursuitGameProps> = ({ onBackToHu
                   🏆
                 </div>
                 <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white drop-shadow-sm">
-                  Trivia Pursuit TV Host
-                </h2>
+                  {t('Trivia Pursuit TV Host')}</h2>
                 <p className="text-emerald-100 dark:text-emerald-200 text-sm sm:text-base font-medium leading-relaxed">
-                  Büyük ekranda 6 renkli çark döner! Oyuncular telefonlarından cevap verir, 6 farklı kategorideki tüm rozetleri ilk toplayan şampiyon olur!
-                </p>
+                  {t('Büyük ekranda 6 renkli çark döner! Oyuncular telefonlarından cevap verir, 6 farklı kategorideki tüm rozetleri ilk toplayan şampiyon olur!')}</p>
 
                 {/* Badges / Category Preview Chips */}
                 <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
@@ -293,8 +289,7 @@ export const TriviaPursuitGame: React.FC<TriviaPursuitGameProps> = ({ onBackToHu
                   {/* Wedges to win */}
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <span className="text-xs font-black uppercase text-emerald-100 tracking-wider">
-                      🎯 Kazanma Hedefi:
-                    </span>
+                      {t('🎯 Kazanma Hedefi:')}</span>
                     <div className="flex items-center gap-2">
                       {[3, 4, 6].map((count) => (
                         <button
@@ -318,8 +313,7 @@ export const TriviaPursuitGame: React.FC<TriviaPursuitGameProps> = ({ onBackToHu
                   {/* Turn Timer */}
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-t border-white/10 pt-3">
                     <span className="text-xs font-black uppercase text-emerald-100 tracking-wider">
-                      ⏱️ Soru Süresi:
-                    </span>
+                      {t('⏱️ Soru Süresi:')}</span>
                     <div className="flex items-center gap-2">
                       {[15, 20, 30].map((sec) => (
                         <button
@@ -345,11 +339,10 @@ export const TriviaPursuitGame: React.FC<TriviaPursuitGameProps> = ({ onBackToHu
                     <div className="space-y-0.5">
                       <span className="text-xs font-black uppercase text-emerald-100 tracking-wider flex items-center gap-1.5">
                         <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                        <span>Gemini AI Soruları:</span>
+                        <span>{t('Gemini AI Soruları:')}</span>
                       </span>
                       <p className="text-[11px] text-emerald-200">
-                        Zengin yerel veri tabanına ek olarak dinamik sorular üretilir
-                      </p>
+                        {t('Zengin yerel veri tabanına ek olarak dinamik sorular üretilir')}</p>
                     </div>
                     <button
                       onClick={() => {
@@ -373,8 +366,7 @@ export const TriviaPursuitGame: React.FC<TriviaPursuitGameProps> = ({ onBackToHu
                     onClick={handleHostCreateRoom}
                     className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-emerald-50 text-slate-950 font-black text-base rounded-2xl shadow-xl hover:scale-105 transition-transform cursor-pointer border-2 border-emerald-300"
                   >
-                    ONLINE TV ODASI OLUŞTUR ➔
-                  </button>
+                    {t('ONLINE TV ODASI OLUŞTUR ➔')}</button>
                 </div>
               </div>
             </div>
@@ -385,10 +377,9 @@ export const TriviaPursuitGame: React.FC<TriviaPursuitGameProps> = ({ onBackToHu
               <div className="flex flex-wrap items-center justify-between gap-3 bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs">
                 <div className="flex items-center gap-3">
                   <div className="px-3 py-1 bg-emerald-500 text-white text-xs font-black rounded-lg uppercase tracking-wider">
-                    TV HOST CANLI
-                  </div>
+                    {t('TV HOST CANLI')}</div>
                   <div className="text-sm font-bold text-slate-700 dark:text-slate-300">
-                    Oda: <span className="font-mono font-black text-emerald-600 dark:text-emerald-400 text-lg">{socket.roomCode}</span>
+                    {t('Oda:')} <span className="font-mono font-black text-emerald-600 dark:text-emerald-400 text-lg">{socket.roomCode}</span>
                   </div>
                 </div>
 
@@ -433,23 +424,21 @@ export const TriviaPursuitGame: React.FC<TriviaPursuitGameProps> = ({ onBackToHu
               <div className="w-14 h-14 rounded-2xl bg-emerald-500 text-white flex items-center justify-center text-2xl mx-auto shadow-md font-black">
                 📱
               </div>
-              <h2 className="text-2xl font-black text-slate-900 dark:text-white">Telefondan Odaya Katıl</h2>
+              <h2 className="text-2xl font-black text-slate-900 dark:text-white">{t('Telefondan Odaya Katıl')}</h2>
               <p className="text-xs text-slate-500 dark:text-slate-400 font-bold">
-                TV ekranındaki 4 haneli oda kodunu girerek kumandanızı aktifleştirin.
-              </p>
+                {t('TV ekranındaki 4 haneli oda kodunu girerek kumandanızı aktifleştirin.')}</p>
             </div>
 
             <form onSubmit={handleJoinRoom} className="space-y-4">
               {/* Room Code */}
               <div className="space-y-1.5">
                 <label className="text-xs font-black text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-                  Oda Kodu:
-                </label>
+                  {t('Oda Kodu:')}</label>
                 <input
                   id="input-trivia-room-code"
                   type="text"
                   maxLength={4}
-                  placeholder="ÖRN: WOLF"
+                  placeholder={t('ÖRN: WOLF')}
                   value={joinRoomCodeInput}
                   onChange={(e) => setJoinRoomCodeInput(e.target.value.toUpperCase())}
                   className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 focus:border-emerald-500 rounded-xl text-center text-xl font-mono font-black tracking-widest uppercase text-slate-900 dark:text-white outline-none"
@@ -460,13 +449,12 @@ export const TriviaPursuitGame: React.FC<TriviaPursuitGameProps> = ({ onBackToHu
               {/* Player Name */}
               <div className="space-y-1.5">
                 <label className="text-xs font-black text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-                  Oyuncu Adınız:
-                </label>
+                  {t('Oyuncu Adınız:')}</label>
                 <input
                   id="input-trivia-player-name"
                   type="text"
                   maxLength={15}
-                  placeholder="Adınızı yazın"
+                  placeholder={t('Adınızı yazın')}
                   value={playerNameInput}
                   onChange={(e) => setPlayerNameInput(e.target.value)}
                   className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 focus:border-emerald-500 rounded-xl text-center text-base font-bold text-slate-900 dark:text-white outline-none"
@@ -477,8 +465,7 @@ export const TriviaPursuitGame: React.FC<TriviaPursuitGameProps> = ({ onBackToHu
               {/* Avatar Selector */}
               <div className="space-y-1.5">
                 <label className="text-xs font-black text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-                  Avatar Seçin:
-                </label>
+                  {t('Avatar Seçin:')}</label>
                 <div className="grid grid-cols-6 gap-2">
                   {AVATAR_LIST.map((av) => (
                     <button
@@ -503,8 +490,7 @@ export const TriviaPursuitGame: React.FC<TriviaPursuitGameProps> = ({ onBackToHu
               {/* Color Selector */}
               <div className="space-y-1.5">
                 <label className="text-xs font-black text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-                  Tema Rengi:
-                </label>
+                  {t('Tema Rengi:')}</label>
                 <div className="grid grid-cols-4 gap-2">
                   {COLOR_LIST.map((c) => (
                     <button
@@ -533,7 +519,7 @@ export const TriviaPursuitGame: React.FC<TriviaPursuitGameProps> = ({ onBackToHu
                 className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm rounded-2xl shadow-lg flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer mt-4"
               >
                 <Smartphone className="w-4 h-4" />
-                <span>KUMANDAYI BAĞLA</span>
+                <span>{t('KUMANDAYI BAĞLA')}</span>
               </button>
             </form>
           </div>

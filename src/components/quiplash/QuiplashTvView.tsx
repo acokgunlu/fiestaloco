@@ -24,6 +24,7 @@ import {
 } from '../../types/quiplash';
 import { isSoundEnabled, toggleSound, playCorrectSound, playClickSound } from '../../utils/audio';
 
+import { t } from '../../i18n';
 interface QuiplashTvViewProps {
   roomCode: string;
   gameState: QuiplashGameState;
@@ -93,8 +94,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
             onClick={onBackToHub}
             className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition-all border border-slate-700/50"
           >
-            ← FiestaLoco Hub
-          </button>
+            {t('← FiestaLoco Hub')}</button>
 
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-purple-600 via-pink-500 to-amber-500 flex items-center justify-center text-white text-lg shadow-md shadow-pink-500/20">
@@ -102,11 +102,9 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
             </div>
             <div>
               <h1 className="text-base font-black tracking-wider uppercase bg-gradient-to-r from-purple-400 via-pink-300 to-amber-300 bg-clip-text text-transparent">
-                QUIPLASH
-              </h1>
+                {t('QUIPLASH')}</h1>
               <span className="text-[10px] text-slate-400 font-bold block -mt-0.5">
-                TV Host • Ana Ekran
-              </span>
+                {t('TV Host • Ana Ekran')}</span>
             </div>
           </div>
         </div>
@@ -136,13 +134,13 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
         <div className="flex items-center gap-3">
           <div className="px-3.5 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700 text-slate-300 text-xs font-mono font-bold flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-            ODA: <span className="text-amber-400 font-black tracking-widest">{roomCode}</span>
+            {t('ODA:')} <span className="text-amber-400 font-black tracking-widest">{roomCode}</span>
           </div>
 
           <button
             onClick={onOpenRules}
             className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition-all border border-slate-700"
-            title="Kurallar"
+            title={t('Kurallar')}
           >
             <HelpCircle className="w-4 h-4" />
           </button>
@@ -150,7 +148,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
           <button
             onClick={handleToggleAudio}
             className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition-all border border-slate-700"
-            title="Ses Aç/Kapat"
+            title={t('Ses Aç/Kapat')}
           >
             {soundOn ? <Volume2 className="w-4 h-4 text-emerald-400" /> : <VolumeX className="w-4 h-4 text-slate-500" />}
           </button>
@@ -167,8 +165,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
             {/* Left QR & Join instructions */}
             <div className="lg:col-span-5 flex flex-col items-center text-center p-8 rounded-3xl bg-slate-900/80 border border-slate-800 shadow-2xl backdrop-blur-xl">
               <span className="text-xs font-black tracking-widest uppercase text-pink-400 mb-2">
-                TELEFONDAN KATILIN
-              </span>
+                {t('TELEFONDAN KATILIN')}</span>
               <h2 className="text-3xl font-black text-white mb-4">
                 Oda Kodu:{' '}
                 <span className="text-amber-400 tracking-wider font-mono bg-slate-950 px-3 py-1 rounded-xl border border-amber-500/30">
@@ -178,11 +175,11 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
 
               {qrDataUrl ? (
                 <div className="p-3 bg-white rounded-2xl shadow-xl shadow-purple-950/50 mb-4 transform hover:scale-105 transition-transform">
-                  <img src={qrDataUrl} alt="Join QR" className="w-52 h-52 object-contain rounded-xl" />
+                  <img src={qrDataUrl} alt={t('Join QR')} className="w-52 h-52 object-contain rounded-xl" />
                 </div>
               ) : (
                 <div className="w-52 h-52 rounded-2xl bg-slate-800 flex items-center justify-center mb-4">
-                  <span className="text-xs text-slate-400">QR Yükleniyor...</span>
+                  <span className="text-xs text-slate-400">{t('QR Yükleniyor...')}</span>
                 </div>
               )}
 
@@ -211,7 +208,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
                 {players.length === 0 ? (
                   <div className="py-16 text-center text-slate-500 flex flex-col items-center gap-3">
                     <Users className="w-12 h-12 text-slate-700 animate-bounce" />
-                    <p className="text-sm font-bold">İlk oyuncunun katılması bekleniyor...</p>
+                    <p className="text-sm font-bold">{t('İlk oyuncunun katılması bekleniyor...')}</p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5 max-h-72 overflow-y-auto pr-1">
@@ -232,8 +229,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
                           <h4 className="text-xs font-black text-white truncate">{p.name}</h4>
                           <span className="text-[10px] text-emerald-400 font-bold flex items-center gap-1">
                             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                            Hazır
-                          </span>
+                            {t('Hazır')}</span>
                         </div>
                       </motion.div>
                     ))}
@@ -253,8 +249,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
                   }`}
                 >
                   <Play className="w-5 h-5 fill-current" />
-                  Quiplash’ı Başlat!
-                </button>
+                  {t('Quiplash’ı Başlat!')}</button>
               </div>
             </div>
           </div>
@@ -277,16 +272,14 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
               TUR {gameState.currentRound} • YAZMA AŞAMASI
             </span>
             <h2 className="text-4xl sm:text-5xl font-black text-white mb-3 tracking-tight">
-              Telefonlarınıza Bakın!
-            </h2>
+              {t('Telefonlarınıza Bakın!')}</h2>
             <p className="text-slate-400 text-sm max-w-lg mb-8">
-              Her oyuncu telefonuna gelen 2 absürt soruya en komik yanıtını yazıyor. Süre bitmeden hazır olun!
-            </p>
+              {t('Her oyuncu telefonuna gelen 2 absürt soruya en komik yanıtını yazıyor. Süre bitmeden hazır olun!')}</p>
 
             {/* Submission Status Pills */}
             <div className="w-full p-6 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-2xl backdrop-blur-xl">
               <div className="flex items-center justify-between mb-4 pb-2 border-b border-slate-800">
-                <span className="text-xs font-bold text-slate-400">Yanıt Gönderenler</span>
+                <span className="text-xs font-bold text-slate-400">{t('Yanıt Gönderenler')}</span>
                 <span className="text-xs font-black text-amber-400">
                   {gameState.submittedPlayerIds?.length || 0} / {players.length} Tamamlandı
                 </span>
@@ -365,14 +358,12 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
                 {/* Quiplash Sweep Banner */}
                 {isMatchupResult && activeMatchup.answer1.isQuiplash && (
                   <div className="absolute top-3 right-3 px-3 py-1 rounded-xl bg-amber-400 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center gap-1 shadow-lg animate-bounce">
-                    👑 QUIPLASH! (+500 BONUS)
-                  </div>
+                    {t('👑 QUIPLASH! (+500 BONUS)')}</div>
                 )}
 
                 <div className="mb-4">
                   <span className="text-xs font-black tracking-widest uppercase text-cyan-400 block mb-2">
-                    SEÇENEK A
-                  </span>
+                    {t('SEÇENEK A')}</span>
                   <p className="text-2xl sm:text-3xl font-black text-white leading-snug">
                     "{activeMatchup.answer1.text || 'Hiçbir yanıt yok'}"
                   </p>
@@ -420,14 +411,12 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
                 {/* Quiplash Sweep Banner */}
                 {isMatchupResult && activeMatchup.answer2.isQuiplash && (
                   <div className="absolute top-3 right-3 px-3 py-1 rounded-xl bg-amber-400 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center gap-1 shadow-lg animate-bounce">
-                    👑 QUIPLASH! (+500 BONUS)
-                  </div>
+                    {t('👑 QUIPLASH! (+500 BONUS)')}</div>
                 )}
 
                 <div className="mb-4">
                   <span className="text-xs font-black tracking-widest uppercase text-rose-400 block mb-2">
-                    SEÇENEK B
-                  </span>
+                    {t('SEÇENEK B')}</span>
                   <p className="text-2xl sm:text-3xl font-black text-white leading-snug">
                     "{activeMatchup.answer2.text || 'Hiçbir yanıt yok'}"
                   </p>
@@ -471,11 +460,10 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
                 {gameState.currentMatchupIndex + 1 >= gameState.matchups.length ? (
                   <>
                     <Trophy className="w-5 h-5" />
-                    Tur Skorlarını Gör
-                  </>
+                    {t('Tur Skorlarını Gör')}</>
                 ) : (
                   <>
-                    <span>Sonraki Kapışma</span>
+                    <span>{t('Sonraki Kapışma')}</span>
                     <ArrowRight className="w-5 h-5" />
                   </>
                 )}
@@ -492,7 +480,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
             <span className="text-xs font-black tracking-widest uppercase text-pink-400 mb-2">
               TUR {gameState.currentRound} PUAN TABLOSU
             </span>
-            <h2 className="text-4xl font-black text-white mb-6">Mizah Liderleri</h2>
+            <h2 className="text-4xl font-black text-white mb-6">{t('Mizah Liderleri')}</h2>
 
             <div className="w-full p-6 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-2xl backdrop-blur-xl space-y-3 mb-8">
               {[...players]
@@ -527,12 +515,12 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
               {gameState.currentRound < gameState.totalRounds ? (
                 <>
                   <Zap className="w-5 h-5 text-amber-300" />
-                  <span>Sonraki Tura Geç (2x Puan)</span>
+                  <span>{t('Sonraki Tura Geç (2x Puan)')}</span>
                 </>
               ) : (
                 <>
                   <Crown className="w-5 h-5 text-amber-300" />
-                  <span>Büyük Finale Geç (The Last Lash)</span>
+                  <span>{t('Büyük Finale Geç (The Last Lash)')}</span>
                 </>
               )}
             </button>
@@ -547,8 +535,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
           gameState.phase === 'LAST_LASH_RESULT') && (
           <div className="w-full max-w-4xl flex flex-col items-center text-center">
             <span className="text-xs font-black tracking-widest uppercase text-amber-400 mb-2">
-              👑 BÜYÜK FİNAL • THE LAST LASH (3X PUAN)
-            </span>
+              {t('👑 BÜYÜK FİNAL • THE LAST LASH (3X PUAN)')}</span>
 
             {gameState.lastLashPrompt && (
               <div className="w-full p-8 rounded-3xl bg-gradient-to-b from-purple-950/80 to-slate-950 border-2 border-amber-500/40 shadow-2xl text-center mb-8">
@@ -560,10 +547,9 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
 
             {gameState.phase === 'LAST_LASH_WRITING' && (
               <div className="p-8 rounded-3xl bg-slate-900/90 border border-slate-800 w-full max-w-xl text-center">
-                <h3 className="text-xl font-bold text-white mb-2">Herkes Tek Bir Soruya Cevap Yazıyor!</h3>
+                <h3 className="text-xl font-bold text-white mb-2">{t('Herkes Tek Bir Soruya Cevap Yazıyor!')}</h3>
                 <p className="text-xs text-slate-400">
-                  Telefonunuza gelen son soruda en yüksek mizah potansiyelinizi ortaya koyun.
-                </p>
+                  {t('Telefonunuza gelen son soruda en yüksek mizah potansiyelinizi ortaya koyun.')}</p>
               </div>
             )}
 
@@ -594,8 +580,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
                 className="px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 font-black text-base shadow-xl hover:scale-105 transition-all flex items-center gap-2"
               >
                 <Crown className="w-5 h-5" />
-                Şampiyonu Açıkla!
-              </button>
+                {t('Şampiyonu Açıkla!')}</button>
             )}
           </div>
         )}
@@ -609,9 +594,8 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
               👑
             </div>
             <span className="text-xs font-black tracking-widest uppercase text-amber-400 mb-2">
-              OYUN BİTTİ
-            </span>
-            <h2 className="text-5xl font-black text-white mb-8">QUIPLASH ŞAMPİYONU</h2>
+              {t('OYUN BİTTİ')}</span>
+            <h2 className="text-5xl font-black text-white mb-8">{t('QUIPLASH ŞAMPİYONU')}</h2>
 
             {/* Winner Spotlight Card */}
             {(() => {
@@ -658,14 +642,12 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
                 className="px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-amber-600 text-white font-black text-base shadow-xl hover:scale-105 transition-all flex items-center gap-2"
               >
                 <RotateCcw className="w-5 h-5" />
-                Yeniden Oyna
-              </button>
+                {t('Yeniden Oyna')}</button>
               <button
                 onClick={onBackToHub}
                 className="px-6 py-4 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-base border border-slate-700 transition-all"
               >
-                Ana Menü
-              </button>
+                {t('Ana Menü')}</button>
             </div>
           </div>
         )}
@@ -673,8 +655,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
 
       {/* Bottom Bar Info */}
       <footer className="relative z-10 px-8 py-3 border-t border-slate-900 bg-slate-950/80 text-center text-xs text-slate-500 font-medium">
-        FiestaLoco • Quiplash TV Host Mode
-      </footer>
+        {t('FiestaLoco • Quiplash TV Host Mode')}</footer>
     </div>
   );
 };

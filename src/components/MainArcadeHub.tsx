@@ -18,6 +18,7 @@ import {
 import { PartyGameType } from '../types/partyGames';
 import { playClickSound, playTurnSound } from '../utils/audio';
 
+import { t } from '../i18n';
 interface MainArcadeHubProps {
   onSelectGame: (gameId: PartyGameType) => void;
   onOpenRules: () => void;
@@ -57,25 +58,24 @@ export function MainArcadeHub({
           <div className="space-y-3 text-center md:text-left">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/25 text-white text-xs font-black uppercase tracking-wider backdrop-blur-xs border border-white/40 shadow-xs">
               <Sparkles className="w-4 h-4 text-amber-200 animate-spin" />
-              <span>Çok Oyunculu TV & Telefon Parti Konsolu</span>
+              <span>{t('Çok Oyunculu TV & Telefon Parti Konsolu')}</span>
             </div>
 
             <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-white drop-shadow-sm flex items-center justify-center md:justify-start gap-2">
-              <span>FIESTA</span>
-              <span className="text-amber-300 underline decoration-white/40">LOCO</span>
+              <span>{t('FIESTA')}</span>
+              <span className="text-amber-300 underline decoration-white/40">{t('LOCO')}</span>
               <span className="text-2xl sm:text-4xl">🕹️</span>
             </h1>
 
             <p className="text-sm sm:text-base text-white/95 max-w-xl font-medium leading-relaxed">
-              Tek bir ekranda toplanın, telefonlarınızı kumandaya dönüştürün ve arkadaşlarınızla kahkaha dolu Jackbox tarzı oyunların tadını çıkarın!
-            </p>
+              {t('Tek bir ekranda toplanın, telefonlarınızı kumandaya dönüştürün ve arkadaşlarınızla kahkaha dolu Jackbox tarzı oyunların tadını çıkarın!')}</p>
           </div>
 
           {/* Quick Join Widget for Phone Players */}
           <div className="w-full md:w-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-5 rounded-2xl border-2 border-white/80 dark:border-slate-700 shadow-lg text-slate-900 dark:text-white min-w-[280px] space-y-3">
             <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-indigo-700 dark:text-indigo-400">
               <Smartphone className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-              <span>Odaya Hızlı Katıl</span>
+              <span>{t('Odaya Hızlı Katıl')}</span>
             </div>
 
             <form onSubmit={handleQuickJoin} className="space-y-2">
@@ -83,7 +83,7 @@ export function MainArcadeHub({
                 id="input-quick-room-code"
                 type="text"
                 maxLength={4}
-                placeholder="ODA KODU (ÖRN: WOLF)"
+                placeholder={t('ODA KODU (ÖRN: WOLF)')}
                 value={quickRoomCode}
                 onChange={(e) => setQuickRoomCode(e.target.value.toUpperCase())}
                 className="w-full px-3 py-2.5 bg-slate-50 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 focus:border-indigo-500 rounded-xl text-center text-base font-mono font-black text-slate-900 dark:text-white tracking-widest uppercase outline-none"
@@ -92,7 +92,7 @@ export function MainArcadeHub({
                 type="submit"
                 className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs rounded-xl shadow-md flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
               >
-                <span>KUMANDAYLA KATIL</span>
+                <span>{t('KUMANDAYLA KATIL')}</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </form>
@@ -109,7 +109,7 @@ export function MainArcadeHub({
             className="px-3.5 py-1.5 rounded-full bg-white/20 hover:bg-white/30 text-white border border-white/30 flex items-center gap-1.5 cursor-pointer transition-all"
           >
             <HelpCircle className="w-3.5 h-3.5 text-amber-200" />
-            <span>Oyun Rehberi & Kurallar</span>
+            <span>{t('Oyun Rehberi & Kurallar')}</span>
           </button>
 
           {onOpenLeaderboard && (
@@ -121,16 +121,14 @@ export function MainArcadeHub({
               className="px-3.5 py-1.5 rounded-full bg-amber-400 hover:bg-amber-300 text-slate-950 font-black border border-amber-300 flex items-center gap-1.5 cursor-pointer transition-all shadow-sm"
             >
               <Trophy className="w-3.5 h-3.5 text-amber-950" />
-              <span>🏆 Skor Tablosu & Maç Geçmişi</span>
+              <span>{t('🏆 Skor Tablosu & Maç Geçmişi')}</span>
             </button>
           )}
 
           <span className="px-3 py-1 rounded-full bg-black/15 text-white/90">
-            📺 TV Host + 📱 Telefon Kumandası Destekli
-          </span>
+            {t('📺 TV Host + 📱 Telefon Kumandası Destekli')}</span>
           <span className="px-3 py-1 rounded-full bg-black/15 text-white/90">
-            👥 2-12+ Oyuncu
-          </span>
+            {t('👥 2-12+ Oyuncu')}</span>
         </div>
       </div>
 
@@ -143,14 +141,12 @@ export function MainArcadeHub({
             </div>
             <div>
               <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
-                Parti Oyunları Arenası
-              </h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400 font-bold">İstediğiniz oyunu seçip başlatın</p>
+                {t('Parti Oyunları Arenası')}</h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-bold">{t('İstediğiniz oyunu seçip başlatın')}</p>
             </div>
           </div>
           <span className="hidden sm:inline-flex px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 text-xs font-black border border-indigo-200 dark:border-indigo-800">
-            9 Canlı Modül
-          </span>
+            {t('9 Canlı Modül')}</span>
         </div>
 
         {/* 7 Distinct Game Cards Grid */}
@@ -167,36 +163,28 @@ export function MainArcadeHub({
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="px-2.5 py-1 rounded-full bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300 text-[11px] font-black border border-purple-200 dark:border-purple-800">
-                    MİZAH DÜELLOSU
-                  </span>
+                    {t('MİZAH DÜELLOSU')}</span>
                   <span className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[11px] font-bold">
-                    2-12+ Oyuncu
-                  </span>
+                    {t('2-12+ Oyuncu')}</span>
                 </div>
               </div>
 
               <div className="space-y-1.5">
                 <h3 className="text-xl font-black text-slate-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
-                  Quiplash
-                </h3>
+                  {t('Quiplash')}</h3>
                 <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
-                  Doğru cevap yok, sadece en çok güldüren kazanır! Absürt sorulara kurnaz yanıtlar yazın, birebir kapışmalarda oyları toplayın.
-                </p>
+                  {t('Doğru cevap yok, sadece en çok güldüren kazanır! Absürt sorulara kurnaz yanıtlar yazın, birebir kapışmalarda oyları toplayın.')}</p>
               </div>
 
               <div className="flex flex-wrap gap-1.5 pt-1">
                 <span className="px-2 py-0.5 rounded-lg bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300 text-[10px] font-bold">
-                  📺 TV Host
-                </span>
+                  {t('📺 TV Host')}</span>
                 <span className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold">
-                  📱 Telefon Kumandası
-                </span>
+                  {t('📱 Telefon Kumandası')}</span>
                 <span className="px-2 py-0.5 rounded-lg bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300 text-[10px] font-bold">
-                  👑 The Last Lash
-                </span>
+                  {t('👑 The Last Lash')}</span>
                 <span className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold">
-                  💥 Quiplash Süpürme
-                </span>
+                  {t('💥 Quiplash Süpürme')}</span>
               </div>
             </div>
 
@@ -210,7 +198,7 @@ export function MainArcadeHub({
                 className="w-full py-3.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-black text-xs rounded-2xl shadow-md btn-party flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Play className="w-4 h-4 fill-white" />
-                <span>QUIPLASH'I BAŞLAT</span>
+                <span>{t("QUIPLASH'I BAŞLAT")}</span>
               </button>
             </div>
           </div>
@@ -227,36 +215,28 @@ export function MainArcadeHub({
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="px-2.5 py-1 rounded-full bg-indigo-100 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-300 text-[11px] font-black border border-indigo-200 dark:border-indigo-800">
-                    TAKIM SAVAŞI
-                  </span>
+                    {t('TAKIM SAVAŞI')}</span>
                   <span className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[11px] font-bold">
-                    4-12+ Oyuncu
-                  </span>
+                    {t('4-12+ Oyuncu')}</span>
                 </div>
               </div>
 
               <div className="space-y-1.5">
                 <h3 className="text-xl font-black text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                  Codenames
-                </h3>
+                  {t('Codenames')}</h3>
                 <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
-                  Kırmızı ve Mavi casus liderleri tek kelimelik ipuçları verir, ajanlar gizli kelimeleri çözer. Suikastçıya dikkat!
-                </p>
+                  {t('Kırmızı ve Mavi casus liderleri tek kelimelik ipuçları verir, ajanlar gizli kelimeleri çözer. Suikastçıya dikkat!')}</p>
               </div>
 
               <div className="flex flex-wrap gap-1.5 pt-1">
                 <span className="px-2 py-0.5 rounded-lg bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 text-[10px] font-bold">
-                  📺 TV Host
-                </span>
+                  {t('📺 TV Host')}</span>
                 <span className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold">
-                  📱 Telefon Kumandası
-                </span>
+                  {t('📱 Telefon Kumandası')}</span>
                 <span className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold">
-                  ✨ Gemini AI Casus
-                </span>
+                  {t('✨ Gemini AI Casus')}</span>
                 <span className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold">
-                  ⏱️ Zamanlayıcı
-                </span>
+                  {t('⏱️ Zamanlayıcı')}</span>
               </div>
             </div>
 
@@ -270,7 +250,7 @@ export function MainArcadeHub({
                 className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs rounded-2xl shadow-md btn-party flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Play className="w-4 h-4 fill-white" />
-                <span>AJANLARI BAŞLAT</span>
+                <span>{t('AJANLARI BAŞLAT')}</span>
               </button>
             </div>
           </div>
@@ -287,36 +267,28 @@ export function MainArcadeHub({
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="px-2.5 py-1 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 text-[11px] font-black border border-amber-200 dark:border-amber-800">
-                    ÇİZİM & BLÖF
-                  </span>
+                    {t('ÇİZİM & BLÖF')}</span>
                   <span className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[11px] font-bold">
-                    3-10 Oyuncu
-                  </span>
+                    {t('3-10 Oyuncu')}</span>
                 </div>
               </div>
 
               <div className="space-y-1.5">
                 <h3 className="text-xl font-black text-slate-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
-                  Imposter
-                </h3>
+                  {t('Imposter')}</h3>
                 <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
-                  Herkes gizli kelimeyi biliyor, biri hariç! Sırayla tek bir kesintisiz çizgi çekin, sahtekârı oylamayla yakalayın.
-                </p>
+                  {t('Herkes gizli kelimeyi biliyor, biri hariç! Sırayla tek bir kesintisiz çizgi çekin, sahtekârı oylamayla yakalayın.')}</p>
               </div>
 
               <div className="flex flex-wrap gap-1.5 pt-1">
                 <span className="px-2 py-0.5 rounded-lg bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300 text-[10px] font-bold">
-                  📺 TV Host
-                </span>
+                  {t('📺 TV Host')}</span>
                 <span className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold">
-                  📱 Telefon Kumandası
-                </span>
+                  {t('📱 Telefon Kumandası')}</span>
                 <span className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold">
-                  ✏️ Tek Çizgi
-                </span>
+                  {t('✏️ Tek Çizgi')}</span>
                 <span className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold">
-                  🤖 Bot Desteği
-                </span>
+                  {t('🤖 Bot Desteği')}</span>
               </div>
             </div>
 
@@ -330,7 +302,7 @@ export function MainArcadeHub({
                 className="w-full py-3.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-2xl shadow-md btn-party flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Play className="w-4 h-4 fill-slate-950" />
-                <span>RESSAMI BAŞLAT</span>
+                <span>{t('RESSAMI BAŞLAT')}</span>
               </button>
             </div>
           </div>
@@ -347,36 +319,28 @@ export function MainArcadeHub({
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="px-2.5 py-1 rounded-full bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-300 text-[11px] font-black border border-rose-200 dark:border-rose-800">
-                    FIBBAGE TARZI
-                  </span>
+                    {t('FIBBAGE TARZI')}</span>
                   <span className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[11px] font-bold">
-                    2-10 Oyuncu
-                  </span>
+                    {t('2-10 Oyuncu')}</span>
                 </div>
               </div>
 
               <div className="space-y-1.5">
                 <h3 className="text-xl font-black text-slate-900 dark:text-white group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
-                  Fibbage (Bluff Trivia)
-                </h3>
+                  {t('Fibbage (Bluff Trivia)')}</h3>
                 <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
-                  İnanılmaz gerçek sorulara inandırıcı yalanlar yazın. Rakiplerinizi kandırıp puanları kapın, gerçeği bulun!
-                </p>
+                  {t('İnanılmaz gerçek sorulara inandırıcı yalanlar yazın. Rakiplerinizi kandırıp puanları kapın, gerçeği bulun!')}</p>
               </div>
 
               <div className="flex flex-wrap gap-1.5 pt-1">
                 <span className="px-2 py-0.5 rounded-lg bg-rose-50 dark:bg-rose-950 text-rose-700 dark:text-rose-300 text-[10px] font-bold">
-                  📺 TV Host
-                </span>
+                  {t('📺 TV Host')}</span>
                 <span className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold">
-                  📱 Telefon Kumandası
-                </span>
+                  {t('📱 Telefon Kumandası')}</span>
                 <span className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold">
-                  ✨ Gemini AI Soruları
-                </span>
+                  {t('✨ Gemini AI Soruları')}</span>
                 <span className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold">
-                  🔥 Blöf Puanı
-                </span>
+                  {t('🔥 Blöf Puanı')}</span>
               </div>
             </div>
 
@@ -390,7 +354,7 @@ export function MainArcadeHub({
                 className="w-full py-3.5 bg-rose-600 hover:bg-rose-500 text-white font-black text-xs rounded-2xl shadow-md btn-party flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Play className="w-4 h-4 fill-white" />
-                <span>YALANLARI BAŞLAT</span>
+                <span>{t('YALANLARI BAŞLAT')}</span>
               </button>
             </div>
           </div>
@@ -407,36 +371,28 @@ export function MainArcadeHub({
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="px-2.5 py-1 rounded-full bg-orange-100 dark:bg-orange-950 text-orange-800 dark:text-orange-300 text-[11px] font-black border border-orange-200 dark:border-orange-800">
-                    BOMBPARTY
-                  </span>
+                    {t('BOMBPARTY')}</span>
                   <span className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[11px] font-bold">
-                    2-12 Oyuncu
-                  </span>
+                    {t('2-12 Oyuncu')}</span>
                 </div>
               </div>
 
               <div className="space-y-1.5">
                 <h3 className="text-xl font-black text-slate-900 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
-                  Word Bomb
-                </h3>
+                  {t('Word Bomb')}</h3>
                 <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
-                  Bomba elinizde patlamadan ekrandaki heceyi içeren geçerli bir kelime yazıp sıradaki oyuncuya fırlatın!
-                </p>
+                  {t('Bomba elinizde patlamadan ekrandaki heceyi içeren geçerli bir kelime yazıp sıradaki oyuncuya fırlatın!')}</p>
               </div>
 
               <div className="flex flex-wrap gap-1.5 pt-1">
                 <span className="px-2 py-0.5 rounded-lg bg-orange-50 dark:bg-orange-950 text-orange-700 dark:text-orange-300 text-[10px] font-bold">
-                  📺 TV Host
-                </span>
+                  {t('📺 TV Host')}</span>
                 <span className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold">
-                  📱 Telefon Kumandası
-                </span>
+                  {t('📱 Telefon Kumandası')}</span>
                 <span className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold">
-                  🔥 Hızlı Refleks
-                </span>
+                  {t('🔥 Hızlı Refleks')}</span>
                 <span className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold">
-                  💥 Can Sistemi
-                </span>
+                  {t('💥 Can Sistemi')}</span>
               </div>
             </div>
 
@@ -450,7 +406,7 @@ export function MainArcadeHub({
                 className="w-full py-3.5 bg-orange-600 hover:bg-orange-500 text-white font-black text-xs rounded-2xl shadow-md btn-party flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Play className="w-4 h-4 fill-white" />
-                <span>BOMBAYI KUR</span>
+                <span>{t('BOMBAYI KUR')}</span>
               </button>
             </div>
           </div>
@@ -467,36 +423,28 @@ export function MainArcadeHub({
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-[11px] font-black border border-emerald-300 dark:border-emerald-800">
-                    TRIVIAL PURSUIT
-                  </span>
+                    {t('TRIVIAL PURSUIT')}</span>
                   <span className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[11px] font-bold">
-                    2-10 Oyuncu
-                  </span>
+                    {t('2-10 Oyuncu')}</span>
                 </div>
               </div>
 
               <div className="space-y-1.5">
                 <h3 className="text-xl font-black text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-                  Trivia Pursuit (Bilgi Çarkı)
-                </h3>
+                  {t('Trivia Pursuit (Bilgi Çarkı)')}</h3>
                 <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
-                  Tekrar etmeyen zengin soru havuzu & AI desteği! Çarkı çevirip 6 farklı kategorideki tüm rozetleri toplayın.
-                </p>
+                  {t('Tekrar etmeyen zengin soru havuzu & AI desteği! Çarkı çevirip 6 farklı kategorideki tüm rozetleri toplayın.')}</p>
               </div>
 
               <div className="flex flex-wrap gap-1.5 pt-1">
                 <span className="px-2 py-0.5 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 text-[10px] font-bold">
-                  📺 TV Host
-                </span>
+                  {t('📺 TV Host')}</span>
                 <span className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold">
-                  📱 Telefon Kumandası
-                </span>
+                  {t('📱 Telefon Kumandası')}</span>
                 <span className="px-2 py-0.5 rounded-lg bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300 text-[10px] font-bold">
-                  🎡 6 Kategori
-                </span>
+                  {t('🎡 6 Kategori')}</span>
                 <span className="px-2 py-0.5 rounded-lg bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 text-[10px] font-bold">
-                  ✨ Yapay Zeka
-                </span>
+                  {t('✨ Yapay Zeka')}</span>
               </div>
             </div>
 
@@ -510,7 +458,7 @@ export function MainArcadeHub({
                 className="w-full py-3.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs rounded-2xl shadow-md btn-party flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Play className="w-4 h-4 fill-white" />
-                <span>TRIVIA YARIŞINI BAŞLAT</span>
+                <span>{t('TRIVIA YARIŞINI BAŞLAT')}</span>
               </button>
             </div>
           </div>
@@ -527,36 +475,28 @@ export function MainArcadeHub({
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="px-2.5 py-1 rounded-full bg-lime-100 dark:bg-lime-950 text-lime-800 dark:text-lime-300 text-[11px] font-black border border-lime-300 dark:border-lime-800">
-                    GANYAN
-                  </span>
+                    {t('GANYAN')}</span>
                   <span className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[11px] font-bold">
-                    2-8 Oyuncu
-                  </span>
+                    {t('2-8 Oyuncu')}</span>
                 </div>
               </div>
 
               <div className="space-y-1.5">
                 <h3 className="text-xl font-black text-slate-900 dark:text-white group-hover:text-lime-600 dark:group-hover:text-lime-400 transition-colors">
-                  At Yarışı
-                </h3>
+                  {t('At Yarışı')}</h3>
                 <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
-                  Bildiğin ganyan. Altı at, canlı oranlar, form çizelgesi. Ganyan/plase/ikili kuponunu yatır, izle. Kasası en kalabalık olan kazanır.
-                </p>
+                  {t('Bildiğin ganyan. Altı at, canlı oranlar, form çizelgesi. Ganyan/plase/ikili kuponunu yatır, izle. Kasası en kalabalık olan kazanır.')}</p>
               </div>
 
               <div className="flex flex-wrap gap-1.5 pt-1">
                 <span className="px-2 py-0.5 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 text-[10px] font-bold">
-                  📺 TV Host
-                </span>
+                  {t('📺 TV Host')}</span>
                 <span className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold">
-                  📱 Telefon Kumandası
-                </span>
+                  {t('📱 Telefon Kumandası')}</span>
                 <span className="px-2 py-0.5 rounded-lg bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300 text-[10px] font-bold">
-                  📊 Form Çizelgesi
-                </span>
+                  {t('📊 Form Çizelgesi')}</span>
                 <span className="px-2 py-0.5 rounded-lg bg-rose-50 dark:bg-rose-950 text-rose-700 dark:text-rose-300 text-[10px] font-bold">
-                  🎫 Ganyan/Plase/İkili
-                </span>
+                  {t('🎫 Ganyan/Plase/İkili')}</span>
               </div>
             </div>
 
@@ -570,7 +510,7 @@ export function MainArcadeHub({
                 className="w-full py-3.5 bg-gradient-to-r from-emerald-600 to-lime-600 hover:from-emerald-500 hover:to-lime-500 text-white font-black text-xs rounded-2xl shadow-md btn-party flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Play className="w-4 h-4 fill-white" />
-                <span>PİSTE ÇIK</span>
+                <span>{t('PİSTE ÇIK')}</span>
               </button>
             </div>
           </div>
@@ -587,36 +527,28 @@ export function MainArcadeHub({
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="px-2.5 py-1 rounded-full bg-fuchsia-100 dark:bg-fuchsia-950 text-fuchsia-800 dark:text-fuchsia-300 text-[11px] font-black border border-fuchsia-300 dark:border-fuchsia-800">
-                    RENK HAFIZASI
-                  </span>
+                    {t('RENK HAFIZASI')}</span>
                   <span className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[11px] font-bold">
-                    2-12 Oyuncu
-                  </span>
+                    {t('2-12 Oyuncu')}</span>
                 </div>
               </div>
 
               <div className="space-y-1.5">
                 <h3 className="text-xl font-black text-slate-900 dark:text-white group-hover:text-fuchsia-600 dark:group-hover:text-fuchsia-400 transition-colors">
-                  Colory
-                </h3>
+                  {t('Colory')}</h3>
                 <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
-                  TV'de bir renk birkaç saniye görünür ve kaybolur. Telefonundan aynısını seçmeye çalış — en yakın tutturan turu alır. Gözüne ne kadar güveniyorsun?
-                </p>
+                  {t("TV'de bir renk birkaç saniye görünür ve kaybolur. Telefonundan aynısını seçmeye çalış — en yakın tutturan turu alır. Gözüne ne kadar güveniyorsun?")}</p>
               </div>
 
               <div className="flex flex-wrap gap-1.5 pt-1">
                 <span className="px-2 py-0.5 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 text-[10px] font-bold">
-                  📺 TV Host
-                </span>
+                  {t('📺 TV Host')}</span>
                 <span className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold">
-                  📱 Telefon Paleti
-                </span>
+                  {t('📱 Telefon Paleti')}</span>
                 <span className="px-2 py-0.5 rounded-lg bg-cyan-50 dark:bg-cyan-950 text-cyan-700 dark:text-cyan-300 text-[10px] font-bold">
-                  👁️ Algısal Ölçüm
-                </span>
+                  {t('👁️ Algısal Ölçüm')}</span>
                 <span className="px-2 py-0.5 rounded-lg bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300 text-[10px] font-bold">
-                  ♾️ Hiç Tekrar Etmez
-                </span>
+                  {t('♾️ Hiç Tekrar Etmez')}</span>
               </div>
             </div>
 
@@ -630,7 +562,7 @@ export function MainArcadeHub({
                 className="w-full py-3.5 bg-gradient-to-r from-fuchsia-600 to-cyan-500 hover:from-fuchsia-500 hover:to-cyan-400 text-white font-black text-xs rounded-2xl shadow-md btn-party flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Play className="w-4 h-4 fill-white" />
-                <span>PALETİ AÇ</span>
+                <span>{t('PALETİ AÇ')}</span>
               </button>
             </div>
           </div>
@@ -647,36 +579,28 @@ export function MainArcadeHub({
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="px-2.5 py-1 rounded-full bg-sky-100 dark:bg-sky-950 text-sky-800 dark:text-sky-300 text-[11px] font-black border border-sky-300 dark:border-sky-800">
-                    ZAMAN HİSSİ
-                  </span>
+                    {t('ZAMAN HİSSİ')}</span>
                   <span className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[11px] font-bold">
-                    2-12 Oyuncu
-                  </span>
+                    {t('2-12 Oyuncu')}</span>
                 </div>
               </div>
 
               <div className="space-y-1.5">
                 <h3 className="text-xl font-black text-slate-900 dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
-                  Tam Zamanında
-                </h3>
+                  {t('Tam Zamanında')}</h3>
                 <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
-                  "Tam 10 saniye" der ve bütün sayaçlar kaybolur. Kafandan sayıp doğru anda butona basacaksın. Kim saat gibi, kim tahminci — tek bir zaman çizgisinde ortaya çıkıyor.
-                </p>
+                  {t('"Tam 10 saniye" der ve bütün sayaçlar kaybolur. Kafandan sayıp doğru anda butona basacaksın. Kim saat gibi, kim tahminci — tek bir zaman çizgisinde ortaya çıkıyor.')}</p>
               </div>
 
               <div className="flex flex-wrap gap-1.5 pt-1">
                 <span className="px-2 py-0.5 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 text-[10px] font-bold">
-                  📺 TV Host
-                </span>
+                  {t('📺 TV Host')}</span>
                 <span className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold">
-                  📱 Tek Buton
-                </span>
+                  {t('📱 Tek Buton')}</span>
                 <span className="px-2 py-0.5 rounded-lg bg-violet-50 dark:bg-violet-950 text-violet-700 dark:text-violet-300 text-[10px] font-bold">
-                  🌐 Gecikme Telafili
-                </span>
+                  {t('🌐 Gecikme Telafili')}</span>
                 <span className="px-2 py-0.5 rounded-lg bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300 text-[10px] font-bold">
-                  ♾️ Hiç Tekrar Etmez
-                </span>
+                  {t('♾️ Hiç Tekrar Etmez')}</span>
               </div>
             </div>
 
@@ -690,7 +614,7 @@ export function MainArcadeHub({
                 className="w-full py-3.5 bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 text-white font-black text-xs rounded-2xl shadow-md btn-party flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Play className="w-4 h-4 fill-white" />
-                <span>BUTONU AL</span>
+                <span>{t('BUTONU AL')}</span>
               </button>
             </div>
           </div>

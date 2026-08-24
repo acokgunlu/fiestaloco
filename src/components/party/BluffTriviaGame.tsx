@@ -28,6 +28,7 @@ import {
 } from '../../utils/audio';
 import { useBluffSocket } from '../../utils/useBluffSocket';
 
+import { t } from '../../i18n';
 interface BluffTriviaGameProps {
   onBackToHub: () => void;
 }
@@ -316,7 +317,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
           className="flex items-center gap-2 text-xs sm:text-sm font-black text-slate-600 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Oyun Merkezine Dön</span>
+          <span>{t('Oyun Merkezine Dön')}</span>
         </button>
 
         <div className="flex items-center gap-2.5">
@@ -325,19 +326,18 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <h1 className="text-base sm:text-lg font-black text-slate-900 dark:text-slate-100">Yalan Ustası</h1>
+              <h1 className="text-base sm:text-lg font-black text-slate-900 dark:text-slate-100">{t('Yalan Ustası')}</h1>
               <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-900 uppercase tracking-wide">
-                Fibbage Tarzı
-              </span>
+                {t('Fibbage Tarzı')}</span>
             </div>
-            <p className="text-[11px] text-slate-500 dark:text-slate-400 font-bold">Sahte Cevaplar & Gerçek Trivia</p>
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 font-bold">{t('Sahte Cevaplar & Gerçek Trivia')}</p>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
           {socket.roomCode && (
             <div className="px-3 py-1.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 text-amber-800 dark:text-amber-300 font-black text-xs">
-              Oda: <span className="font-mono tracking-widest">{socket.roomCode}</span>
+              {t('Oda:')} <span className="font-mono tracking-widest">{socket.roomCode}</span>
             </div>
           )}
           {playMode === 'local' && (
@@ -364,7 +364,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
             }`}
           >
             <Tv className="w-4 h-4" />
-            <span>📺 TV / Ana Ekran Odası Aç</span>
+            <span>{t('📺 TV / Ana Ekran Odası Aç')}</span>
           </button>
 
           <button
@@ -380,7 +380,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
             }`}
           >
             <Smartphone className="w-4 h-4" />
-            <span>📱 Telefondan Katıl (Kumanda)</span>
+            <span>{t('📱 Telefondan Katıl (Kumanda)')}</span>
           </button>
 
           <button
@@ -396,7 +396,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
             }`}
           >
             <Users className="w-4 h-4" />
-            <span>📲 Tek Cihaz (Elden Ele)</span>
+            <span>{t('📲 Tek Cihaz (Elden Ele)')}</span>
           </button>
         </div>
       )}
@@ -414,27 +414,22 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                   🎭
                 </div>
                 <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white drop-shadow-sm">
-                  Yalan Ustası TV
-                </h2>
+                  {t('Yalan Ustası TV')}</h2>
                 <p className="text-amber-100 text-sm sm:text-base font-medium">
-                  Büyük ekranda sorular açılır. Oyuncular telefonlarından inandırıcı yalanlar uydurup herkesi kandırmaya çalışır!
-                </p>
+                  {t('Büyük ekranda sorular açılır. Oyuncular telefonlarından inandırıcı yalanlar uydurup herkesi kandırmaya çalışır!')}</p>
 
                 <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
                   <span className="px-3 py-1 rounded-full bg-white/20 text-white text-xs font-black backdrop-blur-md">
-                    🎉 2 - 8 Oyuncu
-                  </span>
+                    {t('🎉 2 - 8 Oyuncu')}</span>
                   <span className="px-3 py-1 rounded-full bg-white/20 text-white text-xs font-black backdrop-blur-md">
-                    📱 Telefon Kumandası
-                  </span>
+                    {t('📱 Telefon Kumandası')}</span>
                   <span className="px-3 py-1 rounded-full bg-white/20 text-white text-xs font-black backdrop-blur-md">
-                    🎭 Fibbage Tarzı Blöf
-                  </span>
+                    {t('🎭 Fibbage Tarzı Blöf')}</span>
                 </div>
 
                 {/* Round Count Selector */}
                 <div className="pt-4 flex items-center justify-center gap-3">
-                  <span className="text-xs font-black text-amber-100 uppercase">Tur Sayısı:</span>
+                  <span className="text-xs font-black text-amber-100 uppercase">{t('Tur Sayısı:')}</span>
                   {[3, 5, 7].map((num) => (
                     <button
                       key={num}
@@ -462,8 +457,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                     }}
                     className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-amber-50 text-slate-950 font-black text-base rounded-2xl shadow-xl hover:scale-105 transition-transform cursor-pointer border-2 border-amber-300"
                   >
-                    ONLINE TV ODASI OLUŞTUR ➔
-                  </button>
+                    {t('ONLINE TV ODASI OLUŞTUR ➔')}</button>
                 </div>
               </div>
             </div>
@@ -474,10 +468,9 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
               <div className="flex flex-wrap items-center justify-between gap-3 bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs">
                 <div className="flex items-center gap-3">
                   <div className="px-3 py-1 bg-amber-500 text-slate-950 text-xs font-black rounded-lg uppercase tracking-wider">
-                    TV HOST CANLI
-                  </div>
+                    {t('TV HOST CANLI')}</div>
                   <div className="text-sm font-bold text-slate-700 dark:text-slate-300">
-                    Oda: <span className="font-mono font-black text-amber-700 dark:text-amber-300 text-lg">{socket.roomCode}</span>
+                    {t('Oda:')} <span className="font-mono font-black text-amber-700 dark:text-amber-300 text-lg">{socket.roomCode}</span>
                   </div>
                 </div>
 
@@ -497,7 +490,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                     className="px-3 py-1.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/40 text-rose-700 dark:text-rose-300 text-xs font-black flex items-center gap-1.5 transition-colors cursor-pointer"
                   >
                     <LogOut className="w-3.5 h-3.5" />
-                    <span>Odadan Ayrıl</span>
+                    <span>{t('Odadan Ayrıl')}</span>
                   </button>
                 </div>
               </div>
@@ -508,19 +501,18 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                   {/* Left Column: QR Code Card */}
                   <div className="bg-white dark:bg-slate-900 border-3 border-amber-200 dark:border-amber-900 rounded-3xl p-6 sm:p-8 shadow-xl text-center space-y-4">
                     <span className="text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                      Telefondan Katılın
-                    </span>
+                      {t('Telefondan Katılın')}</span>
                     <div className="p-4 bg-amber-50 dark:bg-amber-950/40 rounded-2xl border-4 border-amber-400 inline-block shadow-md">
                       <img
                         src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(
                           `${window.location.origin}${window.location.pathname}?game=bluff&room=${socket.roomCode}`
                         )}`}
-                        alt="Bluff Room QR Code"
+                        alt={t('Bluff Room QR Code')}
                         className="w-40 h-40 mx-auto"
                       />
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-slate-600 dark:text-slate-400">veya siteye girip oda kodunu yazın:</div>
+                      <div className="text-xs font-bold text-slate-600 dark:text-slate-400">{t('veya siteye girip oda kodunu yazın:')}</div>
                       <div className="text-4xl font-black text-amber-600 dark:text-amber-400 font-mono tracking-widest mt-1">
                         {socket.roomCode}
                       </div>
@@ -543,10 +535,9 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                       {socket.players.length === 0 ? (
                         <div className="p-8 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl text-center space-y-2 bg-slate-50 dark:bg-slate-900/60">
                           <div className="text-3xl animate-bounce">📱</div>
-                          <p className="text-sm font-black text-slate-700 dark:text-slate-300">Oyuncular bekleniyor...</p>
+                          <p className="text-sm font-black text-slate-700 dark:text-slate-300">{t('Oyuncular bekleniyor...')}</p>
                           <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-                            Katılan arkadaşlarınızın avatarları burada belirecek.
-                          </p>
+                            {t('Katılan arkadaşlarınızın avatarları burada belirecek.')}</p>
                         </div>
                       ) : (
                         <div className="grid grid-cols-2 gap-2.5 max-h-56 overflow-y-auto pr-1">
@@ -561,7 +552,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                                 <div className="text-xs font-black text-slate-900 dark:text-slate-100 truncate">{p.name}</div>
                                 <div className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
                                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                  <span>Bağlı</span>
+                                  <span>{t('Bağlı')}</span>
                                 </div>
                               </div>
                             </div>
@@ -604,8 +595,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
 
                   <div className="max-w-3xl mx-auto space-y-4">
                     <span className="text-xs uppercase font-black tracking-widest text-amber-700 dark:text-amber-300">
-                      Büyük Ekran Sorusu
-                    </span>
+                      {t('Büyük Ekran Sorusu')}</span>
                     <h3 className="text-2xl md:text-4xl font-black text-slate-900 dark:text-slate-100 leading-relaxed">
                       {socket.gameState.currentQuestion?.prompt.split('[...]').map((chunk, i, arr) => (
                         <React.Fragment key={i}>
@@ -623,7 +613,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                   <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
                     <div className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-200 dark:border-amber-900 text-amber-900 dark:text-amber-200 text-xs font-bold shadow-xs">
                       <Smartphone className="w-4 h-4 text-amber-600 dark:text-amber-400 animate-bounce" />
-                      <span>Telefonlarınıza bakın! Boşluğu dolduracak bir yalan yazacaksınız.</span>
+                      <span>{t('Telefonlarınıza bakın! Boşluğu dolduracak bir yalan yazacaksınız.')}</span>
                     </div>
 
                     <button
@@ -631,7 +621,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                       onClick={() => socket.startWriting()}
                       className="px-6 py-3 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs btn-party shadow-md flex items-center gap-2 transition-all cursor-pointer"
                     >
-                      <span>Yalanları Başlat ➔</span>
+                      <span>{t('Yalanları Başlat ➔')}</span>
                     </button>
                   </div>
                 </div>
@@ -652,8 +642,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
 
                   <div className="bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-200 dark:border-amber-900 rounded-2xl p-5 max-w-3xl mx-auto space-y-2">
                     <span className="text-xs font-black uppercase text-amber-800 dark:text-amber-300 tracking-wider">
-                      Soru
-                    </span>
+                      {t('Soru')}</span>
                     <p className="text-lg md:text-2xl font-black text-slate-900 dark:text-slate-100 leading-relaxed">
                       {socket.gameState.currentQuestion?.prompt}
                     </p>
@@ -661,11 +650,9 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
 
                   <div className="space-y-1">
                     <h3 className="text-xl md:text-2xl font-black text-amber-800 dark:text-amber-300">
-                      HERKES TELEFONUNDAN YALANINI YAZIYOR!
-                    </h3>
+                      {t('HERKES TELEFONUNDAN YALANINI YAZIYOR!')}</h3>
                     <p className="text-xs text-slate-600 dark:text-slate-400 font-bold">
-                      Kimseyi şüphelendirmeden en inandırıcı cevabı uydur!
-                    </p>
+                      {t('Kimseyi şüphelendirmeden en inandırıcı cevabı uydur!')}</p>
                   </div>
 
                   {/* Live Player Status Grid */}
@@ -704,8 +691,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                 <div className="bg-white dark:bg-slate-900 border-3 border-amber-200 dark:border-amber-900 rounded-3xl p-6 sm:p-8 shadow-xl text-center space-y-6 animate-fade-in">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-black uppercase text-amber-800 dark:text-amber-300 bg-amber-100 dark:bg-amber-900/40 px-3 py-1 rounded-full border border-amber-200 dark:border-amber-900">
-                      GERÇEK CEVABI BULUN!
-                    </span>
+                      {t('GERÇEK CEVABI BULUN!')}</span>
                     <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-100 dark:bg-amber-900/40 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200 font-mono font-black text-sm shadow-xs">
                       <HelpCircle className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                       <span>{socket.gameState.timerSeconds}s</span>
@@ -769,8 +755,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                       Tur {socket.gameState.currentRound} Sonuçları
                     </span>
                     <h3 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-slate-100">
-                      KİMLER KANDI, KİMLER GERÇEĞİ BULDU?
-                    </h3>
+                      {t('KİMLER KANDI, KİMLER GERÇEĞİ BULDU?')}</h3>
                   </div>
 
                   {/* Revealed Answers Card Deck */}
@@ -805,13 +790,13 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                                 <div className="text-base font-black text-slate-900 dark:text-slate-100">{ans.text}</div>
                                 <div className="text-xs text-slate-600 dark:text-slate-400 font-bold">
                                   {ans.isReal ? (
-                                    <span className="text-emerald-700 dark:text-emerald-300 font-black">GERÇEK CEVAP (+1000 Puan)</span>
+                                    <span className="text-emerald-700 dark:text-emerald-300 font-black">{t('GERÇEK CEVAP (+1000 Puan)')}</span>
                                   ) : author ? (
                                     <span>
                                       Yazan: <strong className="text-amber-800 dark:text-amber-300">{author.avatar} {author.name}</strong> (+500/kurban)
                                     </span>
                                   ) : (
-                                    <span className="text-slate-500 dark:text-slate-400">Oyunun Sahte Cevabı</span>
+                                    <span className="text-slate-500 dark:text-slate-400">{t('Oyunun Sahte Cevabı')}</span>
                                   )}
                                 </div>
                               </div>
@@ -856,8 +841,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                   {/* Scoreboard Preview */}
                   <div className="max-w-3xl mx-auto bg-slate-50 dark:bg-slate-900/60 border-2 border-slate-200 dark:border-slate-800 rounded-2xl p-4">
                     <div className="text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3 text-left">
-                      Skor Durumu
-                    </div>
+                      {t('Skor Durumu')}</div>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                       {[...socket.players]
                         .sort((a, b) => b.score - a.score)
@@ -905,9 +889,8 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                   <div className="space-y-2">
                     <div className="text-5xl animate-bounce">👑</div>
                     <h2 className="text-3xl sm:text-5xl font-black text-amber-600 dark:text-amber-400">
-                      OYUN BİTTİ!
-                    </h2>
-                    <p className="text-slate-600 dark:text-slate-400 text-sm font-bold">İşte Yalan Ustası Arenasının Kazananları!</p>
+                      {t('OYUN BİTTİ!')}</h2>
+                    <p className="text-slate-600 dark:text-slate-400 text-sm font-bold">{t('İşte Yalan Ustası Arenasının Kazananları!')}</p>
                   </div>
 
                   {/* Top 3 Podium */}
@@ -987,8 +970,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                               <div className="text-3xl">🎭</div>
                               <div>
                                 <div className="text-[10px] font-black text-amber-800 dark:text-amber-300 uppercase tracking-wider">
-                                  YALAN USTASI (EN ÇOK KANDIRAN)
-                                </div>
+                                  {t('YALAN USTASI (EN ÇOK KANDIRAN)')}</div>
                                 <div className="text-sm font-black text-slate-900 dark:text-slate-100">
                                   {topBluffer.avatar} {topBluffer.name}
                                 </div>
@@ -1004,8 +986,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                               <div className="text-3xl">🕵️‍♂️</div>
                               <div>
                                 <div className="text-[10px] font-black text-emerald-800 dark:text-emerald-300 uppercase tracking-wider">
-                                  GERÇEK DEDEKTİFİ
-                                </div>
+                                  {t('GERÇEK DEDEKTİFİ')}</div>
                                 <div className="text-sm font-black text-slate-900 dark:text-slate-100">
                                   {topDetective.avatar} {topDetective.name}
                                 </div>
@@ -1031,7 +1012,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                       className="px-6 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-2xl shadow-md btn-party transition-all cursor-pointer flex items-center gap-2"
                     >
                       <RefreshCw className="w-4 h-4" />
-                      <span>YENİDEN OYNA</span>
+                      <span>{t('YENİDEN OYNA')}</span>
                     </button>
 
                     <button
@@ -1042,8 +1023,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                       }}
                       className="px-6 py-3 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 text-slate-800 dark:text-slate-200 font-bold text-xs rounded-2xl transition-all cursor-pointer"
                     >
-                      Ana Menüye Dön
-                    </button>
+                      {t('Ana Menüye Dön')}</button>
                   </div>
                 </div>
               )}
@@ -1064,10 +1044,9 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                 <div className="w-14 h-14 rounded-2xl bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 flex items-center justify-center text-3xl mx-auto border-2 border-amber-300 dark:border-amber-800 font-black shadow-inner">
                   📱
                 </div>
-                <h2 className="text-xl font-black text-slate-900 dark:text-slate-100">YALAN USTASI KUMANDASI</h2>
+                <h2 className="text-xl font-black text-slate-900 dark:text-slate-100">{t('YALAN USTASI KUMANDASI')}</h2>
                 <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
-                  Büyük ekrandaki 4 haneli oda kodunu girin ve isminizi yazın.
-                </p>
+                  {t('Büyük ekrandaki 4 haneli oda kodunu girin ve isminizi yazın.')}</p>
               </div>
 
               {socket.errorMessage && (
@@ -1080,13 +1059,12 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
               <div className="space-y-4">
                 <div className="space-y-1">
                   <label className="text-xs font-black uppercase text-slate-600 dark:text-slate-400">
-                    Oda Kodu (Room Code)
-                  </label>
+                    {t('Oda Kodu (Room Code)')}</label>
                   <input
                     id="input-bluff-room-code"
                     type="text"
                     maxLength={4}
-                    placeholder="Örn: LIE9"
+                    placeholder={t('Örn: LIE9')}
                     value={joinCodeInput}
                     onChange={(e) => setJoinCodeInput(e.target.value.toUpperCase())}
                     className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900/60 border-2 border-slate-300 dark:border-slate-700 focus:border-amber-500 rounded-xl text-center text-2xl font-mono font-black text-amber-700 dark:text-amber-300 tracking-widest uppercase outline-none"
@@ -1095,13 +1073,12 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
 
                 <div className="space-y-1">
                   <label className="text-xs font-black uppercase text-slate-600 dark:text-slate-400">
-                    Adınız / Lakabınız
-                  </label>
+                    {t('Adınız / Lakabınız')}</label>
                   <input
                     id="input-bluff-player-name"
                     type="text"
                     maxLength={14}
-                    placeholder="Örn: Blöfçü Ali"
+                    placeholder={t('Örn: Blöfçü Ali')}
                     value={playerNameInput}
                     onChange={(e) => setPlayerNameInput(e.target.value)}
                     className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900/60 border-2 border-slate-300 dark:border-slate-700 focus:border-amber-500 rounded-xl text-sm font-bold text-slate-900 dark:text-slate-100 outline-none"
@@ -1110,8 +1087,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
 
                 <div className="space-y-1">
                   <label className="text-xs font-black uppercase text-slate-600 dark:text-slate-400">
-                    Avatar Seçin
-                  </label>
+                    {t('Avatar Seçin')}</label>
                   <div className="grid grid-cols-6 gap-2 p-2 bg-slate-50 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-800">
                     {AVATAR_LIST.map((av) => (
                       <button
@@ -1135,8 +1111,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
 
                 <div className="space-y-1">
                   <label className="text-xs font-black uppercase text-slate-600 dark:text-slate-400">
-                    Renk Seçin
-                  </label>
+                    {t('Renk Seçin')}</label>
                   <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-800">
                     {COLOR_LIST.map((c) => (
                       <button
@@ -1176,8 +1151,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                 }}
                 className="w-full py-4 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-sm rounded-2xl shadow-md btn-party transition-all cursor-pointer"
               >
-                ODAYA BAĞLAN ➔
-              </button>
+                {t('ODAYA BAĞLAN ➔')}</button>
             </div>
           ) : (
             /* Active Mobile Controller */
@@ -1203,7 +1177,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                       socket.leaveRoom();
                     }}
                     className="p-1 text-slate-400 dark:text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
-                    title="Ayrıl"
+                    title={t('Ayrıl')}
                   >
                     <LogOut className="w-4 h-4" />
                   </button>
@@ -1221,13 +1195,12 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
               {(!socket.gameState || socket.gameState.phase === 'LOBBY') && (
                 <div className="text-center space-y-4 p-8 bg-white dark:bg-slate-900 border-3 border-amber-200 dark:border-amber-900 rounded-3xl shadow-sm">
                   <div className="text-4xl animate-bounce">🛋️</div>
-                  <h3 className="text-lg font-black text-slate-900 dark:text-slate-100">Lobidesiniz!</h3>
+                  <h3 className="text-lg font-black text-slate-900 dark:text-slate-100">{t('Lobidesiniz!')}</h3>
                   <p className="text-xs text-slate-600 dark:text-slate-400 max-w-xs mx-auto font-medium">
-                    Büyük ekrandan ev sahibinin oyunu başlatması bekleniyor...
-                  </p>
+                    {t('Büyük ekrandan ev sahibinin oyunu başlatması bekleniyor...')}</p>
                   <div className="flex items-center justify-center gap-2 text-xs text-emerald-700 dark:text-emerald-300 font-black">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span>Bağlantı Aktif</span>
+                    <span>{t('Bağlantı Aktif')}</span>
                   </div>
                 </div>
               )}
@@ -1242,8 +1215,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                     {socket.gameState.currentQuestion?.prompt}
                   </p>
                   <p className="text-xs text-slate-600 dark:text-slate-400 font-bold">
-                    Hazır olun! Birazdan bu boşluğu dolduracak inandırıcı bir yalan yazacaksınız.
-                  </p>
+                    {t('Hazır olun! Birazdan bu boşluğu dolduracak inandırıcı bir yalan yazacaksınız.')}</p>
                 </div>
               )}
 
@@ -1253,8 +1225,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-black uppercase text-amber-800 dark:text-amber-300">
-                        YALANINI YAZ
-                      </span>
+                        {t('YALANINI YAZ')}</span>
                       <span className="text-xs font-mono font-black text-rose-600 dark:text-rose-400">
                         ⏱️ {socket.gameState.timerSeconds}s
                       </span>
@@ -1267,13 +1238,12 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                   {socket.mySubmittedBluff ? (
                     <div className="p-6 bg-emerald-50 dark:bg-emerald-950/40 border-2 border-emerald-400 rounded-2xl text-center space-y-2 shadow-xs">
                       <CheckCircle2 className="w-8 h-8 text-emerald-600 dark:text-emerald-400 mx-auto animate-scale-up" />
-                      <h4 className="text-sm font-black text-emerald-800 dark:text-emerald-300">YALANIN GÖNDERİLDİ!</h4>
+                      <h4 className="text-sm font-black text-emerald-800 dark:text-emerald-300">{t('YALANIN GÖNDERİLDİ!')}</h4>
                       <p className="text-xs text-slate-900 dark:text-slate-100 font-black bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800">
                         "{socket.mySubmittedBluff}"
                       </p>
                       <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
-                        Diğer oyuncuların yalanlarını tamamlaması bekleniyor...
-                      </p>
+                        {t('Diğer oyuncuların yalanlarını tamamlaması bekleniyor...')}</p>
                     </div>
                   ) : (
                     <div className="space-y-3">
@@ -1281,7 +1251,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                         id="textarea-mobile-bluff"
                         rows={3}
                         maxLength={60}
-                        placeholder="İnandırıcı bir sahte cevap uydurun..."
+                        placeholder={t('İnandırıcı bir sahte cevap uydurun...')}
                         value={mobileBluffInput}
                         onChange={(e) => {
                           setMobileBluffInput(e.target.value);
@@ -1305,7 +1275,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                         }`}
                       >
                         <Send className="w-4 h-4" />
-                        <span>YALANI GÖNDER</span>
+                        <span>{t('YALANI GÖNDER')}</span>
                       </button>
                     </div>
                   )}
@@ -1316,19 +1286,17 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
               {socket.gameState?.phase === 'VOTING' && (
                 <div className="space-y-4 p-5 bg-white dark:bg-slate-900 border-3 border-amber-300 dark:border-amber-800 rounded-3xl shadow-md">
                   <div className="space-y-1 text-center">
-                    <h4 className="text-sm font-black text-amber-800 dark:text-amber-300">GERÇEK CEVAP HANGİSİ?</h4>
+                    <h4 className="text-sm font-black text-amber-800 dark:text-amber-300">{t('GERÇEK CEVAP HANGİSİ?')}</h4>
                     <p className="text-xs text-slate-600 dark:text-slate-400 font-bold">
-                      Doğru olduğunu düşündüğünüz şıkka dokunun.
-                    </p>
+                      {t('Doğru olduğunu düşündüğünüz şıkka dokunun.')}</p>
                   </div>
 
                   {socket.myVotedAnswerId ? (
                     <div className="p-6 bg-emerald-50 dark:bg-emerald-950/40 border-2 border-emerald-400 rounded-2xl text-center space-y-2 shadow-xs">
                       <CheckCircle2 className="w-8 h-8 text-emerald-600 dark:text-emerald-400 mx-auto" />
-                      <h4 className="text-sm font-black text-emerald-800 dark:text-emerald-300">OYUNUZ ALINDI!</h4>
+                      <h4 className="text-sm font-black text-emerald-800 dark:text-emerald-300">{t('OYUNUZ ALINDI!')}</h4>
                       <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
-                        Büyük ekrandan sonuçların açıklanmasını izleyin!
-                      </p>
+                        {t('Büyük ekrandan sonuçların açıklanmasını izleyin!')}</p>
                     </div>
                   ) : (
                     <div className="space-y-2">
@@ -1352,8 +1320,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                             <span>{ans.text}</span>
                             {isMyOwnBluff ? (
                               <span className="text-[10px] text-slate-500 dark:text-slate-400 font-bold">
-                                (Kendi Yalanın)
-                              </span>
+                                {t('(Kendi Yalanın)')}</span>
                             ) : (
                               <ChevronRight className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                             )}
@@ -1369,10 +1336,9 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
               {(socket.gameState?.phase === 'ROUND_RESULT' || socket.gameState?.phase === 'GAME_OVER') && (
                 <div className="p-8 bg-white dark:bg-slate-900 border-3 border-amber-200 dark:border-amber-900 rounded-3xl text-center space-y-4 shadow-sm">
                   <div className="text-4xl animate-bounce">📺</div>
-                  <h3 className="text-base font-black text-slate-900 dark:text-slate-100">SONUÇLAR AÇIKLANIYOR!</h3>
+                  <h3 className="text-base font-black text-slate-900 dark:text-slate-100">{t('SONUÇLAR AÇIKLANIYOR!')}</h3>
                   <p className="text-xs text-slate-600 dark:text-slate-400 font-bold">
-                    Kimin kimi kandırdığını ve gerçek cevabı görmek için büyük ekrana bakın!
-                  </p>
+                    {t('Kimin kimi kandırdığını ve gerçek cevabı görmek için büyük ekrana bakın!')}</p>
                 </div>
               )}
             </div>
@@ -1391,10 +1357,9 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                 <div className="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 flex items-center justify-center text-2xl mx-auto border-2 border-amber-300 dark:border-amber-800 font-black">
                   👥
                 </div>
-                <h2 className="text-2xl font-black text-slate-900 dark:text-slate-100">TEK CİHAZ (EL DEĞİŞTİR)</h2>
+                <h2 className="text-2xl font-black text-slate-900 dark:text-slate-100">{t('TEK CİHAZ (EL DEĞİŞTİR)')}</h2>
                 <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
-                  Telefonu elden ele gezdirerek herkes sırayla kendi yalanını yazar ve oy verir.
-                </p>
+                  {t('Telefonu elden ele gezdirerek herkes sırayla kendi yalanını yazar ve oy verir.')}</p>
               </div>
 
               <div className="space-y-3">
@@ -1422,8 +1387,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                           }}
                           className="text-xs text-rose-600 dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300 font-bold cursor-pointer"
                         >
-                          Sil
-                        </button>
+                          {t('Sil')}</button>
                       )}
                     </div>
                   ))}
@@ -1433,7 +1397,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                   <input
                     type="text"
                     maxLength={14}
-                    placeholder="Yeni Oyuncu Adı..."
+                    placeholder={t('Yeni Oyuncu Adı...')}
                     value={newPlayerName}
                     onChange={(e) => setNewPlayerName(e.target.value)}
                     className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900/60 border-2 border-slate-300 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-slate-100 outline-none"
@@ -1457,8 +1421,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                     }}
                     className="px-4 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 text-slate-900 dark:text-slate-100 rounded-xl text-xs font-black cursor-pointer"
                   >
-                    Ekle
-                  </button>
+                    {t('Ekle')}</button>
                 </div>
               </div>
 
@@ -1468,8 +1431,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                 disabled={localPlayers.length < 2}
                 className="w-full py-4 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-sm rounded-2xl shadow-md btn-party cursor-pointer"
               >
-                OYUNU BAŞLAT ➔
-              </button>
+                {t('OYUNU BAŞLAT ➔')}</button>
             </div>
           )}
 
@@ -1488,8 +1450,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                 }}
                 className="px-6 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl shadow-md btn-party cursor-pointer"
               >
-                YALANLARI YAZMAYA BAŞLA ➔
-              </button>
+                {t('YALANLARI YAZMAYA BAŞLA ➔')}</button>
             </div>
           )}
 
@@ -1500,7 +1461,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                   {localPlayers[localActivePlayerInputIndex].avatar}
                 </span>
                 <div>
-                  <div className="text-xs font-black text-amber-800 dark:text-amber-300">TELEFONU OYUNCUYA VERİN:</div>
+                  <div className="text-xs font-black text-amber-800 dark:text-amber-300">{t('TELEFONU OYUNCUYA VERİN:')}</div>
                   <div className="text-base font-black text-slate-900 dark:text-slate-100">
                     {localPlayers[localActivePlayerInputIndex].name}
                   </div>
@@ -1514,7 +1475,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                 <form onSubmit={submitLocalBluff} className="space-y-3">
                   <input
                     type="text"
-                    placeholder="İnandırıcı bir yalan uydurun..."
+                    placeholder={t('İnandırıcı bir yalan uydurun...')}
                     value={localCurrentBluffInput}
                     onChange={(e) => setLocalCurrentBluffInput(e.target.value)}
                     className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900/60 border-2 border-slate-300 dark:border-slate-700 focus:border-amber-500 rounded-xl text-sm font-bold text-slate-900 dark:text-slate-100 outline-none"
@@ -1523,8 +1484,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                     type="submit"
                     className="w-full py-3.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl shadow-md btn-party cursor-pointer"
                   >
-                    KAYDET VE SIRADAKİ OYUNCUYA VER ➔
-                  </button>
+                    {t('KAYDET VE SIRADAKİ OYUNCUYA VER ➔')}</button>
                 </form>
               </div>
             </div>
@@ -1535,7 +1495,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
               <div className="p-3 bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-300 dark:border-amber-800 rounded-2xl flex items-center gap-3">
                 <span className="text-3xl">{localPlayers[localActiveVoterIndex].avatar}</span>
                 <div>
-                  <div className="text-xs font-black text-amber-800 dark:text-amber-300">OY SIRASI:</div>
+                  <div className="text-xs font-black text-amber-800 dark:text-amber-300">{t('OY SIRASI:')}</div>
                   <div className="text-base font-black text-slate-900 dark:text-slate-100">
                     {localPlayers[localActiveVoterIndex].name}
                   </div>
@@ -1544,8 +1504,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
 
               <div className="space-y-2">
                 <span className="text-xs font-black uppercase text-slate-600 dark:text-slate-400">
-                  Gerçek Cevabı Seçin:
-                </span>
+                  {t('Gerçek Cevabı Seçin:')}</span>
                 <div className="space-y-2">
                   {localGameState.answers.map((ans) => {
                     const voter = localPlayers[localActiveVoterIndex];
@@ -1563,7 +1522,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                         }`}
                       >
                         <span>{ans.text}</span>
-                        {isOwn && <span className="text-[10px] text-slate-500 dark:text-slate-400">(Kendi Yalanın)</span>}
+                        {isOwn && <span className="text-[10px] text-slate-500 dark:text-slate-400">{t('(Kendi Yalanın)')}</span>}
                       </button>
                     );
                   })}
@@ -1574,7 +1533,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
 
           {localGameState.phase === 'ROUND_RESULT' && (
             <div className="bg-white dark:bg-slate-900 border-3 border-amber-300 dark:border-amber-800 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xl animate-fade-in text-center">
-              <h3 className="text-xl font-black text-slate-900 dark:text-slate-100">TUR SONUÇLARI</h3>
+              <h3 className="text-xl font-black text-slate-900 dark:text-slate-100">{t('TUR SONUÇLARI')}</h3>
 
               <div className="space-y-3 text-left">
                 {localGameState.answers.map((ans) => {
@@ -1591,7 +1550,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                       <div className="text-sm font-black text-slate-900 dark:text-slate-100">{ans.text}</div>
                       <div className="text-xs font-bold text-slate-600 dark:text-slate-400">
                         {ans.isReal ? (
-                          <span className="text-emerald-700 dark:text-emerald-300 font-black">GERÇEK CEVAP (+1000 Puan)</span>
+                          <span className="text-emerald-700 dark:text-emerald-300 font-black">{t('GERÇEK CEVAP (+1000 Puan)')}</span>
                         ) : author ? (
                           <span>Yazan: {author.name}</span>
                         ) : (
@@ -1610,8 +1569,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                 }}
                 className="w-full py-3.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl shadow-md btn-party cursor-pointer"
               >
-                SONRAKİ TUR ➔
-              </button>
+                {t('SONRAKİ TUR ➔')}</button>
             </div>
           )}
         </div>

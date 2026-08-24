@@ -19,6 +19,7 @@ import {
 import { playClickSound, playTurnSound } from '../utils/audio';
 import { getApiUrl } from '../utils/serverUrl';
 
+import { t } from '../i18n';
 interface LobbyViewProps {
   players: Player[];
   onUpdatePlayers: (players: Player[]) => void;
@@ -166,20 +167,19 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
       <div className="text-center space-y-2">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900 text-indigo-700 dark:text-indigo-300 text-xs font-bold">
           <Sparkles className="w-3.5 h-3.5" />
-          <span>3 - 8 Player Drawing Imposter Party Game (3, 4, 5, 6, 8)</span>
+          <span>{t('3 - 8 Player Drawing Imposter Party Game (3, 4, 5, 6, 8)')}</span>
         </div>
         <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-slate-900 dark:text-slate-100">
-          One Line. One Imposter.
-        </h2>
+          {t('One Line. One Imposter.')}</h2>
         <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-xl mx-auto">
-          Everyone draws <strong>one continuous stroke</strong> to illustrate a secret word.
+          Everyone draws <strong>{t('one continuous stroke')}</strong> to illustrate a secret word.
           One person has a different word and is trying to blend in!
         </p>
       </div>
 
       {/* Quick Player Count Presets */}
       <div className="flex flex-wrap items-center justify-center gap-2">
-        <span className="text-xs font-bold text-slate-500 dark:text-slate-400 mr-1">Quick Setup:</span>
+        <span className="text-xs font-bold text-slate-500 dark:text-slate-400 mr-1">{t('Quick Setup:')}</span>
         {[3, 4, 5, 6, 8].map((count) => (
           <button
             key={count}
@@ -226,7 +226,7 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
           }`}
         >
           <Settings className="w-4 h-4" />
-          <span>Game Rules</span>
+          <span>{t('Game Rules')}</span>
         </button>
         <button
           id="tab-custom"
@@ -241,7 +241,7 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
           }`}
         >
           <Sparkles className="w-4 h-4" />
-          <span>Custom / AI</span>
+          <span>{t('Custom / AI')}</span>
         </button>
       </div>
 
@@ -251,14 +251,13 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-bold text-slate-900 dark:text-slate-100 text-base flex items-center gap-2">
-                <span>Player Lineup</span>
+                <span>{t('Player Lineup')}</span>
                 <span className="text-xs bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded-full font-bold">
                   {players.length} / 8
                 </span>
               </h3>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                Each player will draw using their assigned line color.
-              </p>
+                {t('Each player will draw using their assigned line color.')}</p>
             </div>
 
             <div className="flex items-center gap-2">
@@ -267,10 +266,10 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
                 onClick={() => handleAddPlayer(true)}
                 disabled={players.length >= 8}
                 className="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/60 text-slate-700 dark:text-slate-300 text-xs font-semibold flex items-center gap-1 transition-colors disabled:opacity-40"
-                title="Add an AI Bot to fill a slot"
+                title={t('Add an AI Bot to fill a slot')}
               >
                 <Bot className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
-                <span>+ Add Bot</span>
+                <span>{t('+ Add Bot')}</span>
               </button>
               <button
                 id="btn-add-player"
@@ -279,7 +278,7 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
                 className="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold flex items-center gap-1 transition-colors shadow-sm disabled:opacity-40"
               >
                 <Plus className="w-3.5 h-3.5" />
-                <span>Add Player</span>
+                <span>{t('Add Player')}</span>
               </button>
             </div>
           </div>
@@ -297,7 +296,7 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
                     <button
                       className="w-8 h-8 rounded-full border-2 border-white shadow-md flex items-center justify-center shrink-0 transition-transform active:scale-90"
                       style={{ backgroundColor: player.color }}
-                      title="Change stroke color"
+                      title={t('Change stroke color')}
                     >
                       <span className="text-xs">{player.avatar}</span>
                     </button>
@@ -344,7 +343,7 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
                       id={`btn-remove-player-${idx}`}
                       onClick={() => handleRemovePlayer(player.id)}
                       className="p-1.5 text-slate-400 dark:text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
-                      title="Remove player"
+                      title={t('Remove player')}
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -357,7 +356,7 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
           {players.length < 4 && (
             <p className="text-xs text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/40 p-2.5 rounded-xl border border-amber-200 dark:border-amber-900 flex items-center gap-2">
               <Info className="w-4 h-4 shrink-0 text-amber-600 dark:text-amber-400" />
-              <span>Recommended: 4 to 6 players for the most fun bluffing and drawing deductions!</span>
+              <span>{t('Recommended: 4 to 6 players for the most fun bluffing and drawing deductions!')}</span>
             </p>
           )}
         </div>
@@ -367,15 +366,14 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
       {activeTab === 'settings' && (
         <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 sm:p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-5">
           <div>
-            <h3 className="font-bold text-slate-900 dark:text-slate-100 text-base">Game Rules & Settings</h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400">Configure rounds, categories, and imposter mode.</p>
+            <h3 className="font-bold text-slate-900 dark:text-slate-100 text-base">{t('Game Rules & Settings')}</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400">{t('Configure rounds, categories, and imposter mode.')}</p>
           </div>
 
           {/* Mode Selector */}
           <div className="space-y-2">
             <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-              Imposter Secret Mode
-            </label>
+              {t('Imposter Secret Mode')}</label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <button
                 type="button"
@@ -392,10 +390,10 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
               >
                 <div className="flex items-center gap-2 font-bold text-slate-900 dark:text-slate-100 text-sm">
                   <Flame className="w-4 h-4 text-orange-500" />
-                  <span>Different Tricky Word (Standard)</span>
+                  <span>{t('Different Tricky Word (Standard)')}</span>
                 </div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                  Imposter gets a closely related word (e.g., Crew: <em>"Airplane"</em> vs Imposter: <em>"Helicopter"</em>).
+                  Imposter gets a closely related word (e.g., Crew: <em>{t('"Airplane"')}</em> vs Imposter: <em>{t('"Helicopter"')}</em>).
                 </p>
               </button>
 
@@ -414,10 +412,10 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
               >
                 <div className="flex items-center gap-2 font-bold text-slate-900 dark:text-slate-100 text-sm">
                   <ShieldAlert className="w-4 h-4 text-rose-500" />
-                  <span>Blind Imposter (Hardcore)</span>
+                  <span>{t('Blind Imposter (Hardcore)')}</span>
                 </div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                  Imposter only knows the broad category (e.g. <em>"Animals"</em>) and must fake their way through!
+                  Imposter only knows the broad category (e.g. <em>{t('"Animals"')}</em>) and must fake their way through!
                 </p>
               </button>
             </div>
@@ -426,8 +424,7 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
           {/* Strokes per player */}
           <div className="space-y-2">
             <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-              Drawing Turns per Player
-            </label>
+              {t('Drawing Turns per Player')}</label>
             <div className="flex gap-3">
               {[1, 2].map((num) => (
                 <button
@@ -452,8 +449,7 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
           {/* Categories */}
           <div className="space-y-2">
             <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-              Word Category
-            </label>
+              {t('Word Category')}</label>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
               <button
                 type="button"
@@ -468,8 +464,8 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
                     : 'border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900/60'
                 }`}
               >
-                <div className="font-bold text-sm">🎲 All Categories</div>
-                <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Surprise mix of words</div>
+                <div className="font-bold text-sm">{t('🎲 All Categories')}</div>
+                <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">{t('Surprise mix of words')}</div>
               </button>
 
               {CATEGORIES.map((cat) => (
@@ -501,22 +497,20 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
           <div>
             <h3 className="font-bold text-slate-900 dark:text-slate-100 text-base flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-              <span>Custom Word Pair or AI Generation</span>
+              <span>{t('Custom Word Pair or AI Generation')}</span>
             </h3>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Enter your own sneaky secret pair or ask Gemini AI to create tricky concepts!
-            </p>
+              {t('Enter your own sneaky secret pair or ask Gemini AI to create tricky concepts!')}</p>
           </div>
 
           {/* AI Generator Box */}
           <div className="p-4 rounded-xl bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 border border-indigo-100 dark:border-indigo-900 space-y-3">
             <label className="text-xs font-bold text-indigo-900 dark:text-indigo-200 block">
-              Generate AI Word Pair by Theme:
-            </label>
+              {t('Generate AI Word Pair by Theme:')}</label>
             <div className="flex gap-2">
               <input
                 type="text"
-                placeholder="e.g. 90s Cartoons, Space Sci-Fi, Street Food..."
+                placeholder={t('e.g. 90s Cartoons, Space Sci-Fi, Street Food...')}
                 value={aiThemePrompt}
                 onChange={(e) => setAiThemePrompt(e.target.value)}
                 className="flex-1 bg-white dark:bg-slate-900 border border-indigo-200 dark:border-indigo-900 rounded-xl px-3 py-2 text-sm text-slate-800 dark:text-slate-200 focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
@@ -546,37 +540,34 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
             <div>
               <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1">
-                Category Hint (Public)
-              </label>
+                {t('Category Hint (Public)')}</label>
               <input
                 type="text"
                 value={customCategory}
                 onChange={(e) => setCustomCategory(e.target.value)}
-                placeholder="e.g. Movies"
+                placeholder={t('e.g. Movies')}
                 className="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-800 dark:text-slate-200 focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
               />
             </div>
             <div>
               <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1">
-                Crew Word (Majority)
-              </label>
+                {t('Crew Word (Majority)')}</label>
               <input
                 type="text"
                 value={customCrewWord}
                 onChange={(e) => setCustomCrewWord(e.target.value)}
-                placeholder="e.g. Harry Potter"
+                placeholder={t('e.g. Harry Potter')}
                 className="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-800 dark:text-slate-200 focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
               />
             </div>
             <div>
               <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1">
-                Imposter Word (1 Person)
-              </label>
+                {t('Imposter Word (1 Person)')}</label>
               <input
                 type="text"
                 value={customImposterWord}
                 onChange={(e) => setCustomImposterWord(e.target.value)}
-                placeholder="e.g. Gandalf"
+                placeholder={t('e.g. Gandalf')}
                 className="w-full bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-sm text-slate-800 dark:text-slate-200 focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
               />
             </div>
@@ -596,8 +587,7 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
         </button>
 
         <p className="text-xs text-slate-500 dark:text-slate-400">
-          Pass & Play on one device • Secret cards peek • 1 stroke per turn
-        </p>
+          {t('Pass & Play on one device • Secret cards peek • 1 stroke per turn')}</p>
       </div>
     </div>
   );

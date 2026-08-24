@@ -5,6 +5,7 @@ import { Lightbulb, Sparkles, Send, X, AlertCircle, RefreshCw } from 'lucide-rea
 import { playClickSound, playClueGivenSound } from '../../utils/audio';
 import { getApiUrl } from '../../utils/serverUrl';
 
+import { t } from '../../i18n';
 interface CodenamesClueInputModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -131,7 +132,7 @@ export function CodenamesClueInputModal({
               <h3 className="font-black text-slate-900 dark:text-slate-100 text-base sm:text-lg">
                 {isRed ? '🔴 Kırmızı Lider İpucu Formu' : '🔵 Mavi Lider İpucu Formu'}
               </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Sahadaki ajanlarınıza yön verin</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">{t('Sahadaki ajanlarınıza yön verin')}</p>
             </div>
           </div>
           <button
@@ -151,8 +152,7 @@ export function CodenamesClueInputModal({
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-                1. İpucu Kelimesi (Tek Kelime):
-              </label>
+                {t('1. İpucu Kelimesi (Tek Kelime):')}</label>
               <button
                 type="button"
                 onClick={handleFetchAiClue}
@@ -164,7 +164,7 @@ export function CodenamesClueInputModal({
                 ) : (
                   <Sparkles className="w-3 h-3 text-indigo-600 dark:text-indigo-400" />
                 )}
-                <span>AI İpucu Öner</span>
+                <span>{t('AI İpucu Öner')}</span>
               </button>
             </div>
             <input
@@ -175,7 +175,7 @@ export function CodenamesClueInputModal({
                 setClueWord(e.target.value);
                 setErrorMessage('');
               }}
-              placeholder="Örn: ORMAN, TEKNOLOJİ, SİNEMA..."
+              placeholder={t('Örn: ORMAN, TEKNOLOJİ, SİNEMA...')}
               className="w-full bg-slate-50 dark:bg-slate-900/60 border-2 border-slate-200 dark:border-slate-800 focus:border-indigo-600 rounded-2xl px-4 py-3 text-base font-black text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-hidden uppercase tracking-wider"
             />
           </div>
@@ -183,8 +183,7 @@ export function CodenamesClueInputModal({
           {/* Number of Cards Selector */}
           <div className="space-y-1.5">
             <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider block">
-              2. İlişkili Kart Sayısı:
-            </label>
+              {t('2. İlişkili Kart Sayısı:')}</label>
             <div className="grid grid-cols-5 gap-1.5">
               {[1, 2, 3, 4, 5].map((num) => (
                 <button
@@ -219,7 +218,7 @@ export function CodenamesClueInputModal({
           {/* Help Tip */}
           <div className="p-3 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 text-[11px] text-amber-900 dark:text-amber-200 space-y-1">
             <div className="font-bold flex items-center gap-1">
-              <span>💡 Kural Hatırlatması:</span>
+              <span>{t('💡 Kural Hatırlatması:')}</span>
             </div>
             <p className="leading-relaxed">
               Saha ajanlarınız <strong>{clueCount + 1}</strong> defaya kadar tahmin yapabilecek (seçtiğiniz sayı + 1 bonus hak).
@@ -237,7 +236,7 @@ export function CodenamesClueInputModal({
             }`}
           >
             <Send className="w-4 h-4" />
-            <span>İpucunu Ajanlara Gönder</span>
+            <span>{t('İpucunu Ajanlara Gönder')}</span>
           </button>
         </form>
       </div>

@@ -2,6 +2,7 @@ import React, { useCallback, useRef } from 'react';
 import { Hsl } from '../../types/colory';
 import { hslToHex } from '../../data/coloryLogic';
 
+import { t } from '../../i18n';
 interface Props {
   value: Hsl;
   onChange: (hsl: Hsl) => void;
@@ -71,8 +72,7 @@ export const ColorPicker: React.FC<Props> = ({ value, onChange, disabled }) => {
           style={{ backgroundColor: hex }}
         />
         <div className="text-xs font-black text-slate-500 dark:text-slate-400 leading-relaxed">
-          Seçtiğin renk
-          <div className="font-mono text-sm text-slate-900 dark:text-white">{hex.toUpperCase()}</div>
+          {t('Seçtiğin renk')}<div className="font-mono text-sm text-slate-900 dark:text-white">{hex.toUpperCase()}</div>
         </div>
       </div>
 
@@ -103,9 +103,9 @@ export const ColorPicker: React.FC<Props> = ({ value, onChange, disabled }) => {
       {/* Doygunluk */}
       <div className="space-y-1">
         <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500">
-          <span>Soluk</span>
-          <span>Doygunluk</span>
-          <span>Canlı</span>
+          <span>{t('Soluk')}</span>
+          <span>{t('Doygunluk')}</span>
+          <span>{t('Canlı')}</span>
         </div>
         <input
           type="range"

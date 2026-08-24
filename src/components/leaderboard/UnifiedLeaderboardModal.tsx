@@ -25,6 +25,7 @@ import {
 } from '../../utils/leaderboardStore';
 import { playClickSound } from '../../utils/audio';
 
+import { t } from '../../i18n';
 interface UnifiedLeaderboardModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -112,7 +113,7 @@ export const UnifiedLeaderboardModal: React.FC<UnifiedLeaderboardModalProps> = (
             </div>
             <div>
               <h2 className="text-xl sm:text-2xl font-black tracking-tight flex items-center gap-2">
-                <span>Skor Tablosu & Oyun Geçmişi</span>
+                <span>{t('Skor Tablosu & Oyun Geçmişi')}</span>
                 <span
                   className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${
                     isGlobal
@@ -129,8 +130,7 @@ export const UnifiedLeaderboardModal: React.FC<UnifiedLeaderboardModalProps> = (
                 </span>
               </h2>
               <p className="text-xs text-amber-100 font-medium">
-                FiestaLoco Tüm Parti Oyunları İstatistikleri
-              </p>
+                {t('FiestaLoco Tüm Parti Oyunları İstatistikleri')}</p>
             </div>
           </div>
 
@@ -140,7 +140,7 @@ export const UnifiedLeaderboardModal: React.FC<UnifiedLeaderboardModalProps> = (
               onClose();
             }}
             className="w-10 h-10 rounded-2xl bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition-all cursor-pointer active:scale-95"
-            title="Kapat"
+            title={t('Kapat')}
           >
             <X className="w-5 h-5" />
           </button>
@@ -190,7 +190,7 @@ export const UnifiedLeaderboardModal: React.FC<UnifiedLeaderboardModalProps> = (
             }`}
           >
             <Award className="w-4 h-4 text-emerald-500" />
-            <span>Rozetler</span>
+            <span>{t('Rozetler')}</span>
           </button>
         </div>
 
@@ -203,11 +203,9 @@ export const UnifiedLeaderboardModal: React.FC<UnifiedLeaderboardModalProps> = (
                 <div className="text-center py-16 space-y-3">
                   <div className="text-5xl">🎮</div>
                   <h3 className="text-lg font-bold text-slate-800 dark:text-slate-200">
-                    Henüz Kayıtlı Oyun Yok
-                  </h3>
+                    {t('Henüz Kayıtlı Oyun Yok')}</h3>
                   <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                    Parti oyunlarından herhangi birini tamamladığınızda skorlar ve şampiyonluklar burada otomatik listelenir!
-                  </p>
+                    {t('Parti oyunlarından herhangi birini tamamladığınızda skorlar ve şampiyonluklar burada otomatik listelenir!')}</p>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -233,7 +231,7 @@ export const UnifiedLeaderboardModal: React.FC<UnifiedLeaderboardModalProps> = (
                       <div className="order-2 flex flex-col items-center justify-end p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-400 dark:border-amber-500 text-center shadow-lg -translate-y-2">
                         <div className="flex items-center gap-1 text-amber-500 font-black text-xs uppercase mb-1">
                           <Crown className="w-4 h-4 fill-current" />
-                          <span>Lider</span>
+                          <span>{t('Lider')}</span>
                         </div>
                         <div className="text-3xl sm:text-4xl mb-1">{playersList[0]?.avatar}</div>
                         <div className="font-black text-sm sm:text-base text-slate-900 dark:text-white truncate max-w-full">
@@ -285,8 +283,7 @@ export const UnifiedLeaderboardModal: React.FC<UnifiedLeaderboardModalProps> = (
                               <span>{player.name}</span>
                               {idx === 0 && (
                                 <span className="px-1.5 py-0.5 rounded-full text-[9px] font-black bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-300">
-                                  👑 Şampiyon
-                                </span>
+                                  {t('👑 Şampiyon')}</span>
                               )}
                             </div>
                             <div className="flex flex-wrap items-center gap-1.5 mt-1">
@@ -346,11 +343,9 @@ export const UnifiedLeaderboardModal: React.FC<UnifiedLeaderboardModalProps> = (
                 <div className="text-center py-16 space-y-2">
                   <div className="text-4xl">📜</div>
                   <h3 className="text-base font-bold text-slate-800 dark:text-slate-200">
-                    Kayıtlı Maç Bulunamadı
-                  </h3>
+                    {t('Kayıtlı Maç Bulunamadı')}</h3>
                   <p className="text-xs text-slate-500">
-                    Oyun oynandıkça maç geçmişi detaylarıyla burada saklanır.
-                  </p>
+                    {t('Oyun oynandıkça maç geçmişi detaylarıyla burada saklanır.')}</p>
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -421,10 +416,9 @@ export const UnifiedLeaderboardModal: React.FC<UnifiedLeaderboardModalProps> = (
               <div className="p-4 rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 text-xs text-indigo-900 dark:text-indigo-200">
                 <div className="font-bold mb-1 flex items-center gap-1.5">
                   <Sparkles className="w-4 h-4 text-indigo-500" />
-                  <span>Fiesta Başarımları Nasıl Kazanılır?</span>
+                  <span>{t('Fiesta Başarımları Nasıl Kazanılır?')}</span>
                 </div>
-                Parti oyunlarında oynayarak, zaferler kazanarak ve gizli görevleri başararak profilinize özel rozetler eklersiniz.
-              </div>
+                {t('Parti oyunlarında oynayarak, zaferler kazanarak ve gizli görevleri başararak profilinize özel rozetler eklersiniz.')}</div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {[
@@ -463,7 +457,7 @@ export const UnifiedLeaderboardModal: React.FC<UnifiedLeaderboardModalProps> = (
             className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/50 transition-colors cursor-pointer"
           >
             <Trash2 className="w-3.5 h-3.5" />
-            <span>Geçmişi Sıfırla</span>
+            <span>{t('Geçmişi Sıfırla')}</span>
           </button>
 
           <button
@@ -473,8 +467,7 @@ export const UnifiedLeaderboardModal: React.FC<UnifiedLeaderboardModalProps> = (
             }}
             className="px-5 py-2.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-xs shadow-md hover:opacity-90 active:scale-95 transition-all cursor-pointer"
           >
-            Kapat
-          </button>
+            {t('Kapat')}</button>
         </div>
       </div>
     </div>

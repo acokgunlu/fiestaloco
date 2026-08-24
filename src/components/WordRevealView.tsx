@@ -3,6 +3,7 @@ import { Player, WordPair, GameMode } from '../types';
 import { Eye, EyeOff, ShieldAlert, Sparkles, ArrowRight, Fingerprint, LockKeyhole, AlertOctagon } from 'lucide-react';
 import { playClickSound, playTurnSound, playWobbleSound, playPopSound } from '../utils/audio';
 
+import { t } from '../i18n';
 interface WordRevealViewProps {
   players: Player[];
   wordPair: WordPair;
@@ -89,8 +90,7 @@ export const WordRevealView: React.FC<WordRevealViewProps> = ({
           Cihazı <span className="underline decoration-indigo-500 decoration-wavy decoration-2" style={{ color: currentPlayer.color }}>{currentPlayer.name}</span> Oyuncusuna Verin
         </h2>
         <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-xs mx-auto">
-          Gizli kartınıza bakmadan önce diğer oyuncuların ekrandan uzaklaştığından emin olun!
-        </p>
+          {t('Gizli kartınıza bakmadan önce diğer oyuncuların ekrandan uzaklaştığından emin olun!')}</p>
       </div>
 
       {/* Secret Card */}
@@ -105,13 +105,13 @@ export const WordRevealView: React.FC<WordRevealViewProps> = ({
             <div className="w-16 h-16 rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900 flex items-center justify-center text-indigo-600 dark:text-indigo-400 group-hover:text-white group-hover:bg-indigo-600 transition-all shadow-xs mb-3">
               <Fingerprint className="w-8 h-8" />
             </div>
-            <h3 className="text-lg font-black text-slate-900 dark:text-slate-100">Gizli Rolü Görmek İçin Dokunun</h3>
+            <h3 className="text-lg font-black text-slate-900 dark:text-slate-100">{t('Gizli Rolü Görmek İçin Dokunun')}</h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-xs">
               Bu ekrana yalnızca <strong>{currentPlayer.name}</strong> bakmalıdır.
             </p>
             <div className="mt-4 px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800 text-indigo-700 dark:text-indigo-300 text-xs font-bold flex items-center gap-1.5 border border-slate-200 dark:border-slate-800 shadow-2xs group-hover:bg-indigo-50">
               <Eye className="w-3.5 h-3.5" />
-              <span>Kartı Aç & Oku</span>
+              <span>{t('Kartı Aç & Oku')}</span>
             </div>
           </div>
         ) : (
@@ -141,12 +141,12 @@ export const WordRevealView: React.FC<WordRevealViewProps> = ({
                 {isImposter ? (
                   <>
                     <ShieldAlert className="w-4 h-4 text-rose-600 dark:text-rose-400" />
-                    <span>🔴 GİZLİ SAHTEKÂR (IMPOSTER)</span>
+                    <span>{t('🔴 GİZLİ SAHTEKÂR (IMPOSTER)')}</span>
                   </>
                 ) : (
                   <>
                     <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                    <span>🟢 MASUM RESSAM (CREW)</span>
+                    <span>{t('🟢 MASUM RESSAM (CREW)')}</span>
                   </>
                 )}
               </span>
@@ -182,7 +182,7 @@ export const WordRevealView: React.FC<WordRevealViewProps> = ({
               className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 flex items-center gap-1 transition-colors cursor-pointer z-10"
             >
               <EyeOff className="w-3.5 h-3.5" />
-              <span>Kartı Tekrar Gizle</span>
+              <span>{t('Kartı Tekrar Gizle')}</span>
             </button>
           </div>
         )}

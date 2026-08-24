@@ -1,0 +1,1081 @@
+{
+ "src/App.tsx": {
+  "auto": 1,
+  "split": 0,
+  "split_list": []
+ },
+ "src/components/CanvasBoard.tsx": {
+  "auto": 13,
+  "split": 2,
+  "split_list": [
+   [
+    521,
+    "Çiziliyor ( ⟂ nokta)..."
+   ],
+   [
+    666,
+    "çizgi"
+   ]
+  ]
+ },
+ "src/components/DiscussionView.tsx": {
+  "auto": 6,
+  "split": 1,
+  "split_list": [
+   [
+    133,
+    "çizgi"
+   ]
+  ]
+ },
+ "src/components/DrawingView.tsx": {
+  "auto": 9,
+  "split": 5,
+  "split_list": [
+   [
+    174,
+    "🔄 Sıra Döndü! ⟂ . Çizim Turunda ilk çizen:"
+   ],
+   [
+    262,
+    "Tur"
+   ],
+   [
+    265,
+    "Toplam Çizgi:"
+   ],
+   [
+    316,
+    "çizgisini planlıyor..."
+   ],
+   [
+    334,
+    "Parmağınızı / farenizi kaldırmadan ⟂ çizin!"
+   ]
+  ]
+ },
+ "src/components/HeaderBar.tsx": {
+  "auto": 8,
+  "split": 1,
+  "split_list": [
+   [
+    157,
+    "Tur"
+   ]
+  ]
+ },
+ "src/components/ImposterGuessView.tsx": {
+  "auto": 9,
+  "split": 1,
+  "split_list": [
+   [
+    140,
+    "Senin Tahminin: ⟂ • Gerçek Kelime:"
+   ]
+  ]
+ },
+ "src/components/LiveReactionsOverlay.tsx": {
+  "auto": 1,
+  "split": 0,
+  "split_list": []
+ },
+ "src/components/LobbyView.tsx": {
+  "auto": 37,
+  "split": 7,
+  "split_list": [
+   [
+    174,
+    "Everyone draws ⟂ to illustrate a secret word.\n          One person has a different word and is trying to blend"
+   ],
+   [
+    184,
+    "Players"
+   ],
+   [
+    214,
+    "Players ("
+   ],
+   [
+    397,
+    "Imposter gets a closely related word (e.g., Crew: ⟂ vs Imposter:"
+   ],
+   [
+    419,
+    "Imposter only knows the broad category (e.g. ⟂ ) and must fake their way through!"
+   ],
+   [
+    490,
+    "word pairs"
+   ],
+   [
+    595,
+    "START GAME ( ⟂ PLAYERS)"
+   ]
+  ]
+ },
+ "src/components/MainArcadeHub.tsx": {
+  "auto": 77,
+  "split": 0,
+  "split_list": []
+ },
+ "src/components/ObserverDisplayView.tsx": {
+  "auto": 41,
+  "split": 8,
+  "split_list": [
+   [
+    116,
+    "Players Connected"
+   ],
+   [
+    194,
+    "START GAME ( ⟂ PLAYERS)"
+   ],
+   [
+    263,
+    "Category: ⟂ strokes per player"
+   ],
+   [
+    374,
+    "Round ⟂ of ⟂ • Stroke ⟂ of"
+   ],
+   [
+    481,
+    "strokes"
+   ],
+   [
+    598,
+    "Round ⟂ Complete"
+   ],
+   [
+    691,
+    "pts"
+   ],
+   [
+    693,
+    "bu tur"
+   ]
+  ]
+ },
+ "src/components/OnlineRoomPicker.tsx": {
+  "auto": 40,
+  "split": 2,
+  "split_list": [
+   [
+    88,
+    "Herkes gizli kelimeyi çizer, 1 kişi ⟂ 'dır! Sırayla tek sürekli çizgi çekin ve sahtekârı yakalayın."
+   ],
+   [
+    351,
+    "Şüpheli çizgiyi çizen Sahtekârı doğru bulan masum oyuncular ⟂ kazanır!"
+   ]
+  ]
+ },
+ "src/components/PlayerControllerView.tsx": {
+  "auto": 42,
+  "split": 2,
+  "split_list": [
+   [
+    525,
+    "The crew correctly identified the Imposter! Watch the main screen to see if they can guess your word \""
+   ],
+   [
+    542,
+    "pts"
+   ]
+  ]
+ },
+ "src/components/ResultsView.tsx": {
+  "auto": 14,
+  "split": 6,
+  "split_list": [
+   [
+    73,
+    "Tur ⟂ Büyük Yüzleşme"
+   ],
+   [
+    131,
+    "pts"
+   ],
+   [
+    152,
+    "pts"
+   ],
+   [
+    172,
+    "pts"
+   ],
+   [
+    297,
+    "pts"
+   ],
+   [
+    299,
+    "bu tur"
+   ]
+  ]
+ },
+ "src/components/RulesModal.tsx": {
+  "auto": 17,
+  "split": 4,
+  "split_list": [
+   [
+    59,
+    "Everyone is secretly shown the ⟂ ).\n                Except ⟂ who secretly receives a ⟂ ) or is a blind imposte"
+   ],
+   [
+    76,
+    "In turns, each player draws ⟂ on the shared canvas in their assigned color.\n                Once you lift your"
+   ],
+   [
+    93,
+    "Draw enough to prove you know the word, but don't draw too much or you'll give the exact word away to the Impo"
+   ],
+   [
+    111,
+    "After drawing, everyone discusses and votes for who they think is the Imposter. ⟂ • If the innocent crew votes"
+   ]
+  ]
+ },
+ "src/components/VotingView.tsx": {
+  "auto": 7,
+  "split": 2,
+  "split_list": [
+   [
+    132,
+    "Teşhis Odası • Sıra:"
+   ],
+   [
+    198,
+    "Çizgileri"
+   ]
+  ]
+ },
+ "src/components/WordRevealView.tsx": {
+  "auto": 6,
+  "split": 3,
+  "split_list": [
+   [
+    63,
+    "Gizli Görev Brifingi •"
+   ],
+   [
+    88,
+    "Cihazı ⟂ Oyuncusuna Verin"
+   ],
+   [
+    109,
+    "Bu ekrana yalnızca ⟂ bakmalıdır."
+   ]
+  ]
+ },
+ "src/components/codenames/CodenamesBoardView.tsx": {
+  "auto": 24,
+  "split": 4,
+  "split_list": [
+   [
+    350,
+    "Oyuncu"
+   ],
+   [
+    384,
+    "Tahmin Hakkı"
+   ],
+   [
+    412,
+    "Oyuncu"
+   ],
+   [
+    471,
+    "İpucu Geçmişi ("
+   ]
+  ]
+ },
+ "src/components/codenames/CodenamesCardItem.tsx": {
+  "auto": 2,
+  "split": 0,
+  "split_list": []
+ },
+ "src/components/codenames/CodenamesClueInputModal.tsx": {
+  "auto": 7,
+  "split": 1,
+  "split_list": [
+   [
+    224,
+    "Saha ajanlarınız ⟂ defaya kadar tahmin yapabilecek (seçtiğiniz sayı + 1 bonus hak)."
+   ]
+  ]
+ },
+ "src/components/codenames/CodenamesGameOverModal.tsx": {
+  "auto": 5,
+  "split": 3,
+  "split_list": [
+   [
+    92,
+    "Bulundu"
+   ],
+   [
+    96,
+    "Bulundu"
+   ],
+   [
+    100,
+    "Tur"
+   ]
+  ]
+ },
+ "src/components/codenames/CodenamesLobbyView.tsx": {
+  "auto": 19,
+  "split": 0,
+  "split_list": []
+ },
+ "src/components/codenames/CodenamesMobileControllerView.tsx": {
+  "auto": 34,
+  "split": 8,
+  "split_list": [
+   [
+    127,
+    "Oda:"
+   ],
+   [
+    236,
+    "takım ·"
+   ],
+   [
+    276,
+    "Ajan Kaldı"
+   ],
+   [
+    288,
+    "Ajan Kaldı"
+   ],
+   [
+    351,
+    "🔴 Kırmızı ("
+   ],
+   [
+    352,
+    "🔵 Mavi ("
+   ],
+   [
+    404,
+    "Kart"
+   ],
+   [
+    502,
+    "\" Kartını Aç?"
+   ]
+  ]
+ },
+ "src/components/codenames/CodenamesOnlineLobby.tsx": {
+  "auto": 10,
+  "split": 3,
+  "split_list": [
+   [
+    73,
+    "kişi"
+   ],
+   [
+    163,
+    "Kamerayla okutun veya ⟂ adresine girip ⟂ yazın."
+   ],
+   [
+    211,
+    "Eksik:"
+   ]
+  ]
+ },
+ "src/components/codenames/CodenamesOnlinePicker.tsx": {
+  "auto": 42,
+  "split": 1,
+  "split_list": [
+   [
+    115,
+    "TV veya büyük ekrana yansıtın, ⟂ telefonlarıyla katılıp gizli renkleri çözsün!"
+   ]
+  ]
+ },
+ "src/components/codenames/CodenamesRulesModal.tsx": {
+  "auto": 59,
+  "split": 5,
+  "split_list": [
+   [
+    147,
+    "İki rakip takım ( ⟂ ve ⟂ ) 5x5 boyutundaki 25 kelimelik masada gizli ajanlarını arar. Masadaki tüm kendi ajanl"
+   ],
+   [
+    215,
+    "Örnek: ⟂ (Masadaki ASLAN, KARTAL, KURT kelimelerini bağlamak için)."
+   ],
+   [
+    225,
+    "Eğer masada ⟂ varsa ⟂ ipucu verilemez. Aynı şekilde eşsesli/harf benzerliği hilesi yapılamaz."
+   ],
+   [
+    290,
+    "Lider ⟂ dediyse, takımınız en fazla ⟂ tahmin yapabilir. İstediğiniz an ⟂ diyerek sırayı devredebilirsiniz."
+   ],
+   [
+    366,
+    "Eğer Kırmızı Takım veya Mavi Takım yanlışlıkla Suikastçı kartını açarsa, oyun ⟂ ve açmayan rakip takım doğruda"
+   ]
+  ]
+ },
+ "src/components/colory/ColorPicker.tsx": {
+  "auto": 4,
+  "split": 0,
+  "split_list": []
+ },
+ "src/components/colory/ColoryControllerView.tsx": {
+  "auto": 15,
+  "split": 3,
+  "split_list": [
+   [
+    40,
+    "puan"
+   ],
+   [
+    120,
+    ". sıradasın"
+   ],
+   [
+    122,
+    "Fark ΔE ⟂ · Toplam"
+   ]
+  ]
+ },
+ "src/components/colory/ColoryTvView.tsx": {
+  "auto": 15,
+  "split": 5,
+  "split_list": [
+   [
+    43,
+    "Tur ⟂ · Rengi hatırla, en yakını bul"
+   ],
+   [
+    61,
+    "Kamerayla okutun veya ⟂ adresine girip ⟂ yazın."
+   ],
+   [
+    67,
+    "Oyuncular ("
+   ],
+   [
+    83,
+    "🎨 Ekranda bir renk ⟂ saniye görünür, sonra kaybolur."
+   ],
+   [
+    197,
+    "kazandı!"
+   ]
+  ]
+ },
+ "src/components/horserace/HorseRaceControllerView.tsx": {
+  "auto": 18,
+  "split": 4,
+  "split_list": [
+   [
+    169,
+    "Liderden ⟂ ₺ geridesin"
+   ],
+   [
+    175,
+    "Lidersin"
+   ],
+   [
+    276,
+    "Tutarsa:"
+   ],
+   [
+    329,
+    "Kasan:"
+   ]
+  ]
+ },
+ "src/components/horserace/HorseRacePassAndPlay.tsx": {
+  "auto": 11,
+  "split": 2,
+  "split_list": [
+   [
+    161,
+    "Tek Cihaz · Yarış"
+   ],
+   [
+    249,
+    "KUPONU YATIR →"
+   ]
+  ]
+ },
+ "src/components/horserace/HorseRaceTrack.tsx": {
+  "auto": 0,
+  "split": 1,
+  "split_list": [
+   [
+    93,
+    "oran"
+   ]
+  ]
+ },
+ "src/components/horserace/HorseRaceTvView.tsx": {
+  "auto": 17,
+  "split": 7,
+  "split_list": [
+   [
+    58,
+    "Yarış ⟂ · Ganyan · Plase · İkili"
+   ],
+   [
+    82,
+    "Kamerayla okutun veya ⟂ adresine girip ⟂ yazın."
+   ],
+   [
+    91,
+    "Bahisçiler ("
+   ],
+   [
+    116,
+    "💰 Herkes 1000 ₺ ile başlar. ⟂ yarış sonunda kasası en kalabalık olan kazanır."
+   ],
+   [
+    161,
+    "form"
+   ],
+   [
+    286,
+    "kazandı!"
+   ],
+   [
+    289,
+    "₺ ile pistin kralı"
+   ]
+  ]
+ },
+ "src/components/leaderboard/UnifiedLeaderboardModal.tsx": {
+  "auto": 13,
+  "split": 11,
+  "split_list": [
+   [
+    163,
+    "Oyuncu Sıralaması ("
+   ],
+   [
+    178,
+    "Maç Geçmişi ("
+   ],
+   [
+    224,
+    "Galibiyet"
+   ],
+   [
+    227,
+    "Puan"
+   ],
+   [
+    242,
+    "Galibiyet"
+   ],
+   [
+    245,
+    "Toplam Puan"
+   ],
+   [
+    258,
+    "Galibiyet"
+   ],
+   [
+    261,
+    "Puan"
+   ],
+   [
+    306,
+    "Puan"
+   ],
+   [
+    309,
+    "Galibiyet / ⟂ Maç"
+   ],
+   [
+    389,
+    "Kazanan: ⟂ Puan)"
+   ]
+  ]
+ },
+ "src/components/party/BluffTriviaGame.tsx": {
+  "auto": 80,
+  "split": 18,
+  "split_list": [
+   [
+    344,
+    "Tur"
+   ],
+   [
+    536,
+    "Katılan Oyuncular ("
+   ],
+   [
+    587,
+    "OYUNU BAŞLAT ( ⟂ Oyuncu)"
+   ],
+   [
+    597,
+    "Tur"
+   ],
+   [
+    600,
+    "Kategori:"
+   ],
+   [
+    644,
+    "Tur"
+   ],
+   [
+    768,
+    "Tur ⟂ Sonuçları"
+   ],
+   [
+    810,
+    "Yazan: ⟂ (+500/kurban)"
+   ],
+   [
+    821,
+    "Kişi Bildi"
+   ],
+   [
+    825,
+    "Blöf Puanı!"
+   ],
+   [
+    995,
+    "kişiyi tuzağa düşürdü"
+   ],
+   [
+    1012,
+    "kez doğruyu buldu"
+   ],
+   [
+    1191,
+    "Skor:"
+   ],
+   [
+    1197,
+    "Oda:"
+   ],
+   [
+    1238,
+    "Kategori:"
+   ],
+   [
+    1402,
+    "Oyuncu Listesi ("
+   ],
+   [
+    1478,
+    "Kategori:"
+   ],
+   [
+    1596,
+    "Yazan:"
+   ]
+  ]
+ },
+ "src/components/party/ColoryGame.tsx": {
+  "auto": 17,
+  "split": 0,
+  "split_list": []
+ },
+ "src/components/party/HorseRaceGame.tsx": {
+  "auto": 20,
+  "split": 0,
+  "split_list": []
+ },
+ "src/components/party/QuiplashGame.tsx": {
+  "auto": 21,
+  "split": 0,
+  "split_list": []
+ },
+ "src/components/party/TimingGame.tsx": {
+  "auto": 17,
+  "split": 0,
+  "split_list": []
+ },
+ "src/components/party/TriviaPursuitGame.tsx": {
+  "auto": 26,
+  "split": 1,
+  "split_list": [
+   [
+    325,
+    "Saniye"
+   ]
+  ]
+ },
+ "src/components/party/WordBombGame.tsx": {
+  "auto": 63,
+  "split": 8,
+  "split_list": [
+   [
+    441,
+    "Katılan Oyuncular ("
+   ],
+   [
+    494,
+    "BOMBAYI ATEŞLE 💣 ( ⟂ Oyuncu)"
+   ],
+   [
+    562,
+    "Bu Turda Söylenen Kelimeler ("
+   ],
+   [
+    626,
+    "Bomba elindeyken patlayan: ⟂ (1 can kaybetti 💔)"
+   ],
+   [
+    660,
+    "SONRAKİ BOMBAYI ATEŞLE 💣 (Tur"
+   ],
+   [
+    964,
+    "Şampiyon:"
+   ],
+   [
+    1029,
+    "BOMBAYI ATEŞLE 💣 ( ⟂ Oyuncu)"
+   ],
+   [
+    1141,
+    "Bomba elindeyken patlayan: ⟂ (1 can kaybetti)"
+   ]
+  ]
+ },
+ "src/components/quiplash/QuiplashControllerView.tsx": {
+  "auto": 31,
+  "split": 7,
+  "split_list": [
+   [
+    117,
+    "Puan"
+   ],
+   [
+    168,
+    "Kalan Süre:"
+   ],
+   [
+    176,
+    "TUR ⟂ • YANITLARINI YAZ"
+   ],
+   [
+    196,
+    "Soru #"
+   ],
+   [
+    238,
+    "KAPIŞMA #"
+   ],
+   [
+    326,
+    "Puan"
+   ],
+   [
+    444,
+    "Puan"
+   ]
+  ]
+ },
+ "src/components/quiplash/QuiplashPassAndPlay.tsx": {
+  "auto": 25,
+  "split": 10,
+  "split_list": [
+   [
+    343,
+    "Sıra:"
+   ],
+   [
+    370,
+    "İçin Sorular"
+   ],
+   [
+    373,
+    "Oyuncu"
+   ],
+   [
+    380,
+    "Soru #"
+   ],
+   [
+    411,
+    "KAPIŞMA #"
+   ],
+   [
+    476,
+    "Pts"
+   ],
+   [
+    494,
+    "Pts"
+   ],
+   [
+    515,
+    "TUR ⟂ SKORLARI"
+   ],
+   [
+    532,
+    "Puan"
+   ],
+   [
+    567,
+    "Toplam Puan"
+   ]
+  ]
+ },
+ "src/components/quiplash/QuiplashRulesModal.tsx": {
+  "auto": 11,
+  "split": 1,
+  "split_list": [
+   [
+    75,
+    "Her aldığınız oy size puan kazandırır (2. Turda 2 katı!). Eğer odadaki tüm oyları tek başınıza silip süpürürse"
+   ]
+  ]
+ },
+ "src/components/quiplash/QuiplashTvView.tsx": {
+  "auto": 32,
+  "split": 15,
+  "split_list": [
+   [
+    172,
+    "Oda Kodu:"
+   ],
+   [
+    189,
+    "Telefonunuzun kamerasını okutun veya tarayıcıdan ⟂ adresine girip ⟂ yazın."
+   ],
+   [
+    202,
+    "Katılan Oyuncular ("
+   ],
+   [
+    276,
+    "TUR ⟂ • YAZMA AŞAMASI"
+   ],
+   [
+    290,
+    "Tamamlandı"
+   ],
+   [
+    329,
+    "Kapışma #"
+   ],
+   [
+    392,
+    "Puan"
+   ],
+   [
+    399,
+    "Oy"
+   ],
+   [
+    447,
+    "Puan"
+   ],
+   [
+    454,
+    "Oy"
+   ],
+   [
+    492,
+    "TUR ⟂ PUAN TABLOSU"
+   ],
+   [
+    518,
+    "Puan"
+   ],
+   [
+    581,
+    "Oy (+ ⟂ Pts)"
+   ],
+   [
+    631,
+    "Toplam Puan"
+   ],
+   [
+    645,
+    "Puan"
+   ]
+  ]
+ },
+ "src/components/timing/TimingControllerView.tsx": {
+  "auto": 17,
+  "split": 5,
+  "split_list": [
+   [
+    54,
+    "puan"
+   ],
+   [
+    89,
+    "MODU"
+   ],
+   [
+    106,
+    "saniye ·"
+   ],
+   [
+    143,
+    "hedef ⟂ sn"
+   ],
+   [
+    173,
+    "ham ölçüm ⟂ · ağ gecikmesi ⟂ ms düşüldü"
+   ]
+  ]
+ },
+ "src/components/timing/TimingTimeline.tsx": {
+  "auto": 0,
+  "split": 1,
+  "split_list": [
+   [
+    61,
+    "HEDEF"
+   ]
+  ]
+ },
+ "src/components/timing/TimingTvView.tsx": {
+  "auto": 21,
+  "split": 9,
+  "split_list": [
+   [
+    42,
+    "Tur ⟂ · İçinden say, tam vaktinde bas"
+   ],
+   [
+    60,
+    "Kamerayla okutun veya ⟂ adresine girip ⟂ yazın."
+   ],
+   [
+    66,
+    "Oyuncular ("
+   ],
+   [
+    98,
+    "MODU"
+   ],
+   [
+    121,
+    "Hedef ⟂ saniye ·"
+   ],
+   [
+    162,
+    "Tur ⟂ sn"
+   ],
+   [
+    199,
+    "sn"
+   ],
+   [
+    227,
+    "en iyi"
+   ],
+   [
+    247,
+    "kazandı!"
+   ]
+  ]
+ },
+ "src/components/trivia/TriviaCategoryWheel.tsx": {
+  "auto": 1,
+  "split": 0,
+  "split_list": []
+ },
+ "src/components/trivia/TriviaControllerView.tsx": {
+  "auto": 17,
+  "split": 7,
+  "split_list": [
+   [
+    92,
+    "Puan"
+   ],
+   [
+    96,
+    "x Seri"
+   ],
+   [
+    108,
+    "/6 Rozet"
+   ],
+   [
+    123,
+    "Oda Kodu: ⟂ . TV ekranından oyunun başlaması bekleniyor..."
+   ],
+   [
+    194,
+    "zar atıyor…"
+   ],
+   [
+    301,
+    "ROZETİ KAZANDINIZ!"
+   ],
+   [
+    313,
+    "Doğru cevap:"
+   ]
+  ]
+ },
+ "src/components/trivia/TriviaPassAndPlay.tsx": {
+  "auto": 14,
+  "split": 4,
+  "split_list": [
+   [
+    506,
+    "Tur ⟂ • Sırayla telefonu devrederek yarışın"
+   ],
+   [
+    527,
+    "Oyuncuları Yönet ("
+   ],
+   [
+    662,
+    "Dilim yalnızca ⟂ (ikonlu, altın çerçeveli)\n                kazanılır. Doğru cevap tekrar zar hakkı verir. ⟂ di"
+   ],
+   [
+    731,
+    "Doğru Cevap:"
+   ]
+  ]
+ },
+ "src/components/trivia/TriviaTvView.tsx": {
+  "auto": 26,
+  "split": 8,
+  "split_list": [
+   [
+    106,
+    "Tur ⟂ • Hedef: ⟂ Kategori Rozeti"
+   ],
+   [
+    198,
+    "Telefonunuzun kamerası ile okutun veya ⟂ ile katılın."
+   ],
+   [
+    199,
+    "?room="
+   ],
+   [
+    209,
+    "Bağlı Oyuncular ("
+   ],
+   [
+    211,
+    "Kazanma: ⟂ Rozet"
+   ],
+   [
+    238,
+    "/6 Rozet"
+   ],
+   [
+    328,
+    "geldi — ⟂ hedefini seçiyor"
+   ],
+   [
+    359,
+    "Kategorisi Seçildi!"
+   ]
+  ]
+ }
+}

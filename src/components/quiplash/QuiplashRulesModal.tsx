@@ -2,6 +2,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Sparkles, Trophy, Users, Flame, HelpCircle, CheckCircle2 } from 'lucide-react';
 
+import { t } from '../../i18n';
 interface QuiplashRulesModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -26,10 +27,9 @@ export const QuiplashRulesModal: React.FC<QuiplashRulesModalProps> = ({ isOpen, 
                 🥊
               </div>
               <div>
-                <h2 className="text-xl font-black tracking-tight">Quiplash Nasıl Oynanır?</h2>
+                <h2 className="text-xl font-black tracking-tight">{t('Quiplash Nasıl Oynanır?')}</h2>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
-                  Mizah, hazırcevaplık ve laf cambazlığı düellosu!
-                </p>
+                  {t('Mizah, hazırcevaplık ve laf cambazlığı düellosu!')}</p>
               </div>
             </div>
             <button
@@ -46,11 +46,9 @@ export const QuiplashRulesModal: React.FC<QuiplashRulesModalProps> = ({ isOpen, 
               <Sparkles className="w-5 h-5 text-purple-600 dark:text-purple-400 shrink-0 mt-0.5" />
               <div>
                 <strong className="block text-purple-900 dark:text-purple-300 font-bold mb-1">
-                  1. Yazma Aşaması (Prompt Writing)
-                </strong>
+                  {t('1. Yazma Aşaması (Prompt Writing)')}</strong>
                 <p className="text-slate-600 dark:text-slate-300 text-xs">
-                  Her tur başında telefonunuza 2 absürt ve komik soru gelir. Amacınız doğru cevabı değil, masadaki herkesi en çok güldürecek en yaratıcı yanıtı yazmaktır!
-                </p>
+                  {t('Her tur başında telefonunuza 2 absürt ve komik soru gelir. Amacınız doğru cevabı değil, masadaki herkesi en çok güldürecek en yaratıcı yanıtı yazmaktır!')}</p>
               </div>
             </div>
 
@@ -58,11 +56,9 @@ export const QuiplashRulesModal: React.FC<QuiplashRulesModalProps> = ({ isOpen, 
               <Flame className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
               <div>
                 <strong className="block text-amber-900 dark:text-amber-300 font-bold mb-1">
-                  2. Birebir Düellolar (Head-to-Head Duels)
-                </strong>
+                  {t('2. Birebir Düellolar (Head-to-Head Duels)')}</strong>
                 <p className="text-slate-600 dark:text-slate-300 text-xs">
-                  Aynı soruya cevap veren iki oyuncunun yanıtları TV ekranında anonim olarak yan yana kapışır. O soruyu yazmayan tüm oyuncular telefonlarından en komik cevaba oy verir!
-                </p>
+                  {t('Aynı soruya cevap veren iki oyuncunun yanıtları TV ekranında anonim olarak yan yana kapışır. O soruyu yazmayan tüm oyuncular telefonlarından en komik cevaba oy verir!')}</p>
               </div>
             </div>
 
@@ -70,10 +66,9 @@ export const QuiplashRulesModal: React.FC<QuiplashRulesModalProps> = ({ isOpen, 
               <Trophy className="w-5 h-5 text-pink-600 dark:text-pink-400 shrink-0 mt-0.5" />
               <div>
                 <strong className="block text-pink-900 dark:text-pink-300 font-bold mb-1">
-                  3. Puanlama & QUIPLASH! Bonusu
-                </strong>
+                  {t('3. Puanlama & QUIPLASH! Bonusu')}</strong>
                 <p className="text-slate-600 dark:text-slate-300 text-xs">
-                  Her aldığınız oy size puan kazandırır (2. Turda 2 katı!). Eğer odadaki tüm oyları tek başınıza silip süpürürseniz <strong>QUIPLASH!</strong> bonusu patlar!
+                  Her aldığınız oy size puan kazandırır (2. Turda 2 katı!). Eğer odadaki tüm oyları tek başınıza silip süpürürseniz <strong>{t('QUIPLASH!')}</strong> bonusu patlar!
                 </p>
               </div>
             </div>
@@ -82,11 +77,9 @@ export const QuiplashRulesModal: React.FC<QuiplashRulesModalProps> = ({ isOpen, 
               <Users className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
               <div>
                 <strong className="block text-emerald-900 dark:text-emerald-300 font-bold mb-1">
-                  4. The Last Lash (Büyük Final)
-                </strong>
+                  {t('4. The Last Lash (Büyük Final)')}</strong>
                 <p className="text-slate-600 dark:text-slate-300 text-xs">
-                  Son turda tüm oyuncular tek bir ortak soruya cevap yazar. Ardından herkes en beğendiği yanıtlara 3 katı değerinde madalya oyları dağıtır ve Quiplash Şampiyonu belirlenir!
-                </p>
+                  {t('Son turda tüm oyuncular tek bir ortak soruya cevap yazar. Ardından herkes en beğendiği yanıtlara 3 katı değerinde madalya oyları dağıtır ve Quiplash Şampiyonu belirlenir!')}</p>
               </div>
             </div>
           </div>
@@ -98,8 +91,7 @@ export const QuiplashRulesModal: React.FC<QuiplashRulesModalProps> = ({ isOpen, 
               className="px-6 py-2.5 rounded-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:opacity-90 shadow-md shadow-purple-500/20 transition-all flex items-center gap-2 text-sm"
             >
               <CheckCircle2 className="w-4 h-4" />
-              Anladım, Oyuna Başla
-            </button>
+              {t('Anladım, Oyuna Başla')}</button>
           </div>
         </motion.div>
       </div>

@@ -3,6 +3,7 @@ import { Player, WordPair, RoundResult } from '../types';
 import { ShieldAlert, Check, ArrowRight, Sparkles, Target, Gavel, Scale, AlertTriangle } from 'lucide-react';
 import { playClickSound, playTurnSound, playSuspenseSound, playGongSound, playGavelSound } from '../utils/audio';
 
+import { t } from '../i18n';
 interface VotingViewProps {
   players: Player[];
   wordPair: WordPair;
@@ -112,9 +113,8 @@ export const VotingView: React.FC<VotingViewProps> = ({
         </div>
         <div className="space-y-2">
           <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-slate-100">
-            Mahkeme Kararı Bekleniyor...
-          </h2>
-          <p className="text-sm text-slate-600 dark:text-slate-400">Gizli oylar sayılıyor, Sahtekârın maskesi düşürülüyor!</p>
+            {t('Mahkeme Kararı Bekleniyor...')}</h2>
+          <p className="text-sm text-slate-600 dark:text-slate-400">{t('Gizli oylar sayılıyor, Sahtekârın maskesi düşürülüyor!')}</p>
         </div>
       </div>
     );
@@ -135,7 +135,7 @@ export const VotingView: React.FC<VotingViewProps> = ({
         {/* Bonus reward badge */}
         <div className="flex items-center gap-1.5 bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900 text-indigo-800 dark:text-indigo-300 px-3 py-1 rounded-full text-xs font-black shadow-2xs">
           <Target className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
-          <span>Doğru Tahmine +50 Puan Bonus!</span>
+          <span>{t('Doğru Tahmine +50 Puan Bonus!')}</span>
         </div>
       </div>
 
@@ -148,11 +148,9 @@ export const VotingView: React.FC<VotingViewProps> = ({
           <span>{currentVoter.avatar}</span>
         </div>
         <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-slate-100">
-          <span style={{ color: currentVoter.color }}>{currentVoter.name}</span>, şüphelini seç!
-        </h2>
+          <span style={{ color: currentVoter.color }}>{currentVoter.name}</span>{t(', şüphelini seç!')}</h2>
         <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-xs mx-auto">
-          Çizgisi sence en sahte olan kimdi? Şüphe duyduğun oyuncuyu işaretle.
-        </p>
+          {t('Çizgisi sence en sahte olan kimdi? Şüphe duyduğun oyuncuyu işaretle.')}</p>
       </div>
 
       {/* Suspect Mugshot Lineup Grid */}
@@ -186,8 +184,7 @@ export const VotingView: React.FC<VotingViewProps> = ({
                     <span>{candidate.name}</span>
                     {candidate.isBot && (
                       <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800">
-                        BOT
-                      </span>
+                        {t('BOT')}</span>
                     )}
                   </div>
                   <div className="text-[11px] font-bold text-slate-500 dark:text-slate-400 flex items-center gap-1.5 mt-0.5">
@@ -204,7 +201,7 @@ export const VotingView: React.FC<VotingViewProps> = ({
               {isSelected ? (
                 <div className="animate-stamp-slam border-2 border-rose-500 bg-rose-600 text-white font-black text-xs px-3 py-1 rounded-xl shadow-md flex items-center gap-1">
                   <AlertTriangle className="w-3.5 h-3.5" />
-                  <span>ŞÜPHELİ!</span>
+                  <span>{t('ŞÜPHELİ!')}</span>
                 </div>
               ) : (
                 <div className="w-7 h-7 rounded-full border-2 border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400">

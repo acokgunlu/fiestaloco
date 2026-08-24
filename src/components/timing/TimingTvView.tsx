@@ -5,6 +5,7 @@ import { TimingGameState, TimingPlayer } from '../../types/timing';
 import { formatError, formatSec, modeHint, modeLabel } from '../../data/timingLogic';
 import { TimingTimeline } from './TimingTimeline';
 
+import { t } from '../../i18n';
 interface Props {
   roomCode: string;
   gameState: TimingGameState;
@@ -33,12 +34,11 @@ export const TimingTvView: React.FC<Props> = ({
         <div className="flex items-center gap-3">
           <button onClick={onReturnToHub}
             className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-xs font-black cursor-pointer">
-            <ArrowLeft className="w-4 h-4" /> Parti Arenası
-          </button>
+            <ArrowLeft className="w-4 h-4" />  {t('Parti Arenası')}</button>
           <div className="flex items-center gap-2.5">
             <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-sky-500 via-indigo-500 to-violet-500 text-white flex items-center justify-center text-2xl shadow-md border-2 border-white dark:border-slate-700">⏱️</div>
             <div>
-              <h2 className="text-xl sm:text-2xl font-black tracking-tight">Tam Zamanında</h2>
+              <h2 className="text-xl sm:text-2xl font-black tracking-tight">{t('Tam Zamanında')}</h2>
               <p className="text-xs font-bold text-slate-500 dark:text-slate-400">
                 Tur {gameState.currentRound}/{gameState.settings.totalRounds} · İçinden say, tam vaktinde bas
               </p>
@@ -54,7 +54,7 @@ export const TimingTvView: React.FC<Props> = ({
       {gameState.phase === 'LOBBY' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-5 flex flex-col items-center p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl">
-            <h3 className="text-sm font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-3">Telefondan Katılın</h3>
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-3">{t('Telefondan Katılın')}</h3>
             {qr ? <img src={qr} alt="QR" className="w-48 h-48 rounded-2xl" />
                 : <div className="w-48 h-48 rounded-2xl bg-slate-100 dark:bg-slate-800" />}
             <p className="text-xs text-slate-500 dark:text-slate-400 font-medium text-center mt-3">
@@ -67,7 +67,7 @@ export const TimingTvView: React.FC<Props> = ({
                 <Users className="w-4 h-4" /> Oyuncular ({players.length})
               </div>
               {players.length === 0 ? (
-                <p className="text-sm font-bold text-slate-400 dark:text-slate-500 italic py-6 text-center">Bekleniyor…</p>
+                <p className="text-sm font-bold text-slate-400 dark:text-slate-500 italic py-6 text-center">{t('Bekleniyor…')}</p>
               ) : (
                 <div className="flex flex-wrap gap-2">
                   {players.map((p) => (
@@ -79,15 +79,14 @@ export const TimingTvView: React.FC<Props> = ({
               )}
             </div>
             <div className="p-4 rounded-2xl bg-sky-50 dark:bg-sky-950/40 border border-sky-200 dark:border-sky-900 text-xs font-bold text-sky-900 dark:text-sky-200 space-y-1">
-              <p>⏱️ Her turda bir hedef süre açıklanır — örneğin "tam 10 saniye".</p>
-              <p>🚫 Sonra ekranda hiçbir sayaç YOK. Kafandan sayacaksın.</p>
-              <p>📱 Süre dolduğunu düşündüğün an telefondaki büyük butona bas.</p>
-              <p>🌐 Ağ gecikmen süreden otomatik düşülür — yavaş bağlantı ceza değil.</p>
+              <p>{t('⏱️ Her turda bir hedef süre açıklanır — örneğin "tam 10 saniye".')}</p>
+              <p>{t('🚫 Sonra ekranda hiçbir sayaç YOK. Kafandan sayacaksın.')}</p>
+              <p>{t('📱 Süre dolduğunu düşündüğün an telefondaki büyük butona bas.')}</p>
+              <p>{t('🌐 Ağ gecikmen süreden otomatik düşülür — yavaş bağlantı ceza değil.')}</p>
             </div>
             <button onClick={onStartGame} disabled={players.length < 1}
               className="w-full py-4 rounded-2xl bg-gradient-to-r from-sky-600 via-indigo-600 to-violet-600 text-white font-black text-base shadow-xl hover:scale-[1.02] active:scale-95 transition-transform disabled:opacity-40 flex items-center justify-center gap-2 cursor-pointer">
-              <Play className="w-5 h-5" /> BAŞLAT
-            </button>
+              <Play className="w-5 h-5" />  {t('BAŞLAT')}</button>
           </div>
         </div>
       )}
@@ -102,11 +101,11 @@ export const TimingTvView: React.FC<Props> = ({
             <Target className="w-4 h-4" /> {modeLabel(gameState.mode)} MODU
           </div>
           <div>
-            <p className="text-sm font-black uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Bu turun hedefi</p>
+            <p className="text-sm font-black uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">{t('Bu turun hedefi')}</p>
             <div className="text-[7rem] leading-none font-black tabular-nums bg-gradient-to-b from-sky-500 to-indigo-600 bg-clip-text text-transparent">
               {formatSec(gameState.targetMs, 0)}
             </div>
-            <p className="text-2xl font-black text-slate-700 dark:text-slate-300 -mt-2">SANİYE</p>
+            <p className="text-2xl font-black text-slate-700 dark:text-slate-300 -mt-2">{t('SANİYE')}</p>
           </div>
           <p className="text-base font-bold text-slate-600 dark:text-slate-300 max-w-xl mx-auto">{modeHint(gameState.mode)}</p>
           <div className="text-4xl font-black text-slate-400 dark:text-slate-500 tabular-nums">{gameState.timerSeconds}</div>
@@ -116,7 +115,7 @@ export const TimingTvView: React.FC<Props> = ({
       {/* GERİ SAYIM */}
       {gameState.phase === 'COUNTDOWN' && (
         <div className="py-16 text-center space-y-4">
-          <p className="text-lg font-black uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Hazır ol</p>
+          <p className="text-lg font-black uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">{t('Hazır ol')}</p>
           <div className="text-[12rem] leading-none font-black tabular-nums text-amber-500">{gameState.timerSeconds}</div>
           <p className="text-xl font-black text-slate-600 dark:text-slate-300">
             Hedef {formatSec(gameState.targetMs, 0)} saniye · {modeLabel(gameState.mode)}
@@ -137,20 +136,19 @@ export const TimingTvView: React.FC<Props> = ({
       {gameState.phase === 'RUNNING' && (
         <div className="py-14 text-center space-y-8">
           <div className="inline-block px-8 py-3 rounded-3xl bg-slate-900 dark:bg-slate-950 border-4 border-amber-400">
-            <p className="text-xs font-black uppercase tracking-[0.4em] text-amber-400">Hedef</p>
+            <p className="text-xs font-black uppercase tracking-[0.4em] text-amber-400">{t('Hedef')}</p>
             <div className="text-6xl font-black tabular-nums text-white">
-              {formatSec(gameState.targetMs, 0)}<span className="text-2xl text-slate-400 ml-1">sn</span>
+              {formatSec(gameState.targetMs, 0)}<span className="text-2xl text-slate-400 ml-1">{t('sn')}</span>
             </div>
           </div>
           <div>
-            <h3 className="text-5xl sm:text-7xl font-black tracking-tight text-slate-900 dark:text-white">SAY</h3>
+            <h3 className="text-5xl sm:text-7xl font-black tracking-tight text-slate-900 dark:text-white">{t('SAY')}</h3>
             <p className="text-lg font-bold text-slate-500 dark:text-slate-400 mt-3">
               {isNoOver ? 'Geçersen yanarsın — erken kal.' : 'Vakti geldiğini düşündüğünde bas.'}
             </p>
           </div>
           <p className="text-xs font-black uppercase tracking-[0.25em] text-slate-400 dark:text-slate-600">
-            Ekranda sayaç yok · saatine bakmak yok
-          </p>
+            {t('Ekranda sayaç yok · saatine bakmak yok')}</p>
         </div>
       )}
 
@@ -182,7 +180,7 @@ export const TimingTvView: React.FC<Props> = ({
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div className="p-4 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl">
-              <div className="text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Bu tur</div>
+              <div className="text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">{t('Bu tur')}</div>
               <div className="space-y-1.5">
                 {(gameState.results || []).map((r) => {
                   const p = players.find((x) => x.id === r.playerId);
@@ -210,14 +208,14 @@ export const TimingTvView: React.FC<Props> = ({
                 {players.filter((p) => !(gameState.results || []).some((r) => r.playerId === p.id)).map((p) => (
                   <div key={p.id} className="flex items-center justify-between px-3 py-2 rounded-2xl bg-slate-100 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700 opacity-60">
                     <span className="text-sm font-black">{p.avatar} {p.name}</span>
-                    <span className="text-xs font-black text-slate-500">HİÇ BASMADI · +0</span>
+                    <span className="text-xs font-black text-slate-500">{t('HİÇ BASMADI · +0')}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             <div className="p-4 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl">
-              <div className="text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Toplam</div>
+              <div className="text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">{t('Toplam')}</div>
               <div className="space-y-1.5">
                 {byScore.map((p, i) => (
                   <div key={p.id} className="flex items-center justify-between p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
@@ -238,8 +236,7 @@ export const TimingTvView: React.FC<Props> = ({
           {gameState.phase === 'REVEAL' && (
             <button onClick={onNextRound}
               className="w-full sm:w-auto mx-auto block px-10 py-4 rounded-2xl bg-gradient-to-r from-sky-600 to-violet-600 text-white font-black shadow-xl hover:scale-105 active:scale-95 transition-transform cursor-pointer">
-              SONRAKİ TUR →
-            </button>
+              {t('SONRAKİ TUR →')}</button>
           )}
           {gameState.phase === 'GAME_OVER' && (
             <div className="text-center space-y-3 py-2">
@@ -247,8 +244,7 @@ export const TimingTvView: React.FC<Props> = ({
               <h3 className="text-2xl font-black">{players.find((p) => p.id === gameState.winnerPlayerId)?.name} kazandı!</h3>
               <button onClick={onRestartGame}
                 className="px-8 py-3.5 rounded-2xl bg-slate-900 dark:bg-slate-800 text-white font-black text-sm shadow-xl hover:scale-105 transition-transform inline-flex items-center gap-2 cursor-pointer">
-                <RotateCcw className="w-4 h-4" /> YENİDEN OYNA
-              </button>
+                <RotateCcw className="w-4 h-4" />  {t('YENİDEN OYNA')}</button>
             </div>
           )}
         </div>

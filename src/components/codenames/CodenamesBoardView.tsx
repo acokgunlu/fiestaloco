@@ -6,6 +6,7 @@ import { CodenamesClueInputModal } from './CodenamesClueInputModal';
 import { CodenamesGameOverModal } from './CodenamesGameOverModal';
 import { CodenamesRulesModal } from './CodenamesRulesModal';
 import QRCode from 'qrcode';
+import { t } from '../../i18n';
 import {
   Eye,
   EyeOff,
@@ -293,12 +294,12 @@ export function CodenamesBoardView({
             </div>
             <div>
               <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
-                <span>TV / Ana Ekran Canlı Yayını</span>
+                <span>{t('TV / Ana Ekran Canlı Yayını')}</span>
                 <span>•</span>
-                <span className="text-emerald-400 font-black">● CANLI</span>
+                <span className="text-emerald-400 font-black">{t('● CANLI')}</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-xs text-slate-300 font-bold">Oda Kodu:</span>
+                <span className="text-xs text-slate-300 font-bold">{t('Oda Kodu:')}</span>
                 <span className="font-mono text-lg font-black tracking-widest text-amber-400 bg-slate-800 px-2.5 py-0.5 rounded-lg border border-slate-700">
                   {roomCode}
                 </span>
@@ -316,13 +317,13 @@ export function CodenamesBoardView({
               className="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-black rounded-xl border border-indigo-400 shadow-sm flex items-center gap-1.5 cursor-pointer transition-all active:scale-95"
             >
               <QrCode className="w-4 h-4" />
-              <span>Telefondan Katıl (QR Kod)</span>
+              <span>{t('Telefondan Katıl (QR Kod)')}</span>
             </button>
 
             <button
               onClick={handleCopyLink}
               className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors cursor-pointer border border-slate-700"
-              title="Bağlantıyı Kopyala"
+              title={t('Bağlantıyı Kopyala')}
             >
               {copiedLink ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
             </button>
@@ -345,7 +346,7 @@ export function CodenamesBoardView({
           </div>
           <div>
             <div className="text-[11px] font-black text-rose-800 uppercase tracking-wider flex items-center gap-1.5">
-              <span>Kırmızı Takım</span>
+              <span>{t('Kırmızı Takım')}</span>
               {redPlayers.length > 0 && (
                 <span className="text-[10px] px-1.5 py-0.2 bg-rose-200 text-rose-900 rounded-full font-bold">
                   {redPlayers.length} Oyuncu
@@ -354,7 +355,7 @@ export function CodenamesBoardView({
             </div>
             <div className="text-xl sm:text-2xl font-black text-slate-900">
               {redRemaining}{' '}
-              <span className="text-xs font-bold text-slate-400">Kalan Ajan</span>
+              <span className="text-xs font-bold text-slate-400">{t('Kalan Ajan')}</span>
             </div>
           </div>
         </div>
@@ -376,7 +377,7 @@ export function CodenamesBoardView({
           {currentClue ? (
             <div className="flex flex-wrap items-center justify-center gap-2 pt-0.5 animate-scale-in">
               <div className="bg-gradient-to-r from-indigo-50 to-purple-50 px-4 py-1.5 rounded-xl border border-indigo-200 shadow-2xs">
-                <span className="text-xs font-bold text-indigo-700 mr-1">İPUCU:</span>
+                <span className="text-xs font-bold text-indigo-700 mr-1">{t('İPUCU:')}</span>
                 <span className="text-base sm:text-xl font-black text-indigo-950 tracking-wider">
                   "{currentClue.word}" ({currentClue.count})
                 </span>
@@ -407,7 +408,7 @@ export function CodenamesBoardView({
           </div>
           <div>
             <div className="text-[11px] font-black text-blue-800 uppercase tracking-wider flex items-center gap-1.5">
-              <span>Mavi Takım</span>
+              <span>{t('Mavi Takım')}</span>
               {bluePlayers.length > 0 && (
                 <span className="text-[10px] px-1.5 py-0.2 bg-sky-200 text-sky-900 rounded-full font-bold">
                   {bluePlayers.length} Oyuncu
@@ -416,7 +417,7 @@ export function CodenamesBoardView({
             </div>
             <div className="text-xl sm:text-2xl font-black text-slate-900">
               {blueRemaining}{' '}
-              <span className="text-xs font-bold text-slate-400">Kalan Ajan</span>
+              <span className="text-xs font-bold text-slate-400">{t('Kalan Ajan')}</span>
             </div>
           </div>
         </div>
@@ -450,10 +451,10 @@ export function CodenamesBoardView({
               setRulesModalOpen(true);
             }}
             className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors cursor-pointer border border-slate-200 flex items-center gap-1 text-xs font-bold"
-            title="Nasıl Oynanır?"
+            title={t('Nasıl Oynanır?')}
           >
             <HelpCircle className="w-4 h-4 text-indigo-600" />
-            <span>Nasıl Oynanır?</span>
+            <span>{t('Nasıl Oynanır?')}</span>
           </button>
 
           <button
@@ -488,7 +489,7 @@ export function CodenamesBoardView({
               }`}
             >
               <Lightbulb className="w-4 h-4" />
-              <span>İpucu Ver (Lider)</span>
+              <span>{t('İpucu Ver (Lider)')}</span>
             </button>
           ) : (
             <button
@@ -496,7 +497,7 @@ export function CodenamesBoardView({
               onClick={handleEndTurn}
               className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-black text-xs sm:text-sm border border-slate-300 flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer"
             >
-              <span>Tahmini Bitir / Sırayı Devret</span>
+              <span>{t('Tahmini Bitir / Sırayı Devret')}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           )}
@@ -507,7 +508,7 @@ export function CodenamesBoardView({
               onNewGame();
             }}
             className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 border border-slate-200 transition-colors cursor-pointer"
-            title="Yeniden Başlat"
+            title={t('Yeniden Başlat')}
           >
             <RotateCcw className="w-4 h-4" />
           </button>
@@ -519,10 +520,10 @@ export function CodenamesBoardView({
         <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm animate-fade-in space-y-2">
           <div className="text-xs font-black text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
             <History className="w-4 h-4 text-indigo-600" />
-            <span>Tur İpuçları Günlüğü</span>
+            <span>{t('Tur İpuçları Günlüğü')}</span>
           </div>
           {clues.length === 0 ? (
-            <div className="text-xs text-slate-400 italic py-1">Henüz ipucu verilmedi.</div>
+            <div className="text-xs text-slate-400 italic py-1">{t('Henüz ipucu verilmedi.')}</div>
           ) : (
             <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
               {clues.map((clue) => (
@@ -550,15 +551,13 @@ export function CodenamesBoardView({
           <div className="flex items-center gap-2">
             <Eye className="w-4 h-4 text-amber-600 shrink-0" />
             <span>
-              <strong>Lider Modu Aktif:</strong> Kartların gizli renkleri ekranda görüntüleniyor.
-            </span>
+              <strong>{t('Lider Modu Aktif:')}</strong>  {t('Kartların gizli renkleri ekranda görüntüleniyor.')}</span>
           </div>
           <button
             onClick={() => setIsSpymasterMode(false)}
             className="px-2.5 py-1 bg-amber-200 hover:bg-amber-300 text-amber-900 font-bold rounded-lg transition-colors cursor-pointer"
           >
-            Kapat
-          </button>
+            {t('Kapat')}</button>
         </div>
       )}
 
@@ -620,30 +619,27 @@ export function CodenamesBoardView({
           >
             <div className="space-y-1">
               <span className="text-xs font-black uppercase tracking-wider text-indigo-600">
-                TELEFONDAN OYNA
-              </span>
-              <h3 className="text-xl font-black text-slate-900">QR Kodu Telefonla Tara</h3>
+                {t('TELEFONDAN OYNA')}</span>
+              <h3 className="text-xl font-black text-slate-900">{t('QR Kodu Telefonla Tara')}</h3>
               <p className="text-xs text-slate-500">
-                Kameranızı açarak bu kodu taratın ve takımınızı/rolünüzü seçin!
-              </p>
+                {t('Kameranızı açarak bu kodu taratın ve takımınızı/rolünüzü seçin!')}</p>
             </div>
 
             {qrDataUrl && (
               <div className="p-3 bg-white border-2 border-slate-200 rounded-2xl shadow-inner inline-block mx-auto">
-                <img src={qrDataUrl} alt="Katılma QR Kodu" className="w-52 h-52 rounded-xl" />
+                <img src={qrDataUrl} alt={t('Katılma QR Kodu')} className="w-52 h-52 rounded-xl" />
               </div>
             )}
 
             <div className="p-3 bg-slate-100 rounded-2xl border border-slate-200 text-xs text-slate-700 font-mono font-bold tracking-wider">
-              ODA KODU: <span className="text-indigo-600 font-black text-sm">{roomCode}</span>
+              {t('ODA KODU:')} <span className="text-indigo-600 font-black text-sm">{roomCode}</span>
             </div>
 
             <button
               onClick={() => setQrModalOpen(false)}
               className="w-full py-3 bg-slate-900 text-white font-black text-xs rounded-xl shadow-xs transition-all active:scale-95 cursor-pointer"
             >
-              Tamam, Kapat
-            </button>
+              {t('Tamam, Kapat')}</button>
           </div>
         </div>
       )}

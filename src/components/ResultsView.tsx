@@ -17,6 +17,7 @@ import {
 import { playFanfareSound, playClickSound, playTurnSound, playLevelUpSound } from '../utils/audio';
 import confetti from 'canvas-confetti';
 
+import { t } from '../i18n';
 interface ResultsViewProps {
   players: Player[];
   strokes: Stroke[];
@@ -89,15 +90,13 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
         <div className="flex flex-wrap items-center justify-center gap-3 mt-5">
           <div className="bg-white dark:bg-slate-900 px-5 py-3 rounded-2xl border border-slate-200 dark:border-slate-800 text-left shadow-xs">
             <span className="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-bold block">
-              Gizli Kelime (Word)
-            </span>
+              {t('Gizli Kelime (Word)')}</span>
             <span className="text-lg sm:text-2xl font-black text-emerald-700 dark:text-emerald-300">{roundResult.crewWord}</span>
           </div>
 
           <div className="bg-white dark:bg-slate-900 px-5 py-3 rounded-2xl border border-slate-200 dark:border-slate-800 text-left shadow-xs">
             <span className="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-bold block">
-              Sahtekâr Ressam (Imposter)
-            </span>
+              {t('Sahtekâr Ressam (Imposter)')}</span>
             <span className="text-lg sm:text-2xl font-black text-rose-700 dark:text-rose-300">{imposter.name}</span>
           </div>
         </div>
@@ -109,9 +108,9 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
           <div className="text-center mb-6">
             <h3 className="text-lg font-black text-slate-900 dark:text-slate-100 flex items-center justify-center gap-2">
               <Crown className="w-5 h-5 text-amber-500" />
-              <span>Oyun Kürsüsü (Podium)</span>
+              <span>{t('Oyun Kürsüsü (Podium)')}</span>
             </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400">Genel puan durumunda zirveye yerleşen ressamlar</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">{t('Genel puan durumunda zirveye yerleşen ressamlar')}</p>
           </div>
 
           <div className="flex items-end justify-center gap-2 sm:gap-4 pt-8 pb-2 max-w-md mx-auto">
@@ -188,11 +187,9 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
             </div>
             <div>
               <h4 className="font-black text-emerald-900 dark:text-emerald-200 text-sm sm:text-base">
-                🎯 Sahtekârı Doğru Tespit Edenler (+50 Puan Bonus!)
-              </h4>
+                {t('🎯 Sahtekârı Doğru Tespit Edenler (+50 Puan Bonus!)')}</h4>
               <p className="text-xs text-emerald-700 dark:text-emerald-300">
-                Sahtekârı doğru oylayan dedektifler fazladan +50 puan kazandı:
-              </p>
+                {t('Sahtekârı doğru oylayan dedektifler fazladan +50 puan kazandı:')}</p>
             </div>
           </div>
 
@@ -210,8 +207,7 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
                 </span>
                 <span>{voter.name}</span>
                 <span className="text-emerald-800 dark:text-emerald-300 font-black bg-emerald-100 dark:bg-emerald-900/40 px-1.5 py-0.5 rounded text-[11px] border border-emerald-200 dark:border-emerald-900">
-                  +50 pts
-                </span>
+                  {t('+50 pts')}</span>
               </div>
             ))}
           </div>
@@ -224,11 +220,10 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
           <div>
             <h3 className="text-base font-black text-slate-900 dark:text-slate-100 flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-              <span>Ortak Çizim Başyapıtı & Tekrarı</span>
+              <span>{t('Ortak Çizim Başyapıtı & Tekrarı')}</span>
             </h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-              Çizimin nasıl oluştuğunu oynatın veya resim olarak indirin.
-            </p>
+              {t('Çizimin nasıl oluştuğunu oynatın veya resim olarak indirin.')}</p>
           </div>
 
           <CanvasBoard
@@ -245,9 +240,9 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
           <div>
             <h3 className="text-base font-black text-slate-900 dark:text-slate-100 flex items-center gap-2">
               <Award className="w-4 h-4 text-amber-500" />
-              <span>Tüm Oyuncular Puan Tablosu</span>
+              <span>{t('Tüm Oyuncular Puan Tablosu')}</span>
             </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Toplam kazanılan puan sıralaması.</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{t('Toplam kazanılan puan sıralaması.')}</p>
           </div>
 
           <div className="space-y-2 max-h-[360px] overflow-y-auto pr-1">
@@ -277,8 +272,7 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
                         <span>{player.name}</span>
                         {isCurrentImposter && (
                           <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-rose-100 dark:bg-rose-900/40 text-rose-800 dark:text-rose-300 font-black border border-rose-200 dark:border-rose-900">
-                            Sahtekâr
-                          </span>
+                            {t('Sahtekâr')}</span>
                         )}
                         {votedImposter && (
                           <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 font-black flex items-center gap-0.5 border border-emerald-200 dark:border-emerald-900">
@@ -319,7 +313,7 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
           className="w-full sm:w-auto min-w-[240px] px-8 py-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-rose-600 hover:from-indigo-500 hover:to-rose-500 text-white font-black text-base rounded-2xl shadow-xl shadow-indigo-600/20 flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer"
         >
           <Play className="w-5 h-5 fill-white" />
-          <span>SONRAKİ TURU OYNA 🚀</span>
+          <span>{t('SONRAKİ TURU OYNA 🚀')}</span>
         </button>
 
         <button
@@ -331,7 +325,7 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
           className="w-full sm:w-auto px-6 py-4 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 font-bold text-sm rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
         >
           <RotateCcw className="w-4 h-4" />
-          <span>Oyuncu / Ayarları Değiştir</span>
+          <span>{t('Oyuncu / Ayarları Değiştir')}</span>
         </button>
       </div>
     </div>

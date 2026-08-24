@@ -4,6 +4,7 @@ import { Shield, Skull, UserCheck, Coffee, Check, AlertTriangle } from 'lucide-r
 import { playCardFlipSound } from '../../utils/audio';
 import { RedAgentArt, BlueAgentArt, CivilianArt, AssassinArt } from './AgentIllustrations';
 
+import { t } from '../../i18n';
 export interface CodenamesCardItemProps {
   card: CodenamesCard;
   isSpymasterView: boolean;
@@ -107,8 +108,7 @@ export const CodenamesCardItem: React.FC<CodenamesCardItemProps> = ({
               </span>
             ) : (
               <span className="text-slate-400 dark:text-slate-500 font-medium tracking-wider text-[8px] uppercase">
-                GİZLİ KOD
-              </span>
+                {t('GİZLİ KOD')}</span>
             )}
           </div>
         </div>
@@ -181,7 +181,7 @@ export const CodenamesCardItem: React.FC<CodenamesCardItemProps> = ({
           {/* Bottom Card Index */}
           <div className="w-full flex justify-between items-center text-[8px] sm:text-[9px] font-bold opacity-75 z-10">
             <span>#{card.orderIndex + 1}</span>
-            <span className="uppercase tracking-widest font-black">AÇILDI ✓</span>
+            <span className="uppercase tracking-widest font-black">{t('AÇILDI ✓')}</span>
           </div>
         </div>
       </div>

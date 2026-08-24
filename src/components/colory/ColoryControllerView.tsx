@@ -4,6 +4,7 @@ import { ColoryGameState, ColoryPlayer, Hsl } from '../../types/colory';
 import { defaultGuess, hslToHex } from '../../data/coloryLogic';
 import { ColorPicker } from './ColorPicker';
 
+import { t } from '../../i18n';
 interface Props {
   roomCode: string;
   myPlayer: ColoryPlayer | null;
@@ -57,12 +58,12 @@ export const ColoryControllerView: React.FC<Props> = ({
       {gameState.phase === 'LOBBY' && (
         <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 shadow-lg text-center space-y-3">
           <div className="text-4xl">🎨</div>
-          <h3 className="text-lg font-black">Hazırsın!</h3>
-          <p className="text-xs font-bold text-slate-500 dark:text-slate-400">TV ekranından başlaması bekleniyor…</p>
+          <h3 className="text-lg font-black">{t('Hazırsın!')}</h3>
+          <p className="text-xs font-bold text-slate-500 dark:text-slate-400">{t('TV ekranından başlaması bekleniyor…')}</p>
           <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-left text-xs space-y-1 font-medium text-slate-600 dark:text-slate-300">
-            <p>1️⃣ TV'de bir renk çıkacak — iyi bak.</p>
-            <p>2️⃣ Renk kaybolunca burada aynısını seçmeye çalış.</p>
-            <p>3️⃣ En yakın tutturan turu alır. Az farkla kaçırmak da puan getirir.</p>
+            <p>{t("1️⃣ TV'de bir renk çıkacak — iyi bak.")}</p>
+            <p>{t('2️⃣ Renk kaybolunca burada aynısını seçmeye çalış.')}</p>
+            <p>{t('3️⃣ En yakın tutturan turu alır. Az farkla kaçırmak da puan getirir.')}</p>
           </div>
         </div>
       )}
@@ -70,32 +71,31 @@ export const ColoryControllerView: React.FC<Props> = ({
       {gameState.phase === 'SHOWING' && (
         <div className="py-12 text-center space-y-3 rounded-3xl bg-white dark:bg-slate-900 border-2 border-fuchsia-300 dark:border-fuchsia-800 shadow-lg">
           <Eye className="w-10 h-10 mx-auto text-fuchsia-500" />
-          <h3 className="text-xl font-black">TV'ye bak!</h3>
+          <h3 className="text-xl font-black">{t("TV'ye bak!")}</h3>
           <div className="text-5xl font-black text-fuchsia-600 dark:text-fuchsia-400 tabular-nums">{gameState.timerSeconds}</div>
-          <p className="text-xs font-bold text-slate-500 dark:text-slate-400">Rengi aklında tut…</p>
+          <p className="text-xs font-bold text-slate-500 dark:text-slate-400">{t('Rengi aklında tut…')}</p>
         </div>
       )}
 
       {gameState.phase === 'GUESSING' && (
         <div className="p-5 rounded-3xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 shadow-lg space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-base font-black">Rengi seç</h3>
+            <h3 className="text-base font-black">{t('Rengi seç')}</h3>
             <span className="text-2xl font-black text-amber-500 tabular-nums">{gameState.timerSeconds}</span>
           </div>
 
           {myGuess ? (
             <div className="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 text-center space-y-2">
-              <p className="text-xs font-black text-emerald-800 dark:text-emerald-300">SEÇİMİN ALINDI</p>
+              <p className="text-xs font-black text-emerald-800 dark:text-emerald-300">{t('SEÇİMİN ALINDI')}</p>
               <div className="w-20 h-20 mx-auto rounded-2xl border-4 border-white dark:border-slate-700 shadow-lg" style={{ backgroundColor: hslToHex(myGuess) }} />
-              <p className="text-[11px] font-bold text-slate-500 dark:text-slate-400">Diğerleri bekleniyor…</p>
+              <p className="text-[11px] font-bold text-slate-500 dark:text-slate-400">{t('Diğerleri bekleniyor…')}</p>
             </div>
           ) : (
             <>
               <ColorPicker value={pick} onChange={setPick} />
               <button onClick={() => onSubmitGuess(pick)}
                 className="w-full py-4 rounded-2xl bg-gradient-to-r from-fuchsia-600 via-violet-600 to-cyan-500 text-white font-black text-base shadow-lg active:scale-95 transition-transform cursor-pointer">
-                BU RENK!
-              </button>
+                {t('BU RENK!')}</button>
             </>
           )}
         </div>
@@ -107,11 +107,11 @@ export const ColoryControllerView: React.FC<Props> = ({
             <div className="flex items-center justify-center gap-3">
               <div className="space-y-1">
                 <div className="w-20 h-20 rounded-2xl border-4 border-white dark:border-slate-700 shadow" style={{ backgroundColor: hslToHex(gameState.target) }} />
-                <p className="text-[10px] font-black text-slate-500 dark:text-slate-400">DOĞRU</p>
+                <p className="text-[10px] font-black text-slate-500 dark:text-slate-400">{t('DOĞRU')}</p>
               </div>
               <div className="space-y-1">
                 <div className="w-20 h-20 rounded-2xl border-4 border-white dark:border-slate-700 shadow" style={{ backgroundColor: hslToHex(myGuess) }} />
-                <p className="text-[10px] font-black text-slate-500 dark:text-slate-400">SENİN</p>
+                <p className="text-[10px] font-black text-slate-500 dark:text-slate-400">{t('SENİN')}</p>
               </div>
             </div>
           )}
@@ -122,7 +122,7 @@ export const ColoryControllerView: React.FC<Props> = ({
               <p className="text-xs font-bold text-slate-500 dark:text-slate-400">Fark ΔE {myResult.deltaE} · Toplam {myPlayer?.score}</p>
             </>
           ) : (
-            <p className="text-sm font-black text-slate-500 dark:text-slate-400">Bu turda seçim yapmadın</p>
+            <p className="text-sm font-black text-slate-500 dark:text-slate-400">{t('Bu turda seçim yapmadın')}</p>
           )}
 
           <div className="pt-2 space-y-1 text-left">
@@ -136,7 +136,7 @@ export const ColoryControllerView: React.FC<Props> = ({
           </div>
 
           {gameState.phase === 'GAME_OVER' && gameState.winnerPlayerId === myPlayer?.id && (
-            <p className="text-sm font-black text-amber-500">🏆 Renk ustası sensin!</p>
+            <p className="text-sm font-black text-amber-500">{t('🏆 Renk ustası sensin!')}</p>
           )}
         </div>
       )}

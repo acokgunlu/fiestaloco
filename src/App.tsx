@@ -41,6 +41,7 @@ import { useCodenamesSocket } from './utils/useCodenamesSocket';
 import { isSoundEnabled, toggleSound } from './utils/audio';
 import { useAppTheme } from './utils/theme';
 
+import { t } from './i18n';
 export default function App() {
   // Theme handling (Light / Dark mode)
   const { theme, toggleTheme } = useAppTheme();
@@ -564,7 +565,7 @@ export default function App() {
                     onClick={() => setActiveModule('arcade_hub')}
                     className="text-xs font-bold text-slate-500 hover:text-slate-800 flex items-center gap-1 cursor-pointer"
                   >
-                    <span>← Parti Kulübü Oyun Menüsü</span>
+                    <span>{t('← Parti Kulübü Oyun Menüsü')}</span>
                   </button>
                 </div>
                 <OnlineRoomPicker

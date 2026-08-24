@@ -2,6 +2,7 @@ import React from 'react';
 import { X, Palette, EyeOff, ShieldCheck, Trophy, Sparkles } from 'lucide-react';
 import { playClickSound } from '../utils/audio';
 
+import { t } from '../i18n';
 interface RulesModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -28,8 +29,8 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
               ?
             </div>
             <div>
-              <h2 className="text-lg font-black tracking-tight">Sahtekâr Ressam (Imposter Line) Rehberi</h2>
-              <p className="text-xs text-slate-300">3-8 Oyunculu Gizli Çizim & Blöf Oyunu</p>
+              <h2 className="text-lg font-black tracking-tight">{t('Sahtekâr Ressam (Imposter Line) Rehberi')}</h2>
+              <p className="text-xs text-slate-300">{t('3-8 Oyunculu Gizli Çizim & Blöf Oyunu')}</p>
             </div>
           </div>
           <button
@@ -54,11 +55,10 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
             <div>
               <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center gap-1.5">
                 <EyeOff className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-                The Secret Words
-              </h3>
+                {t('The Secret Words')}</h3>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
-                Everyone is secretly shown the <span className="font-semibold text-indigo-700 dark:text-indigo-300">SAME secret word</span> (e.g. <em>"Cat"</em>).
-                Except <strong>1 Imposter</strong> who secretly receives a <span className="font-semibold text-rose-600 dark:text-rose-400">DIFFERENT related word</span> (e.g. <em>"Fox"</em>) or is a blind imposter!
+                Everyone is secretly shown the <span className="font-semibold text-indigo-700 dark:text-indigo-300">{t('SAME secret word')}</span> (e.g. <em>{t('"Cat"')}</em>).
+                Except <strong>{t('1 Imposter')}</strong> who secretly receives a <span className="font-semibold text-rose-600 dark:text-rose-400">{t('DIFFERENT related word')}</span> (e.g. <em>{t('"Fox"')}</em>) or is a blind imposter!
               </p>
             </div>
           </div>
@@ -71,10 +71,9 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
             <div>
               <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center gap-1.5">
                 <Palette className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                Draw Exactly ONE Continuous Line
-              </h3>
+                {t('Draw Exactly ONE Continuous Line')}</h3>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
-                In turns, each player draws <strong>ONE single unbroken stroke</strong> on the shared canvas in their assigned color.
+                In turns, each player draws <strong>{t('ONE single unbroken stroke')}</strong> on the shared canvas in their assigned color.
                 Once you lift your finger/mouse, your turn is done! (Usually 2 strokes per player per game).
               </p>
             </div>
@@ -88,12 +87,11 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
             <div>
               <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center gap-1.5">
                 <ShieldCheck className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-                The Bluff Strategy
-              </h3>
+                {t('The Bluff Strategy')}</h3>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
-                <strong>Innocent Crew:</strong> Draw enough to prove you know the word, but don't draw too much or you'll give the exact word away to the Imposter!
+                <strong>{t('Innocent Crew:')}</strong> Draw enough to prove you know the word, but don't draw too much or you'll give the exact word away to the Imposter!
                 <br />
-                <strong>The Imposter:</strong> Bluff along, follow the general shape, and try not to get caught!
+                <strong>{t('The Imposter:')}</strong> Bluff along, follow the general shape, and try not to get caught!
               </p>
             </div>
           </div>
@@ -106,14 +104,13 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
             <div>
               <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center gap-1.5">
                 <Trophy className="w-4 h-4 text-rose-600 dark:text-rose-400" />
-                Discussion, Voting & The Guess
-              </h3>
+                {t('Discussion, Voting & The Guess')}</h3>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
                 After drawing, everyone discusses and votes for who they think is the Imposter.
                 <br />
-                • If the innocent crew votes wrong, the <strong>Imposter wins (+100 pts)</strong>!
+                • If the innocent crew votes wrong, the <strong>{t('Imposter wins (+100 pts)')}</strong>!
                 <br />
-                • If the crew catches the Imposter, the Imposter gets <strong>ONE LAST CHANCE</strong> to guess the Crew's real word! If the Imposter guesses correctly, they steal the victory!
+                • If the crew catches the Imposter, the Imposter gets <strong>{t('ONE LAST CHANCE')}</strong> to guess the Crew's real word! If the Imposter guesses correctly, they steal the victory!
               </p>
             </div>
           </div>
@@ -129,8 +126,7 @@ export const RulesModal: React.FC<RulesModalProps> = ({ isOpen, onClose }) => {
             }}
             className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-xl shadow-md transition-all active:scale-95"
           >
-            Got It, Let's Play!
-          </button>
+            {t("Got It, Let's Play!")}</button>
         </div>
       </div>
     </div>

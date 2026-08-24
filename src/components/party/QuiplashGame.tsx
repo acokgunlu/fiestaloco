@@ -20,6 +20,7 @@ import { QuiplashRulesModal } from '../quiplash/QuiplashRulesModal';
 import { DEFAULT_PLAYER_PALETTE } from '../../data/wordPacks';
 import { playClickSound } from '../../utils/audio';
 
+import { t } from '../../i18n';
 interface QuiplashGameProps {
   onBackToHub: () => void;
 }
@@ -134,7 +135,7 @@ export const QuiplashGame: React.FC<QuiplashGameProps> = ({ onBackToHub }) => {
             className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs font-black transition-all shadow-xs cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Parti Arenası</span>
+            <span>{t('Parti Arenası')}</span>
           </button>
 
           <div className="flex items-center gap-2.5">
@@ -144,15 +145,12 @@ export const QuiplashGame: React.FC<QuiplashGameProps> = ({ onBackToHub }) => {
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
-                  Quiplash
-                </h1>
+                  {t('Quiplash')}</h1>
                 <span className="px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300 text-[10px] font-black border border-purple-300 dark:border-purple-800">
-                  MİZAH VE LAF CAMBAZLIĞI DÜELLOSU
-                </span>
+                  {t('MİZAH VE LAF CAMBAZLIĞI DÜELLOSU')}</span>
               </div>
               <p className="text-xs text-slate-500 dark:text-slate-400 font-bold">
-                Absürt sorulara en komik cevabı yaz, oyları topla, rakiplerini tek tek ele!
-              </p>
+                {t('Absürt sorulara en komik cevabı yaz, oyları topla, rakiplerini tek tek ele!')}</p>
             </div>
           </div>
         </div>
@@ -162,8 +160,7 @@ export const QuiplashGame: React.FC<QuiplashGameProps> = ({ onBackToHub }) => {
           className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs font-black transition-all shadow-xs cursor-pointer"
         >
           <HelpCircle className="w-4 h-4 text-purple-500 dark:text-purple-400" />
-          Nasıl Oynanır?
-        </button>
+          {t('Nasıl Oynanır?')}</button>
       </div>
 
       <div className="w-full">
@@ -177,10 +174,9 @@ export const QuiplashGame: React.FC<QuiplashGameProps> = ({ onBackToHub }) => {
                 <div className="w-14 h-14 rounded-2xl bg-purple-100 dark:bg-purple-600/20 text-purple-600 dark:text-purple-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
                   <Tv className="w-7 h-7" />
                 </div>
-                <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">TV Ekranı (Host)</h3>
+                <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">{t('TV Ekranı (Host)')}</h3>
                 <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                  Odayı büyük ekranda kurun. Oyuncular telefonlarından odaya katılsın, oylar ve kapışmalar TV'de aksın.
-                </p>
+                  {t("Odayı büyük ekranda kurun. Oyuncular telefonlarından odaya katılsın, oylar ve kapışmalar TV'de aksın.")}</p>
               </div>
 
               <button
@@ -188,8 +184,7 @@ export const QuiplashGame: React.FC<QuiplashGameProps> = ({ onBackToHub }) => {
                 className="mt-6 w-full py-3.5 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-black text-sm shadow-xl shadow-purple-900/40 hover:scale-105 transition-all flex items-center justify-center gap-2"
               >
                 <Tv className="w-4 h-4" />
-                TV Odanı Kur
-              </button>
+                {t('TV Odanı Kur')}</button>
             </div>
 
             {/* 2. Mobile Controller Join */}
@@ -198,10 +193,9 @@ export const QuiplashGame: React.FC<QuiplashGameProps> = ({ onBackToHub }) => {
                 <div className="w-14 h-14 rounded-2xl bg-pink-100 dark:bg-pink-600/20 text-pink-600 dark:text-pink-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
                   <Smartphone className="w-7 h-7" />
                 </div>
-                <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">Telefondan Katıl</h3>
+                <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">{t('Telefondan Katıl')}</h3>
                 <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                  TV ekranındaki 4 haneli oda kodunu girerek telefonunuzu kontrol kumandasına dönüştürün.
-                </p>
+                  {t('TV ekranındaki 4 haneli oda kodunu girerek telefonunuzu kontrol kumandasına dönüştürün.')}</p>
               </div>
 
               <button
@@ -209,8 +203,7 @@ export const QuiplashGame: React.FC<QuiplashGameProps> = ({ onBackToHub }) => {
                 className="mt-6 w-full py-3.5 rounded-2xl bg-gradient-to-r from-pink-600 to-amber-600 text-white font-black text-sm shadow-xl shadow-pink-900/40 hover:scale-105 transition-all flex items-center justify-center gap-2"
               >
                 <Smartphone className="w-4 h-4" />
-                Odaya Katıl
-              </button>
+                {t('Odaya Katıl')}</button>
             </div>
 
             {/* 3. Pass & Play Local */}
@@ -219,10 +212,9 @@ export const QuiplashGame: React.FC<QuiplashGameProps> = ({ onBackToHub }) => {
                 <div className="w-14 h-14 rounded-2xl bg-amber-100 dark:bg-amber-600/20 text-amber-600 dark:text-amber-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
                   <Users className="w-7 h-7" />
                 </div>
-                <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">Tek Cihaz (Çevrimdışı)</h3>
+                <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">{t('Tek Cihaz (Çevrimdışı)')}</h3>
                 <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                  İnternet veya ikinci ekran olmadan tek bir telefon veya tableti elden ele devrederek oynayın.
-                </p>
+                  {t('İnternet veya ikinci ekran olmadan tek bir telefon veya tableti elden ele devrederek oynayın.')}</p>
               </div>
 
               <button
@@ -230,21 +222,19 @@ export const QuiplashGame: React.FC<QuiplashGameProps> = ({ onBackToHub }) => {
                 className="mt-6 w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-600 to-yellow-500 text-slate-950 font-black text-sm shadow-xl shadow-amber-900/30 hover:scale-105 transition-all flex items-center justify-center gap-2"
               >
                 <Users className="w-4 h-4" />
-                Tek Cihazda Başla
-              </button>
+                {t('Tek Cihazda Başla')}</button>
             </div>
           </div>
         ) : (
           /* Mobile Join Form */
           <div className="w-full max-w-md p-8 rounded-3xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 shadow-2xl backdrop-blur-xl">
             <div className="flex items-center justify-between pb-4 mb-6 border-b border-slate-200 dark:border-slate-800">
-              <h3 className="text-lg font-black text-slate-900 dark:text-white">Telefondan Odaya Katıl</h3>
+              <h3 className="text-lg font-black text-slate-900 dark:text-white">{t('Telefondan Odaya Katıl')}</h3>
               <button
                 onClick={() => setPlayMode('lobby')}
                 className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white font-bold"
               >
-                İptal
-              </button>
+                {t('İptal')}</button>
             </div>
 
             {socket.errorMessage && (
@@ -257,14 +247,13 @@ export const QuiplashGame: React.FC<QuiplashGameProps> = ({ onBackToHub }) => {
               {/* Room Code */}
               <div>
                 <label className="block text-[11px] font-bold uppercase text-slate-500 dark:text-slate-400 mb-1">
-                  4 Haneli Oda Kodu
-                </label>
+                  {t('4 Haneli Oda Kodu')}</label>
                 <input
                   type="text"
                   maxLength={4}
                   value={joinCodeInput}
                   onChange={(e) => setJoinCodeInput(e.target.value.toUpperCase())}
-                  placeholder="Örn: WOLF"
+                  placeholder={t('Örn: WOLF')}
                   className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-amber-600 dark:text-amber-400 font-mono font-black text-lg uppercase tracking-widest text-center focus:outline-none focus:border-amber-400"
                   required
                 />
@@ -273,13 +262,12 @@ export const QuiplashGame: React.FC<QuiplashGameProps> = ({ onBackToHub }) => {
               {/* Player Name */}
               <div>
                 <label className="block text-[11px] font-bold uppercase text-slate-500 dark:text-slate-400 mb-1">
-                  Oyuncu Adınız
-                </label>
+                  {t('Oyuncu Adınız')}</label>
                 <input
                   type="text"
                   value={playerNameInput}
                   onChange={(e) => setPlayerNameInput(e.target.value)}
-                  placeholder="Adınızı yazın..."
+                  placeholder={t('Adınızı yazın...')}
                   className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white font-bold text-sm focus:outline-none focus:border-purple-500"
                   required
                 />
@@ -288,8 +276,7 @@ export const QuiplashGame: React.FC<QuiplashGameProps> = ({ onBackToHub }) => {
               {/* Avatar Selector */}
               <div>
                 <label className="block text-[11px] font-bold uppercase text-slate-500 dark:text-slate-400 mb-2">
-                  Avatar Seçin
-                </label>
+                  {t('Avatar Seçin')}</label>
                 <div className="grid grid-cols-6 gap-2">
                   {DEFAULT_PLAYER_PALETTE.map((pal) => (
                     <button

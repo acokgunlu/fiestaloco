@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
+import { t } from '../../i18n';
 import {
   Send,
   Sparkles,
@@ -122,8 +123,7 @@ export const QuiplashControllerView: React.FC<QuiplashControllerViewProps> = ({
 
         <div className="text-right">
           <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">
-            ODA KODU
-          </span>
+            {t('ODA KODU')}</span>
           <span className="text-sm font-black font-mono text-amber-400 bg-slate-900 px-2.5 py-1 rounded-lg border border-slate-800">
             {roomCode}
           </span>
@@ -140,14 +140,12 @@ export const QuiplashControllerView: React.FC<QuiplashControllerViewProps> = ({
             <div className="w-16 h-16 rounded-2xl bg-purple-600/20 text-purple-400 flex items-center justify-center mx-auto mb-4 text-3xl">
               🎮
             </div>
-            <h3 className="text-xl font-black text-white mb-2">Odaya Katıldınız!</h3>
+            <h3 className="text-xl font-black text-white mb-2">{t('Odaya Katıldınız!')}</h3>
             <p className="text-xs text-slate-400 leading-relaxed mb-6">
-              Oyunun TV ana ekranından başlatılması bekleniyor. Arkanıza yaslanın ve hazır olun!
-            </p>
+              {t('Oyunun TV ana ekranından başlatılması bekleniyor. Arkanıza yaslanın ve hazır olun!')}</p>
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold animate-pulse">
               <CheckCircle2 className="w-4 h-4" />
-              Hazır Durumdasınız
-            </div>
+              {t('Hazır Durumdasınız')}</div>
           </div>
         )}
 
@@ -161,10 +159,9 @@ export const QuiplashControllerView: React.FC<QuiplashControllerViewProps> = ({
                 <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto mb-4 text-3xl">
                   ✓
                 </div>
-                <h3 className="text-2xl font-black text-white mb-2">Yanıtlar Gönderildi!</h3>
+                <h3 className="text-2xl font-black text-white mb-2">{t('Yanıtlar Gönderildi!')}</h3>
                 <p className="text-xs text-slate-400 mb-6">
-                  Harika! Diğer oyuncuların da yanıtlarını tamamlaması bekleniyor. TV ekranını takip edin!
-                </p>
+                  {t('Harika! Diğer oyuncuların da yanıtlarını tamamlaması bekleniyor. TV ekranını takip edin!')}</p>
                 <div className="inline-flex items-center gap-2 text-xs font-bold text-amber-400 bg-amber-500/10 px-4 py-2 rounded-xl border border-amber-500/20">
                   <Clock className="w-4 h-4" />
                   Kalan Süre: {gameState.timerSeconds}s
@@ -184,8 +181,7 @@ export const QuiplashControllerView: React.FC<QuiplashControllerViewProps> = ({
 
                 {assignedPrompts.length === 0 ? (
                   <div className="p-6 rounded-2xl bg-slate-900 text-center text-xs text-slate-400">
-                    Sorular yükleniyor...
-                  </div>
+                    {t('Sorular yükleniyor...')}</div>
                 ) : (
                   assignedPrompts.map((p, idx) => (
                     <div
@@ -209,7 +205,7 @@ export const QuiplashControllerView: React.FC<QuiplashControllerViewProps> = ({
                         type="text"
                         value={answers[p.id] || ''}
                         onChange={(e) => handleAnswerChange(p.id, e.target.value)}
-                        placeholder="En komik yanıtını yaz..."
+                        placeholder={t('En komik yanıtını yaz...')}
                         className="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all font-medium"
                       />
                     </div>
@@ -222,8 +218,7 @@ export const QuiplashControllerView: React.FC<QuiplashControllerViewProps> = ({
                   className="w-full py-4 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-amber-600 text-white font-black text-base shadow-xl shadow-purple-900/50 hover:opacity-95 active:scale-95 transition-all flex items-center justify-center gap-2"
                 >
                   <Send className="w-5 h-5" />
-                  Yanıtları Gönder
-                </button>
+                  {t('Yanıtları Gönder')}</button>
               </form>
             )}
           </div>
@@ -248,16 +243,14 @@ export const QuiplashControllerView: React.FC<QuiplashControllerViewProps> = ({
                 <div className="w-16 h-16 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center mx-auto mb-3 text-3xl">
                   🍿
                 </div>
-                <h4 className="text-lg font-black text-white mb-1">Bu Soru Senin!</h4>
+                <h4 className="text-lg font-black text-white mb-1">{t('Bu Soru Senin!')}</h4>
                 <p className="text-xs text-slate-400 leading-relaxed">
-                  Sen bu kapışmanın yazarlarından birisin. Oy kullanamazsın; arkanıza yaslanın ve TV ekranındaki oyları izleyin!
-                </p>
+                  {t('Sen bu kapışmanın yazarlarından birisin. Oy kullanamazsın; arkanıza yaslanın ve TV ekranındaki oyları izleyin!')}</p>
               </div>
             ) : (
               <div className="space-y-3">
                 <p className="text-center text-xs font-bold text-slate-400 mb-2">
-                  En çok güldüren cevaba oy ver:
-                </p>
+                  {t('En çok güldüren cevaba oy ver:')}</p>
 
                 {/* Option 1 Button */}
                 <button
@@ -269,15 +262,13 @@ export const QuiplashControllerView: React.FC<QuiplashControllerViewProps> = ({
                   }`}
                 >
                   <span className="text-[10px] font-black uppercase tracking-widest text-cyan-400 block mb-1">
-                    SEÇENEK A
-                  </span>
+                    {t('SEÇENEK A')}</span>
                   <p className="text-base font-black text-white leading-snug">
                     "{currentMatchup.answer1.text || '...'}"
                   </p>
                   {selectedVoteIndex === 1 && (
                     <div className="mt-2 text-xs font-bold text-cyan-400 flex items-center gap-1">
-                      <CheckCircle2 className="w-4 h-4" /> Oyunuz Kaydedildi
-                    </div>
+                      <CheckCircle2 className="w-4 h-4" />  {t('Oyunuz Kaydedildi')}</div>
                   )}
                 </button>
 
@@ -291,15 +282,13 @@ export const QuiplashControllerView: React.FC<QuiplashControllerViewProps> = ({
                   }`}
                 >
                   <span className="text-[10px] font-black uppercase tracking-widest text-rose-400 block mb-1">
-                    SEÇENEK B
-                  </span>
+                    {t('SEÇENEK B')}</span>
                   <p className="text-base font-black text-white leading-snug">
                     "{currentMatchup.answer2.text || '...'}"
                   </p>
                   {selectedVoteIndex === 2 && (
                     <div className="mt-2 text-xs font-bold text-rose-400 flex items-center gap-1">
-                      <CheckCircle2 className="w-4 h-4" /> Oyunuz Kaydedildi
-                    </div>
+                      <CheckCircle2 className="w-4 h-4" />  {t('Oyunuz Kaydedildi')}</div>
                   )}
                 </button>
               </div>
@@ -315,14 +304,12 @@ export const QuiplashControllerView: React.FC<QuiplashControllerViewProps> = ({
             <div className="w-16 h-16 rounded-2xl bg-amber-400/20 text-amber-400 flex items-center justify-center mx-auto mb-4 text-3xl">
               🏆
             </div>
-            <h3 className="text-xl font-black text-white mb-2">Puanlar TV Ekranında!</h3>
+            <h3 className="text-xl font-black text-white mb-2">{t('Puanlar TV Ekranında!')}</h3>
             <p className="text-xs text-slate-400 mb-6">
-              Sonuçlar ve skor durumu ana ekranda gösteriliyor.
-            </p>
+              {t('Sonuçlar ve skor durumu ana ekranda gösteriliyor.')}</p>
             <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 inline-block">
               <span className="text-[10px] uppercase font-bold text-slate-400 block">
-                MEVCUT PUANINIZ
-              </span>
+                {t('MEVCUT PUANINIZ')}</span>
               <span className="text-2xl font-black text-amber-400">
                 {player?.score || 0} Puan
               </span>
@@ -340,17 +327,15 @@ export const QuiplashControllerView: React.FC<QuiplashControllerViewProps> = ({
                 <div className="w-16 h-16 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center mx-auto mb-4 text-3xl">
                   👑
                 </div>
-                <h3 className="text-xl font-black text-white mb-2">Final Yanıtın Gönderildi!</h3>
+                <h3 className="text-xl font-black text-white mb-2">{t('Final Yanıtın Gönderildi!')}</h3>
                 <p className="text-xs text-slate-400">
-                  Şampiyonluk için oylama başlamak üzere!
-                </p>
+                  {t('Şampiyonluk için oylama başlamak üzere!')}</p>
               </div>
             ) : (
               <form onSubmit={handleSubmitLastLash} className="space-y-4">
                 <div className="text-center mb-2">
                   <span className="text-xs font-black uppercase text-amber-400 block mb-1">
-                    👑 BÜYÜK FİNAL (THE LAST LASH)
-                  </span>
+                    {t('👑 BÜYÜK FİNAL (THE LAST LASH)')}</span>
                   <p className="text-sm font-bold text-white leading-snug">
                     "{gameState.lastLashPrompt?.prompt}"
                   </p>
@@ -360,7 +345,7 @@ export const QuiplashControllerView: React.FC<QuiplashControllerViewProps> = ({
                   rows={3}
                   value={lastLashText}
                   onChange={(e) => setLastLashText(e.target.value)}
-                  placeholder="En efsane final yanıtını buraya yaz..."
+                  placeholder={t('En efsane final yanıtını buraya yaz...')}
                   className="w-full px-4 py-3 rounded-2xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400"
                 />
 
@@ -370,8 +355,7 @@ export const QuiplashControllerView: React.FC<QuiplashControllerViewProps> = ({
                   className="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 font-black text-base shadow-xl shadow-amber-900/50 active:scale-95 transition-all flex items-center justify-center gap-2"
                 >
                   <Send className="w-5 h-5" />
-                  Final Yanıtını Gönder
-                </button>
+                  {t('Final Yanıtını Gönder')}</button>
               </form>
             )}
           </div>
@@ -382,11 +366,9 @@ export const QuiplashControllerView: React.FC<QuiplashControllerViewProps> = ({
           <div className="w-full space-y-3">
             <div className="text-center mb-2">
               <span className="text-xs font-black uppercase text-amber-400 block mb-1">
-                EN İYİ CEVABA OY VER (3X PUAN)
-              </span>
+                {t('EN İYİ CEVABA OY VER (3X PUAN)')}</span>
               <p className="text-xs text-slate-400">
-                Aşağıdaki yanıtlardan en çok beğendiğini seç:
-              </p>
+                {t('Aşağıdaki yanıtlardan en çok beğendiğini seç:')}</p>
             </div>
 
             <div className="space-y-2.5">
@@ -410,13 +392,11 @@ export const QuiplashControllerView: React.FC<QuiplashControllerViewProps> = ({
                     <p className="text-sm font-bold text-white">"{ans.text}"</p>
                     {isOwn && (
                       <span className="text-[10px] text-slate-500 block mt-1">
-                        (Senin cevabın)
-                      </span>
+                        {t('(Senin cevabın)')}</span>
                     )}
                     {isSelected && (
                       <span className="text-[10px] font-bold text-amber-400 block mt-1">
-                        ✓ Seçildi
-                      </span>
+                        {t('✓ Seçildi')}</span>
                     )}
                   </button>
                 );
@@ -433,14 +413,12 @@ export const QuiplashControllerView: React.FC<QuiplashControllerViewProps> = ({
             <div className="w-16 h-16 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center mx-auto mb-4 text-3xl">
               👑
             </div>
-            <h3 className="text-2xl font-black text-white mb-1">Oyun Tamamlandı!</h3>
+            <h3 className="text-2xl font-black text-white mb-1">{t('Oyun Tamamlandı!')}</h3>
             <p className="text-xs text-slate-400 mb-6">
-              Final sonuçları ve şampiyon TV ekranında açıklandı!
-            </p>
+              {t('Final sonuçları ve şampiyon TV ekranında açıklandı!')}</p>
             <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 inline-block">
               <span className="text-[10px] uppercase font-bold text-slate-400 block">
-                TOPLAM PUANINIZ
-              </span>
+                {t('TOPLAM PUANINIZ')}</span>
               <span className="text-3xl font-black text-amber-400">
                 {player?.score || 0} Puan
               </span>
@@ -451,8 +429,7 @@ export const QuiplashControllerView: React.FC<QuiplashControllerViewProps> = ({
 
       {/* Controller Footer */}
       <footer className="text-center text-[10px] text-slate-600 font-bold uppercase tracking-widest pt-2">
-        FiestaLoco • Quiplash Phone Controller
-      </footer>
+        {t('FiestaLoco • Quiplash Phone Controller')}</footer>
     </div>
   );
 };

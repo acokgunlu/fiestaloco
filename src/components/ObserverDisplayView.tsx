@@ -23,6 +23,7 @@ import {
 import { playTurnSound, playGongSound, playSuspenseSound, playFanfareSound } from '../utils/audio';
 import confetti from 'canvas-confetti';
 
+import { t } from '../i18n';
 interface ObserverDisplayViewProps {
   roomState: RoomState;
   liveStroke: LiveStrokeState | null;
@@ -111,14 +112,13 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
           <div>
             <div className="flex items-center gap-2">
               <span className="text-[11px] font-extrabold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md border border-indigo-100">
-                Observer TV Display
-              </span>
+                {t('Observer TV Display')}</span>
               <span className="text-xs text-slate-500 font-bold">
                 {roomState.players.length} Players Connected
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-slate-500">Room Code:</span>
+              <span className="text-xs font-bold text-slate-500">{t('Room Code:')}</span>
               <span className="font-mono font-black text-slate-900 tracking-wider text-lg">
                 {roomState.roomCode}
               </span>
@@ -139,8 +139,7 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
             onClick={onLeaveRoom}
             className="px-3 py-1.5 text-slate-500 hover:text-rose-600 text-xs font-bold rounded-xl hover:bg-rose-50 transition-colors"
           >
-            Exit Room
-          </button>
+            {t('Exit Room')}</button>
         </div>
       </div>
 
@@ -152,32 +151,29 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
             <div className="space-y-3">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-bold">
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>Join on your phone or mobile browser!</span>
+                <span>{t('Join on your phone or mobile browser!')}</span>
               </div>
               <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-                Scan QR or Go to Join Page
-              </h2>
+                {t('Scan QR or Go to Join Page')}</h2>
               <p className="text-slate-600 text-sm sm:text-base max-w-lg">
-                Players join from their own devices to secretly receive their word, draw continuous line strokes, and vote on the imposter!
-              </p>
+                {t('Players join from their own devices to secretly receive their word, draw continuous line strokes, and vote on the imposter!')}</p>
             </div>
 
             {/* QR & Room Code Box */}
             <div className="flex flex-col sm:flex-row items-center gap-6 bg-gradient-to-br from-slate-900 to-indigo-950 p-6 rounded-3xl text-white shadow-xl">
               {qrDataUrl && (
                 <div className="p-3 bg-white rounded-2xl shadow-md shrink-0">
-                  <img src={qrDataUrl} alt="Room QR Code" className="w-36 h-36 rounded-lg block" />
+                  <img src={qrDataUrl} alt={t('Room QR Code')} className="w-36 h-36 rounded-lg block" />
                 </div>
               )}
               <div className="space-y-2 text-center sm:text-left">
                 <span className="text-xs uppercase tracking-widest text-indigo-300 font-bold">
-                  Enter Room Code on Phone
-                </span>
+                  {t('Enter Room Code on Phone')}</span>
                 <div className="text-4xl sm:text-5xl font-mono font-black tracking-widest text-white">
                   {roomState.roomCode}
                 </div>
                 <p className="text-xs text-slate-300">
-                  Direct URL: <strong className="text-indigo-200">{joinUrl}</strong>
+                  {t('Direct URL:')} <strong className="text-indigo-200">{joinUrl}</strong>
                 </p>
               </div>
             </div>
@@ -200,7 +196,7 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
                 className="w-full sm:w-auto px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-2xl border border-slate-200 flex items-center justify-center gap-1.5 transition-colors disabled:opacity-40"
               >
                 <Bot className="w-4 h-4 text-indigo-600" />
-                <span>+ Add AI Bot</span>
+                <span>{t('+ Add AI Bot')}</span>
               </button>
             </div>
           </div>
@@ -211,7 +207,7 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
               <div className="flex items-center justify-between mb-3">
                 <h3 className="font-black text-slate-900 text-base flex items-center gap-2">
                   <Users className="w-4 h-4 text-indigo-600" />
-                  <span>Joined Players</span>
+                  <span>{t('Joined Players')}</span>
                 </h3>
                 <span className="text-xs font-black bg-indigo-50 text-indigo-700 px-2.5 py-0.5 rounded-full border border-indigo-100">
                   {roomState.players.length} / 8
@@ -236,8 +232,7 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
                           <span>{player.name}</span>
                           {player.isBot && (
                             <span className="text-[10px] px-1.5 py-0.2 rounded bg-indigo-100 text-indigo-700 font-bold">
-                              Bot
-                            </span>
+                              {t('Bot')}</span>
                           )}
                         </div>
                         <div className="text-[11px] font-semibold text-slate-500">
@@ -250,7 +245,7 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
                       <button
                         onClick={() => onRemovePlayer(player.id)}
                         className="text-slate-400 hover:text-rose-600 text-xs px-2 py-1"
-                        title="Remove player"
+                        title={t('Remove player')}
                       >
                         ✕
                       </button>
@@ -276,22 +271,20 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
 
           <div className="space-y-2">
             <h2 className="text-3xl font-black text-slate-900">
-              Telefonlarınızdan Gizli Rolünüzü Kontrol Edin!
-            </h2>
+              {t('Telefonlarınızdan Gizli Rolünüzü Kontrol Edin!')}</h2>
             <p className="text-sm text-slate-500 max-w-md mx-auto">
-              Her oyuncu kendi telefonuna gizli rol kartını aldı. Aranızdan 1 kişi Sahtekâr (Imposter)!
-            </p>
+              {t('Her oyuncu kendi telefonuna gizli rol kartını aldı. Aranızdan 1 kişi Sahtekâr (Imposter)!')}</p>
           </div>
 
           <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-center gap-2 text-xs font-bold text-slate-600">
-            <span>Herkes hazır olduğunda çizim turunu başlatın:</span>
+            <span>{t('Herkes hazır olduğunda çizim turunu başlatın:')}</span>
           </div>
 
           <button
             onClick={onStartDrawing}
             className="px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white font-black text-base rounded-2xl shadow-xl flex items-center justify-center gap-2 mx-auto transition-all active:scale-95 cursor-pointer"
           >
-            <span>Çizim Turunu Başlat</span>
+            <span>{t('Çizim Turunu Başlat')}</span>
             <ArrowRight className="w-5 h-5" />
           </button>
         </div>
@@ -314,8 +307,7 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
               <div>
                 <div className="flex items-center gap-2">
                   <span className="text-[11px] font-black uppercase tracking-wider text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-md border border-indigo-100">
-                    Şu An Çizen (Drawing Now)
-                  </span>
+                    {t('Şu An Çizen (Drawing Now)')}</span>
                   <span
                     className="text-[10px] font-black px-2 py-0.5 rounded-full text-white"
                     style={{ backgroundColor: activePlayer?.color }}
@@ -334,8 +326,7 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
               {roomState.players[(roomState.activePlayerIndex + 1) % roomState.players.length] && (
                 <div className="hidden sm:flex items-center gap-2.5 bg-slate-50 px-3.5 py-2 rounded-2xl border border-slate-200">
                   <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wide">
-                    Sıradaki (Next):
-                  </span>
+                    {t('Sıradaki (Next):')}</span>
                   <div className="flex items-center gap-1.5">
                     <span
                       className="w-6 h-6 rounded-lg flex items-center justify-center text-xs text-white font-bold"
@@ -411,14 +402,11 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
           <div className="flex flex-wrap items-center justify-between gap-3 bg-white p-4 rounded-3xl border border-slate-200 shadow-sm">
             <div>
               <span className="text-xs font-extrabold uppercase tracking-wider text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-md border border-amber-200">
-                Discussion Phase
-              </span>
+                {t('Discussion Phase')}</span>
               <h2 className="text-2xl font-black text-slate-900 mt-1">
-                Who Drew the Suspicious Line?
-              </h2>
+                {t('Who Drew the Suspicious Line?')}</h2>
               <p className="text-xs text-slate-500">
-                Kim şüpheli bir çizgi çizdi? Çizgilerini tek tek incelemek için aşağıdaki oyuncu butonlarına tıklayın.
-              </p>
+                {t('Kim şüpheli bir çizgi çizdi? Çizgilerini tek tek incelemek için aşağıdaki oyuncu butonlarına tıklayın.')}</p>
             </div>
 
             {roomState.settings.discussionTimeSec > 0 && (
@@ -444,15 +432,13 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
           <div className="bg-white rounded-3xl p-4 border border-slate-200 shadow-sm space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-slate-700 uppercase">
-                Filter by Player Stroke:
-              </span>
+                {t('Filter by Player Stroke:')}</span>
               {highlightPlayerId && (
                 <button
                   onClick={() => setHighlightPlayerId(null)}
                   className="text-xs text-indigo-600 font-bold hover:underline"
                 >
-                  Show All
-                </button>
+                  {t('Show All')}</button>
               )}
             </div>
 
@@ -493,7 +479,7 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
               className="px-8 py-4 bg-gradient-to-r from-rose-600 to-indigo-600 text-white font-black text-base rounded-2xl shadow-xl flex items-center gap-2 hover:scale-105 transition-all cursor-pointer"
             >
               <ShieldAlert className="w-5 h-5" />
-              <span>START SECRET VOTING ON PHONES</span>
+              <span>{t('START SECRET VOTING ON PHONES')}</span>
             </button>
           </div>
         </div>
@@ -508,17 +494,15 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
 
           <div className="space-y-2">
             <h2 className="text-3xl font-black text-slate-900">
-              Players are Voting on Their Devices!
-            </h2>
+              {t('Players are Voting on Their Devices!')}</h2>
             <p className="text-sm text-slate-500">
-              Cast your secret ballot on your phone screen. Who is the Imposter?
-            </p>
+              {t('Cast your secret ballot on your phone screen. Who is the Imposter?')}</p>
           </div>
 
           {/* Vote Counter Progress */}
           <div className="p-6 bg-slate-50 rounded-3xl border border-slate-200 space-y-3">
             <div className="flex items-center justify-between text-sm font-bold text-slate-700">
-              <span>Votes Received</span>
+              <span>{t('Votes Received')}</span>
               <span className="text-indigo-600">
                 {roomState.votedPlayerIds.length} / {roomState.players.length}
               </span>
@@ -555,8 +539,7 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
             onClick={onForceTallyVotes}
             className="text-xs text-slate-400 hover:text-slate-700 underline font-semibold"
           >
-            Force Tally Votes
-          </button>
+            {t('Force Tally Votes')}</button>
         </div>
       )}
 
@@ -565,20 +548,17 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
         <div className="bg-gradient-to-r from-rose-950 via-slate-900 to-indigo-950 rounded-3xl p-8 text-white text-center border-2 border-rose-500 shadow-2xl max-w-2xl mx-auto space-y-6 animate-scale-in">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-rose-500/20 text-rose-300 text-xs font-black uppercase tracking-wider border border-rose-500/30">
             <ShieldAlert className="w-4 h-4" />
-            <span>Imposter Was Caught! Final Showdown</span>
+            <span>{t('Imposter Was Caught! Final Showdown')}</span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl font-black">
-            The Imposter has ONE Chance to Guess the Word!
-          </h2>
+            {t('The Imposter has ONE Chance to Guess the Word!')}</h2>
 
           <p className="text-slate-300 text-sm max-w-md mx-auto">
-            The imposter is typing their guess on their phone. If they correctly identify what the crew was drawing, they steal the victory!
-          </p>
+            {t('The imposter is typing their guess on their phone. If they correctly identify what the crew was drawing, they steal the victory!')}</p>
 
           <div className="p-4 bg-white/10 backdrop-blur-md rounded-2xl border border-white/10 text-xs text-slate-200 font-semibold animate-pulse">
-            Waiting for Imposter guess submission...
-          </div>
+            {t('Waiting for Imposter guess submission...')}</div>
         </div>
       )}
 
@@ -606,8 +586,7 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
             <div className="flex flex-wrap items-center justify-center gap-3 mt-6">
               <div className="bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-2xl border border-white/20 text-left">
                 <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold block">
-                  Crew Word (Majority)
-                </span>
+                  {t('Crew Word (Majority)')}</span>
                 <span className="text-xl font-black text-emerald-400">
                   {roomState.roundResult.crewWord}
                 </span>
@@ -615,8 +594,7 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
 
               <div className="bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-2xl border border-white/20 text-left">
                 <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold block">
-                  Imposter Word
-                </span>
+                  {t('Imposter Word')}</span>
                 <span className="text-xl font-black text-rose-400">
                   {roomState.roundResult.imposterWord}
                 </span>
@@ -629,7 +607,7 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
             <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm space-y-4">
               <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-indigo-600" />
-                <span>Collaborative Drawing</span>
+                <span>{t('Collaborative Drawing')}</span>
               </h3>
               <CanvasBoard
                 strokes={roomState.strokes}
@@ -643,7 +621,7 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
             <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm space-y-4">
               <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
                 <Trophy className="w-4 h-4 text-amber-500" />
-                <span>Leaderboard Standings</span>
+                <span>{t('Leaderboard Standings')}</span>
               </h3>
               <div className="space-y-2">
                 {[...roomState.players]
@@ -673,13 +651,11 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
                               <span>{player.name}</span>
                               {isImposter && (
                                 <span className="text-[10px] px-1.5 py-0.5 rounded bg-rose-100 text-rose-700 font-extrabold">
-                                  Sahtekâr
-                                </span>
+                                  {t('Sahtekâr')}</span>
                               )}
                               {votedCorrectly && (
                                 <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700 font-extrabold">
-                                  +50 Buldu
-                                </span>
+                                  {t('+50 Buldu')}</span>
                               )}
                             </div>
                             <div className="text-[11px] font-semibold text-slate-500">
@@ -709,14 +685,13 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
               className="w-full sm:w-auto min-w-[240px] px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-base rounded-2xl shadow-xl flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-95"
             >
               <Play className="w-5 h-5 fill-white" />
-              <span>PLAY NEXT ROUND</span>
+              <span>{t('PLAY NEXT ROUND')}</span>
             </button>
             <button
               onClick={onBackToLobby}
               className="w-full sm:w-auto px-6 py-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm rounded-2xl border border-slate-200 transition-colors"
             >
-              Back to Room Lobby
-            </button>
+              {t('Back to Room Lobby')}</button>
           </div>
         </div>
       )}

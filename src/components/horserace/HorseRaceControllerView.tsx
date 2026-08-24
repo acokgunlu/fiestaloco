@@ -10,6 +10,7 @@ import {
 import { describeBet } from '../../data/horseRaceLogic';
 import { HorseRaceTrack } from './HorseRaceTrack';
 
+import { t } from '../../i18n';
 interface Props {
   roomCode: string;
   players: HorseRacePlayer[];
@@ -112,17 +113,15 @@ export const HorseRaceControllerView: React.FC<Props> = ({
       {gameState.phase === 'LOBBY' && (
         <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 shadow-lg text-center space-y-3">
           <div className="text-4xl">🎫</div>
-          <h3 className="text-lg font-black">Gişe açıldı!</h3>
+          <h3 className="text-lg font-black">{t('Gişe açıldı!')}</h3>
           <p className="text-xs font-bold text-slate-500 dark:text-slate-400">
-            TV ekranından yarışın başlaması bekleniyor…
-          </p>
+            {t('TV ekranından yarışın başlaması bekleniyor…')}</p>
           <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-left text-xs space-y-1 font-medium text-slate-600 dark:text-slate-300">
-            <p><strong>Ganyan</strong> — birinci geleni bil, en yüksek ödeme.</p>
-            <p><strong>Plase</strong> — ilk ikiye gireni bil, garantici oyun.</p>
-            <p><strong>İkili</strong> — 1. ve 2.’yi sırayla bil, kasayı patlat.</p>
+            <p><strong>{t('Ganyan')}</strong>  {t('— birinci geleni bil, en yüksek ödeme.')}</p>
+            <p><strong>{t('Plase')}</strong>  {t('— ilk ikiye gireni bil, garantici oyun.')}</p>
+            <p><strong>{t('İkili')}</strong>  {t('— 1. ve 2.’yi sırayla bil, kasayı patlat.')}</p>
             <p className="pt-1 text-slate-500 dark:text-slate-400">
-              Oranlar atların gerçek şansından hesaplanır. Form çizelgesini oku, ucuz kalanı yakala.
-            </p>
+              {t('Oranlar atların gerçek şansından hesaplanır. Form çizelgesini oku, ucuz kalanı yakala.')}</p>
           </div>
         </div>
       )}
@@ -131,8 +130,7 @@ export const HorseRaceControllerView: React.FC<Props> = ({
         <div className="p-5 rounded-3xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 shadow-lg space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-base font-black flex items-center gap-1.5">
-              <Ticket className="w-4 h-4" /> Kuponun
-            </h3>
+              <Ticket className="w-4 h-4" />  {t('Kuponun')}</h3>
             <span className="text-2xl font-black text-amber-500 tabular-nums">{gameState.timerSeconds}</span>
           </div>
 
@@ -182,12 +180,11 @@ export const HorseRaceControllerView: React.FC<Props> = ({
 
           {myBet ? (
             <div className="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 text-center space-y-1">
-              <p className="text-xs font-black text-emerald-800 dark:text-emerald-300">KUPON ALINDI</p>
+              <p className="text-xs font-black text-emerald-800 dark:text-emerald-300">{t('KUPON ALINDI')}</p>
               <p className="text-sm font-black">{describeBet(myBet, gameState.horses)}</p>
               <p className="text-sm font-black text-amber-600 dark:text-amber-400">{money(myBet.amount)} ₺</p>
               <p className="text-[11px] font-bold text-slate-500 dark:text-slate-400">
-                Gişe kapanması bekleniyor…
-              </p>
+                {t('Gişe kapanması bekleniyor…')}</p>
             </div>
           ) : (
             <>
@@ -214,8 +211,8 @@ export const HorseRaceControllerView: React.FC<Props> = ({
 
               {/* "8.8x" tek başına anlaşılmıyordu — ne olduğunu yazıyoruz. */}
               <div className="flex items-center justify-between px-1 text-[10px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500">
-                <span>At</span>
-                <span>Oran · paranın kaç katı</span>
+                <span>{t('At')}</span>
+                <span>{t('Oran · paranın kaç katı')}</span>
               </div>
 
               {/* Atlar */}
@@ -286,8 +283,7 @@ export const HorseRaceControllerView: React.FC<Props> = ({
                 disabled={!ready}
                 className="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-600 text-white font-black text-base shadow-lg active:scale-95 transition-transform disabled:opacity-40 cursor-pointer"
               >
-                KUPONU YATIR
-              </button>
+                {t('KUPONU YATIR')}</button>
             </>
           )}
         </div>
@@ -296,15 +292,14 @@ export const HorseRaceControllerView: React.FC<Props> = ({
       {gameState.phase === 'COUNTDOWN' && (
         <div className="py-10 text-center space-y-2 rounded-3xl bg-white dark:bg-slate-900 border-2 border-amber-300 dark:border-amber-800 shadow-lg">
           <div className="text-7xl font-black text-amber-500">{gameState.timerSeconds}</div>
-          <p className="text-sm font-black">Gişe kapandı — atlar çıkıyor! 🐎</p>
+          <p className="text-sm font-black">{t('Gişe kapandı — atlar çıkıyor! 🐎')}</p>
         </div>
       )}
 
       {gameState.phase === 'RACING' && (
         <div className="p-4 rounded-3xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 shadow-lg space-y-3">
           <p className="text-center text-sm font-black text-emerald-600 dark:text-emerald-400 animate-pulse">
-            🏁 Yarış sürüyor — TV'ye bak!
-          </p>
+            {t("🏁 Yarış sürüyor — TV'ye bak!")}</p>
           <HorseRaceTrack horses={gameState.horses} compact highlightHorseId={myBet?.horseIds[0] || null} />
         </div>
       )}
@@ -330,7 +325,7 @@ export const HorseRaceControllerView: React.FC<Props> = ({
               Kasan: {money(myPlayer?.money || 0)} ₺
             </p>
             {gameState.phase === 'GAME_OVER' && gameState.winnerPlayerId === myPlayer?.id && (
-              <p className="text-sm font-black text-amber-500">🏆 Gecenin kralı sensin!</p>
+              <p className="text-sm font-black text-amber-500">{t('🏆 Gecenin kralı sensin!')}</p>
             )}
           </div>
         );

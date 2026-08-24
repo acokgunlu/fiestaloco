@@ -39,6 +39,7 @@ import {
 import { motion } from 'motion/react';
 import { playClickSound, playWinSound, playCorrectSound, playWrongSound, playTurnSound } from '../../utils/audio';
 
+import { t } from '../../i18n';
 interface TriviaPassAndPlayProps {
   onBackToLobby?: () => void;
 }
@@ -492,16 +493,15 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs font-black transition-all cursor-pointer shadow-xs"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span>Mod Seçimi</span>
+              <span>{t('Mod Seçimi')}</span>
             </button>
           )}
 
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-xl font-black text-slate-900 dark:text-white">Tek Cihaz (Elden Ele)</h2>
+              <h2 className="text-xl font-black text-slate-900 dark:text-white">{t('Tek Cihaz (Elden Ele)')}</h2>
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-300 font-bold border border-indigo-300 dark:border-indigo-800">
-                LOKAL OYUN
-              </span>
+                {t('LOKAL OYUN')}</span>
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 font-bold">
               Tur {gameState.roundNumber} • Sırayla telefonu devrederek yarışın
@@ -511,8 +511,7 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
 
         <div className="flex items-center gap-2">
           <span className="text-xs font-black text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700">
-            Hedef: 6 Rozet
-          </span>
+            {t('Hedef: 6 Rozet')}</span>
         </div>
       </div>
 
@@ -546,7 +545,7 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
                       <button
                         onClick={() => removePlayer(p.id)}
                         className="text-slate-400 hover:text-rose-500 p-1.5 transition-colors cursor-pointer"
-                        title="Oyuncuyu Sil"
+                        title={t('Oyuncuyu Sil')}
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -559,7 +558,7 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
                 <div className="flex gap-2 pt-2">
                   <input
                     type="text"
-                    placeholder="Yeni oyuncu adı..."
+                    placeholder={t('Yeni oyuncu adı...')}
                     value={newPlayerName}
                     onChange={(e) => setNewPlayerName(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && addPlayer()}
@@ -570,7 +569,7 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
                     className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs flex items-center gap-1 cursor-pointer transition-all"
                   >
                     <UserPlus className="w-4 h-4" />
-                    <span>Ekle</span>
+                    <span>{t('Ekle')}</span>
                   </button>
                 </div>
               )}
@@ -581,7 +580,7 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
               className="w-full py-4 rounded-2xl font-black text-base bg-gradient-to-r from-emerald-600 to-teal-600 hover:scale-[1.02] text-white shadow-xl flex items-center justify-center gap-2 cursor-pointer transition-all"
             >
               <Play className="w-5 h-5 fill-white" />
-              <span>OYUNU BAŞLAT</span>
+              <span>{t('OYUNU BAŞLAT')}</span>
             </button>
           </div>
         )}
@@ -597,8 +596,7 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
                 {activePlayer?.avatar}
               </div>
               <span className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
-                Sıradaki Bilgin:
-              </span>
+                {t('Sıradaki Bilgin:')}</span>
               <span className="text-sm font-black text-slate-900 dark:text-white">{activePlayer?.name}</span>
             </div>
 
@@ -639,8 +637,7 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
                       {dieRoll}
                     </span>
                     <span className="text-sm font-black text-slate-900 dark:text-white">
-                      geldi — nereye gideceğini seç
-                    </span>
+                      {t('geldi — nereye gideceğini seç')}</span>
                   </div>
                   <div className="flex flex-wrap justify-center gap-2">
                     {moveOptions.map((opt, i) => (
@@ -654,13 +651,12 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
                     ))}
                   </div>
                   <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
-                    Tahtadaki yanıp sönen kareye de dokunabilirsin
-                  </p>
+                    {t('Tahtadaki yanıp sönen kareye de dokunabilirsin')}</p>
                 </div>
               )}
 
               <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium text-center max-w-sm">
-                Dilim yalnızca <strong>kale karelerinde</strong> (ikonlu, altın çerçeveli)
+                Dilim yalnızca <strong>{t('kale karelerinde')}</strong> (ikonlu, altın çerçeveli)
                 kazanılır. Doğru cevap tekrar zar hakkı verir.
                 {' '}
                 {gameState.settings.wedgesToWin} dilimi tamamlayınca kolu kullanıp merkeze çık.
@@ -766,8 +762,7 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
 
             <div>
               <span className="text-xs uppercase font-black tracking-widest text-amber-600">
-                ŞAMPİYON BİLGİN
-              </span>
+                {t('ŞAMPİYON BİLGİN')}</span>
               <h3 className="text-2xl font-black text-slate-900 dark:text-white mt-1">
                 {players.find((p) => p.id === gameState.winnerPlayerId)?.name}
               </h3>
@@ -778,7 +773,7 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
               className="py-3 px-6 rounded-2xl font-black text-xs bg-emerald-600 hover:bg-emerald-500 text-white shadow-md flex items-center justify-center gap-2 mx-auto cursor-pointer"
             >
               <RotateCcw className="w-4 h-4" />
-              <span>YENİDEN OYNA</span>
+              <span>{t('YENİDEN OYNA')}</span>
             </button>
           </div>
         )}

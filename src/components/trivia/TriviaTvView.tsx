@@ -28,6 +28,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { toggleSound, isSoundEnabled, playClickSound, playWinSound, playTurnSound } from '../../utils/audio';
 
+import { t } from '../../i18n';
 interface TriviaTvViewProps {
   roomCode: string;
   gameState: TriviaPursuitGameState;
@@ -97,11 +98,9 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
-                Trivia Pursuit TV
-              </h2>
+                {t('Trivia Pursuit TV')}</h2>
               <span className="text-[10px] uppercase font-black tracking-widest px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
-                ANA EKRAN
-              </span>
+                {t('ANA EKRAN')}</span>
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 font-bold">
               Tur {gameState.roundNumber || 1} • Hedef: {gameState.settings.wedgesToWin || 6} Kategori Rozeti
@@ -114,10 +113,10 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
           <button
             onClick={() => setShowQr(!showQr)}
             className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-950 hover:bg-emerald-100 dark:hover:bg-emerald-900/80 border border-emerald-300 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200 text-xs font-black transition-all cursor-pointer shadow-xs"
-            title="Telefon Bağlantı QR Kodu"
+            title={t('Telefon Bağlantı QR Kodu')}
           >
             <QrCode className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-            <span className="hidden sm:inline">Katıl:</span>
+            <span className="hidden sm:inline">{t('Katıl:')}</span>
             <span className="font-mono text-sm font-black text-emerald-700 dark:text-emerald-300 tracking-wider">
               {roomCode}
             </span>
@@ -126,7 +125,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
           <button
             onClick={handleToggleSound}
             className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-xs transition-all cursor-pointer"
-            title="Ses Aç/Kapat"
+            title={t('Ses Aç/Kapat')}
           >
             {soundOn ? <Volume2 className="w-4 h-4 text-amber-500" /> : <VolumeX className="w-4 h-4" />}
           </button>
@@ -150,10 +149,9 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
               <div className="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center mx-auto text-2xl font-black">
                 📱
               </div>
-              <h3 className="text-lg font-black text-slate-900 dark:text-white">Telefondan Katıl</h3>
+              <h3 className="text-lg font-black text-slate-900 dark:text-white">{t('Telefondan Katıl')}</h3>
               <p className="text-xs text-slate-600 dark:text-slate-300">
-                Telefonunuzun kamerasıyla QR kodu okutun veya tarayıcınızdan oda kodunu girin.
-              </p>
+                {t('Telefonunuzun kamerasıyla QR kodu okutun veya tarayıcınızdan oda kodunu girin.')}</p>
               <div className="flex justify-center p-4 bg-slate-100 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
                 <img
                   src={qrImageUrl}
@@ -168,8 +166,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                 onClick={() => setShowQr(false)}
                 className="w-full py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs transition-all cursor-pointer"
               >
-                Kapat
-              </button>
+                {t('Kapat')}</button>
             </div>
           </motion.div>
         )}
@@ -190,8 +187,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                 />
               </div>
               <span className="text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-0.5">
-                Oda Kodu
-              </span>
+                {t('Oda Kodu')}</span>
               <span className="text-4xl font-mono font-black text-emerald-600 dark:text-emerald-400 tracking-widest mb-2">
                 {roomCode}
               </span>
@@ -215,10 +211,9 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
 
                 {players.length === 0 ? (
                   <div className="py-10 text-center text-slate-400 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl space-y-2">
-                    <p className="text-sm font-bold text-slate-600 dark:text-slate-400">Henüz oyuncu bağlanmadı...</p>
+                    <p className="text-sm font-bold text-slate-600 dark:text-slate-400">{t('Henüz oyuncu bağlanmadı...')}</p>
                     <p className="text-xs text-slate-500">
-                      Telefonunuzla QR kodu okutun veya "Telefondan Katıl" sekmesini kullanın.
-                    </p>
+                      {t('Telefonunuzla QR kodu okutun veya "Telefondan Katıl" sekmesini kullanın.')}</p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -261,7 +256,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                   }`}
                 >
                   <Play className="w-5 h-5 fill-white" />
-                  <span>YARIŞMAYI BAŞLAT</span>
+                  <span>{t('YARIŞMAYI BAŞLAT')}</span>
                 </button>
 
                 <button
@@ -271,7 +266,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                   }}
                   disabled={isGeneratingAi}
                   className="py-4 px-5 rounded-2xl font-bold text-xs bg-indigo-50 dark:bg-indigo-950 hover:bg-indigo-100 dark:hover:bg-indigo-900 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 flex items-center justify-center gap-2 transition-all cursor-pointer"
-                  title="Yapay Zeka ile Yeni Sorular Üret"
+                  title={t('Yapay Zeka ile Yeni Sorular Üret')}
                 >
                   <Sparkles className={`w-4 h-4 text-amber-500 ${isGeneratingAi ? 'animate-spin' : ''}`} />
                   <span>{isGeneratingAi ? 'Sorular Üretiliyor...' : 'Yapay Zeka Soru Havuzu'}</span>
@@ -293,8 +288,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                 {activePlayer?.avatar || '👤'}
               </div>
               <span className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
-                Sıradaki Bilgin:
-              </span>
+                {t('Sıradaki Bilgin:')}</span>
               <span className="text-base font-black text-slate-900 dark:text-white">{activePlayer?.name}</span>
             </div>
 
@@ -379,8 +373,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                 <span className="uppercase tracking-wider">{currentCat.label}</span>
                 {currentQ.isWedgeQuestion && (
                   <span className="ml-1 text-[10px] px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black">
-                    ROZET SORUSU
-                  </span>
+                    {t('ROZET SORUSU')}</span>
                 )}
               </div>
 
@@ -442,7 +435,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
 
             {/* Response Status Indicator */}
             <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
-              <span className="text-xs font-black text-slate-500 dark:text-slate-400">Cevap Verenler:</span>
+              <span className="text-xs font-black text-slate-500 dark:text-slate-400">{t('Cevap Verenler:')}</span>
               {players.map((p) => {
                 const hasAnswered = !!p.currentAnswer;
                 return (
@@ -481,8 +474,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                 <span className="uppercase tracking-wider">{currentCat.label}</span>
               </div>
               <span className="text-xs font-black uppercase tracking-widest text-amber-600 dark:text-amber-400">
-                TUR SONUCU
-              </span>
+                {t('TUR SONUCU')}</span>
             </div>
 
             {/* Question Text */}
@@ -519,7 +511,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                     {isCorrect && (
                       <div className="flex items-center gap-1 text-emerald-700 dark:text-emerald-300 font-black text-xs px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900 border border-emerald-400">
                         <CheckCircle2 className="w-4 h-4" />
-                        <span>DOĞRU CEVAP</span>
+                        <span>{t('DOĞRU CEVAP')}</span>
                       </div>
                     )}
                   </div>
@@ -533,8 +525,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                 <HelpCircle className="w-5 h-5 text-indigo-600 dark:text-amber-400 shrink-0 mt-0.5" />
                 <div>
                   <h4 className="text-xs font-black uppercase tracking-wider text-indigo-900 dark:text-indigo-300">
-                    Biliyor muydunuz?
-                  </h4>
+                    {t('Biliyor muydunuz?')}</h4>
                   <p className="text-xs text-indigo-800 dark:text-indigo-100 mt-0.5 leading-relaxed font-medium">
                     {currentQ.explanation}
                   </p>
@@ -579,7 +570,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                     {earnedWedge && (
                       <div className="mt-1 px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 text-[10px] font-black flex items-center gap-1 animate-bounce">
                         <Award className="w-3 h-3" />
-                        <span>ROZET KAZANDI!</span>
+                        <span>{t('ROZET KAZANDI!')}</span>
                       </div>
                     )}
                   </div>
@@ -597,7 +588,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                 }}
                 className="py-3.5 px-8 rounded-2xl font-black text-sm bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-lg flex items-center gap-2 hover:scale-105 transition-all cursor-pointer"
               >
-                <span>SONRAKİ TURA GEÇ</span>
+                <span>{t('SONRAKİ TURA GEÇ')}</span>
                 <ChevronRight className="w-5 h-5" />
               </button>
             </div>
@@ -613,14 +604,12 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
 
             <div>
               <span className="text-xs uppercase font-black tracking-widest text-amber-600 dark:text-amber-400">
-                ŞAMPİYON BİLGİN
-              </span>
+                {t('ŞAMPİYON BİLGİN')}</span>
               <h2 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white mt-1">
                 {players.find((p) => p.id === gameState.winnerPlayerId)?.name || 'Şampiyon'}
               </h2>
               <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1 font-medium">
-                Tüm Kategori Rozetlerini toplayarak Trivia Pursuit'i fethetti!
-              </p>
+                {t("Tüm Kategori Rozetlerini toplayarak Trivia Pursuit'i fethetti!")}</p>
             </div>
 
             {/* Final Leaderboard */}
@@ -664,7 +653,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                 className="py-3 px-6 rounded-2xl font-black text-xs bg-emerald-600 hover:bg-emerald-500 text-white shadow-md flex items-center gap-2 transition-all cursor-pointer"
               >
                 <RotateCcw className="w-4 h-4" />
-                <span>YENİDEN OYNA</span>
+                <span>{t('YENİDEN OYNA')}</span>
               </button>
             </div>
           </div>
@@ -709,8 +698,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                       </span>
                       {isActive && (
                         <span className="text-[9px] px-1.5 py-0.2 rounded bg-amber-400 text-slate-950 font-black">
-                          SIRA
-                        </span>
+                          {t('SIRA')}</span>
                       )}
                     </div>
                     <div className="flex items-center gap-2 mt-0.5">
@@ -724,8 +712,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
           </div>
 
           <div className="text-right text-[11px] text-slate-400 shrink-0 font-bold">
-            FiestaLoco • Trivia Pursuit
-          </div>
+            {t('FiestaLoco • Trivia Pursuit')}</div>
         </div>
       </div>
     </div>

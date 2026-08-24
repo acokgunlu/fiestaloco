@@ -3,6 +3,7 @@ import QRCode from 'qrcode';
 import { ArrowLeft, Crown, Play, Users, AlertTriangle } from 'lucide-react';
 import { CodenamesPlayer, CodenamesTeam } from '../../types/codenames';
 
+import { t } from '../../i18n';
 interface CodenamesOnlineLobbyProps {
   roomCode: string;
   players: CodenamesPlayer[];
@@ -79,12 +80,10 @@ export const CodenamesOnlineLobby: React.FC<CodenamesOnlineLobbyProps> = ({
           <div>
             <div className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
               <Crown className="w-3.5 h-3.5" />
-              Lider (Spymaster)
-            </div>
+              {t('Lider (Spymaster)')}</div>
             {spymasters.length === 0 ? (
               <p className="text-xs font-bold text-slate-400 dark:text-slate-500 italic">
-                Bekleniyor…
-              </p>
+                {t('Bekleniyor…')}</p>
             ) : (
               <div className="flex flex-wrap gap-1.5">
                 {spymasters.map((p) => (
@@ -102,12 +101,10 @@ export const CodenamesOnlineLobby: React.FC<CodenamesOnlineLobbyProps> = ({
           <div>
             <div className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
               <Users className="w-3.5 h-3.5" />
-              Ajanlar
-            </div>
+              {t('Ajanlar')}</div>
             {operatives.length === 0 ? (
               <p className="text-xs font-bold text-slate-400 dark:text-slate-500 italic">
-                Bekleniyor…
-              </p>
+                {t('Bekleniyor…')}</p>
             ) : (
               <div className="flex flex-wrap gap-1.5">
                 {operatives.map((p) => (
@@ -135,12 +132,10 @@ export const CodenamesOnlineLobby: React.FC<CodenamesOnlineLobbyProps> = ({
           className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 text-xs font-black transition-all cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
-          Parti Arenası
-        </button>
+          {t('Parti Arenası')}</button>
         <div className="flex items-center gap-2.5">
           <span className="text-xs font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">
-            Oda Kodu
-          </span>
+            {t('Oda Kodu')}</span>
           <span className="px-4 py-1.5 rounded-xl bg-slate-900 dark:bg-slate-800 text-amber-400 font-mono font-black text-2xl tracking-[0.3em] border-2 border-amber-400">
             {roomCode}
           </span>
@@ -151,14 +146,12 @@ export const CodenamesOnlineLobby: React.FC<CodenamesOnlineLobbyProps> = ({
         {/* QR / katilim */}
         <div className="lg:col-span-4 flex flex-col items-center justify-center p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl">
           <h2 className="text-sm font-black uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-3">
-            Telefondan Katılın
-          </h2>
+            {t('Telefondan Katılın')}</h2>
           {qrDataUrl ? (
-            <img src={qrDataUrl} alt="Katılım QR kodu" className="w-48 h-48 rounded-2xl" />
+            <img src={qrDataUrl} alt={t('Katılım QR kodu')} className="w-48 h-48 rounded-2xl" />
           ) : (
             <div className="w-48 h-48 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-xs text-slate-400">
-              QR yükleniyor…
-            </div>
+              {t('QR yükleniyor…')}</div>
           )}
           <p className="text-xs text-slate-500 dark:text-slate-400 font-medium text-center mt-3 max-w-[15rem]">
             Kamerayla okutun veya <strong className="text-slate-900 dark:text-white">{window.location.host}</strong>{' '}
@@ -176,8 +169,7 @@ export const CodenamesOnlineLobby: React.FC<CodenamesOnlineLobbyProps> = ({
           {unassigned.length > 0 && (
             <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800">
               <div className="text-[11px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
-                Takım seçmeyi bekleyenler
-              </div>
+                {t('Takım seçmeyi bekleyenler')}</div>
               <div className="flex flex-wrap gap-1.5">
                 {unassigned.map((p) => (
                   <span
@@ -205,8 +197,7 @@ export const CodenamesOnlineLobby: React.FC<CodenamesOnlineLobbyProps> = ({
               className="w-full sm:w-auto px-10 py-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-black text-base shadow-xl hover:scale-105 active:scale-95 transition-transform disabled:opacity-40 disabled:hover:scale-100 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
             >
               <Play className="w-5 h-5" />
-              OYUNU BAŞLAT
-            </button>
+              {t('OYUNU BAŞLAT')}</button>
             {!canStart && (
               <p className="text-xs font-bold text-slate-500 dark:text-slate-400 text-center">
                 Eksik: {missing.join(' · ')}
