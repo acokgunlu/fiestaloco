@@ -1,14 +1,15 @@
 /**
- * At Yarışı — tip tanımları
- * ==========================
- * Her oyuncu BİR AT'tır. Tur akışı:
+ * At Yarışı (Ganyan) — tip tanımları
+ * ===================================
+ * Klasik bahis oyunu: atlar KENDİ koşar, oyuncular yalnızca bahis oynar.
+ * Dokunma/refleks yok — bildiğin ganyan.
  *
- *   BETTING   → herkes gizlice bir ata bahis koyar (kendi atı dahil)
+ *   BETTING   → herkes gizlice kuponunu doldurur (ganyan / plase / ikili)
  *   COUNTDOWN → 3-2-1
- *   RACING    → oyuncular telefonlarına basarak KENDİ atlarını koşturur
- *   RESULT    → sıralama + bahis ödemeleri
+ *   RACING    → yarış TV'de akar
+ *   RESULT    → ödemeler
  *
- * `totalRaces` tur sonunda en çok parası olan kazanır.
+ * `totalRaces` tur sonunda kasası en kalabalık olan kazanır.
  *
  * NOT: Sunucuda tutulan her alan düz obje/dizi olmalı (Set/Map YOK) —
  * serializeRoom() bunları eler ve restart dayanıklılığı bozulur.
@@ -26,10 +27,20 @@ export type HorseRacePhase =
 export const TRACK_LENGTH = 100;
 
 /** Seçilebilir bahis miktarları. */
-export const BET_AMOUNTS = [100, 250, 500] as const;
+export const BET_AMOUNTS = [100, 250, 500, 1000] as const;
+
+/**
+ * Bahis türleri — gerçek ganyan kuponundaki gibi.
+ *  ganyan : birinci gelecek atı bil          (yüksek risk, yüksek ödeme)
+ *  plase  : ilk İKİ'ye girecek atı bil       (düşük risk, düşük ödeme)
+ *  ikili  : birinci VE ikinciyi sırayla bil  (çok yüksek ödeme)
+ */
+export type BetKind = 'ganyan' | 'plase' | 'ikili';
 
 export interface HorseRaceBet {
-  horseId: string;
+  kind: BetKind;
+  /** ganyan/plase için 1 at, ikili için sırayla 2 at. */
+  horseIds: string[];
   amount: number;
 }
 
@@ -41,47 +52,52 @@ export interface HorseRacePlayer {
   colorName: string;
   /** Kümülatif para — oyunun skoru budur. */
   money: number;
-  /** Bu turda kazanılan/kaybedilen net tutar (sonuç ekranı için). */
+  /** Bu turda kazanılan/kaybedilen net tutar. */
   lastDelta?: number;
-  /** Bu turdaki bahis. Oylama gizliliği için BETTING sırasında dışarı sızmaz. */
+  /** Bu turdaki kupon. BETTING sırasında başkalarına sızmaz. */
   bet?: HorseRaceBet | null;
-  /** Kazanılan yarış sayısı (oran hesabı + rozet). */
-  wins: number;
-  /** Doğru bilinen bahis sayısı. */
+  /** Tutan kupon sayısı. */
   correctBets: number;
+  /** En büyük tek kazanç (rozet/övünme için). */
+  biggestWin: number;
   connected?: boolean;
   isHost?: boolean;
 }
 
-export interface Horse {
-  /** At kimliği = sahibinin oyuncu kimliği. */
+export interface RaceHorse {
   id: string;
-  ownerId: string;
-  /** Ekranda görünen at adı (oyuncu adından türetilir). */
   name: string;
   emoji: string;
   color: string;
+  /**
+   * GİZLİ gerçek güç (0.80–1.25). İstemciye GÖNDERİLMEZ — gönderilseydi
+   * favoriyi hesaplamak bahsi anlamsız kılardı. Oyuncu bunu yalnızca
+   * oranlardan ve form çizelgesinden okur.
+   */
+  strength: number;
+  /** Ganyan oranı (birinci gelirse ödeme çarpanı). */
+  odds: number;
+  /** Plase oranı (ilk ikiye girerse). */
+  placeOdds: number;
+  /** Önceki yarışlardaki dereceler — form çizelgesi. */
+  form: number[];
   /** 0..TRACK_LENGTH */
   progress: number;
-  /** Bitiş sırası (1 = birinci). Henüz bitirmediyse null. */
+  /** Bitiş sırası (1 = birinci). */
   rank: number | null;
-  /** Bu yarışta atılan toplam dokunuş (TV'de tempo göstergesi). */
-  taps: number;
-  /** Bahis oranı — düşük oran = favori. */
-  odds: number;
-  /**
-   * Bu yarışa özel form katsayısı (0.70–1.40). Gerçek at yarışındaki
-   * "atın günü" etkisi: aynı oyuncu her yarışta aynı hızda koşmaz.
-   * Dengeyi bu sağlıyor — yoksa en hızlı basan HER yarışı kazanıyordu.
-   */
-  form: number;
 }
 
 export interface HorseRaceSettings {
-  /** Kaç yarış oynanacak (varsayılan 3). */
   totalRaces: number;
-  /** Bahis aşaması süresi (saniye). */
   bettingSeconds: number;
+}
+
+export interface PayoutDetail {
+  bet: HorseRaceBet | null;
+  won: boolean;
+  delta: number;
+  /** Ödeme çarpanı (kazandıysa). */
+  multiplier?: number;
 }
 
 export interface HorseRaceGameState {
@@ -90,17 +106,18 @@ export interface HorseRaceGameState {
   isOnline?: boolean;
   currentRace: number;
   settings: HorseRaceSettings;
-  horses: Horse[];
-  /** BETTING ve COUNTDOWN için geri sayım. */
+  horses: RaceHorse[];
+  /** exactaOdds[i][j] = i birinci, j ikinci gelirse ikili ödeme çarpanı. */
+  exactaOdds: number[][];
   timerSeconds: number;
-  /** Bahsini vermiş oyuncular (isimler gizli kalır, sadece "verdi" bilgisi). */
+  /** Kuponunu vermiş oyuncular (içeriği gizli). */
   betPlacedPlayerIds: string[];
-  /** Yarış bittiğinde sıralama (at kimlikleri, 1.'den sonuncuya). */
+  /** Yarış sonunda sıralama (at kimlikleri, 1.'den sonuncuya). */
   finishOrder: string[];
-  /** Sonuç ekranı için tur özeti. */
   lastRaceSummary?: {
-    winnerHorseId: string | null;
-    payouts: Record<string, { bet: HorseRaceBet | null; won: boolean; delta: number }>;
+    firstId: string | null;
+    secondId: string | null;
+    payouts: Record<string, PayoutDetail>;
   };
   winnerPlayerId: string | null;
 }

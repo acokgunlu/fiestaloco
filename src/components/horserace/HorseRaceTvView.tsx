@@ -56,7 +56,7 @@ export const HorseRaceTvView: React.FC<HorseRaceTvViewProps> = ({
                 At Yarışı
               </h2>
               <p className="text-xs font-bold text-slate-500 dark:text-slate-400">
-                Yarış {gameState.currentRace}/{gameState.settings.totalRaces} · Bahis + refleks
+                Yarış {gameState.currentRace}/{gameState.settings.totalRaces} · Ganyan · Plase · İkili
               </p>
             </div>
           </div>
@@ -90,11 +90,11 @@ export const HorseRaceTvView: React.FC<HorseRaceTvViewProps> = ({
             <div className="p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl">
               <div className="flex items-center gap-2 mb-3 text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">
                 <Users className="w-4 h-4" />
-                Yarışacak Atlar ({players.length})
+                Bahisçiler ({players.length})
               </div>
               {players.length === 0 ? (
                 <p className="text-sm font-bold text-slate-400 dark:text-slate-500 italic py-6 text-center">
-                  İlk jokeyin katılması bekleniyor…
+                  İlk bahisçinin katılması bekleniyor…
                 </p>
               ) : (
                 <div className="flex flex-wrap gap-2">
@@ -112,8 +112,8 @@ export const HorseRaceTvView: React.FC<HorseRaceTvViewProps> = ({
             </div>
 
             <div className="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 text-xs font-bold text-emerald-900 dark:text-emerald-200 space-y-1">
-              <p>🎯 Her oyuncu bir at. Önce gizlice bahis, sonra telefona basarak koşturma.</p>
-              <p>💰 Herkes 1000 ₺ ile başlar. {gameState.settings.totalRaces} yarış sonunda en zengin kazanır.</p>
+              <p>🎫 Telefonlar gişe: Ganyan (birinci), Plase (ilk iki), İkili (1-2 sırayla).</p>
+              <p>💰 Herkes 1000 ₺ ile başlar. {gameState.settings.totalRaces} yarış sonunda kasası en kalabalık olan kazanır.</p>
             </div>
 
             <button
@@ -135,7 +135,7 @@ export const HorseRaceTvView: React.FC<HorseRaceTvViewProps> = ({
             <div className="text-5xl font-black text-amber-500 tabular-nums">{gameState.timerSeconds}</div>
             <h3 className="text-2xl font-black text-slate-900 dark:text-white">BAHİSLER AÇIK</h3>
             <p className="text-sm font-bold text-slate-500 dark:text-slate-400">
-              Telefonlarınızdan hangi ata oynadığınızı seçin
+              Telefonlarınızdan kuponunuzu doldurun
             </p>
           </div>
 

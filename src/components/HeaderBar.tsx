@@ -95,7 +95,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
       case 'bomb':
         return 'Tik tak bomba & kelime hecesi';
       case 'race':
-        return 'Bahsini koy, atını koştur';
+        return 'Ganyan · plase · ikili — kuponunu yatır';
       default:
         return 'Çok oyunculu parti oyunları';
     }

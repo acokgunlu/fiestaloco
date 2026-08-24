@@ -55,7 +55,6 @@ export const HorseRaceGame: React.FC<HorseRaceGameProps> = ({ onBackToHub }) => 
         gameState={socket.gameState}
         errorMessage={socket.errorMessage}
         onPlaceBet={socket.placeBet}
-        onSendTaps={socket.sendTaps}
         onLeave={() => {
           socket.leaveRoom();
           setPlayMode('lobby');
@@ -89,11 +88,11 @@ export const HorseRaceGame: React.FC<HorseRaceGameProps> = ({ onBackToHub }) => 
                   At Yarışı
                 </h1>
                 <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-[10px] font-black border border-emerald-300 dark:border-emerald-800">
-                  BAHİS & REFLEKS
+                  GANYAN
                 </span>
               </div>
               <p className="text-xs text-slate-500 dark:text-slate-400 font-bold">
-                Gizlice bahsini koy, sonra telefona basarak atını koştur!
+                Ganyan, plase, ikili — kuponunu yatır, atları izle.
               </p>
             </div>
           </div>
@@ -109,7 +108,7 @@ export const HorseRaceGame: React.FC<HorseRaceGameProps> = ({ onBackToHub }) => 
               </div>
               <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">TV Ekranı (Host)</h3>
               <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                Pisti büyük ekrana yansıtın. Oyuncular telefonlarından katılıp bahis koysun ve atlarını koştursun.
+                Pisti büyük ekrana yansıtın. Oranlar ve yarış TV’de, kuponlar telefonlarda.
               </p>
             </div>
             <button
@@ -132,7 +131,7 @@ export const HorseRaceGame: React.FC<HorseRaceGameProps> = ({ onBackToHub }) => 
               </div>
               <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">Telefondan Katıl</h3>
               <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                TV'deki oda kodunu girin; telefonunuz hem bahis kuponunuz hem kamçınız olsun.
+                TV'deki oda kodunu girin; telefonunuz bahis kuponunuz olsun.
               </p>
             </div>
             <button
@@ -152,9 +151,9 @@ export const HorseRaceGame: React.FC<HorseRaceGameProps> = ({ onBackToHub }) => 
               <div className="w-14 h-14 rounded-2xl bg-sky-100 dark:bg-sky-600/20 text-sky-600 dark:text-sky-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <Users className="w-7 h-7" />
               </div>
-              <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">Tek Cihaz (Bahis)</h3>
+              <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">Tek Cihaz</h3>
               <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                İnternetsiz. Atlar kendi kendine koşar, siz cihazı elden ele verip bahis koyarsınız.
+                İnternetsiz. Cihazı elden ele verip kuponları doldurun, atlar koşsun.
               </p>
             </div>
             <button
@@ -218,7 +217,7 @@ export const HorseRaceGame: React.FC<HorseRaceGameProps> = ({ onBackToHub }) => 
 
             <div>
               <label className="block text-[11px] font-bold uppercase text-slate-500 dark:text-slate-400 mb-1">
-                Jokey Adınız
+                Bahisçi Adınız
               </label>
               <input
                 value={playerName}

@@ -515,7 +515,7 @@ export function MainArcadeHub({
             </div>
           </div>
 
-          {/* GAME 6: AT YARIŞI (BAHİS & REFLEKS) */}
+          {/* GAME 6: AT YARIŞI (GANYAN) */}
           <div
             id="card-game-race"
             className="bg-white dark:bg-slate-900 rounded-3xl p-6 border-3 border-lime-100 dark:border-slate-800 hover:border-lime-400 dark:hover:border-lime-500 shadow-md hover:shadow-xl transition-all duration-200 flex flex-col justify-between group game-card-pop relative overflow-hidden"
@@ -527,7 +527,7 @@ export function MainArcadeHub({
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="px-2.5 py-1 rounded-full bg-lime-100 dark:bg-lime-950 text-lime-800 dark:text-lime-300 text-[11px] font-black border border-lime-300 dark:border-lime-800">
-                    BAHİS & REFLEKS
+                    GANYAN
                   </span>
                   <span className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[11px] font-bold">
                     2-8 Oyuncu
@@ -540,7 +540,7 @@ export function MainArcadeHub({
                   At Yarışı
                 </h3>
                 <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
-                  Her oyuncu bir at! Önce gizlice bahsini koy, sonra telefona deli gibi basarak atını bitiş çizgisine taşı. En zengin kazanır.
+                  Bildiğin ganyan. Altı at, canlı oranlar, form çizelgesi. Ganyan/plase/ikili kuponunu yatır, izle. Kasası en kalabalık olan kazanır.
                 </p>
               </div>
 
@@ -552,10 +552,10 @@ export function MainArcadeHub({
                   📱 Telefon Kumandası
                 </span>
                 <span className="px-2 py-0.5 rounded-lg bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300 text-[10px] font-bold">
-                  💰 Canlı Oranlar
+                  📊 Form Çizelgesi
                 </span>
                 <span className="px-2 py-0.5 rounded-lg bg-rose-50 dark:bg-rose-950 text-rose-700 dark:text-rose-300 text-[10px] font-bold">
-                  👆 Parmak Yarışı
+                  🎫 Ganyan/Plase/İkili
                 </span>
               </div>
             </div>

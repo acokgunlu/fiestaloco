@@ -1,8 +1,8 @@
 import React from 'react';
-import { Horse, TRACK_LENGTH } from '../../types/horseRace';
+import { RaceHorse, TRACK_LENGTH } from '../../types/horseRace';
 
 interface HorseRaceTrackProps {
-  horses: Horse[];
+  horses: RaceHorse[];
   /** Vurgulanacak at (telefonda kendi atın). */
   highlightHorseId?: string | null;
   /** Küçük yerleşim (telefon) — şeritler incelir. */
@@ -91,7 +91,7 @@ export const HorseRaceTrack: React.FC<HorseRaceTrackProps> = ({
               </div>
               {!compact && (
                 <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400">
-                  {h.odds}x · {h.taps} 👆
+                  {h.odds}x{h.form.length > 0 ? ` · ${h.form.slice(-3).join('-')}` : ''}
                 </div>
               )}
             </div>

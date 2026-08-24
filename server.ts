@@ -26,18 +26,19 @@ import {
   HorseRaceGameState,
   HorseRacePlayer,
   HorseRaceSettings,
+  HorseRaceBet,
   BET_AMOUNTS,
   TRACK_LENGTH,
 } from './src/types/horseRace';
 import {
   MAX_RACE_MS,
-  MAX_TAPS_PER_MESSAGE,
   TICK_MS,
-  advanceRace,
-  computeOdds,
-  finalizeUnfinished,
-  makeHorse,
-  settlePlayer,
+  createRaceCard,
+  isValidBet,
+  planRace,
+  progressAt,
+  settleBet,
+  type RacePlan,
 } from './src/data/horseRaceLogic';
 import {
   getMoveOptions as getBoardMoveOptions,
@@ -183,8 +184,11 @@ interface HorseRaceServerRoom {
   phaseTimer: NodeJS.Timeout | null;
   /** RACING sirasindaki 10 Hz fizik dongusu. */
   raceTimer: NodeJS.Timeout | null;
-  /** Son tick'ten beri gelen dokunuslar (duz obje — serializeRoom'dan gecer). */
-  tapBuffer: Record<string, number>;
+  /**
+   * Yarisin ONCEDEN cozulmus sonucu. gameState'e KONMAZ — icinde bitis
+   * siralamasi var, istemciye gitseydi bahis anlamsiz olurdu.
+   */
+  racePlan: RacePlan | null;
   raceElapsedMs: number;
 }
 
@@ -1507,14 +1511,15 @@ const ROOM_CODE_WORDS = [
 
 function createFreshHorseRaceGame(settings?: Partial<HorseRaceSettings>): HorseRaceGameState {
   const full: HorseRaceSettings = {
-    totalRaces: Math.max(1, Math.min(9, settings?.totalRaces || 3)),
-    bettingSeconds: Math.max(5, Math.min(60, settings?.bettingSeconds || 15)),
+    totalRaces: Math.max(1, Math.min(9, settings?.totalRaces || 4)),
+    bettingSeconds: Math.max(5, Math.min(90, settings?.bettingSeconds || 20)),
   };
   return {
     phase: 'LOBBY',
     currentRace: 1,
     settings: full,
     horses: [],
+    exactaOdds: [],
     timerSeconds: 0,
     betPlacedPlayerIds: [],
     finishOrder: [],
@@ -1537,21 +1542,24 @@ function clearHorseRaceTimers(room: HorseRaceServerRoom) {
 /**
  * Durum yayini.
  *
- * BAHIS GIZLILIGI: BETTING sirasinda kimin neye oynadigi kimseye gitmez —
- * yalnizca "bahsini verdi" bilgisi (betPlacedPlayerIds) paylasilir. Oyuncunun
- * KENDI bahsi kendi soketine `myBet` olarak ayrica gonderilir.
+ * IKI SEY ISTEMCIYE GITMEZ:
+ *  1. Atlarin gizli `strength` degeri — gonderilseydi favori hesaplanip
+ *     bahis anlamsiz kalirdi.
+ *  2. BETTING/COUNTDOWN sirasinda baskalarinin kuponu; yalnizca "verdi"
+ *     bilgisi paylasilir, kendi kuponun sana `myBet` ile ayrica gelir.
  */
 function broadcastHorseRaceRoomState(room: HorseRaceServerRoom, eventType = 'race:state') {
   maybeRecordMatch('race', room as any);
   const hideBets = room.gameState.phase === 'BETTING' || room.gameState.phase === 'COUNTDOWN';
 
+  const publicHorses = room.gameState.horses.map(({ strength, ...rest }) => rest);
   const publicPlayers = room.players.map((p) => ({
     ...p,
     bet: hideBets ? null : p.bet ?? null,
   }));
 
   const base = {
-    gameState: { ...room.gameState, roomCode: room.code },
+    gameState: { ...room.gameState, horses: publicHorses, roomCode: room.code },
     players: publicPlayers,
   };
 
@@ -1575,14 +1583,15 @@ function broadcastHorseRaceRoomState(room: HorseRaceServerRoom, eventType = 'rac
   });
 }
 
-/** Bahis asamasini baslatir: atlari ve oranlari kurar, geri sayimi isletir. */
+/** Yeni yaris karti + bahis geri sayimi. */
 function startBettingPhase(room: HorseRaceServerRoom) {
   clearHorseRaceTimers(room);
 
-  const racesPlayed = room.gameState.currentRace - 1;
-  room.gameState.horses = room.players.map((p, i) =>
-    makeHorse(p, i, computeOdds(p, racesPlayed))
-  );
+  const card = createRaceCard(room.gameState.horses.length ? room.gameState.horses : undefined);
+  room.gameState.horses = card.horses;
+  room.gameState.exactaOdds = card.exactaOdds;
+  room.racePlan = null;
+
   room.players.forEach((p) => {
     p.bet = null;
     p.lastDelta = 0;
@@ -1631,37 +1640,46 @@ function startCountdownPhase(room: HorseRaceServerRoom) {
   }, 1000);
 }
 
-/** 10 Hz fizik dongusu. Butun atlar bitince ya da sure dolunca sonuca gecer. */
+/**
+ * Yarisi baslat. Sonuc BURADA belirlenir (planRace), ekrandaki kosu onun
+ * canlandirmasidir — boylece gosterilen oranlar gercek olasiliga dayanir.
+ */
 function startRacingPhase(room: HorseRaceServerRoom) {
   clearHorseRaceTimers(room);
+  room.racePlan = planRace(room.gameState.horses);
   room.gameState.phase = 'RACING';
   room.gameState.timerSeconds = 0;
-  room.tapBuffer = {};
   room.raceElapsedMs = 0;
   broadcastHorseRaceRoomState(room, 'race:started');
 
   room.raceTimer = setInterval(() => {
     const current = raceRooms.get(room.code);
-    if (!current || current.gameState.phase !== 'RACING') {
+    if (!current || current.gameState.phase !== 'RACING' || !current.racePlan) {
       if (current) clearHorseRaceTimers(current);
       return;
     }
 
-    const taps = current.tapBuffer;
-    current.tapBuffer = {};
-    const finished = advanceRace(current.gameState.horses, taps);
-    finished.forEach((id) => current.gameState.finishOrder.push(id));
     current.raceElapsedMs += TICK_MS;
+    const t = current.raceElapsedMs;
+    const plan = current.racePlan;
+
+    current.gameState.horses.forEach((h) => {
+      h.progress = progressAt(t, plan.finishAt[h.id], plan.phase[h.id]);
+      if (h.rank === null && t >= plan.finishAt[h.id]) {
+        h.rank = plan.order.indexOf(h.id) + 1;
+        current.gameState.finishOrder.push(h.id);
+      }
+    });
 
     const allDone = current.gameState.horses.every((h) => h.rank !== null);
-    const timedOut = current.raceElapsedMs >= MAX_RACE_MS;
-
-    if (allDone || timedOut) {
-      if (timedOut) {
-        finalizeUnfinished(current.gameState.horses);
-        current.gameState.finishOrder = [...current.gameState.horses]
-          .sort((a, b) => (a.rank || 99) - (b.rank || 99))
-          .map((h) => h.id);
+    if (allDone || t >= MAX_RACE_MS) {
+      if (!allDone) {
+        // Guvenlik agi: sure dolduysa plani uygula
+        current.gameState.horses.forEach((h) => {
+          if (h.rank === null) h.rank = plan.order.indexOf(h.id) + 1;
+          h.progress = TRACK_LENGTH;
+        });
+        current.gameState.finishOrder = [...plan.order];
       }
       finishRace(current);
     } else {
@@ -1670,28 +1688,33 @@ function startRacingPhase(room: HorseRaceServerRoom) {
   }, TICK_MS);
 }
 
-/** Yarisi kapatir: bahisleri oder, primleri dagitir, sonucu yayinlar. */
+/** Yarisi kapatir: kuponlari oder, formu gunceller. */
 function finishRace(room: HorseRaceServerRoom) {
   clearHorseRaceTimers(room);
 
-  const winnerHorse = room.gameState.horses.find((h) => h.rank === 1) || null;
-  const winnerHorseId = winnerHorse?.id ?? null;
+  const ordered = [...room.gameState.horses].sort((a, b) => (a.rank || 99) - (b.rank || 99));
+  const firstId = ordered[0]?.id ?? null;
+  const secondId = ordered[1]?.id ?? null;
+  room.gameState.finishOrder = ordered.map((h) => h.id);
 
-  const payouts: Record<string, { bet: any; won: boolean; delta: number }> = {};
+  const payouts: Record<string, any> = {};
   room.players.forEach((p) => {
-    const result = settlePlayer(p, room.gameState.horses, winnerHorseId);
+    const result = settleBet(p.bet ?? null, room.gameState.horses, firstId, secondId, room.gameState.exactaOdds);
     p.money = Math.max(0, p.money + result.delta);
     p.lastDelta = result.delta;
-    if (result.won) p.correctBets = (p.correctBets || 0) + 1;
+    if (result.won) {
+      p.correctBets = (p.correctBets || 0) + 1;
+      p.biggestWin = Math.max(p.biggestWin || 0, result.delta);
+    }
     payouts[p.id] = result;
   });
 
-  if (winnerHorse) {
-    const owner = room.players.find((pl) => pl.id === winnerHorse.ownerId);
-    if (owner) owner.wins = (owner.wins || 0) + 1;
-  }
+  // Form cizelgesi: bir sonraki yaris icin oyuncular okusun
+  room.gameState.horses.forEach((h) => {
+    h.form = [...(h.form || []), h.rank || 0].slice(-5);
+  });
 
-  room.gameState.lastRaceSummary = { winnerHorseId, payouts };
+  room.gameState.lastRaceSummary = { firstId, secondId, payouts };
 
   const isLast = room.gameState.currentRace >= room.gameState.settings.totalRaces;
   if (isLast) {
@@ -2478,7 +2501,7 @@ Return strictly a JSON array matching this schema:
             gameState: createFreshHorseRaceGame(data.settings),
             phaseTimer: null,
             raceTimer: null,
-            tapBuffer: {},
+            racePlan: null,
             raceElapsedMs: 0,
           };
           raceRooms.set(roomCode, newRoom);
@@ -2520,18 +2543,9 @@ Return strictly a JSON array matching this schema:
           const playerId = data.playerId || `hr-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
           let player = room.players.find((p) => p.id === playerId);
 
-          if (!player && room.gameState.phase !== 'LOBBY') {
-            // Yaris basladiktan sonra YENI oyuncu alinmaz: pist ve oranlar
-            // kurulmus durumda, ortadan katilan hem atsiz kalir hem dengeyi bozar.
-            // (Kopan oyuncunun geri donmesi serbest — yukaridaki find onu bulur.)
-            ws.send(
-              JSON.stringify({
-                type: 'race:error',
-                message: 'Yaris basladi — bir sonraki oyunda katilabilirsin.',
-              })
-            );
-            return;
-          }
+          // Ganyan oyununda gec katilim SERBEST: oyuncu at degil bahisci,
+          // kadroyu bozmaz. Kasasiyla gelir, siradaki bahis turundan itibaren
+          // oynar. (Parmak yarisi surumunde kadro sabit oldugu icin engelliydi.)
 
           if (!player) {
             player = {
@@ -2541,8 +2555,8 @@ Return strictly a JSON array matching this schema:
               color: data.color || '#f59e0b',
               colorName: data.colorName || 'Sari',
               money: 1000,
-              wins: 0,
               correctBets: 0,
+              biggestWin: 0,
               bet: null,
               connected: true,
               isHost: room.players.length === 0,
@@ -2579,8 +2593,8 @@ Return strictly a JSON array matching this schema:
           }
           room.players.forEach((p) => {
             p.money = 1000;
-            p.wins = 0;
             p.correctBets = 0;
+            p.biggestWin = 0;
             p.bet = null;
             p.lastDelta = 0;
           });
@@ -2598,18 +2612,25 @@ Return strictly a JSON array matching this schema:
           const player = room.players.find((p) => p.id === client.playerId);
           if (!player) return;
 
-          // Istemciye GUVENME: at gercekten pistte mi, miktar izinli mi,
-          // oyuncunun parasi yetiyor mu?
-          const horseId = String(data.horseId || '');
+          // Istemciye GUVENME: kupon turu gecerli mi, atlar pistte mi,
+          // miktar izinli mi, oyuncunun parasi yetiyor mu?
+          const kind = String(data.kind || 'ganyan');
+          const horseIds: string[] = Array.isArray(data.horseIds)
+            ? data.horseIds.map((x: any) => String(x))
+            : [];
           const amount = Number(data.amount);
-          const horseExists = room.gameState.horses.some((h) => h.id === horseId);
-          const amountAllowed = (BET_AMOUNTS as readonly number[]).includes(amount);
-          if (!horseExists || !amountAllowed || amount > player.money) {
-            ws.send(JSON.stringify({ type: 'race:bet_rejected', message: 'Gecersiz bahis.' }));
+          const bet = { kind, horseIds, amount } as HorseRaceBet;
+
+          const kindOk = kind === 'ganyan' || kind === 'plase' || kind === 'ikili';
+          const amountOk = (BET_AMOUNTS as readonly number[]).includes(amount);
+          const allIds = room.gameState.horses.map((h) => h.id);
+
+          if (!kindOk || !amountOk || amount > player.money || !isValidBet(bet, allIds)) {
+            ws.send(JSON.stringify({ type: 'race:bet_rejected', message: 'Gecersiz kupon.' }));
             return;
           }
 
-          player.bet = { horseId, amount };
+          player.bet = bet;
           if (!room.gameState.betPlacedPlayerIds.includes(player.id)) {
             room.gameState.betPlacedPlayerIds.push(player.id);
           }
@@ -2620,21 +2641,6 @@ Return strictly a JSON array matching this schema:
           } else {
             broadcastHorseRaceRoomState(room);
           }
-        }
-
-        else if (type === 'race:tap') {
-          const client = clientMap.get(ws);
-          if (!client?.roomCode || !client.playerId) return;
-          const room = raceRooms.get(client.roomCode);
-          if (!room || room.gameState.phase !== 'RACING') return;
-
-          const horse = room.gameState.horses.find((h) => h.ownerId === client.playerId);
-          if (!horse || horse.rank !== null) return; // bitirmis at ilerlemez
-
-          // Otomatik tiklayiciya karsi: tek mesajda sayilacak dokunus siniri
-          const count = Math.max(0, Math.min(MAX_TAPS_PER_MESSAGE, Number(data.count) || 0));
-          room.tapBuffer[client.playerId] = (room.tapBuffer[client.playerId] || 0) + count;
-          horse.taps += count;
         }
 
         else if (type === 'race:next_race') {
@@ -2654,8 +2660,8 @@ Return strictly a JSON array matching this schema:
           clearHorseRaceTimers(room);
           room.players.forEach((p) => {
             p.money = 1000;
-            p.wins = 0;
             p.correctBets = 0;
+            p.biggestWin = 0;
             p.bet = null;
             p.lastDelta = 0;
           });

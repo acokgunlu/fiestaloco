@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import {
+  BetKind,
   HorseRaceBet,
   HorseRaceGameState,
   HorseRacePlayer,
@@ -27,9 +28,7 @@ export interface UseHorseRaceSocketReturn {
     role?: 'observer' | 'player'
   ) => void;
   startGame: () => void;
-  placeBet: (horseId: string, amount: number) => void;
-  /** Biriken dokunuslari sunucuya yollar (istemci toplu gonderir). */
-  sendTaps: (count: number) => void;
+  placeBet: (kind: BetKind, horseIds: string[], amount: number) => void;
   nextRace: () => void;
   restartGame: () => void;
   leaveRoom: () => void;
@@ -218,10 +217,10 @@ export function useHorseRaceSocket(): UseHorseRaceSocketReturn {
 
   const startGame = useCallback(() => send({ type: 'race:start_game' }), [send]);
   const placeBet = useCallback(
-    (horseId: string, amount: number) => send({ type: 'race:place_bet', horseId, amount }),
+    (kind: BetKind, horseIds: string[], amount: number) =>
+      send({ type: 'race:place_bet', kind, horseIds, amount }),
     [send]
   );
-  const sendTaps = useCallback((count: number) => send({ type: 'race:tap', count }), [send]);
   const nextRace = useCallback(() => send({ type: 'race:next_race' }), [send]);
   const restartGame = useCallback(() => send({ type: 'race:restart_game' }), [send]);
 
@@ -251,7 +250,6 @@ export function useHorseRaceSocket(): UseHorseRaceSocketReturn {
     joinRoom,
     startGame,
     placeBet,
-    sendTaps,
     nextRace,
     restartGame,
     leaveRoom,
