@@ -108,7 +108,7 @@ export const HorseRacePassAndPlay: React.FC<Props> = ({ onBackToLobby }) => {
     timerRef.current = window.setInterval(() => {
       t += TICK_MS;
       hs.forEach((h) => {
-        h.progress = progressAt(t, plan.finishAt[h.id], plan.phase[h.id]);
+        h.progress = progressAt(t, plan.finishAt[h.id], plan.style[h.id], plan.phase[h.id]);
         if (h.rank === null && t >= plan.finishAt[h.id]) h.rank = plan.order.indexOf(h.id) + 1;
       });
       setHorses([...hs]);
@@ -203,6 +203,11 @@ export const HorseRacePassAndPlay: React.FC<Props> = ({ onBackToLobby }) => {
                 {KIND_LABEL[k]}
               </button>
             ))}
+          </div>
+
+          <div className="flex items-center justify-between px-1 text-[10px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500">
+            <span>At</span>
+            <span>Oran · paranın kaç katı</span>
           </div>
 
           <div className="space-y-2">

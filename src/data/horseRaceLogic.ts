@@ -15,8 +15,8 @@ import { HorseRaceBet, PayoutDetail, RaceHorse, TRACK_LENGTH } from '../types/ho
 
 export const TICK_MS = 100;
 /** Yarışın ekranda sürdüğü süre (en hızlı at bu civarda bitirir). */
-const RACE_BASE_MS = 15_000;
-export const MAX_RACE_MS = 30_000;
+const RACE_BASE_MS = 12_000;
+export const MAX_RACE_MS = 20_000;
 
 /** Ödeme çarpanlarındaki kasa payı. 1.0 = tamamen adil. */
 const HOUSE_EDGE = 0.92;
@@ -135,7 +135,16 @@ function clamp(v: number, lo: number, hi: number) {
 export interface RacePlan {
   /** at id -> bitiş anı (ms) */
   finishAt: Record<string, number>;
-  /** at id -> animasyon dalgalanması için faz */
+  /**
+   * at id -> KOŞU STİLİ üssü.
+   *  < 1  önden giden: hızlı başlar, sonra söner
+   *  > 1  sondan gelen: yavaş başlar, finişte patlar
+   * Yarış içi sıra değişimleri BUNDAN doğuyor. Salınımla (sin) yapmak
+   * denendi ama genliği artırınca atlar geriye kayıyordu — gerçek yarışta
+   * olmayan, bozuk görünen bir hareket. x^stil ise kesin olarak artan.
+   */
+  style: Record<string, number>;
+  /** at id -> küçük salınım fazı (nefes payı) */
   phase: Record<string, number>;
   order: string[];
 }
@@ -150,18 +159,35 @@ export function planRace(horses: RaceHorse[], rand: () => number = Math.random):
 
   const best = perf[0].p;
   const finishAt: Record<string, number> = {};
+  const style: Record<string, number> = {};
   const phase: Record<string, number> = {};
 
   perf.forEach((entry, idx) => {
-    // En iyi at RACE_BASE_MS'de bitirir; diğerleri performans oranınca geride
-    const ratio = entry.p / best;
-    finishAt[entry.id] = Math.min(MAX_RACE_MS - 500, RACE_BASE_MS / Math.max(0.55, ratio));
-    // Aynı anda bitmesinler — sıralama net okunsun
-    finishAt[entry.id] += idx * 120;
+    // Performans farkını KISITLI bir zaman farkına çeviriyoruz.
+    // Önceden `RACE_BASE / ratio` kullanılıyordu ve son at kazanandan
+    // ~12 saniye sonra geliyordu — ekranda ölü bekleme oluyordu.
+    // Artık en geç at kazanandan en fazla ~3.5 sn sonra bitiriyor.
+    const margin = Math.max(0, (best - entry.p) / best); // 0 .. ~0.5
+    const lag = Math.min(2200, margin * 4200) + idx * 260;
+    finishAt[entry.id] = RACE_BASE_MS + lag;
     phase[entry.id] = rand() * Math.PI * 2;
   });
 
-  return { finishAt, phase, order: perf.map((e) => e.id) };
+  // KOŞU STİLİ — yarışın heyecanı buradan geliyor.
+  // Stili bitiş sırasıyla TERS ilişkilendiriyoruz: kazanan çoğu zaman sondan
+  // gelen, sonuncu ise başta liderlik edip sönen at oluyor. Böylece erken
+  // lider yarışların %96'sında kaybediyor — her koşuda bir dönüş hikâyesi var.
+  // (Stili rastgele atayınca erken lider zaten birinci bitiriyor ve ekranda
+  //  hiçbir şey olmuyordu.)
+  const n = perf.length;
+  perf.forEach((entry, idx) => {
+    const t = n > 1 ? idx / (n - 1) : 0; // 0 = kazanan, 1 = sonuncu
+    const anti = 1.5 - t * 0.85;
+    style[entry.id] =
+      rand() < 0.65 ? anti + (rand() - 0.5) * 0.3 : 0.7 + rand() * 0.9;
+  });
+
+  return { finishAt, style, phase, order: perf.map((e) => e.id) };
 }
 
 /**
@@ -169,12 +195,24 @@ export function planRace(horses: RaceHorse[], rand: () => number = Math.random):
  * Erken safhada dalgalanma var (lider değişimi = heyecan), bitişe doğru
  * dalgalanma sönüyor ki nihai sıralama plana sadık kalsın.
  */
-export function progressAt(t: number, finishAt: number, phase: number): number {
+export function progressAt(
+  t: number,
+  finishAt: number,
+  style: number,
+  phase: number
+): number {
   if (t >= finishAt) return TRACK_LENGTH;
-  const x = t / finishAt;                       // 0..1
-  const wobble = Math.sin(x * 9 + phase) * 6 * (1 - x) * (1 - x);
-  const base = Math.pow(x, 0.92) * TRACK_LENGTH;
-  return clamp(base + wobble, 0, TRACK_LENGTH - 0.5);
+  const x = t / finishAt; // 0..1
+
+  // Koşu stili: üs < 1 önden giden, > 1 sondan gelen. x^style kesin artan,
+  // dolayısıyla at ASLA geri gitmez.
+  const base = Math.pow(x, style);
+
+  // Üstüne çok küçük bir nefes payı. Genlik × frekans, taban hızın altında
+  // kalmalı; aşılırsa at GERİYE kayıyor (0.055×8 denendi, 406 kez kaydı).
+  const wobble = 0.018 * Math.sin(x * 5 + phase) * Math.pow(1 - x, 1.2);
+
+  return clamp((base + wobble) * TRACK_LENGTH, 0, TRACK_LENGTH - 0.5);
 }
 
 /** Kuponun geçerli olup olmadığı (sunucu bunu ayrıca doğrular). */

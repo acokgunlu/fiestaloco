@@ -91,7 +91,7 @@ export const HorseRaceTrack: React.FC<HorseRaceTrackProps> = ({
               </div>
               {!compact && (
                 <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400">
-                  {h.odds}x{h.form.length > 0 ? ` · ${h.form.slice(-3).join('-')}` : ''}
+                  oran {h.odds}{h.form.length > 0 ? ` · form ${h.form.slice(-3).join('-')}` : ''}
                 </div>
               )}
             </div>

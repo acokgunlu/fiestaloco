@@ -1664,7 +1664,7 @@ function startRacingPhase(room: HorseRaceServerRoom) {
     const plan = current.racePlan;
 
     current.gameState.horses.forEach((h) => {
-      h.progress = progressAt(t, plan.finishAt[h.id], plan.phase[h.id]);
+      h.progress = progressAt(t, plan.finishAt[h.id], plan.style[h.id], plan.phase[h.id]);
       if (h.rank === null && t >= plan.finishAt[h.id]) {
         h.rank = plan.order.indexOf(h.id) + 1;
         current.gameState.finishOrder.push(h.id);

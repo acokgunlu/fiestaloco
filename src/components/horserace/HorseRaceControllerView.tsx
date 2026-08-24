@@ -166,6 +166,12 @@ export const HorseRaceControllerView: React.FC<Props> = ({
                 {kind === 'ikili' && picks.length < 2 && ` · ${picks.length}/2 seçildi`}
               </p>
 
+              {/* "8.8x" tek başına anlaşılmıyordu — ne olduğunu yazıyoruz. */}
+              <div className="flex items-center justify-between px-1 text-[10px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500">
+                <span>At</span>
+                <span>Oran · paranın kaç katı</span>
+              </div>
+
               {/* Atlar */}
               <div className="space-y-2">
                 {gameState.horses.map((h) => {

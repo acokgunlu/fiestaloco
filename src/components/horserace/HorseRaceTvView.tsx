@@ -137,6 +137,9 @@ export const HorseRaceTvView: React.FC<HorseRaceTvViewProps> = ({
             <p className="text-sm font-bold text-slate-500 dark:text-slate-400">
               Telefonlarınızdan kuponunuzu doldurun
             </p>
+            <p className="text-xs font-bold text-slate-400 dark:text-slate-500">
+              Oran = kupon tutarsa paranın kaç katı geleceği. Düşük oran favori, yüksek oran sürpriz.
+            </p>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -147,8 +150,18 @@ export const HorseRaceTvView: React.FC<HorseRaceTvViewProps> = ({
               >
                 <div className="text-4xl mb-1">{h.emoji}</div>
                 <div className="text-sm font-black text-slate-900 dark:text-white truncate">{h.name}</div>
-                <div className="mt-1 inline-block px-2.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 text-xs font-black border border-amber-300 dark:border-amber-800">
-                  {h.odds}x
+                <div className="mt-1 space-y-0.5">
+                  <div className="text-[9px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500">
+                    Ganyan oranı
+                  </div>
+                  <div className="inline-block px-2.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 text-sm font-black border border-amber-300 dark:border-amber-800">
+                    {h.odds}
+                  </div>
+                  {h.form.length > 0 && (
+                    <div className="text-[9px] font-mono text-slate-400 dark:text-slate-500">
+                      form {h.form.slice(-3).join('-')}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
