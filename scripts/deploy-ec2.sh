@@ -27,6 +27,27 @@ REMOTE_APP=/opt/fiestaloco/app
 
 say() { printf '\n\033[1;36m==> %s\033[0m\n' "$*"; }
 
+# --- SSH erisimini garanti et ---------------------------------------------
+# 22. port yalnizca gecerli ev IP'sine acik. Ev IP'si degistiginde deploy
+# "Operation timed out" ile duser; bu adim guvenlik grubunu sessizce hizalar.
+ensure_ssh_access() {
+  local myip sg="${FIESTA_SG_ID:-sg-0dcb73d7aa0476bf5}"
+  myip="$(curl -fsS --max-time 8 https://checkip.amazonaws.com 2>/dev/null | tr -d '[:space:]')" || return 0
+  [ -n "$myip" ] || return 0
+
+  if aws ec2 describe-security-groups --region "${FIESTA_REGION:-eu-central-1}" --group-ids "$sg" \
+       --query "SecurityGroups[0].IpPermissions[?FromPort==\`22\`].IpRanges[].CidrIp" --output text 2>/dev/null \
+       | tr '\t' '\n' | grep -qx "$myip/32"; then
+    return 0
+  fi
+
+  say "SSH kurali guncelleniyor (IP degismis: $myip)"
+  aws ec2 authorize-security-group-ingress --region "${FIESTA_REGION:-eu-central-1}" --group-id "$sg" \
+    --ip-permissions "IpProtocol=tcp,FromPort=22,ToPort=22,IpRanges=[{CidrIp=${myip}/32,Description='deploy-ec2.sh otomatik'}]" \
+    >/dev/null 2>&1 || true
+}
+ensure_ssh_access
+
 # --- 1. Yerel derleme ---------------------------------------------------------
 say "Sunucu paketi derleniyor (yerel)"
 npm run build:server

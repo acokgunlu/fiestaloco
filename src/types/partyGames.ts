@@ -1,4 +1,4 @@
-export type PartyGameType = 'imposter' | 'codenames' | 'bluff' | 'bomb' | 'trivia_pursuit' | 'quiplash';
+export type PartyGameType = 'imposter' | 'codenames' | 'bluff' | 'bomb' | 'trivia_pursuit' | 'quiplash' | 'race';
 
 // ==========================================
 // 1. YALAN USTASI (BLUFF TRIVIA / FIBBAGE)

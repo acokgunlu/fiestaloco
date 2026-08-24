@@ -83,7 +83,8 @@ export type PersistedGameType =
   | 'bomb'
   | 'bluff'
   | 'trivia'
-  | 'quiplash';
+  | 'quiplash'
+  | 'race';
 
 // -----------------------------------------------------------------------------
 // Leaderboard / mac gecmisi

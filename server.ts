@@ -23,6 +23,23 @@ import { getRandomWordPair, DEFAULT_PLAYER_PALETTE } from './src/data/wordPacks'
 import { Player, Stroke, WordPair, GamePhase, GameSettings, RoundResult, RoomState, Point } from './src/types';
 import { generateCodenamesBoard, CodenamesCard } from './src/data/codenamesWords';
 import {
+  HorseRaceGameState,
+  HorseRacePlayer,
+  HorseRaceSettings,
+  BET_AMOUNTS,
+  TRACK_LENGTH,
+} from './src/types/horseRace';
+import {
+  MAX_RACE_MS,
+  MAX_TAPS_PER_MESSAGE,
+  TICK_MS,
+  advanceRace,
+  computeOdds,
+  finalizeUnfinished,
+  makeHorse,
+  settlePlayer,
+} from './src/data/horseRaceLogic';
+import {
   getMoveOptions as getBoardMoveOptions,
   rollDie as rollBoardDie,
   samePosition as sameBoardPosition,
@@ -80,7 +97,7 @@ interface ConnectedClient {
   roomCode?: string;
   role?: 'observer' | 'player';
   playerId?: string;
-  gameType?: 'imposter' | 'codenames' | 'bomb' | 'bluff' | 'trivia' | 'quiplash';
+  gameType?: 'imposter' | 'codenames' | 'bomb' | 'bluff' | 'trivia' | 'quiplash' | 'race';
 }
 
 interface ServerRoom {
@@ -156,12 +173,28 @@ interface QuiplashServerRoom {
   roundTimer: NodeJS.Timeout | null;
 }
 
+interface HorseRaceServerRoom {
+  code: string;
+  observers: Set<WebSocket>;
+  playerSockets: Map<string, WebSocket>; // playerId -> ws
+  players: HorseRacePlayer[];
+  gameState: HorseRaceGameState;
+  /** BETTING/COUNTDOWN geri sayimi. */
+  phaseTimer: NodeJS.Timeout | null;
+  /** RACING sirasindaki 10 Hz fizik dongusu. */
+  raceTimer: NodeJS.Timeout | null;
+  /** Son tick'ten beri gelen dokunuslar (duz obje — serializeRoom'dan gecer). */
+  tapBuffer: Record<string, number>;
+  raceElapsedMs: number;
+}
+
 const rooms = new Map<string, ServerRoom>();
 const codenamesRooms = new Map<string, CodenamesServerRoom>();
 const bombRooms = new Map<string, BombServerRoom>();
 const bluffRooms = new Map<string, BluffServerRoom>();
 const triviaRooms = new Map<string, TriviaServerRoom>();
 const quiplashRooms = new Map<string, QuiplashServerRoom>();
+const raceRooms = new Map<string, HorseRaceServerRoom>();
 const clientMap = new Map<WebSocket, ConnectedClient>();
 
 // =============================================================================
@@ -225,6 +258,7 @@ const ROOM_REGISTRY: Array<{ gameType: PersistedGameType; map: Map<string, any> 
   { gameType: 'bluff', map: bluffRooms },
   { gameType: 'trivia', map: triviaRooms },
   { gameType: 'quiplash', map: quiplashRooms },
+  { gameType: 'race', map: raceRooms },
 ];
 
 /** Ayni mac sonucunun tekrar tekrar yazilmasini engeller. */
@@ -1467,6 +1501,210 @@ const ROOM_CODE_WORDS = [
   'DEER', 'HAWK', 'SEAL', 'CRAB', 'FOX', 'CAT', 'DOG', 'BEE', 'OWL',
 ];
 
+// =============================================================================
+// AT YARIŞI — oyun motoru
+// =============================================================================
+
+function createFreshHorseRaceGame(settings?: Partial<HorseRaceSettings>): HorseRaceGameState {
+  const full: HorseRaceSettings = {
+    totalRaces: Math.max(1, Math.min(9, settings?.totalRaces || 3)),
+    bettingSeconds: Math.max(5, Math.min(60, settings?.bettingSeconds || 15)),
+  };
+  return {
+    phase: 'LOBBY',
+    currentRace: 1,
+    settings: full,
+    horses: [],
+    timerSeconds: 0,
+    betPlacedPlayerIds: [],
+    finishOrder: [],
+    winnerPlayerId: null,
+    isOnline: true,
+  };
+}
+
+function clearHorseRaceTimers(room: HorseRaceServerRoom) {
+  if (room.phaseTimer) {
+    clearInterval(room.phaseTimer);
+    room.phaseTimer = null;
+  }
+  if (room.raceTimer) {
+    clearInterval(room.raceTimer);
+    room.raceTimer = null;
+  }
+}
+
+/**
+ * Durum yayini.
+ *
+ * BAHIS GIZLILIGI: BETTING sirasinda kimin neye oynadigi kimseye gitmez —
+ * yalnizca "bahsini verdi" bilgisi (betPlacedPlayerIds) paylasilir. Oyuncunun
+ * KENDI bahsi kendi soketine `myBet` olarak ayrica gonderilir.
+ */
+function broadcastHorseRaceRoomState(room: HorseRaceServerRoom, eventType = 'race:state') {
+  maybeRecordMatch('race', room as any);
+  const hideBets = room.gameState.phase === 'BETTING' || room.gameState.phase === 'COUNTDOWN';
+
+  const publicPlayers = room.players.map((p) => ({
+    ...p,
+    bet: hideBets ? null : p.bet ?? null,
+  }));
+
+  const base = {
+    gameState: { ...room.gameState, roomCode: room.code },
+    players: publicPlayers,
+  };
+
+  const tvPayload = JSON.stringify({ type: eventType, ...base });
+  room.observers.forEach((ws) => {
+    if (ws.readyState === WebSocket.OPEN) ws.send(tvPayload);
+  });
+
+  room.players.forEach((player) => {
+    const ws = room.playerSockets.get(player.id);
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(
+        JSON.stringify({
+          type: eventType,
+          ...base,
+          myPlayer: { ...player, bet: player.bet ?? null },
+          myBet: player.bet ?? null,
+        })
+      );
+    }
+  });
+}
+
+/** Bahis asamasini baslatir: atlari ve oranlari kurar, geri sayimi isletir. */
+function startBettingPhase(room: HorseRaceServerRoom) {
+  clearHorseRaceTimers(room);
+
+  const racesPlayed = room.gameState.currentRace - 1;
+  room.gameState.horses = room.players.map((p, i) =>
+    makeHorse(p, i, computeOdds(p, racesPlayed))
+  );
+  room.players.forEach((p) => {
+    p.bet = null;
+    p.lastDelta = 0;
+  });
+  room.gameState.betPlacedPlayerIds = [];
+  room.gameState.finishOrder = [];
+  room.gameState.lastRaceSummary = undefined;
+  room.gameState.phase = 'BETTING';
+  room.gameState.timerSeconds = room.gameState.settings.bettingSeconds;
+
+  broadcastHorseRaceRoomState(room, 'race:betting_started');
+
+  room.phaseTimer = setInterval(() => {
+    const current = raceRooms.get(room.code);
+    if (!current || current.gameState.phase !== 'BETTING') {
+      if (current) clearHorseRaceTimers(current);
+      return;
+    }
+    current.gameState.timerSeconds -= 1;
+    if (current.gameState.timerSeconds <= 0) {
+      startCountdownPhase(current);
+    } else {
+      broadcastHorseRaceRoomState(current);
+    }
+  }, 1000);
+}
+
+function startCountdownPhase(room: HorseRaceServerRoom) {
+  clearHorseRaceTimers(room);
+  room.gameState.phase = 'COUNTDOWN';
+  room.gameState.timerSeconds = 3;
+  broadcastHorseRaceRoomState(room, 'race:countdown');
+
+  room.phaseTimer = setInterval(() => {
+    const current = raceRooms.get(room.code);
+    if (!current || current.gameState.phase !== 'COUNTDOWN') {
+      if (current) clearHorseRaceTimers(current);
+      return;
+    }
+    current.gameState.timerSeconds -= 1;
+    if (current.gameState.timerSeconds <= 0) {
+      startRacingPhase(current);
+    } else {
+      broadcastHorseRaceRoomState(current);
+    }
+  }, 1000);
+}
+
+/** 10 Hz fizik dongusu. Butun atlar bitince ya da sure dolunca sonuca gecer. */
+function startRacingPhase(room: HorseRaceServerRoom) {
+  clearHorseRaceTimers(room);
+  room.gameState.phase = 'RACING';
+  room.gameState.timerSeconds = 0;
+  room.tapBuffer = {};
+  room.raceElapsedMs = 0;
+  broadcastHorseRaceRoomState(room, 'race:started');
+
+  room.raceTimer = setInterval(() => {
+    const current = raceRooms.get(room.code);
+    if (!current || current.gameState.phase !== 'RACING') {
+      if (current) clearHorseRaceTimers(current);
+      return;
+    }
+
+    const taps = current.tapBuffer;
+    current.tapBuffer = {};
+    const finished = advanceRace(current.gameState.horses, taps);
+    finished.forEach((id) => current.gameState.finishOrder.push(id));
+    current.raceElapsedMs += TICK_MS;
+
+    const allDone = current.gameState.horses.every((h) => h.rank !== null);
+    const timedOut = current.raceElapsedMs >= MAX_RACE_MS;
+
+    if (allDone || timedOut) {
+      if (timedOut) {
+        finalizeUnfinished(current.gameState.horses);
+        current.gameState.finishOrder = [...current.gameState.horses]
+          .sort((a, b) => (a.rank || 99) - (b.rank || 99))
+          .map((h) => h.id);
+      }
+      finishRace(current);
+    } else {
+      broadcastHorseRaceRoomState(current);
+    }
+  }, TICK_MS);
+}
+
+/** Yarisi kapatir: bahisleri oder, primleri dagitir, sonucu yayinlar. */
+function finishRace(room: HorseRaceServerRoom) {
+  clearHorseRaceTimers(room);
+
+  const winnerHorse = room.gameState.horses.find((h) => h.rank === 1) || null;
+  const winnerHorseId = winnerHorse?.id ?? null;
+
+  const payouts: Record<string, { bet: any; won: boolean; delta: number }> = {};
+  room.players.forEach((p) => {
+    const result = settlePlayer(p, room.gameState.horses, winnerHorseId);
+    p.money = Math.max(0, p.money + result.delta);
+    p.lastDelta = result.delta;
+    if (result.won) p.correctBets = (p.correctBets || 0) + 1;
+    payouts[p.id] = result;
+  });
+
+  if (winnerHorse) {
+    const owner = room.players.find((pl) => pl.id === winnerHorse.ownerId);
+    if (owner) owner.wins = (owner.wins || 0) + 1;
+  }
+
+  room.gameState.lastRaceSummary = { winnerHorseId, payouts };
+
+  const isLast = room.gameState.currentRace >= room.gameState.settings.totalRaces;
+  if (isLast) {
+    const richest = [...room.players].sort((a, b) => b.money - a.money)[0];
+    room.gameState.winnerPlayerId = richest?.id || null;
+    room.gameState.phase = 'GAME_OVER';
+  } else {
+    room.gameState.phase = 'ROUND_RESULT';
+  }
+
+  broadcastHorseRaceRoomState(room, 'race:results');
+}
+
 function generateRoomCode(): string {
   for (let i = 0; i < 30; i++) {
     const word = ROOM_CODE_WORDS[Math.floor(Math.random() * ROOM_CODE_WORDS.length)];
@@ -1476,7 +1714,8 @@ function generateRoomCode(): string {
       !bluffRooms.has(code) &&
       !bombRooms.has(code) &&
       !codenamesRooms.has(code) &&
-      !triviaRooms.has(code)
+      !triviaRooms.has(code) &&
+      !raceRooms.has(code)
     ) {
       return code;
     }
@@ -1918,6 +2157,7 @@ async function startServer() {
       bluff: bluffRooms.size,
       trivia: triviaRooms.size,
       quiplash: quiplashRooms.size,
+      race: raceRooms.size,
     };
     res.json({
       status: 'ok',
@@ -2224,11 +2464,211 @@ Return strictly a JSON array matching this schema:
         const data = JSON.parse(raw.toString());
         const { type } = data;
 
+        // =====================================================================
+        // AT YARIŞI / HORSE RACE DISPATCHER
+        // =====================================================================
+
+        if (type === 'race:create_room') {
+          const roomCode = generateRoomCode();
+          const newRoom: HorseRaceServerRoom = {
+            code: roomCode,
+            observers: new Set([ws]),
+            playerSockets: new Map(),
+            players: [],
+            gameState: createFreshHorseRaceGame(data.settings),
+            phaseTimer: null,
+            raceTimer: null,
+            tapBuffer: {},
+            raceElapsedMs: 0,
+          };
+          raceRooms.set(roomCode, newRoom);
+          clientMap.set(ws, { ws, roomCode, role: 'observer', gameType: 'race' });
+          ws.send(
+            JSON.stringify({
+              type: 'race:room_created',
+              roomCode,
+              gameState: newRoom.gameState,
+              players: newRoom.players,
+            })
+          );
+        }
+
+        else if (type === 'race:join_room') {
+          const roomCode = (data.roomCode || '').toUpperCase().trim();
+          const room = raceRooms.get(roomCode);
+          if (!room) {
+            ws.send(JSON.stringify({ type: 'race:error', message: `Oda bulunamadi: "${roomCode}"` }));
+            return;
+          }
+
+          const role = data.role === 'observer' ? 'observer' : 'player';
+          if (role === 'observer') {
+            room.observers.add(ws);
+            clientMap.set(ws, { ws, roomCode, role: 'observer', gameType: 'race' });
+            ws.send(
+              JSON.stringify({
+                type: 'race:room_joined',
+                roomCode,
+                role: 'observer',
+                gameState: room.gameState,
+                players: room.players,
+              })
+            );
+            return;
+          }
+
+          const playerId = data.playerId || `hr-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+          let player = room.players.find((p) => p.id === playerId);
+
+          if (!player && room.gameState.phase !== 'LOBBY') {
+            // Yaris basladiktan sonra YENI oyuncu alinmaz: pist ve oranlar
+            // kurulmus durumda, ortadan katilan hem atsiz kalir hem dengeyi bozar.
+            // (Kopan oyuncunun geri donmesi serbest — yukaridaki find onu bulur.)
+            ws.send(
+              JSON.stringify({
+                type: 'race:error',
+                message: 'Yaris basladi — bir sonraki oyunda katilabilirsin.',
+              })
+            );
+            return;
+          }
+
+          if (!player) {
+            player = {
+              id: playerId,
+              name: (data.playerName || data.name || 'Oyuncu').trim().substring(0, 18),
+              avatar: data.avatar || '\u{1F98A}',
+              color: data.color || '#f59e0b',
+              colorName: data.colorName || 'Sari',
+              money: 1000,
+              wins: 0,
+              correctBets: 0,
+              bet: null,
+              connected: true,
+              isHost: room.players.length === 0,
+            };
+            room.players.push(player);
+          } else {
+            player.connected = true;
+          }
+
+          room.playerSockets.set(player.id, ws);
+          clientMap.set(ws, { ws, roomCode, role: 'player', playerId: player.id, gameType: 'race' });
+          ws.send(
+            JSON.stringify({
+              type: 'race:room_joined',
+              roomCode,
+              role: 'player',
+              playerId: player.id,
+              player,
+              gameState: room.gameState,
+              players: room.players,
+            })
+          );
+          broadcastHorseRaceRoomState(room);
+        }
+
+        else if (type === 'race:start_game') {
+          const client = clientMap.get(ws);
+          if (!client?.roomCode) return;
+          const room = raceRooms.get(client.roomCode);
+          if (!room) return;
+          if (room.players.length < 1) {
+            ws.send(JSON.stringify({ type: 'race:error', message: 'En az 1 oyuncu gerekli.' }));
+            return;
+          }
+          room.players.forEach((p) => {
+            p.money = 1000;
+            p.wins = 0;
+            p.correctBets = 0;
+            p.bet = null;
+            p.lastDelta = 0;
+          });
+          room.gameState.currentRace = 1;
+          room.gameState.winnerPlayerId = null;
+          startBettingPhase(room);
+        }
+
+        else if (type === 'race:place_bet') {
+          const client = clientMap.get(ws);
+          if (!client?.roomCode || !client.playerId) return;
+          const room = raceRooms.get(client.roomCode);
+          if (!room || room.gameState.phase !== 'BETTING') return;
+
+          const player = room.players.find((p) => p.id === client.playerId);
+          if (!player) return;
+
+          // Istemciye GUVENME: at gercekten pistte mi, miktar izinli mi,
+          // oyuncunun parasi yetiyor mu?
+          const horseId = String(data.horseId || '');
+          const amount = Number(data.amount);
+          const horseExists = room.gameState.horses.some((h) => h.id === horseId);
+          const amountAllowed = (BET_AMOUNTS as readonly number[]).includes(amount);
+          if (!horseExists || !amountAllowed || amount > player.money) {
+            ws.send(JSON.stringify({ type: 'race:bet_rejected', message: 'Gecersiz bahis.' }));
+            return;
+          }
+
+          player.bet = { horseId, amount };
+          if (!room.gameState.betPlacedPlayerIds.includes(player.id)) {
+            room.gameState.betPlacedPlayerIds.push(player.id);
+          }
+
+          const connected = room.players.filter((p) => p.connected !== false);
+          if (connected.length > 0 && connected.every((p) => !!p.bet)) {
+            startCountdownPhase(room);
+          } else {
+            broadcastHorseRaceRoomState(room);
+          }
+        }
+
+        else if (type === 'race:tap') {
+          const client = clientMap.get(ws);
+          if (!client?.roomCode || !client.playerId) return;
+          const room = raceRooms.get(client.roomCode);
+          if (!room || room.gameState.phase !== 'RACING') return;
+
+          const horse = room.gameState.horses.find((h) => h.ownerId === client.playerId);
+          if (!horse || horse.rank !== null) return; // bitirmis at ilerlemez
+
+          // Otomatik tiklayiciya karsi: tek mesajda sayilacak dokunus siniri
+          const count = Math.max(0, Math.min(MAX_TAPS_PER_MESSAGE, Number(data.count) || 0));
+          room.tapBuffer[client.playerId] = (room.tapBuffer[client.playerId] || 0) + count;
+          horse.taps += count;
+        }
+
+        else if (type === 'race:next_race') {
+          const client = clientMap.get(ws);
+          if (!client?.roomCode) return;
+          const room = raceRooms.get(client.roomCode);
+          if (!room || room.gameState.phase !== 'ROUND_RESULT') return;
+          room.gameState.currentRace += 1;
+          startBettingPhase(room);
+        }
+
+        else if (type === 'race:restart_game') {
+          const client = clientMap.get(ws);
+          if (!client?.roomCode) return;
+          const room = raceRooms.get(client.roomCode);
+          if (!room) return;
+          clearHorseRaceTimers(room);
+          room.players.forEach((p) => {
+            p.money = 1000;
+            p.wins = 0;
+            p.correctBets = 0;
+            p.bet = null;
+            p.lastDelta = 0;
+          });
+          room.gameState = createFreshHorseRaceGame(room.gameState.settings);
+          broadcastHorseRaceRoomState(room);
+        }
+
+        // =====================================================================
         // SAATLİ BOMBA / WORD BOMB MULTIPLAYER WEBSOCKET DISPATCHER
         // =====================================================================
 
         // 1. CREATE BOMB ROOM (TV / Observer Host)
-        if (type === 'bomb:create_room') {
+        else if (type === 'bomb:create_room') {
           const roomCode = generateRoomCode();
           const initialGameState = createFreshBombGame();
 
@@ -4300,7 +4740,30 @@ Return strictly a JSON array matching this schema:
     ws.on('close', () => {
       const client = clientMap.get(ws);
       if (client?.roomCode) {
-        if (client.gameType === 'bomb') {
+        if (client.gameType === 'race') {
+          const room = raceRooms.get(client.roomCode);
+          if (room) {
+            if (client.role === 'observer') {
+              room.observers.delete(ws);
+            } else if (client.playerId) {
+              room.playerSockets.delete(client.playerId);
+              const p = room.players.find((pl) => pl.id === client.playerId);
+              if (p) p.connected = false;
+            }
+            broadcastHorseRaceRoomState(room);
+
+            if (room.observers.size === 0 && room.playerSockets.size === 0) {
+              setTimeout(() => {
+                const current = raceRooms.get(client.roomCode!);
+                if (current && current.observers.size === 0 && current.playerSockets.size === 0) {
+                  clearHorseRaceTimers(current);
+                  raceRooms.delete(client.roomCode!);
+                  forgetRoom('race', client.roomCode!);
+                }
+              }, 180000);
+            }
+          }
+        } else if (client.gameType === 'bomb') {
           const room = bombRooms.get(client.roomCode);
           if (room) {
             if (client.role === 'observer') {

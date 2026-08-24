@@ -59,6 +59,12 @@ const GAMES: GameSpec[] = [
     stateTypes: ['trivia:room_created', 'trivia:room_joined', 'trivia:state'],
   },
   {
+    name: 'race',
+    createType: 'race:create_room',
+    joinType: 'race:join_room',
+    stateTypes: ['race:room_created', 'race:room_joined', 'race:state'],
+  },
+  {
     name: 'quiplash',
     createType: 'quiplash:create_room',
     joinType: 'quiplash:join_room',
