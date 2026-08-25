@@ -14,6 +14,7 @@ import { CATEGORIES, DEFAULT_PLAYER_PALETTE } from '../data/wordPacks';
 import { GameSettings } from '../types';
 
 import { t } from '../i18n';
+import { T } from '../i18n/T';
 interface OnlineRoomPickerProps {
   onHostObserver: (settings: GameSettings, hostName: string) => void;
   onJoinPlayer: (roomCode: string, name: string, color: string, avatar: string, colorName: string) => void;
@@ -87,8 +88,7 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
           {t('SAHTEKÂR')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 via-rose-600 to-purple-600">{t('RESSAM')}</span>
         </h1>
         <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base max-w-md mx-auto leading-relaxed">
-          Herkes gizli kelimeyi çizer, 1 kişi <strong>{t('Sahtekâr')}</strong>'dır! Sırayla tek sürekli çizgi çekin ve sahtekârı yakalayın.
-        </p>
+          <T k="Herkes gizli kelimeyi çizer, 1 kişi {a}'dır! Sırayla tek sürekli çizgi çekin ve sahtekârı yakalayın." v={{ a: <strong>{t('Sahtekâr')}</strong> }} /></p>
       </div>
 
       {/* Error Notice if any */}
@@ -339,8 +339,7 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
         <p>
           2. <strong>{t('Tek Çizgi:')}</strong>  {t('Sırası gelen oyuncu tuvale tek bir sürekli çizgi ekler. Çizim sırası her turda döner!')}</p>
         <p>
-          3. <strong>{t('Oylama & Bonus:')}</strong> Şüpheli çizgiyi çizen Sahtekârı doğru bulan masum oyuncular <strong>{t('+50 Puan')}</strong> kazanır!
-        </p>
+          <T k="3. {a} Şüpheli çizgiyi çizen Sahtekârı doğru bulan masum oyuncular {b} kazanır!" v={{ a: <strong>{t('Oylama & Bonus:')}</strong>, b: <strong>{t('+50 Puan')}</strong> }} /></p>
       </div>
     </div>
   );

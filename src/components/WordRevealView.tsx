@@ -4,6 +4,7 @@ import { Eye, EyeOff, ShieldAlert, Sparkles, ArrowRight, Fingerprint, LockKeyhol
 import { playClickSound, playTurnSound, playWobbleSound, playPopSound } from '../utils/audio';
 
 import { t } from '../i18n';
+import { T } from '../i18n/T';
 interface WordRevealViewProps {
   players: Player[];
   wordPair: WordPair;
@@ -87,8 +88,7 @@ export const WordRevealView: React.FC<WordRevealViewProps> = ({
           <span>{currentPlayer.avatar}</span>
         </div>
         <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
-          Cihazı <span className="underline decoration-indigo-500 decoration-wavy decoration-2" style={{ color: currentPlayer.color }}>{currentPlayer.name}</span> Oyuncusuna Verin
-        </h2>
+          <T k="Cihazı {a} Oyuncusuna Verin" v={{ a: <span className="underline decoration-indigo-500 decoration-wavy decoration-2" style={{ color: currentPlayer.color }}>{currentPlayer.name}</span> }} /></h2>
         <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-xs mx-auto">
           {t('Gizli kartınıza bakmadan önce diğer oyuncuların ekrandan uzaklaştığından emin olun!')}</p>
       </div>
@@ -107,8 +107,7 @@ export const WordRevealView: React.FC<WordRevealViewProps> = ({
             </div>
             <h3 className="text-lg font-black text-slate-900 dark:text-slate-100">{t('Gizli Rolü Görmek İçin Dokunun')}</h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-xs">
-              Bu ekrana yalnızca <strong>{currentPlayer.name}</strong> bakmalıdır.
-            </p>
+              <T k="Bu ekrana yalnızca {a} bakmalıdır." v={{ a: <strong>{currentPlayer.name}</strong> }} /></p>
             <div className="mt-4 px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800 text-indigo-700 dark:text-indigo-300 text-xs font-bold flex items-center gap-1.5 border border-slate-200 dark:border-slate-800 shadow-2xs group-hover:bg-indigo-50">
               <Eye className="w-3.5 h-3.5" />
               <span>{t('Kartı Aç & Oku')}</span>

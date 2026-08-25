@@ -102,7 +102,7 @@ export const TriviaCategoryWheel: React.FC<TriviaCategoryWheelProps> = ({
                         fontWeight="bold"
                         className="pointer-events-none drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]"
                       >
-                        {cat.label}
+                        {t(cat.label || '')}
                       </text>
                       <text
                         y={iconOffsetY}
@@ -165,7 +165,7 @@ export const TriviaCategoryWheel: React.FC<TriviaCategoryWheelProps> = ({
                 }`}
               >
                 <span>{cat.icon}</span>
-                <span>{cat.label}</span>
+                <span>{t(cat.label || '')}</span>
               </button>
             );
           })}

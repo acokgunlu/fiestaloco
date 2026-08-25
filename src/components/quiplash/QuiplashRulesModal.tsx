@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { X, Sparkles, Trophy, Users, Flame, HelpCircle, CheckCircle2 } from 'lucide-react';
 
 import { t } from '../../i18n';
+import { T } from '../../i18n/T';
 interface QuiplashRulesModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -68,8 +69,7 @@ export const QuiplashRulesModal: React.FC<QuiplashRulesModalProps> = ({ isOpen, 
                 <strong className="block text-pink-900 dark:text-pink-300 font-bold mb-1">
                   {t('3. Puanlama & QUIPLASH! Bonusu')}</strong>
                 <p className="text-slate-600 dark:text-slate-300 text-xs">
-                  Her aldığınız oy size puan kazandırır (2. Turda 2 katı!). Eğer odadaki tüm oyları tek başınıza silip süpürürseniz <strong>{t('QUIPLASH!')}</strong> bonusu patlar!
-                </p>
+                  <T k="Her aldığınız oy size puan kazandırır (2. Turda 2 katı!). Eğer odadaki tüm oyları tek başınıza silip süpürürseniz {a} bonusu patlar!" v={{ a: <strong>{t('QUIPLASH!')}</strong> }} /></p>
               </div>
             </div>
 

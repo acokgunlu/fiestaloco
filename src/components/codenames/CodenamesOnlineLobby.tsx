@@ -41,13 +41,17 @@ export const CodenamesOnlineLobby: React.FC<CodenamesOnlineLobbyProps> = ({
   const unassigned = players.filter((p) => p.team !== 'red' && p.team !== 'blue');
 
   /** Sunucudaki kuralin aynisi — buton durumu ile gercek davranis uyusmali. */
+  // Eksik rol listesi PARCALARDAN birlestiriliyordu (`${takim} lider`) ve
+  // yalnizca takim adi cevriliyordu: Ingilizce'de "Red lider · Mavi ajan"
+  // gibi yari cevrilmis bir metin cikiyordu. Artik her satir TEK anahtar.
   const missing: string[] = [];
-  for (const [label, team] of [
-    [t('Kırmızı'), red],
-    ['Mavi', blue],
-  ] as const) {
-    if (!team.some((p) => p.role === 'spymaster')) missing.push(`${label} lider`);
-    if (!team.some((p) => p.role === 'operative')) missing.push(`${label} ajan`);
+  for (const [team, isRed] of [[red, true], [blue, false]] as const) {
+    if (!team.some((p) => p.role === 'spymaster')) {
+      missing.push(isRed ? t('Kırmızı lider') : t('Mavi lider'));
+    }
+    if (!team.some((p) => p.role === 'operative')) {
+      missing.push(isRed ? t('Kırmızı ajan') : t('Mavi ajan'));
+    }
   }
   const canStart = missing.length === 0;
 

@@ -18,6 +18,7 @@ import {
 import { playClickSound } from '../../utils/audio';
 
 import { t } from '../../i18n';
+import { T } from '../../i18n/T';
 interface CodenamesRulesModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -144,8 +145,7 @@ export function CodenamesRulesModal({ isOpen, onClose }: CodenamesRulesModalProp
                   <span>{t('Oyunun Temel Amacı')}</span>
                 </div>
                 <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                  İki rakip takım (<strong>{t('🔴 Kırmızı Takım')}</strong> ve <strong>{t('🔵 Mavi Takım')}</strong>) 5x5 boyutundaki 25 kelimelik masada gizli ajanlarını arar. Masadaki tüm kendi ajanlarını düşmandan önce açığa çıkaran takım oyunu kazanır!
-                </p>
+                  <T k="İki rakip takım ({a} ve {b}) 5x5 boyutundaki 25 kelimelik masada gizli ajanlarını arar. Masadaki tüm kendi ajanlarını düşmandan önce açığa çıkaran takım oyunu kazanır!" v={{ a: <strong>{t('🔴 Kırmızı Takım')}</strong>, b: <strong>{t('🔵 Mavi Takım')}</strong> }} /></p>
               </div>
 
               {/* Card Distribution Matrix */}
@@ -208,8 +208,7 @@ export function CodenamesRulesModal({ isOpen, onClose }: CodenamesRulesModalProp
                     <div>
                       <strong className="text-slate-900 dark:text-slate-100">{t('Format: TEK KELİME + SAYI')}</strong>
                       <p className="text-slate-600 dark:text-slate-400 mt-0.5">
-                        Örnek: <em>{t('"HAYVAN, 3"')}</em> (Masadaki ASLAN, KARTAL, KURT kelimelerini bağlamak için).
-                      </p>
+                        <T k="Örnek: {a} (Masadaki ASLAN, KARTAL, KURT kelimelerini bağlamak için)." v={{ a: <em>{t('"HAYVAN, 3"')}</em> }} /></p>
                     </div>
                   </div>
 
@@ -218,8 +217,7 @@ export function CodenamesRulesModal({ isOpen, onClose }: CodenamesRulesModalProp
                     <div>
                       <strong className="text-slate-900 dark:text-slate-100">{t('YASAK: Masadaki Kelimelerin Kökünü Kullanmak')}</strong>
                       <p className="text-slate-600 dark:text-slate-400 mt-0.5">
-                        Eğer masada <em>{t('"GÖZLÜK"')}</em> varsa <em>{t('"GÖZ"')}</em> ipucu verilemez. Aynı şekilde eşsesli/harf benzerliği hilesi yapılamaz.
-                      </p>
+                        <T k="Eğer masada {a} varsa {b} ipucu verilemez. Aynı şekilde eşsesli/harf benzerliği hilesi yapılamaz." v={{ a: <em>{t('"GÖZLÜK"')}</em>, b: <em>{t('"GÖZ"')}</em> }} /></p>
                     </div>
                   </div>
 
@@ -276,8 +274,7 @@ export function CodenamesRulesModal({ isOpen, onClose }: CodenamesRulesModalProp
               </div>
 
               <div className="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl text-xs text-slate-700 dark:text-slate-300">
-                💡 <strong>{t('Tahmin Sayısı Bonusu:')}</strong> Lider <em>"3"</em> dediyse, takımınız en fazla <strong>3 + 1 = 4</strong> tahmin yapabilir. İstediğiniz an <em>{t('"Turu Bitir"')}</em> diyerek sırayı devredebilirsiniz.
-              </div>
+                <T k="💡 {a} Lider {b} dediyse, takımınız en fazla {c} tahmin yapabilir. İstediğiniz an {d} diyerek sırayı devredebilirsiniz." v={{ a: <strong>{t('Tahmin Sayısı Bonusu:')}</strong>, b: <em>"3"</em>, c: <strong>3 + 1 = 4</strong>, d: <em>{t('"Turu Bitir"')}</em> }} /></div>
             </div>
           )}
 
@@ -347,8 +344,7 @@ export function CodenamesRulesModal({ isOpen, onClose }: CodenamesRulesModalProp
                   <span>{t('☠️ Ani Ölüm Kuralı (Sudden Death)')}</span>
                 </div>
                 <p className="text-xs text-stone-300 leading-relaxed">
-                  Eğer Kırmızı Takım veya Mavi Takım yanlışlıkla Suikastçı kartını açarsa, oyun <strong>{t('O ANDA BİTER')}</strong> ve açmayan rakip takım doğrudan <strong>{t('ŞAMPİYON İLAN EDİLİR!')}</strong>
-                </p>
+                  <T k="Eğer Kırmızı Takım veya Mavi Takım yanlışlıkla Suikastçı kartını açarsa, oyun {a} ve açmayan rakip takım doğrudan {b}" v={{ a: <strong>{t('O ANDA BİTER')}</strong>, b: <strong>{t('ŞAMPİYON İLAN EDİLİR!')}</strong> }} /></p>
                 <div className="p-3 bg-stone-800/80 rounded-xl border border-stone-700 text-xs text-stone-200">
                   👑 <strong>{t('Liderler İçin Hayati Taktik:')}</strong>  {t('İpucu verirken Suikastçı kartındaki kelimeyle uzaktan yakından benzerlik gösterebilecek hiçbir kelimeyi KULLANMAYIN!')}</div>
               </div>

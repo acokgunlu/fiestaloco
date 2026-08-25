@@ -94,7 +94,7 @@ export const LiveReactionsOverlay: React.FC<LiveReactionsOverlayProps> = ({
               type="button"
               id={`reaction-btn-${item.emoji}`}
               onClick={() => spawnReaction(item.emoji)}
-              title={item.label}
+              title={t(item.label || '')}
               className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-125 hover:scale-110 flex items-center justify-center text-base sm:text-lg transition-all border border-slate-200 dark:border-slate-800 shadow-2xs cursor-pointer"
             >
               {item.emoji}

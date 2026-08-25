@@ -317,7 +317,7 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
                         style={{ backgroundColor: player.color }}
                       />
                       <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 truncate">
-                        {player.colorName}
+                        {t(player.colorName || '')}
                         {player.isBot && ' (AI Bot)'}
                       </span>
                     </div>

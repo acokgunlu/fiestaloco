@@ -160,7 +160,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
       localCurrentBluffInput.trim().toLowerCase() ===
       localGameState.currentQuestion?.realAnswer.toLowerCase()
     ) {
-      alert('Bu zaten sorunun gerçek cevabı! Başka bir inandırıcı yalan uydurun.');
+      alert(t('Bu zaten sorunun gerçek cevabı! Başka bir inandırıcı yalan uydurun.'));
       return;
     }
 
@@ -241,7 +241,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
   const handleLocalVote = (answerItem: BluffAnswerItem) => {
     const voter = localPlayers[localActiveVoterIndex];
     if (answerItem.authorPlayerId === voter.id) {
-      alert('Kendi yazdığınız yalana oy veremezsiniz!');
+      alert(t('Kendi yazdığınız yalana oy veremezsiniz!'));
       return;
     }
 
@@ -1128,7 +1128,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                 id="btn-bluff-join-room"
                 onClick={() => {
                   if (!joinCodeInput.trim() || !playerNameInput.trim()) {
-                    alert('Lütfen oda kodunu ve adınızı yazın.');
+                    alert(t('Lütfen oda kodunu ve adınızı yazın.'));
                     return;
                   }
                   playClickSound();

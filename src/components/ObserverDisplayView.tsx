@@ -235,7 +235,7 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
                           )}
                         </div>
                         <div className="text-[11px] font-semibold text-slate-500">
-                          {player.colorName}
+                          {t(player.colorName || '')}
                         </div>
                       </div>
                     </div>
@@ -311,7 +311,7 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
                     className="text-[10px] font-black px-2 py-0.5 rounded-full text-white"
                     style={{ backgroundColor: activePlayer?.color }}
                   >
-                    {activePlayer?.colorName}
+                    {t(activePlayer?.colorName || '')}
                   </span>
                 </div>
                 <h2 className="text-xl sm:text-2xl font-black text-slate-900 leading-tight mt-0.5">
@@ -657,7 +657,7 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
                               )}
                             </div>
                             <div className="text-[11px] font-semibold text-slate-500">
-                              {player.colorName}
+                              {t(player.colorName || '')}
                             </div>
                           </div>
                         </div>

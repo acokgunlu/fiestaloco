@@ -245,7 +245,7 @@ export function useQuiplashSocket(): UseQuiplashSocketReturn {
     if (socketRef.current?.readyState === WebSocket.OPEN) {
       socketRef.current.send(JSON.stringify(payload));
     } else {
-      setErrorMessage('Sunucu bağlantısı henüz hazır değil. Lütfen tekrar deneyin.');
+      setErrorMessage(t('Sunucu bağlantısı henüz hazır değil. Lütfen tekrar deneyin.'));
     }
   };
 

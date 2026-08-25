@@ -1,0 +1,22 @@
+[
+ "3. {a} Şüpheli çizgiyi çizen Sahtekârı doğru bulan masum oyuncular {b} kazanır!",
+ "Bu ekrana yalnızca {a} bakmalıdır.",
+ "Cihazı {a} Oyuncusuna Verin",
+ "Dilim yalnızca {a} (ikonlu, altın çerçeveli) kazanılır. Doğru cevap tekrar zar hakkı verir. {b}{c} dilimi tamamlayınca kolu kullanıp merkeze çık.",
+ "Doğru cevap:{a}{b}",
+ "Eğer Kırmızı Takım veya Mavi Takım yanlışlıkla Suikastçı kartını açarsa, oyun {a} ve açmayan rakip takım doğrudan {b}",
+ "Eğer masada {a} varsa {b} ipucu verilemez. Aynı şekilde eşsesli/harf benzerliği hilesi yapılamaz.",
+ "Her aldığınız oy size puan kazandırır (2. Turda 2 katı!). Eğer odadaki tüm oyları tek başınıza silip süpürürseniz {a} bonusu patlar!",
+ "Herkes gizli kelimeyi çizer, 1 kişi {a}'dır! Sırayla tek sürekli çizgi çekin ve sahtekârı yakalayın.",
+ "Oda Kodu: {a}. TV ekranından oyunun başlaması bekleniyor...",
+ "Parmağınızı / farenizi kaldırmadan {a} çizin!",
+ "Saha ajanlarınız {a} defaya kadar tahmin yapabilecek (seçtiğiniz sayı + 1 bonus hak).",
+ "Senin Tahminin: {a} • Gerçek Kelime: {b}",
+ "TV veya büyük ekrana yansıtın, {a} telefonlarıyla katılıp gizli renkleri çözsün!",
+ "Telefonunuzun kamerası ile okutun veya {a} ile katılın.",
+ "Telefonunuzun kamerasını okutun veya tarayıcıdan{a}{b} adresine girip{c}{d} yazın.",
+ "Örnek: {a} (Masadaki ASLAN, KARTAL, KURT kelimelerini bağlamak için).",
+ "İki rakip takım ({a} ve {b}) 5x5 boyutundaki 25 kelimelik masada gizli ajanlarını arar. Masadaki tüm kendi ajanlarını düşmandan önce açığa çıkaran takım oyunu kazanır!",
+ "💡 {a} Lider {b} dediyse, takımınız en fazla {c} tahmin yapabilir. İstediğiniz an {d} diyerek sırayı devredebilirsiniz.",
+ "🔄 Sıra Döndü! {a}. Çizim Turunda ilk çizen: {b}"
+]

@@ -40,6 +40,7 @@ import { motion } from 'motion/react';
 import { playClickSound, playWinSound, playCorrectSound, playWrongSound, playTurnSound } from '../../utils/audio';
 
 import { t, getLang } from '../../i18n';
+import { T } from '../../i18n/T';
 interface TriviaPassAndPlayProps {
   onBackToLobby?: () => void;
 }
@@ -645,7 +646,7 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
                         onClick={() => handlePickMove(opt)}
                         className="px-4 py-2 rounded-xl bg-white dark:bg-slate-800 border-2 border-amber-400 text-slate-900 dark:text-white text-xs font-black hover:bg-amber-50 dark:hover:bg-slate-700 transition-colors cursor-pointer"
                       >
-                        {opt.label}
+                        {t(opt.label || '')}
                       </button>
                     ))}
                   </div>
@@ -655,11 +656,7 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
               )}
 
               <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium text-center max-w-sm">
-                Dilim yalnızca <strong>{t('kale karelerinde')}</strong> (ikonlu, altın çerçeveli)
-                kazanılır. Doğru cevap tekrar zar hakkı verir.
-                {' '}
-                {gameState.settings.wedgesToWin} dilimi tamamlayınca kolu kullanıp merkeze çık.
-              </p>
+                <T k="Dilim yalnızca {a} (ikonlu, altın çerçeveli) kazanılır. Doğru cevap tekrar zar hakkı verir. {b}{c} dilimi tamamlayınca kolu kullanıp merkeze çık." v={{ a: <strong>{t('kale karelerinde')}</strong>, b: ' ', c: gameState.settings.wedgesToWin }} /></p>
             </div>
           </div>
         )}
@@ -677,7 +674,7 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
                 }}
               >
                 <span>{currentCat.icon}</span>
-                <span className="uppercase tracking-wider">{currentCat.label}</span>
+                <span className="uppercase tracking-wider">{t(currentCat.label || '')}</span>
               </div>
 
               <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs font-black">
@@ -715,7 +712,7 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
             <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 shadow-lg text-center space-y-4">
               <div className="flex items-center justify-center gap-2">
                 <span className="text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                  {currentCat.label}
+                  {t(currentCat.label || '')}
                 </span>
               </div>
 

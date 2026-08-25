@@ -285,7 +285,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
               id="btn-restart-game"
               onClick={() => {
                 playClickSound();
-                if (window.confirm('Lobiye dönüp yeni oyun başlatmak istiyor musunuz?')) {
+                if (window.confirm(t('Lobiye dönüp yeni oyun başlatmak istiyor musunuz?'))) {
                   onRestart();
                 }
               }}

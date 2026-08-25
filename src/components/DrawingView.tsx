@@ -5,6 +5,7 @@ import { playTurnSound, playTimerTick, playBuzzer, playGongSound } from '../util
 import { Clock, Palette, Bot, Paintbrush, RefreshCw, UserCheck, Sparkles } from 'lucide-react';
 
 import { t } from '../i18n';
+import { T } from '../i18n/T';
 interface DrawingViewProps {
   players: Player[];
   wordPair: WordPair;
@@ -173,8 +174,7 @@ export const DrawingView: React.FC<DrawingViewProps> = ({
         <div className="bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 rounded-2xl p-3 text-center animate-scale-in flex items-center justify-center gap-2">
           <RefreshCw className="w-4 h-4 text-amber-600 dark:text-amber-400 animate-spin" />
           <span className="text-xs sm:text-sm font-black text-amber-900 dark:text-amber-200">
-            🔄 Sıra Döndü! {currentRoundNumber}. Çizim Turunda ilk çizen: <strong className="text-indigo-900 dark:text-indigo-200 underline">{activePlayer.name}</strong>
-          </span>
+            <T k="🔄 Sıra Döndü! {a}. Çizim Turunda ilk çizen: {b}" v={{ a: currentRoundNumber, b: <strong className="text-indigo-900 dark:text-indigo-200 underline">{activePlayer.name}</strong> }} /></span>
         </div>
       )}
 
@@ -201,7 +201,7 @@ export const DrawingView: React.FC<DrawingViewProps> = ({
                   className="text-[10px] font-black px-2 py-0.5 rounded-full text-white shadow-xs"
                   style={{ backgroundColor: activePlayer?.color }}
                 >
-                  {activePlayer?.colorName}
+                  {t(activePlayer?.colorName || '')}
                 </span>
               </div>
               <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-slate-100 leading-tight mt-1 flex items-center gap-2">
@@ -331,8 +331,7 @@ export const DrawingView: React.FC<DrawingViewProps> = ({
         <div className="flex items-center gap-2">
           <Sparkles className="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0" />
           <span>
-            Parmağınızı / farenizi kaldırmadan <strong className="text-slate-900 dark:text-slate-100">{t('1 sürekli çizgi')}</strong> çizin!
-          </span>
+            <T k="Parmağınızı / farenizi kaldırmadan {a} çizin!" v={{ a: <strong className="text-slate-900 dark:text-slate-100">{t('1 sürekli çizgi')}</strong> }} /></span>
         </div>
         <button
           id="btn-skip-stroke"

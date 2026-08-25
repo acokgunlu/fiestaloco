@@ -6,6 +6,7 @@ import { playClickSound, playClueGivenSound } from '../../utils/audio';
 import { getApiUrl } from '../../utils/serverUrl';
 
 import { t } from '../../i18n';
+import { T } from '../../i18n/T';
 interface CodenamesClueInputModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -221,8 +222,7 @@ export function CodenamesClueInputModal({
               <span>{t('💡 Kural Hatırlatması:')}</span>
             </div>
             <p className="leading-relaxed">
-              Saha ajanlarınız <strong>{clueCount + 1}</strong> defaya kadar tahmin yapabilecek (seçtiğiniz sayı + 1 bonus hak).
-            </p>
+              <T k="Saha ajanlarınız {a} defaya kadar tahmin yapabilecek (seçtiğiniz sayı + 1 bonus hak)." v={{ a: <strong>{clueCount + 1}</strong> }} /></p>
           </div>
 
           {/* Submit Button */}

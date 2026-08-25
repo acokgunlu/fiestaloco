@@ -25,6 +25,7 @@ import {
 import { isSoundEnabled, toggleSound, playCorrectSound, playClickSound } from '../../utils/audio';
 
 import { t, withLang } from '../../i18n';
+import { T } from '../../i18n/T';
 interface QuiplashTvViewProps {
   roomCode: string;
   gameState: QuiplashGameState;
@@ -184,10 +185,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
               )}
 
               <p className="text-xs text-slate-400 max-w-xs font-medium">
-                Telefonunuzun kamerasını okutun veya tarayıcıdan{' '}
-                <strong className="text-white">{window.location.host}</strong> adresine girip{' '}
-                <strong className="text-amber-400">{roomCode}</strong> yazın.
-              </p>
+                <T k="Telefonunuzun kamerasını okutun veya tarayıcıdan{a}{b} adresine girip{c}{d} yazın." v={{ a: ' ', b: <strong className="text-white">{window.location.host}</strong>, c: ' ', d: <strong className="text-amber-400">{roomCode}</strong> }} /></p>
             </div>
 
             {/* Right Joined Players List */}

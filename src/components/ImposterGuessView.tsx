@@ -6,6 +6,7 @@ import { playClickSound, playFanfareSound, playBuzzer } from '../utils/audio';
 import confetti from 'canvas-confetti';
 
 import { t } from '../i18n';
+import { T } from '../i18n/T';
 interface ImposterGuessViewProps {
   imposter: Player;
   players: Player[];
@@ -136,8 +137,7 @@ export const ImposterGuessView: React.FC<ImposterGuessViewProps> = ({
               {isCorrect ? t('HARİKA! DOĞRU TAHMİN ETTİN!') : t('YANLIŞ TAHMİN!')}
             </h3>
             <p className="text-sm text-slate-700 dark:text-slate-300">
-              Senin Tahminin: <strong className="text-slate-900 dark:text-slate-100">"{guessInput}"</strong> • Gerçek Kelime: <strong className="text-emerald-700 dark:text-emerald-300">"{roundResult.crewWord}"</strong>
-            </p>
+              <T k="Senin Tahminin: {a} • Gerçek Kelime: {b}" v={{ a: <strong className="text-slate-900 dark:text-slate-100">"{guessInput}"</strong>, b: <strong className="text-emerald-700 dark:text-emerald-300">"{roundResult.crewWord}"</strong> }} /></p>
           </div>
 
           <button

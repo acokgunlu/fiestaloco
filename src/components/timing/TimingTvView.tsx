@@ -240,7 +240,7 @@ export const TimingTvView: React.FC<Props> = ({
           {gameState.phase === 'GAME_OVER' && (
             <div className="text-center space-y-3 py-2">
               <Trophy className="w-12 h-12 mx-auto text-amber-500" />
-              <h3 className="text-2xl font-black">{players.find((p) => p.id === gameState.winnerPlayerId)?.name} kazandı!</h3>
+              <h3 className="text-2xl font-black">{t('{a} kazandı!', { a: players.find((p) => p.id === gameState.winnerPlayerId)?.name || '' })}</h3>
               <button onClick={onRestartGame}
                 className="px-8 py-3.5 rounded-2xl bg-slate-900 dark:bg-slate-800 text-white font-black text-sm shadow-xl hover:scale-105 transition-transform inline-flex items-center gap-2 cursor-pointer">
                 <RotateCcw className="w-4 h-4" />  {t('YENİDEN OYNA')}</button>

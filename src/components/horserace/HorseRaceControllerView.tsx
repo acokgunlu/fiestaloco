@@ -197,7 +197,7 @@ export const HorseRaceControllerView: React.FC<Props> = ({
                         : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60'
                     }`}
                   >
-                    {KIND_INFO[k].label}
+                    {t(KIND_INFO[k].label || '')}
                   </button>
                 ))}
               </div>

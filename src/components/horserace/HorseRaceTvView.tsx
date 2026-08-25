@@ -272,10 +272,10 @@ export const HorseRaceTvView: React.FC<HorseRaceTvViewProps> = ({
             <div className="text-center space-y-4 py-4">
               <Trophy className="w-14 h-14 mx-auto text-amber-500" />
               <h3 className="text-3xl font-black text-slate-900 dark:text-white">
-                {players.find((p) => p.id === gameState.winnerPlayerId)?.name} kazandı!
+                {t('{a} kazandı!', { a: players.find((p) => p.id === gameState.winnerPlayerId)?.name || '' })}
               </h3>
               <p className="text-sm font-bold text-slate-500 dark:text-slate-400">
-                {money(players.find((p) => p.id === gameState.winnerPlayerId)?.money || 0)} ₺ ile pistin kralı
+                {t('{a} ₺ ile pistin kralı', { a: money(players.find((p) => p.id === gameState.winnerPlayerId)?.money || 0) })}
               </p>
               <button
                 onClick={onRestartGame}

@@ -29,6 +29,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { toggleSound, isSoundEnabled, playClickSound, playWinSound, playTurnSound } from '../../utils/audio';
 
 import { t, withLang } from '../../i18n';
+import { T } from '../../i18n/T';
 interface TriviaTvViewProps {
   roomCode: string;
   gameState: TriviaPursuitGameState;
@@ -191,8 +192,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                 {roomCode}
               </span>
               <p className="text-xs text-slate-600 dark:text-slate-300 font-medium max-w-xs leading-relaxed">
-                Telefonunuzun kamerası ile okutun veya <span className="font-mono font-black text-slate-900 dark:text-white">{t('?room={a}', { a: roomCode })}</span> ile katılın.
-              </p>
+                <T k="Telefonunuzun kamerası ile okutun veya {a} ile katılın." v={{ a: <span className="font-mono font-black text-slate-900 dark:text-white">{t('?room={a}', { a: roomCode })}</span> }} /></p>
             </div>
 
             {/* Right Column: Player Roster & Start Control */}
@@ -326,7 +326,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                       onClick={() => onPickMove(opt.to)}
                       className="px-4 py-2 rounded-xl bg-white dark:bg-slate-800 border-2 border-amber-400 text-slate-900 dark:text-white text-xs font-black hover:bg-amber-50 dark:hover:bg-slate-700 transition-colors cursor-pointer"
                     >
-                      {opt.label}
+                      {t(opt.label || '')}
                     </button>
                   ))}
                 </div>
@@ -366,7 +366,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                 }}
               >
                 <span>{currentCat.icon}</span>
-                <span className="uppercase tracking-wider">{currentCat.label}</span>
+                <span className="uppercase tracking-wider">{t(currentCat.label || '')}</span>
                 {currentQ.isWedgeQuestion && (
                   <span className="ml-1 text-[10px] px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black">
                     {t('ROZET SORUSU')}</span>
@@ -467,7 +467,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                 }}
               >
                 <span>{currentCat.icon}</span>
-                <span className="uppercase tracking-wider">{currentCat.label}</span>
+                <span className="uppercase tracking-wider">{t(currentCat.label || '')}</span>
               </div>
               <span className="text-xs font-black uppercase tracking-widest text-amber-600 dark:text-amber-400">
                 {t('TUR SONUCU')}</span>

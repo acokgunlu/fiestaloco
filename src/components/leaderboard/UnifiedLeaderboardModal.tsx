@@ -286,7 +286,7 @@ export const UnifiedLeaderboardModal: React.FC<UnifiedLeaderboardModalProps> = (
                                   key={bIdx}
                                   className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700"
                                 >
-                                  {badge}
+                                  {t(badge || '')}
                                 </span>
                               ))}
                             </div>
@@ -326,7 +326,7 @@ export const UnifiedLeaderboardModal: React.FC<UnifiedLeaderboardModalProps> = (
                     }`}
                   >
                     <span>{filter.icon}</span>
-                    <span>{filter.label}</span>
+                    <span>{t(filter.label || '')}</span>
                   </button>
                 ))}
               </div>
@@ -430,10 +430,10 @@ export const UnifiedLeaderboardModal: React.FC<UnifiedLeaderboardModalProps> = (
                     className={`p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border-2 ${badge.color} dark:border-slate-700 shadow-xs space-y-1`}
                   >
                     <div className="font-black text-sm text-slate-900 dark:text-white">
-                      {badge.title}
+                      {t(badge.title)}
                     </div>
                     <div className="text-xs text-slate-600 dark:text-slate-400">
-                      {badge.desc}
+                      {t(badge.desc)}
                     </div>
                   </div>
                 ))}

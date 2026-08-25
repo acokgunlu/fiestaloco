@@ -279,7 +279,7 @@ export const TriviaPursuitGame: React.FC<TriviaPursuitGameProps> = ({ onBackToHu
                       style={{ backgroundColor: `${cat.color}cc` }}
                     >
                       <span>{cat.icon}</span>
-                      <span>{cat.label}</span>
+                      <span>{t(cat.label || '')}</span>
                     </span>
                   ))}
                 </div>

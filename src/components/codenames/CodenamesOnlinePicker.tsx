@@ -18,6 +18,7 @@ import { CodenamesSettings, CodenamesTeam, CodenamesRole } from '../../types/cod
 import { playClickSound, playTurnSound } from '../../utils/audio';
 
 import { t } from '../../i18n';
+import { T } from '../../i18n/T';
 interface CodenamesOnlinePickerProps {
   onHostTvRoom: (settings: CodenamesSettings) => void;
   onJoinMobileRoom: (
@@ -114,8 +115,7 @@ export function CodenamesOnlinePicker({
           {t('GİZLİ')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-purple-600 to-sky-600">{t('AJANLAR')}</span>
         </h1>
         <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm max-w-md mx-auto leading-relaxed">
-          TV veya büyük ekrana yansıtın, <strong>{t('Kırmızı vs Mavi Takım')}</strong> telefonlarıyla katılıp gizli renkleri çözsün!
-        </p>
+          <T k="TV veya büyük ekrana yansıtın, {a} telefonlarıyla katılıp gizli renkleri çözsün!" v={{ a: <strong>{t('Kırmızı vs Mavi Takım')}</strong> }} /></p>
       </div>
 
       {/* Error message */}

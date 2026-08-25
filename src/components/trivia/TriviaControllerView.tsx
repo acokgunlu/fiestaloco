@@ -22,6 +22,7 @@ import { motion } from 'motion/react';
 import { playClickSound, playTurnSound } from '../../utils/audio';
 
 import { t } from '../../i18n';
+import { T } from '../../i18n/T';
 interface TriviaControllerViewProps {
   roomCode: string;
   myPlayer: TriviaPursuitPlayer | null;
@@ -118,8 +119,7 @@ export const TriviaControllerView: React.FC<TriviaControllerViewProps> = ({
             </div>
             <h3 className="text-xl font-black text-slate-900 dark:text-white">{t('Odaya Bağlandınız!')}</h3>
             <p className="text-xs text-slate-600 dark:text-slate-400 max-w-xs mx-auto font-medium">
-              Oda Kodu: <span className="font-mono font-black text-emerald-600 dark:text-emerald-400 text-sm">{roomCode}</span>. TV ekranından oyunun başlaması bekleniyor...
-            </p>
+              <T k="Oda Kodu: {a}. TV ekranından oyunun başlaması bekleniyor..." v={{ a: <span className="font-mono font-black text-emerald-600 dark:text-emerald-400 text-sm">{roomCode}</span> }} /></p>
             <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-left text-xs space-y-2">
               <p className="font-black text-emerald-700 dark:text-emerald-300">{t('🎯 Oyun Hedefi:')}</p>
               <p className="text-slate-600 dark:text-slate-300">
@@ -157,7 +157,7 @@ export const TriviaControllerView: React.FC<TriviaControllerViewProps> = ({
                         }}
                         className="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-600 text-white font-black text-base shadow-lg active:scale-95 transition-transform cursor-pointer"
                       >
-                        {opt.label}
+                        {t(opt.label || '')}
                       </button>
                     ))}
                   </div>
@@ -209,7 +209,7 @@ export const TriviaControllerView: React.FC<TriviaControllerViewProps> = ({
                 }}
               >
                 <span>{currentCat.icon}</span>
-                <span className="uppercase tracking-wider">{currentCat.label}</span>
+                <span className="uppercase tracking-wider">{t(currentCat.label || '')}</span>
                 {currentQ.isWedgeQuestion && (
                   <span className="ml-1 text-[9px] px-1.5 py-0.2 rounded-full bg-amber-400 text-slate-950 font-black">
                     {t('ROZET')}</span>
@@ -300,9 +300,7 @@ export const TriviaControllerView: React.FC<TriviaControllerViewProps> = ({
                 <h3 className="text-xl font-black text-rose-600 dark:text-rose-400">
                   {t('YANLIŞ CEVAP')}</h3>
                 <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
-                  Doğru cevap:{' '}
-                  <span className="font-bold text-slate-900 dark:text-white">{currentQ.correctAnswer}</span>
-                </p>
+                  <T k="Doğru cevap:{a}{b}" v={{ a: ' ', b: <span className="font-bold text-slate-900 dark:text-white">{currentQ.correctAnswer}</span> }} /></p>
               </div>
             )}
           </div>
