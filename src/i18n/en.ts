@@ -1199,7 +1199,6 @@ export const EN: Record<string, string> = {
   "Sonraki yarıştan itibaren pistesin.": "You're on track from the next race.",
   "10 Canlı Modül": "10 Live Modules",
   // --- Kapışma (üstten bakışlı devre yarışı)
-  "1️⃣ Parmağını ekrana koy ve sağa sola kaydır — direksiyon bu. Gaz otomatik.": "1️⃣ Put a finger on the screen and slide it left or right — that's your steering. The throttle is automatic.",
   "2️⃣ Direksiyonu ne kadar sert kırarsan o kadar yavaşlarsın. Yumuşak çizgi hızlıdır.": "2️⃣ The harder you turn, the more speed you scrub off. A smooth line is a fast line.",
   "3️⃣ Çime taşarsan hızın yarıya düşer. Kerb sana ait, çim değil.": "3️⃣ Run onto the grass and your speed halves. The kerbs are yours to use — the grass isn't.",
   "Parmağını hazırla": "Get your finger ready",
@@ -1226,5 +1225,11 @@ export const EN: Record<string, string> = {
   "Parmakla Direksiyon": "Steer With Your Finger",
   "Sıfır Gecikme": "Zero Input Lag",
   "GAZA BAS": "HIT THE GAS",
-  "Telefonu yan çevir — pist iki katı büyür.": "Turn your phone sideways — the circuit gets twice as big.",
+  "SOL": "LEFT",
+  "SAĞ": "RIGHT",
+  "GERİ": "BACK",
+  "Sola dön": "Steer left",
+  "Sağa dön": "Steer right",
+  "Geri vites": "Reverse",
+  "1️⃣ Alttaki SOL ve SAĞ butonlarını basılı tut — direksiyon bu. Gaz otomatik.": "1️⃣ Hold the LEFT and RIGHT buttons at the bottom — that's your steering. The throttle is automatic.",
 };

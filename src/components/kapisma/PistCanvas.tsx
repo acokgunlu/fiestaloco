@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { CarState, Track, WORLD_H, WORLD_W, generateTrack } from '../../data/pistLogic';
 import { renderScenery } from '../../data/pistArt';
 import { KapismaCar, KapismaPlayer } from '../../types/kapisma';
@@ -20,6 +20,14 @@ interface Props {
   /** Vurgulanacak oyuncu (TV'de lider, telefonda kendisi). */
   focusPlayerId?: string;
   className?: string;
+  /**
+   * Kap dikeyse tuvali 90° çevirerek ekranı doldur.
+   * Üstten bakışta "yukarı" diye bir yön yok; pist 1000x620 yani yatay
+   * oranlı, dikey tutulan telefonda ekranın ancak dörtte birini kaplıyordu.
+   * Çevirmek güvenli: direksiyon ekrana değil ARABAYA göre çalışıyor, yani
+   * SAĞ hâlâ ekranda saat yönü demek (döndürme el yönünü korur).
+   */
+  fitToBox?: boolean;
 }
 
 /** Sunucu verisi ile ekran arasındaki yumuşatma hızı (1/sn). */
@@ -48,9 +56,11 @@ function easeAngle(from: number, to: number, k: number): number {
  * React yalnızca pist değiştiğinde çalışıyor.
  */
 export const PistCanvas: React.FC<Props> = ({
-  seed, cars, players, localCarRef, localPlayerId, focusPlayerId, className,
+  seed, cars, players, localCarRef, localPlayerId, focusPlayerId, className, fitToBox,
 }) => {
   const cvRef = useRef<HTMLCanvasElement | null>(null);
+  const kapRef = useRef<HTMLDivElement | null>(null);
+  const [yerlesim, setYerlesim] = useState({ k: 1, cevir: false });
 
   // Pist ve çevre tohum başına BİR KEZ üretiliyor. Çevre (çim, kerb, çakıl,
   // bariyer, tribün) yarış boyunca değişmediği için arka tuvale çizilip her
@@ -67,6 +77,11 @@ export const PistCanvas: React.FC<Props> = ({
   const playersRef = useRef(players);
   playersRef.current = players;
   const viewRef = useRef<Map<string, View>>(new Map());
+  /**
+   * Tuval 90° çevrildiğinde isimler de yan yatıyor. Çizim döngüsü React
+   * render'ından bağımsız olduğu için durumu ref üzerinden okuyor.
+   */
+  const cevirRef = useRef(false);
 
   useEffect(() => {
     const cv = cvRef.current;
@@ -151,13 +166,19 @@ export const PistCanvas: React.FC<Props> = ({
         g.restore();
 
         if (p) {
+          // İsim tuvalin dönüşünü TERSİNE çeviriyor: tuval yan yatsa da
+          // etiket düz okunuyor.
+          g.save();
+          g.translate(x, y - 18);
+          if (cevirRef.current) g.rotate(-Math.PI / 2);
           g.font = '700 13px ui-sans-serif, system-ui, sans-serif';
           g.textAlign = 'center';
           g.lineWidth = 3.5;
           g.strokeStyle = 'rgba(10,15,22,.9)';
-          g.strokeText(p.name, x, y - 18);
+          g.strokeText(p.name, 0, 0);
           g.fillStyle = vurgu ? '#fde68a' : '#eef2f7';
-          g.fillText(p.name, x, y - 18);
+          g.fillText(p.name, 0, 0);
+          g.restore();
         }
       }
 
@@ -172,6 +193,48 @@ export const PistCanvas: React.FC<Props> = ({
   // pistteki yerlerinden yenisine doğru süzülür.
   useEffect(() => { viewRef.current.clear(); }, [seed]);
 
+  // Kaba sığdır: dikeyse çevir, her iki halde de en büyük ölçeği seç.
+  useEffect(() => {
+    if (!fitToBox) return;
+    const kap = kapRef.current;
+    if (!kap) return;
+    const olc = () => {
+      const w = kap.clientWidth;
+      const h = kap.clientHeight;
+      if (w < 2 || h < 2) return;
+      const duz = Math.min(w / WORLD_W, h / WORLD_H);
+      const dik = Math.min(w / WORLD_H, h / WORLD_W);   // 90° çevrilmiş hali
+      const y = dik > duz ? { k: dik, cevir: true } : { k: duz, cevir: false };
+      cevirRef.current = y.cevir;
+      setYerlesim(y);
+    };
+    olc();
+    const ro = new ResizeObserver(olc);
+    ro.observe(kap);
+    return () => ro.disconnect();
+  }, [fitToBox]);
+
+  if (fitToBox) {
+    // Dönüşüm yerleşimi etkilemediği için tuval, kabın ortasına mutlak
+    // konumlanıyor; kap taşmayı kırpıyor.
+    return (
+      <div ref={kapRef} className="relative w-full h-full overflow-hidden">
+        <canvas
+          ref={cvRef}
+          width={WORLD_W}
+          height={WORLD_H}
+          className="absolute left-1/2 top-1/2 rounded-xl shadow-2xl bg-[#2f6b3a]"
+          style={{
+            width: WORLD_W,
+            height: WORLD_H,
+            transform: `translate(-50%, -50%) rotate(${yerlesim.cevir ? 90 : 0}deg) scale(${yerlesim.k})`,
+          }}
+          aria-label="Üstten bakışlı yarış pisti"
+        />
+      </div>
+    );
+  }
+
   return (
     <canvas
       ref={cvRef}
@@ -181,13 +244,8 @@ export const PistCanvas: React.FC<Props> = ({
       /*
        * Tuvalin kendi boyutu (1000x620) var; genişlik VE yükseklik tavanı
        * verip ikisini de 'auto' bırakınca tarayıcı oranı bozmadan sığdırıyor.
-       * Sabit `w-full` iken yatay tutulan telefonda tuval ekrandan taşıyor ve
-       * sayfa dikey kayıyordu — yarış sırasında en istenmeyen şey.
        */
-      style={className
-        // Özel sınıf verildiyse (tam ekran sürüş) sığdırmayı o üstleniyor.
-        ? { width: 'auto', height: 'auto' }
-        : { width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '72vh' }}
+      style={{ width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '72vh' }}
       aria-label="Üstten bakışlı yarış pisti"
     />
   );

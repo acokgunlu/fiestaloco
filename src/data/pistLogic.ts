@@ -43,6 +43,8 @@ export const CORNER_SCRUB = 0.55;
  * bariyer, tribün) ötesinde: kimse normal sürüşte buraya düşmez.
  */
 export const RECOVER_DIST = TRACK_HALF + 200;
+/** Geri viteste hız. Kurtarmak için var, yarışmak için değil. */
+export const REVERSE_SPEED = 80;
 
 export interface CarState {
   x: number;
@@ -323,9 +325,18 @@ export function freshCar(track: Track, laneOffset = 0): CarState {
  * Dönüş gücü hıza bağlı: duran araba dönmez. Sabit olsaydı asfalt dışında
  * sürünürken bile yerinde dönüp çıkabilir, dışarı çıkmanın bedeli kalmazdı.
  */
-export function stepCar(car: CarState, steer: number, dt: number, track: Track): CarState {
+/**
+ * @param throttle 1 = ileri (varsayılan), -1 = geri vites.
+ *   Gaz otomatik olduğu için tek anlamlı seçenek geri gitmek: duvara ya da
+ *   bariyere burnunu dayamış oyuncu direksiyonla kurtulamıyor.
+ */
+export function stepCar(
+  car: CarState, steer: number, dt: number, track: Track, throttle: number = 1,
+): CarState {
   const s = Math.max(-1, Math.min(1, steer));
-  const vRatio = Math.min(1, car.speed / MAX_SPEED);
+  // Dönüş oranı hızın BÜYÜKLÜĞÜNE bağlı: geri giderken hız negatif ve
+  // işaretli kullanılsaydı direksiyon kilitlenirdi.
+  const vRatio = Math.min(1, Math.abs(car.speed) / MAX_SPEED);
   let heading = car.heading + s * TURN_RATE * (0.25 + 0.75 * vRatio) * dt;
 
   let speed = car.speed;
@@ -371,10 +382,11 @@ export function stepCar(car: CarState, steer: number, dt: number, track: Track):
   // yavaşlarsın. Bu aynı zamanda yumuşak çizgiyi ödüllendiriyor.
   const kornerTavan = MAX_SPEED * (1 - CORNER_SCRUB * Math.abs(s));
 
-  if (offRoad) speed += (OFFROAD_SPEED - speed) * Math.min(1, dt * 3);
+  if (throttle < 0) speed += (-REVERSE_SPEED - speed) * Math.min(1, dt * 2.5);
+  else if (offRoad) speed += (OFFROAD_SPEED - speed) * Math.min(1, dt * 3);
   else if (speed > kornerTavan) speed += (kornerTavan - speed) * Math.min(1, dt * 4);
   else speed = Math.min(kornerTavan, speed + ACCEL * dt);
-  if (carpti) speed = Math.min(speed, OFFROAD_SPEED * 0.55);
+  if (carpti) speed = Math.max(-REVERSE_SPEED, Math.min(speed, OFFROAD_SPEED * 0.55));
 
   // --- İLERLEME ve TUR
   const n = track.points.length;
@@ -428,4 +440,38 @@ export function isPlausible(progress: number, elapsedSec: number, track: Track):
   // hızlanma yuvarlaması için. 90 birim sabit pay da geri sayım anındaki
   // milisaniyelik oynamayı karşılıyor.
   return distanceAt(progress, track) <= MAX_SPEED * Math.max(0, elapsedSec) * 1.06 + 90;
+}
+
+// -----------------------------------------------------------------------------
+// GİRDİ ÇÖZÜMLEME
+// -----------------------------------------------------------------------------
+// Bileşenin içinde kalsaydı test edilemezdi: sürüş döngüsü
+// requestAnimationFrame'e bağlı ve arka plandaki sekmede hiç çalışmıyor, yani
+// "butona bastım, araba döndü mü" zinciri tarayıcıdan doğrulanamıyor. Saf
+// fonksiyon olarak burada durunca doğrudan sınanabiliyor.
+
+export interface DriveInput {
+  /** SOL butonu basılı. */
+  sol: boolean;
+  /** SAĞ butonu basılı. */
+  sag: boolean;
+  /** GERİ butonu basılı. */
+  geri: boolean;
+  /** Tuval üzerinde parmak sürükleniyor. */
+  surukluyor: boolean;
+  /** Sürükleme miktarı, -1..1. */
+  surukle: number;
+}
+
+/**
+ * Basılı tuşları tek bir direksiyon/gaz çiftine indirger.
+ * Butonlar sürüklemeyi EZER: ikisi aynı anda kullanılıyorsa niyet buton.
+ */
+export function resolveInput(g: DriveInput): { steer: number; throttle: number } {
+  const tus = (g.sag ? 1 : 0) + (g.sol ? -1 : 0);
+  const surukle = Math.max(-1, Math.min(1, g.surukle));
+  return {
+    steer: tus !== 0 ? tus : (g.surukluyor ? surukle : 0),
+    throttle: g.geri ? -1 : 1,
+  };
 }
