@@ -211,7 +211,7 @@ export function CodenamesClueInputModal({
           {errorMessage && (
             <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 text-rose-800 dark:text-rose-300 text-xs flex items-center gap-2">
               <AlertCircle className="w-4 h-4 shrink-0 text-rose-600 dark:text-rose-400" />
-              <span>{errorMessage}</span>
+              <span>{t(errorMessage)}</span>
             </div>
           )}
 

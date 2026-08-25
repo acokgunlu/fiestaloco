@@ -90,13 +90,11 @@ export const TriviaControllerView: React.FC<TriviaControllerViewProps> = ({
             </div>
             <div className="flex items-center gap-2 mt-0.5">
               <span className="text-xs font-mono font-black text-emerald-700 dark:text-emerald-400">
-                {myPlayer?.score || 0} Puan
-              </span>
+                {t('{a} Puan', { a: myPlayer?.score || 0 })}</span>
               {(myPlayer?.streak || 0) > 1 && (
                 <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-rose-600 text-white font-bold flex items-center gap-0.5">
                   <Flame className="w-2.5 h-2.5" />
-                  {myPlayer?.streak}x Seri
-                </span>
+                  {t('{a}x Seri', { a: myPlayer?.streak })}</span>
               )}
             </div>
           </div>
@@ -106,8 +104,7 @@ export const TriviaControllerView: React.FC<TriviaControllerViewProps> = ({
         <div className="flex flex-col items-center bg-slate-50 dark:bg-slate-800/60 px-3 py-1.5 rounded-2xl border border-slate-200 dark:border-slate-700">
           <TriviaWedgePie wedges={myPlayer?.wedges || []} size={34} />
           <span className="text-[10px] font-black text-slate-600 dark:text-slate-300 mt-1">
-            {myPlayer?.wedges.length || 0}/6 Rozet
-          </span>
+            {t('{a}/6 Rozet', { a: myPlayer?.wedges.length || 0 })}</span>
         </div>
       </div>
 
@@ -190,8 +187,7 @@ export const TriviaControllerView: React.FC<TriviaControllerViewProps> = ({
                   🎲
                 </div>
                 <h3 className="text-base font-black text-slate-800 dark:text-slate-200">
-                  {activePlayer?.name || t('Sıradaki oyuncu')} zar atıyor…
-                </h3>
+                  {t('{a} zar atıyor…', { a: activePlayer?.name || t('Sıradaki oyuncu') })}</h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400 font-bold">
                   {t('Sırası gelince telefonunda zar butonu çıkacak.')}</p>
               </div>
@@ -292,7 +288,7 @@ export const TriviaControllerView: React.FC<TriviaControllerViewProps> = ({
                 {gameState.lastRoundAnswerSummary?.playerAnswers[myPlayer?.id || '']?.earnedWedge && (
                   <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-amber-400 text-slate-950 text-xs font-black animate-pulse">
                     <Award className="w-4 h-4" />
-                    <span>{currentCat.label} ROZETİ KAZANDINIZ!</span>
+                    <span>{t('{a} ROZETİ KAZANDINIZ!', { a: currentCat.label })}</span>
                   </div>
                 )}
               </div>

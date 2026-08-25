@@ -259,10 +259,10 @@ export const DrawingView: React.FC<DrawingViewProps> = ({
             <div className="flex items-center gap-2">
               <span className="flex items-center gap-1 text-indigo-700 dark:text-indigo-300 font-black">
                 <RefreshCw className="w-3 h-3 text-indigo-600 dark:text-indigo-400" />
-                <span>Tur {currentRoundNumber} / {maxRounds}</span>
+                <span>{t('Tur {a} / {b}', { a: currentRoundNumber, b: maxRounds })}</span>
               </span>
               <span>•</span>
-              <span>Toplam Çizgi: {turnsCompleted + 1} / {totalTurnsInGame}</span>
+              <span>{t('Toplam Çizgi: {a} / {b}', { a: turnsCompleted + 1, b: totalTurnsInGame })}</span>
             </div>
             {nextPlayer && (
               <span className="sm:hidden text-[11px] text-slate-500 dark:text-slate-400">
@@ -312,7 +312,7 @@ export const DrawingView: React.FC<DrawingViewProps> = ({
       {isBotThinking && (
         <div className="bg-indigo-50 dark:bg-indigo-950/40 text-indigo-900 dark:text-indigo-200 p-3 rounded-2xl border border-indigo-200 dark:border-indigo-900 text-xs font-bold flex items-center justify-center gap-2 animate-pulse shadow-xs">
           <Bot className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-          <span>{activePlayer?.name} çizgisini planlıyor...</span>
+          <span>{t('{a} çizgisini planlıyor...', { a: activePlayer?.name })}</span>
         </div>
       )}
 

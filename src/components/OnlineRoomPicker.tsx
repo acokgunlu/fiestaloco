@@ -94,7 +94,7 @@ export const OnlineRoomPicker: React.FC<OnlineRoomPickerProps> = ({
       {/* Error Notice if any */}
       {errorMessage && (
         <div className="p-3.5 bg-rose-50 dark:bg-rose-950/40 border border-rose-300 dark:border-rose-800 text-rose-800 dark:text-rose-300 text-xs font-black rounded-2xl text-center shadow-sm animate-shake">
-          {errorMessage}
+          {t(errorMessage)}
         </div>
       )}
 

@@ -114,8 +114,7 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
               <span className="text-[11px] font-extrabold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md border border-indigo-100">
                 {t('Observer TV Display')}</span>
               <span className="text-xs text-slate-500 font-bold">
-                {roomState.players.length} Players Connected
-              </span>
+                {t('{a} Players Connected', { a: roomState.players.length })}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-xs font-bold text-slate-500">{t('Room Code:')}</span>
@@ -187,7 +186,7 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
                 className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-indigo-600 to-rose-600 hover:from-indigo-500 hover:to-rose-500 disabled:opacity-40 text-white font-black text-base rounded-2xl shadow-xl shadow-indigo-600/25 flex items-center justify-center gap-2.5 transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
               >
                 <Play className="w-5 h-5 fill-white" />
-                <span>START GAME ({roomState.players.length} PLAYERS)</span>
+                <span>{t('START GAME ({a} PLAYERS)', { a: roomState.players.length })}</span>
               </button>
 
               <button
@@ -363,8 +362,7 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
           {/* Timeline */}
           <div className="flex items-center justify-between text-xs font-bold text-slate-600 px-1">
             <span>
-              Round {roomState.currentDrawingRound} of {maxRounds} • Stroke {turnsCompleted + 1} of {totalTurnsInGame}
-            </span>
+              {t('Round {a} of {b} • Stroke {c} of {d}', { a: roomState.currentDrawingRound, b: maxRounds, c: turnsCompleted + 1, d: totalTurnsInGame })}</span>
             <div className="flex gap-1.5">
               {roomState.players.map((p, idx) => (
                 <div
@@ -464,7 +462,7 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
                     </div>
                     <div className="text-left min-w-0 flex-1">
                       <div className="text-xs font-bold text-slate-800 truncate">{p.name}</div>
-                      <div className="text-[10px] text-slate-500">{count} strokes</div>
+                      <div className="text-[10px] text-slate-500">{t('{a} strokes', { a: count })}</div>
                     </div>
                   </button>
                 );
@@ -575,7 +573,7 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
           >
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white text-xs font-black uppercase tracking-wider mb-2">
               <Trophy className="w-4 h-4 text-amber-400" />
-              <span>Round {roomState.currentRoundNumber} Complete</span>
+              <span>{t('Round {a} Complete', { a: roomState.currentRoundNumber })}</span>
             </div>
 
             <h2 className="text-3xl sm:text-4xl font-black">
@@ -664,11 +662,10 @@ export const ObserverDisplayView: React.FC<ObserverDisplayViewProps> = ({
                           </div>
                         </div>
                         <div className="text-right">
-                          <div className="text-base font-black text-indigo-700">{player.score} pts</div>
+                          <div className="text-base font-black text-indigo-700">{t('{a} pts', { a: player.score })}</div>
                           {pointsEarned > 0 && (
                             <div className="text-[11px] font-bold text-emerald-600">
-                              +{pointsEarned} bu tur
-                            </div>
+                              {t('+{a} bu tur', { a: pointsEarned })}</div>
                           )}
                         </div>
                       </div>

@@ -129,7 +129,7 @@ export const VotingView: React.FC<VotingViewProps> = ({
       <div className="flex flex-wrap items-center justify-center gap-2">
         <div className="flex items-center gap-2 bg-white dark:bg-slate-900 px-4 py-1 rounded-full text-xs font-bold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-xs">
           <Scale className="w-3.5 h-3.5 text-amber-500" />
-          <span>Teşhis Odası • Sıra: {currentVoterIndex + 1} / {players.length}</span>
+          <span>{t('Teşhis Odası • Sıra: {a} / {b}', { a: currentVoterIndex + 1, b: players.length })}</span>
         </div>
 
         {/* Bonus reward badge */}
@@ -192,7 +192,7 @@ export const VotingView: React.FC<VotingViewProps> = ({
                       className="w-2.5 h-2.5 rounded-full shrink-0 shadow-2xs"
                       style={{ backgroundColor: candidate.color }}
                     />
-                    <span>{candidate.colorName} Çizgileri</span>
+                    <span>{t('{a} Çizgileri', { a: candidate.colorName })}</span>
                   </div>
                 </div>
               </div>

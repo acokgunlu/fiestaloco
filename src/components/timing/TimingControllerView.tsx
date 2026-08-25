@@ -52,7 +52,7 @@ export const TimingControllerView: React.FC<Props> = ({
           </div>
           <div>
             <div className="font-black text-sm truncate max-w-[140px]">{myPlayer?.name}</div>
-            <div className="text-xs font-mono font-black text-sky-700 dark:text-sky-400">{myPlayer?.score || 0} puan</div>
+            <div className="text-xs font-mono font-black text-sky-700 dark:text-sky-400">{t('{a} puan', { a: myPlayer?.score || 0 })}</div>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -65,7 +65,7 @@ export const TimingControllerView: React.FC<Props> = ({
 
       {errorMessage && (
         <div className="flex items-center gap-2 p-3 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-300 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs font-black">
-          <AlertTriangle className="w-4 h-4 shrink-0" />{errorMessage}
+          <AlertTriangle className="w-4 h-4 shrink-0" />{t(errorMessage)}
         </div>
       )}
 
@@ -88,8 +88,7 @@ export const TimingControllerView: React.FC<Props> = ({
           isNoOver ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-300 dark:border-rose-800'
                    : 'bg-white dark:bg-slate-900 border-sky-300 dark:border-sky-800'}`}>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-slate-900 dark:bg-slate-950 text-amber-400 text-[11px] font-black">
-            <Target className="w-3.5 h-3.5" /> {modeLabel(gameState.mode)} MODU
-          </div>
+            <Target className="w-3.5 h-3.5" /> {t('{a} MODU', { a: modeLabel(gameState.mode) })}</div>
           <div>
             <p className="text-[11px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">{t('Hedef')}</p>
             <div className="text-6xl font-black tabular-nums text-sky-600 dark:text-sky-400">{formatSec(gameState.targetMs, 0)}</div>
@@ -105,8 +104,7 @@ export const TimingControllerView: React.FC<Props> = ({
           <p className="text-xs font-black uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">{t('Hazır ol')}</p>
           <div className="text-8xl font-black tabular-nums text-amber-500">{gameState.timerSeconds}</div>
           <p className="text-sm font-black text-slate-600 dark:text-slate-300">
-            {formatSec(gameState.targetMs, 0)} saniye · {modeLabel(gameState.mode)}
-          </p>
+            {t('{a} saniye · {b}', { a: formatSec(gameState.targetMs, 0), b: modeLabel(gameState.mode) })}</p>
         </div>
       )}
 
@@ -141,8 +139,7 @@ export const TimingControllerView: React.FC<Props> = ({
               >
                 <span className="block text-6xl">{t('ŞİMDİ')}</span>
                 <span className="block text-sm font-bold opacity-80 mt-3 tabular-nums">
-                  hedef {formatSec(gameState.targetMs, 0)} sn
-                </span>
+                  {t('hedef {a} sn', { a: formatSec(gameState.targetMs, 0) })}</span>
               </button>
               <p className="text-center text-xs font-black text-slate-500 dark:text-slate-400">
                 {isNoOver ? t('🚫 Geçersen yanarsın — erken kal.') : t('Vakti geldiğinde bas.')}
@@ -171,8 +168,7 @@ export const TimingControllerView: React.FC<Props> = ({
               </div>
               {myResult.latencyMs > 0 && (
                 <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500">
-                  ham ölçüm {formatSec(myResult.rawMs)} · ağ gecikmesi {myResult.latencyMs} ms düşüldü
-                </p>
+                  {t('ham ölçüm {a} · ağ gecikmesi {b} ms düşüldü', { a: formatSec(myResult.rawMs), b: myResult.latencyMs })}</p>
               )}
             </>
           ) : (

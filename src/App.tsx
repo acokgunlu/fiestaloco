@@ -581,7 +581,7 @@ export default function App() {
                   </button>
                 </div>
                 <OnlineRoomPicker
-                  errorMessage={errorMessage}
+                  errorMessage={t(errorMessage)}
                   onHostObserver={(roomSettings, hostName) =>
                     createRoom(roomSettings, hostName)
                   }

@@ -71,7 +71,7 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
       >
         <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-800 dark:text-slate-200 text-xs font-black uppercase tracking-wider mb-2.5 shadow-xs border border-slate-200 dark:border-slate-800">
           <Trophy className="w-4 h-4 text-amber-500" />
-          <span>Tur {currentRoundNumber} Büyük Yüzleşme</span>
+          <span>{t('Tur {a} Büyük Yüzleşme', { a: currentRoundNumber })}</span>
         </div>
 
         <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-slate-900 dark:text-slate-100">
@@ -127,7 +127,7 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
                 <div className="text-xs font-black text-slate-800 dark:text-slate-200 truncate w-20 sm:w-24 text-center">
                   {top2.name}
                 </div>
-                <div className="text-[11px] font-black text-slate-500 dark:text-slate-400 mb-1">{top2.score} pts</div>
+                <div className="text-[11px] font-black text-slate-500 dark:text-slate-400 mb-1">{t('{a} pts', { a: top2.score })}</div>
                 <div className="w-full h-24 bg-gradient-to-t from-slate-200 to-slate-100 rounded-t-2xl border-t-2 border-slate-300 dark:border-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-300 font-black text-lg shadow-xs">
                   2
                 </div>
@@ -148,7 +148,7 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
                 <div className="text-sm font-black text-amber-900 dark:text-amber-200 truncate w-24 sm:w-28 text-center">
                   {top1.name}
                 </div>
-                <div className="text-xs font-black text-amber-700 dark:text-amber-300 mb-1">{top1.score} pts</div>
+                <div className="text-xs font-black text-amber-700 dark:text-amber-300 mb-1">{t('{a} pts', { a: top1.score })}</div>
                 <div className="w-full h-36 bg-gradient-to-t from-amber-400 via-amber-300 to-yellow-200 rounded-t-2xl border-t-4 border-amber-400 flex items-center justify-center text-slate-900 dark:text-slate-100 font-black text-2xl shadow-md">
                   1
                 </div>
@@ -168,7 +168,7 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
                 <div className="text-xs font-black text-slate-800 dark:text-slate-200 truncate w-20 sm:w-24 text-center">
                   {top3.name}
                 </div>
-                <div className="text-[11px] font-black text-slate-500 dark:text-slate-400 mb-1">{top3.score} pts</div>
+                <div className="text-[11px] font-black text-slate-500 dark:text-slate-400 mb-1">{t('{a} pts', { a: top3.score })}</div>
                 <div className="w-full h-16 bg-gradient-to-t from-amber-100 to-amber-50 rounded-t-2xl border-t-2 border-amber-300 dark:border-amber-800 flex items-center justify-center text-amber-800 dark:text-amber-300 font-black text-base shadow-xs">
                   3
                 </div>
@@ -288,11 +288,10 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
                   </div>
 
                   <div className="text-right">
-                    <div className="text-base font-black text-indigo-700 dark:text-indigo-300">{player.score} pts</div>
+                    <div className="text-base font-black text-indigo-700 dark:text-indigo-300">{t('{a} pts', { a: player.score })}</div>
                     {pointsEarned > 0 && (
                       <div className="text-[11px] font-black text-emerald-600 dark:text-emerald-400">
-                        +{pointsEarned} bu tur
-                      </div>
+                        {t('+{a} bu tur', { a: pointsEarned })}</div>
                     )}
                   </div>
                 </div>

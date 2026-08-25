@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { TimingPlayer, TimingPress } from '../../types/timing';
 import { buildTimeline, formatSec } from '../../data/timingLogic';
 
+import { t } from '../../i18n';
 interface Props {
   targetMs: number;
   results: TimingPress[];
@@ -59,8 +60,7 @@ export const TimingTimeline: React.FC<Props> = ({
         <div className="absolute" style={{ left: `${tl.targetPct}%`, top: 0, height: tl.laneCount * laneH + 20 }}>
           <div className="w-0.5 h-full bg-amber-400 dark:bg-amber-400" style={{ boxShadow: '0 0 12px rgba(251,191,36,0.7)' }} />
           <div className="absolute -top-1 left-1/2 -translate-x-1/2 -translate-y-full whitespace-nowrap px-2 py-0.5 rounded-lg bg-amber-400 text-slate-950 text-[10px] font-black tabular-nums shadow">
-            HEDEF {formatSec(targetMs, 0)}
-          </div>
+            {t('HEDEF {a}', { a: formatSec(targetMs, 0) })}</div>
         </div>
 
         {/* Oyuncu nişanları */}

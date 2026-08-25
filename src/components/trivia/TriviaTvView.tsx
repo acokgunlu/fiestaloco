@@ -103,8 +103,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                 {t('ANA EKRAN')}</span>
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 font-bold">
-              Tur {gameState.roundNumber || 1} • Hedef: {gameState.settings.wedgesToWin || 6} Kategori Rozeti
-            </p>
+              {t('Tur {a} • Hedef: {b} Kategori Rozeti', { a: gameState.roundNumber || 1, b: gameState.settings.wedgesToWin || 6 })}</p>
           </div>
         </div>
 
@@ -192,7 +191,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                 {roomCode}
               </span>
               <p className="text-xs text-slate-600 dark:text-slate-300 font-medium max-w-xs leading-relaxed">
-                Telefonunuzun kamerası ile okutun veya <span className="font-mono font-black text-slate-900 dark:text-white">?room={roomCode}</span> ile katılın.
+                Telefonunuzun kamerası ile okutun veya <span className="font-mono font-black text-slate-900 dark:text-white">{t('?room={a}', { a: roomCode })}</span> ile katılın.
               </p>
             </div>
 
@@ -202,11 +201,10 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-base sm:text-lg font-black flex items-center gap-2 text-slate-900 dark:text-white">
                     <Users className="w-5 h-5 text-emerald-500" />
-                    <span>Bağlı Oyuncular ({players.length})</span>
+                    <span>{t('Bağlı Oyuncular ({a})', { a: players.length })}</span>
                   </h3>
                   <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
-                    Kazanma: {gameState.settings.wedgesToWin} Rozet
-                  </span>
+                    {t('Kazanma: {a} Rozet', { a: gameState.settings.wedgesToWin })}</span>
                 </div>
 
                 {players.length === 0 ? (
@@ -231,8 +229,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                         <div className="truncate">
                           <p className="font-black text-sm text-slate-900 dark:text-white truncate">{p.name}</p>
                           <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-bold">
-                            {p.wedges.length}/6 Rozet
-                          </p>
+                            {t('{a}/6 Rozet', { a: p.wedges.length })}</p>
                         </div>
                       </div>
                     ))}
@@ -320,8 +317,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                     {gameState.dieRoll}
                   </span>
                   <span className="text-sm font-black text-slate-900 dark:text-white">
-                    geldi — {activePlayer?.name} hedefini seçiyor
-                  </span>
+                    {t('geldi — {a} hedefini seçiyor', { a: activePlayer?.name })}</span>
                 </div>
                 <div className="flex flex-wrap justify-center gap-2">
                   {(gameState.moveOptions || []).map((opt, i) => (
@@ -350,7 +346,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                 }}
               >
                 <span className="text-2xl">{TRIVIA_CATEGORIES[gameState.selectedCategory]?.icon}</span>
-                <span>{TRIVIA_CATEGORIES[gameState.selectedCategory]?.label} Kategorisi Seçildi!</span>
+                <span>{t('{a} Kategorisi Seçildi!', { a: TRIVIA_CATEGORIES[gameState.selectedCategory]?.label })}</span>
               </motion.div>
             )}
           </div>

@@ -55,7 +55,7 @@ export const HorseRaceGame: React.FC<HorseRaceGameProps> = ({ onBackToHub }) => 
         myPlayer={socket.myPlayer}
         myBet={socket.myBet}
         gameState={socket.gameState}
-        errorMessage={socket.errorMessage}
+        errorMessage={t(socket.errorMessage)}
         onPlaceBet={socket.placeBet}
         onLeave={() => {
           socket.leaveRoom();
@@ -174,7 +174,7 @@ export const HorseRaceGame: React.FC<HorseRaceGameProps> = ({ onBackToHub }) => 
 
           {socket.errorMessage && (
             <div className="p-3 mb-4 rounded-xl bg-rose-50 dark:bg-rose-500/20 border border-rose-300 dark:border-rose-500/40 text-rose-700 dark:text-rose-300 text-xs font-bold">
-              {socket.errorMessage}
+              {t(socket.errorMessage)}
             </div>
           )}
 

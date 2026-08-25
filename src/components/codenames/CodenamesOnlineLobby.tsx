@@ -4,6 +4,7 @@ import { ArrowLeft, Crown, Play, Users, AlertTriangle } from 'lucide-react';
 import { CodenamesPlayer, CodenamesTeam } from '../../types/codenames';
 
 import { t } from '../../i18n';
+import { T } from '../../i18n/T';
 interface CodenamesOnlineLobbyProps {
   roomCode: string;
   players: CodenamesPlayer[];
@@ -72,8 +73,7 @@ export const CodenamesOnlineLobby: React.FC<CodenamesOnlineLobbyProps> = ({
             {isRed ? t('🔴 Kırmızı Takım') : t('🔵 Mavi Takım')}
           </h3>
           <span className="text-xs font-black text-slate-500 dark:text-slate-400">
-            {list.length} kişi
-          </span>
+            {t('{a} kişi', { a: list.length })}</span>
         </div>
 
         <div className="space-y-3">
@@ -154,8 +154,11 @@ export const CodenamesOnlineLobby: React.FC<CodenamesOnlineLobbyProps> = ({
               {t('QR yükleniyor…')}</div>
           )}
           <p className="text-xs text-slate-500 dark:text-slate-400 font-medium text-center mt-3 max-w-[15rem]">
-            Kamerayla okutun veya <strong className="text-slate-900 dark:text-white">{window.location.host}</strong>{' '}
-            adresine girip <strong className="text-amber-500">{roomCode}</strong> yazın.
+            <T k="Kamerayla okutun veya {host} adresine girip {code} yazın."
+                v={{
+                  host: <strong className="text-slate-900 dark:text-white">{window.location.host}</strong>,
+                  code: <strong className="text-amber-500">{roomCode}</strong>,
+                }} />
           </p>
         </div>
 
@@ -186,7 +189,7 @@ export const CodenamesOnlineLobby: React.FC<CodenamesOnlineLobbyProps> = ({
           {errorMessage && (
             <div className="flex items-center gap-2 p-3 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-300 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs font-black">
               <AlertTriangle className="w-4 h-4 shrink-0" />
-              {errorMessage}
+              {t(errorMessage)}
             </div>
           )}
 
@@ -200,8 +203,7 @@ export const CodenamesOnlineLobby: React.FC<CodenamesOnlineLobbyProps> = ({
               {t('OYUNU BAŞLAT')}</button>
             {!canStart && (
               <p className="text-xs font-bold text-slate-500 dark:text-slate-400 text-center">
-                Eksik: {missing.join(' · ')}
-              </p>
+                {t('Eksik: {a}', { a: missing.join(' · ') })}</p>
             )}
           </div>
         </div>

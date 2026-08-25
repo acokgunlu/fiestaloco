@@ -328,8 +328,7 @@ export const TriviaPursuitGame: React.FC<TriviaPursuitGameProps> = ({ onBackToHu
                               : 'bg-white/20 text-white hover:bg-white/30'
                           }`}
                         >
-                          {sec} Saniye
-                        </button>
+                          {t('{a} Saniye', { a: sec })}</button>
                       ))}
                     </div>
                   </div>

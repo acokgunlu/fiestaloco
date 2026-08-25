@@ -349,8 +349,7 @@ export function CodenamesBoardView({
               <span>{t('Kırmızı Takım')}</span>
               {redPlayers.length > 0 && (
                 <span className="text-[10px] px-1.5 py-0.2 bg-rose-200 text-rose-900 rounded-full font-bold">
-                  {redPlayers.length} Oyuncu
-                </span>
+                  {t('{a} Oyuncu', { a: redPlayers.length })}</span>
               )}
             </div>
             <div className="text-xl sm:text-2xl font-black text-slate-900">
@@ -383,8 +382,7 @@ export function CodenamesBoardView({
                 </span>
               </div>
               <div className="bg-emerald-50 text-emerald-800 px-3 py-1.5 rounded-xl border border-emerald-200 text-xs font-black">
-                {guessesRemaining} Tahmin Hakkı
-              </div>
+                {t('{a} Tahmin Hakkı', { a: guessesRemaining })}</div>
             </div>
           ) : (
             <div className="text-xs font-bold text-slate-500 italic pt-1">
@@ -411,8 +409,7 @@ export function CodenamesBoardView({
               <span>{t('Mavi Takım')}</span>
               {bluePlayers.length > 0 && (
                 <span className="text-[10px] px-1.5 py-0.2 bg-sky-200 text-sky-900 rounded-full font-bold">
-                  {bluePlayers.length} Oyuncu
-                </span>
+                  {t('{a} Oyuncu', { a: bluePlayers.length })}</span>
               )}
             </div>
             <div className="text-xl sm:text-2xl font-black text-slate-900">
@@ -469,7 +466,7 @@ export function CodenamesBoardView({
             }`}
           >
             <History className="w-3.5 h-3.5" />
-            <span>İpucu Geçmişi ({clues.length})</span>
+            <span>{t('İpucu Geçmişi ({a})', { a: clues.length })}</span>
           </button>
         </div>
 

@@ -116,8 +116,7 @@ export const QuiplashControllerView: React.FC<QuiplashControllerViewProps> = ({
               {player?.name || 'Oyuncu'}
             </h2>
             <span className="text-xs font-bold text-amber-400">
-              {player?.score || 0} Puan
-            </span>
+              {t('{a} Puan', { a: player?.score || 0 })}</span>
           </div>
         </div>
 
@@ -164,15 +163,13 @@ export const QuiplashControllerView: React.FC<QuiplashControllerViewProps> = ({
                   {t('Harika! Diğer oyuncuların da yanıtlarını tamamlaması bekleniyor. TV ekranını takip edin!')}</p>
                 <div className="inline-flex items-center gap-2 text-xs font-bold text-amber-400 bg-amber-500/10 px-4 py-2 rounded-xl border border-amber-500/20">
                   <Clock className="w-4 h-4" />
-                  Kalan Süre: {gameState.timerSeconds}s
-                </div>
+                  {t('Kalan Süre: {a}s', { a: gameState.timerSeconds })}</div>
               </div>
             ) : (
               <form onSubmit={handleSubmitAllAnswers} className="space-y-5">
                 <div className="flex items-center justify-between pb-2 border-b border-slate-800">
                   <span className="text-xs font-black uppercase tracking-wider text-pink-400">
-                    TUR {gameState.currentRound} • YANITLARINI YAZ
-                  </span>
+                    {t('TUR {a} • YANITLARINI YAZ', { a: gameState.currentRound })}</span>
                   <span className="text-xs font-black text-rose-400 flex items-center gap-1">
                     <Clock className="w-3.5 h-3.5" />
                     {gameState.timerSeconds}s
@@ -190,8 +187,7 @@ export const QuiplashControllerView: React.FC<QuiplashControllerViewProps> = ({
                     >
                       <div className="flex items-center justify-between">
                         <span className="text-[11px] font-black uppercase text-purple-400">
-                          Soru #{idx + 1} ({p.category})
-                        </span>
+                          {t('Soru #{a} ({b})', { a: idx + 1, b: p.category })}</span>
                         <span className="text-[10px] text-slate-500">
                           {(answers[p.id] || '').length} / 80
                         </span>
@@ -231,8 +227,7 @@ export const QuiplashControllerView: React.FC<QuiplashControllerViewProps> = ({
           <div className="w-full space-y-4">
             <div className="text-center mb-2">
               <span className="text-xs font-black uppercase tracking-wider text-pink-400 block mb-1">
-                KAPIŞMA #{gameState.currentMatchupIndex + 1}
-              </span>
+                {t('KAPIŞMA #{a}', { a: gameState.currentMatchupIndex + 1 })}</span>
               <p className="text-base font-black text-white leading-snug">
                 "{currentMatchup.prompt.prompt}"
               </p>
@@ -311,8 +306,7 @@ export const QuiplashControllerView: React.FC<QuiplashControllerViewProps> = ({
               <span className="text-[10px] uppercase font-bold text-slate-400 block">
                 {t('MEVCUT PUANINIZ')}</span>
               <span className="text-2xl font-black text-amber-400">
-                {player?.score || 0} Puan
-              </span>
+                {t('{a} Puan', { a: player?.score || 0 })}</span>
             </div>
           </div>
         )}
@@ -420,8 +414,7 @@ export const QuiplashControllerView: React.FC<QuiplashControllerViewProps> = ({
               <span className="text-[10px] uppercase font-bold text-slate-400 block">
                 {t('TOPLAM PUANINIZ')}</span>
               <span className="text-3xl font-black text-amber-400">
-                {player?.score || 0} Puan
-              </span>
+                {t('{a} Puan', { a: player?.score || 0 })}</span>
             </div>
           </div>
         )}

@@ -90,15 +90,15 @@ export function CodenamesGameOverModal({
         <div className="grid grid-cols-3 gap-2.5 bg-slate-50 dark:bg-slate-900/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 text-center">
           <div className="space-y-0.5">
             <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400">{t('Kırmızı Ajanlar')}</span>
-            <div className="text-base sm:text-lg font-black text-rose-600 dark:text-rose-400">{redCount} Bulundu</div>
+            <div className="text-base sm:text-lg font-black text-rose-600 dark:text-rose-400">{t('{a} Bulundu', { a: redCount })}</div>
           </div>
           <div className="space-y-0.5">
             <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400">{t('Mavi Ajanlar')}</span>
-            <div className="text-base sm:text-lg font-black text-blue-600 dark:text-blue-400">{blueCount} Bulundu</div>
+            <div className="text-base sm:text-lg font-black text-blue-600 dark:text-blue-400">{t('{a} Bulundu', { a: blueCount })}</div>
           </div>
           <div className="space-y-0.5">
             <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400">{t('Toplam İpucu')}</span>
-            <div className="text-base sm:text-lg font-black text-indigo-700 dark:text-indigo-300">{clues.length} Tur</div>
+            <div className="text-base sm:text-lg font-black text-indigo-700 dark:text-indigo-300">{t('{a} Tur', { a: clues.length })}</div>
           </div>
         </div>
 

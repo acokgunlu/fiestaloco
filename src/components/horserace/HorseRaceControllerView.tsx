@@ -106,7 +106,7 @@ export const HorseRaceControllerView: React.FC<Props> = ({
       {errorMessage && (
         <div className="flex items-center gap-2 p-3 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-300 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs font-black">
           <AlertTriangle className="w-4 h-4 shrink-0" />
-          {errorMessage}
+          {t(errorMessage)}
         </div>
       )}
 
@@ -165,14 +165,11 @@ export const HorseRaceControllerView: React.FC<Props> = ({
                 </div>
                 {gap > 0 && (
                   <p className="text-[11px] font-black text-rose-600 dark:text-rose-400">
-                    Liderden {money(gap)} ₺ geridesin
-                    {lastRace ? t(' · son yarış, riski yükseltmezsen yetişemezsin') : ''}
-                  </p>
+                    {t('Liderden {a} ₺ geridesin {b}', { a: money(gap), b: lastRace ? t(' · son yarış, riski yükseltmezsen yetişemezsin') : '' })}</p>
                 )}
                 {gap === 0 && players.length > 1 && (
                   <p className="text-[11px] font-black text-emerald-600 dark:text-emerald-400">
-                    Lidersin{lastRace ? t(' · korumaya çekilmek mantıklı (plase)') : ''}
-                  </p>
+                    {t('Lidersin{a}', { a: lastRace ? t(' · korumaya çekilmek mantıklı (plase)') : '' })}</p>
                 )}
               </div>
             );
@@ -322,8 +319,7 @@ export const HorseRaceControllerView: React.FC<Props> = ({
               {(pay?.delta || 0) > 0 ? '+' : ''}{money(pay?.delta || 0)} ₺
             </p>
             <p className="text-xs font-bold text-slate-500 dark:text-slate-400">
-              Kasan: {money(myPlayer?.money || 0)} ₺
-            </p>
+              {t('Kasan: {a} ₺', { a: money(myPlayer?.money || 0) })}</p>
             {gameState.phase === 'GAME_OVER' && gameState.winnerPlayerId === myPlayer?.id && (
               <p className="text-sm font-black text-amber-500">{t('🏆 Gecenin kralı sensin!')}</p>
             )}

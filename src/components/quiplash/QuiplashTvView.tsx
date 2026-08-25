@@ -197,8 +197,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
                   <div className="flex items-center gap-2">
                     <Users className="w-5 h-5 text-purple-400" />
                     <h3 className="text-lg font-black tracking-wide text-white">
-                      Katılan Oyuncular ({players.length})
-                    </h3>
+                      {t('Katılan Oyuncular ({a})', { a: players.length })}</h3>
                   </div>
                   <span className="text-xs text-slate-400 font-bold">
                     {players.length < 2 ? 'En az 2 oyuncu gerekli' : t('Oyuna hazır!')}
@@ -269,8 +268,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
             </motion.div>
 
             <span className="text-xs font-black tracking-widest uppercase text-pink-400 mb-2">
-              TUR {gameState.currentRound} • YAZMA AŞAMASI
-            </span>
+              {t('TUR {a} • YAZMA AŞAMASI', { a: gameState.currentRound })}</span>
             <h2 className="text-4xl sm:text-5xl font-black text-white mb-3 tracking-tight">
               {t('Telefonlarınıza Bakın!')}</h2>
             <p className="text-slate-400 text-sm max-w-lg mb-8">
@@ -281,8 +279,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
               <div className="flex items-center justify-between mb-4 pb-2 border-b border-slate-800">
                 <span className="text-xs font-bold text-slate-400">{t('Yanıt Gönderenler')}</span>
                 <span className="text-xs font-black text-amber-400">
-                  {gameState.submittedPlayerIds?.length || 0} / {players.length} Tamamlandı
-                </span>
+                  {t('{a} / {b} Tamamlandı', { a: gameState.submittedPlayerIds?.length || 0, b: players.length })}</span>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -320,8 +317,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
             {/* Header info */}
             <div className="flex items-center gap-3 mb-4">
               <span className="px-4 py-1.5 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-black text-xs uppercase tracking-widest shadow-md">
-                Kapışma #{gameState.currentMatchupIndex + 1} / {gameState.matchups.length}
-              </span>
+                {t('Kapışma #{a} / {b}', { a: gameState.currentMatchupIndex + 1, b: gameState.matchups.length })}</span>
               <span className="text-xs text-slate-400 font-bold">
                 {activeMatchup.prompt.category}
               </span>
@@ -381,15 +377,13 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
                           {activeMatchup.answer1.playerName}
                         </span>
                         <span className="text-[10px] text-cyan-400 font-extrabold">
-                          +{activeMatchup.answer1.pointsEarned || 0} Puan
-                        </span>
+                          {t('+{a} Puan', { a: activeMatchup.answer1.pointsEarned || 0 })}</span>
                       </div>
                     </div>
 
                     <div className="text-right">
                       <span className="text-2xl font-black text-cyan-400">
-                        {activeMatchup.answer1.votes.length} Oy
-                      </span>
+                        {t('{a} Oy', { a: activeMatchup.answer1.votes.length })}</span>
                     </div>
                   </div>
                 )}
@@ -434,15 +428,13 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
                           {activeMatchup.answer2.playerName}
                         </span>
                         <span className="text-[10px] text-rose-400 font-extrabold">
-                          +{activeMatchup.answer2.pointsEarned || 0} Puan
-                        </span>
+                          {t('+{a} Puan', { a: activeMatchup.answer2.pointsEarned || 0 })}</span>
                       </div>
                     </div>
 
                     <div className="text-right">
                       <span className="text-2xl font-black text-rose-400">
-                        {activeMatchup.answer2.votes.length} Oy
-                      </span>
+                        {t('{a} Oy', { a: activeMatchup.answer2.votes.length })}</span>
                     </div>
                   </div>
                 )}
@@ -478,8 +470,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
         {isRoundScores && (
           <div className="w-full max-w-3xl flex flex-col items-center">
             <span className="text-xs font-black tracking-widest uppercase text-pink-400 mb-2">
-              TUR {gameState.currentRound} PUAN TABLOSU
-            </span>
+              {t('TUR {a} PUAN TABLOSU', { a: gameState.currentRound })}</span>
             <h2 className="text-4xl font-black text-white mb-6">{t('Mizah Liderleri')}</h2>
 
             <div className="w-full p-6 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-2xl backdrop-blur-xl space-y-3 mb-8">
@@ -503,7 +494,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
                       <span className="text-base font-bold text-white">{p.name}</span>
                     </div>
 
-                    <span className="text-xl font-black text-amber-400">{p.score} Puan</span>
+                    <span className="text-xl font-black text-amber-400">{t('{a} Puan', { a: p.score })}</span>
                   </div>
                 ))}
             </div>
@@ -565,8 +556,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
                       <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
                         <span className="font-bold text-slate-400">{ans.playerName}</span>
                         <span className="font-black text-amber-400">
-                          {ans.votes.length} Oy (+{ans.pointsEarned || 0} Pts)
-                        </span>
+                          {t('{a} Oy (+{b} Pts)', { a: ans.votes.length, b: ans.pointsEarned || 0 })}</span>
                       </div>
                     )}
                   </div>
@@ -613,8 +603,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
                   </div>
                   <h3 className="text-3xl font-black text-white mb-1">{winner.name}</h3>
                   <span className="text-2xl font-black text-amber-400 mb-4">
-                    {winner.score} Toplam Puan
-                  </span>
+                    {t('{a} Toplam Puan', { a: winner.score })}</span>
 
                   {/* Rest of podium */}
                   <div className="grid grid-cols-2 gap-4 w-full mt-4 pt-6 border-t border-slate-800">
@@ -626,7 +615,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
                         <span className="text-2xl">{i === 0 ? '🥈' : '🥉'}</span>
                         <div className="text-left overflow-hidden">
                           <div className="text-sm font-bold text-white truncate">{p.name}</div>
-                          <div className="text-xs font-bold text-amber-400">{p.score} Puan</div>
+                          <div className="text-xs font-bold text-amber-400">{t('{a} Puan', { a: p.score })}</div>
                         </div>
                       </div>
                     ))}

@@ -334,8 +334,7 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
               <span className="text-xs font-black uppercase text-pink-400 tracking-wider">
                 {t('CİHAZI DEVREDİN')}</span>
               <h2 className="text-3xl font-black text-slate-900 dark:text-white mt-1">
-                Sıra: {players[currentWritingPlayerIdx]?.name}
-              </h2>
+                {t('Sıra: {a}', { a: players[currentWritingPlayerIdx]?.name })}</h2>
               <p className="text-xs text-slate-400 mt-2">
                 {t('Diğer oyuncular ekrana bakmasın! Yalnızca sıradaki oyuncu butona bassın.')}</p>
             </div>
@@ -359,18 +358,15 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
           <div className="w-full p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl space-y-5">
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <span className="text-xs font-black uppercase text-pink-400">
-                {players[currentWritingPlayerIdx]?.name} İçin Sorular
-              </span>
+                {t('{a} İçin Sorular', { a: players[currentWritingPlayerIdx]?.name })}</span>
               <span className="text-xs text-slate-400 font-bold">
-                Oyuncu {currentWritingPlayerIdx + 1} / {players.length}
-              </span>
+                {t('Oyuncu {a} / {b}', { a: currentWritingPlayerIdx + 1, b: players.length })}</span>
             </div>
 
             {(players[currentWritingPlayerIdx]?.assignedPrompts || []).map((prompt, i) => (
               <div key={prompt.id} className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2">
                 <span className="text-[10px] font-black text-purple-400 uppercase">
-                  Soru #{i + 1}
-                </span>
+                  {t('Soru #{a}', { a: i + 1 })}</span>
                 <p className="text-sm font-bold text-slate-900 dark:text-white">"{prompt.prompt}"</p>
                 <input
                   type="text"
@@ -399,8 +395,7 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
         {phase === 'MATCHUP_VOTE' && currentActiveMatchup && (
           <div className="w-full p-6 sm:p-8 rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl space-y-6 text-center">
             <span className="text-xs font-black uppercase tracking-widest text-pink-400">
-              KAPIŞMA #{currentMatchupIndex + 1} / {matchups.length}
-            </span>
+              {t('KAPIŞMA #{a} / {b}', { a: currentMatchupIndex + 1, b: matchups.length })}</span>
 
             <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-purple-300 dark:border-purple-500/30">
               <p className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
@@ -460,8 +455,7 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
                   "{currentActiveMatchup.answer1.text}"
                 </p>
                 <span className="text-xs font-extrabold text-cyan-400">
-                  +{currentActiveMatchup.answer1.pointsEarned || 0} Pts
-                </span>
+                  {t('+{a} Pts', { a: currentActiveMatchup.answer1.pointsEarned || 0 })}</span>
               </div>
 
               <div
@@ -478,8 +472,7 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
                   "{currentActiveMatchup.answer2.text}"
                 </p>
                 <span className="text-xs font-extrabold text-rose-400">
-                  +{currentActiveMatchup.answer2.pointsEarned || 0} Pts
-                </span>
+                  {t('+{a} Pts', { a: currentActiveMatchup.answer2.pointsEarned || 0 })}</span>
               </div>
             </div>
 
@@ -499,8 +492,7 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
         {phase === 'ROUND_SCORES' && (
           <div className="w-full p-6 sm:p-8 rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl space-y-6 text-center">
             <span className="text-xs font-black uppercase text-pink-400 tracking-wider">
-              TUR {currentRound} SKORLARI
-            </span>
+              {t('TUR {a} SKORLARI', { a: currentRound })}</span>
             <h2 className="text-2xl font-black text-slate-900 dark:text-white">{t('Liderlik Tablosu')}</h2>
 
             <div className="space-y-2.5">
@@ -515,7 +507,7 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
                       <span className="text-base font-black text-slate-400">#{i + 1}</span>
                       <span className="text-sm font-bold text-slate-900 dark:text-white">{p.name}</span>
                     </div>
-                    <span className="text-base font-black text-amber-400">{p.score} Puan</span>
+                    <span className="text-base font-black text-amber-400">{t('{a} Puan', { a: p.score })}</span>
                   </div>
                 ))}
             </div>
@@ -550,8 +542,7 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
                 <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-amber-300 dark:border-amber-400/40">
                   <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-1">{winner?.name}</h3>
                   <span className="text-xl font-black text-amber-400">
-                    {winner?.score || 0} Toplam Puan
-                  </span>
+                    {t('{a} Toplam Puan', { a: winner?.score || 0 })}</span>
                 </div>
               );
             })()}

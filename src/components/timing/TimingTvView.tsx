@@ -6,6 +6,7 @@ import { formatError, formatSec, modeHint, modeLabel } from '../../data/timingLo
 import { TimingTimeline } from './TimingTimeline';
 
 import { t, withLang } from '../../i18n';
+import { T } from '../../i18n/T';
 interface Props {
   roomCode: string;
   gameState: TimingGameState;
@@ -40,8 +41,7 @@ export const TimingTvView: React.FC<Props> = ({
             <div>
               <h2 className="text-xl sm:text-2xl font-black tracking-tight">{t('Tam Zamanında')}</h2>
               <p className="text-xs font-bold text-slate-500 dark:text-slate-400">
-                Tur {gameState.currentRound}/{gameState.settings.totalRounds} · İçinden say, tam vaktinde bas
-              </p>
+                {t('Tur {a}/{b} · İçinden say, tam vaktinde bas', { a: gameState.currentRound, b: gameState.settings.totalRounds })}</p>
             </div>
           </div>
         </div>
@@ -58,14 +58,17 @@ export const TimingTvView: React.FC<Props> = ({
             {qr ? <img src={qr} alt="QR" className="w-48 h-48 rounded-2xl" />
                 : <div className="w-48 h-48 rounded-2xl bg-slate-100 dark:bg-slate-800" />}
             <p className="text-xs text-slate-500 dark:text-slate-400 font-medium text-center mt-3">
-              Kamerayla okutun veya <strong className="text-slate-900 dark:text-white">{window.location.host}</strong> adresine girip <strong className="text-amber-500">{roomCode}</strong> yazın.
+              <T k="Kamerayla okutun veya {host} adresine girip {code} yazın."
+                v={{
+                  host: <strong className="text-slate-900 dark:text-white">{window.location.host}</strong>,
+                  code: <strong className="text-amber-500">{roomCode}</strong>,
+                }} />
             </p>
           </div>
           <div className="lg:col-span-7 space-y-4">
             <div className="p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl">
               <div className="flex items-center gap-2 mb-3 text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                <Users className="w-4 h-4" /> Oyuncular ({players.length})
-              </div>
+                <Users className="w-4 h-4" /> {t('Oyuncular ({a})', { a: players.length })}</div>
               {players.length === 0 ? (
                 <p className="text-sm font-bold text-slate-400 dark:text-slate-500 italic py-6 text-center">{t('Bekleniyor…')}</p>
               ) : (
@@ -98,8 +101,7 @@ export const TimingTvView: React.FC<Props> = ({
             isNoOver
               ? 'bg-rose-50 dark:bg-rose-950 text-rose-700 dark:text-rose-300 border-rose-400'
               : 'bg-sky-50 dark:bg-sky-950 text-sky-700 dark:text-sky-300 border-sky-400'}`}>
-            <Target className="w-4 h-4" /> {modeLabel(gameState.mode)} MODU
-          </div>
+            <Target className="w-4 h-4" /> {t('{a} MODU', { a: modeLabel(gameState.mode) })}</div>
           <div>
             <p className="text-sm font-black uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">{t('Bu turun hedefi')}</p>
             <div className="text-[7rem] leading-none font-black tabular-nums bg-gradient-to-b from-sky-500 to-indigo-600 bg-clip-text text-transparent">
@@ -118,8 +120,7 @@ export const TimingTvView: React.FC<Props> = ({
           <p className="text-lg font-black uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">{t('Hazır ol')}</p>
           <div className="text-[12rem] leading-none font-black tabular-nums text-amber-500">{gameState.timerSeconds}</div>
           <p className="text-xl font-black text-slate-600 dark:text-slate-300">
-            Hedef {formatSec(gameState.targetMs, 0)} saniye · {modeLabel(gameState.mode)}
-          </p>
+            {t('Hedef {a} saniye · {b}', { a: formatSec(gameState.targetMs, 0), b: modeLabel(gameState.mode) })}</p>
         </div>
       )}
 
@@ -158,8 +159,7 @@ export const TimingTvView: React.FC<Props> = ({
           <div className="p-4 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl">
             <div className="flex flex-wrap items-center justify-between gap-2 px-6 pb-1">
               <span className="text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                Tur {gameState.currentRound} · {modeLabel(gameState.mode)} {formatSec(gameState.targetMs, 0)} sn
-              </span>
+                {t('Tur {a} · {b} {c} sn', { a: gameState.currentRound, b: modeLabel(gameState.mode), c: formatSec(gameState.targetMs, 0) })}</span>
               {(gameState.results || []).length > 0 && (
                 <span className="text-xs font-black text-amber-600 dark:text-amber-400">
                   {(() => {
@@ -195,8 +195,7 @@ export const TimingTvView: React.FC<Props> = ({
                       </span>
                       <span className="flex items-center gap-3 shrink-0">
                         <span className="text-xs font-bold tabular-nums text-slate-500 dark:text-slate-400">
-                          {formatSec(r.elapsedMs)} sn
-                        </span>
+                          {t('{a} sn', { a: formatSec(r.elapsedMs) })}</span>
                         <span className={`text-xs font-black ${r.burned ? 'text-rose-600 dark:text-rose-400' : 'text-slate-600 dark:text-slate-300'}`}>
                           {r.burned ? 'YANDI' : formatError(r.errorMs)}
                         </span>
@@ -222,7 +221,7 @@ export const TimingTvView: React.FC<Props> = ({
                     <span className="text-sm font-black">{i + 1}. {p.avatar} {p.name}</span>
                     <span className="flex items-center gap-2">
                       {p.bestErrorMs !== undefined && (
-                        <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 tabular-nums">en iyi {formatSec(p.bestErrorMs)}</span>
+                        <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 tabular-nums">{t('en iyi {a}', { a: formatSec(p.bestErrorMs) })}</span>
                       )}
                       {(p.lastPoints || 0) > 0 && <span className="text-xs font-black text-emerald-600 dark:text-emerald-400">+{p.lastPoints}</span>}
                       <span className="font-mono font-black text-sm">{p.score}</span>

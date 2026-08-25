@@ -38,7 +38,7 @@ export const ColoryControllerView: React.FC<Props> = ({
           </div>
           <div>
             <div className="font-black text-sm truncate max-w-[140px]">{myPlayer?.name}</div>
-            <div className="text-xs font-mono font-black text-fuchsia-700 dark:text-fuchsia-400">{myPlayer?.score || 0} puan</div>
+            <div className="text-xs font-mono font-black text-fuchsia-700 dark:text-fuchsia-400">{t('{a} puan', { a: myPlayer?.score || 0 })}</div>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -51,7 +51,7 @@ export const ColoryControllerView: React.FC<Props> = ({
 
       {errorMessage && (
         <div className="flex items-center gap-2 p-3 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-300 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs font-black">
-          <AlertTriangle className="w-4 h-4 shrink-0" />{errorMessage}
+          <AlertTriangle className="w-4 h-4 shrink-0" />{t(errorMessage)}
         </div>
       )}
 
@@ -142,9 +142,9 @@ export const ColoryControllerView: React.FC<Props> = ({
           )}
           {myResult ? (
             <>
-              <h3 className="text-lg font-black">{myResult.rank}. sıradasın</h3>
+              <h3 className="text-lg font-black">{t('{a}. sıradasın', { a: myResult.rank })}</h3>
               <p className="text-3xl font-black text-emerald-600 dark:text-emerald-400">+{myResult.points}</p>
-              <p className="text-xs font-bold text-slate-500 dark:text-slate-400">Fark ΔE {myResult.deltaE} · Toplam {myPlayer?.score}</p>
+              <p className="text-xs font-bold text-slate-500 dark:text-slate-400">{t('Fark ΔE {a} · Toplam {b}', { a: myResult.deltaE, b: myPlayer?.score })}</p>
             </>
           ) : (
             <p className="text-sm font-black text-slate-500 dark:text-slate-400">{t('Bu turda seçim yapmadın')}</p>

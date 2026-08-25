@@ -509,8 +509,7 @@ export const PlayerControllerView: React.FC<PlayerControllerViewProps> = ({
               <ShieldAlert className="w-12 h-12 text-rose-600 dark:text-rose-400 mx-auto animate-bounce" />
               <h2 className="text-2xl font-black text-slate-900 dark:text-slate-100">{t('Imposter Showdown!')}</h2>
               <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xs mx-auto">
-                The crew correctly identified the Imposter! Watch the main screen to see if they can guess your word "{roomState.myAssignedWord}".
-              </p>
+                {t('The crew correctly identified the Imposter! Watch the main screen to see if they can guess your word "{a}".', { a: roomState.myAssignedWord })}</p>
             </div>
           )}
         </div>
@@ -525,7 +524,7 @@ export const PlayerControllerView: React.FC<PlayerControllerViewProps> = ({
               {roomState.roundResult.imposterWon ? t('🎭 Sahtekâr Kazandı!') : t('🎉 Masum Ressamlar Kazandı!')}
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              {t('Toplam Puanınız:')} <strong className="text-indigo-600 dark:text-indigo-400 text-sm">{me?.score} pts</strong>
+              {t('Toplam Puanınız:')} <strong className="text-indigo-600 dark:text-indigo-400 text-sm">{t('{a} pts', { a: me?.score })}</strong>
             </p>
           </div>
 

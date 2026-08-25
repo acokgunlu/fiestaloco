@@ -191,8 +191,7 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
                 : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900/60'
             }`}
           >
-            {count} Players
-          </button>
+            {t('{a} Players', { a: count })}</button>
         ))}
       </div>
 
@@ -211,7 +210,7 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
           }`}
         >
           <Users className="w-4 h-4" />
-          <span>Players ({players.length})</span>
+          <span>{t('Players ({a})', { a: players.length })}</span>
         </button>
         <button
           id="tab-settings"
@@ -483,7 +482,7 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
                   }`}
                 >
                   <div className="font-bold text-sm">{cat.name}</div>
-                  <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">{cat.pairs.length} word pairs</div>
+                  <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">{t('{a} word pairs', { a: cat.pairs.length })}</div>
                 </button>
               ))}
             </div>
@@ -583,7 +582,7 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
           className="w-full sm:w-auto min-w-[280px] px-8 py-4 bg-gradient-to-r from-indigo-600 via-indigo-700 to-rose-600 hover:from-indigo-500 hover:to-rose-500 text-white text-lg font-black rounded-2xl shadow-xl shadow-indigo-600/25 flex items-center justify-center gap-3 transform hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer"
         >
           <Play className="w-6 h-6 fill-white" />
-          <span>START GAME ({players.length} PLAYERS)</span>
+          <span>{t('START GAME ({a} PLAYERS)', { a: players.length })}</span>
         </button>
 
         <p className="text-xs text-slate-500 dark:text-slate-400">

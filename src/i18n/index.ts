@@ -84,12 +84,38 @@ export function getSnapshot(): Lang {
  * Sözlükte karşılığı yoksa Türkçesi döner: eksik çeviri "bozuk arayüz" değil,
  * yalnızca çevrilmemiş bir satır demek.
  */
+/**
+ * Sunucudan gelen, içinde oda kodu gibi değişken parça taşıyan mesajlar.
+ *
+ * Sunucu istemcinin dilini bilmiyor (oda başına dil tutulmuyor), o yüzden
+ * metni Türkçe gönderiyor ve çeviri istemcide yapılıyor. Sabit mesajlar
+ * doğrudan sözlükte; değişken taşıyanlar burada desene bağlanıp {a} ile
+ * yeniden kuruluyor.
+ */
+const SERVER_PATTERNS: Array<[RegExp, string]> = [
+  [/^Oda bulunamad[ıi]:\s*"?(.*?)"?$/, 'Oda bulunamadı: {a}'],
+  [/^Room "(.*?)" not found\.?$/, 'Oda bulunamadı: {a}'],
+];
+
 export function t(tr: string, vars?: Record<string, string | number>): string {
   // Kaynak dizeler karisik: cogu Turkce ama uygulamada bastan beri Ingilizce
   // yazilmis metinler de var ("Add Player", "Game Rules"). Iki yonlu sozluk
   // sart — yoksa "tam Turkce" modunda o metinler Ingilizce kalirdi.
   const dict = current === 'en' ? EN : TR;
-  let out = dict[tr] ?? tr;
+  let out = dict[tr];
+
+  if (out === undefined) {
+    // Sözlükte yok — değişken taşıyan sunucu mesajı olabilir mi?
+    for (const [re, key] of SERVER_PATTERNS) {
+      const m = re.exec(tr);
+      if (m) {
+        const tpl = dict[key];
+        if (tpl) return tpl.split('{a}').join(m[1]);
+        break;
+      }
+    }
+    out = tr;
+  }
   if (vars) {
     for (const key in vars) {
       out = out.split(`{${key}}`).join(String(vars[key]));

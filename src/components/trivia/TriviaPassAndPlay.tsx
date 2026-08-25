@@ -504,8 +504,7 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
                 {t('LOKAL OYUN')}</span>
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 font-bold">
-              Tur {gameState.roundNumber} • Sırayla telefonu devrederek yarışın
-            </p>
+              {t('Tur {a} • Sırayla telefonu devrederek yarışın', { a: gameState.roundNumber })}</p>
           </div>
         </div>
 
@@ -523,7 +522,7 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
             <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 shadow-xl space-y-4">
               <h3 className="text-base font-black flex items-center gap-2 text-slate-900 dark:text-white">
                 <Users className="w-5 h-5 text-emerald-500" />
-                <span>Oyuncuları Yönet ({players.length})</span>
+                <span>{t('Oyuncuları Yönet ({a})', { a: players.length })}</span>
               </h3>
 
               <div className="space-y-2">
@@ -724,7 +723,7 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
 
               <div className="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/80 border-2 border-emerald-500 text-emerald-900 dark:text-emerald-200 font-black text-base flex items-center justify-center gap-2">
                 <CheckCircle2 className="w-5 h-5 text-emerald-500" />
-                <span>Doğru Cevap: {currentQ.correctAnswer}</span>
+                <span>{t('Doğru Cevap: {a}', { a: currentQ.correctAnswer })}</span>
               </div>
 
               {currentQ.explanation && (

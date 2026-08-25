@@ -129,8 +129,7 @@ export const DiscussionView: React.FC<DiscussionViewProps> = ({
                 <div className="text-left min-w-0 flex-1">
                   <div className="text-xs font-bold text-slate-900 dark:text-slate-100 truncate">{player.name}</div>
                   <div className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold">
-                    {playerStrokeCount} çizgi
-                  </div>
+                    {t('{a} çizgi', { a: playerStrokeCount })}</div>
                 </div>
               </button>
             );

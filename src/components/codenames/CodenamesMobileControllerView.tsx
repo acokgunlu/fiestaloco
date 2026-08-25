@@ -126,8 +126,7 @@ export function CodenamesMobileControllerView({
             <div className="flex items-center gap-2">
               <span className="font-black text-sm">{myPlayer.name}</span>
               <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 font-bold">
-                Oda: {roomCode}
-              </span>
+                {t('Oda: {a}', { a: roomCode })}</span>
             </div>
             <div className="text-xs font-bold text-slate-600 dark:text-slate-400 flex items-center gap-1.5 mt-0.5">
               <span>{myPlayer.team === 'red' ? t('🔴 Kırmızı Takım') : t('🔵 Mavi Takım')}</span>
@@ -236,9 +235,7 @@ export function CodenamesMobileControllerView({
                 : 'bg-sky-50 dark:bg-sky-950/40 border-sky-300 dark:border-sky-800 text-sky-800 dark:text-sky-300'
             }`}
           >
-            {myPlayer.team === 'red' ? t('🔴 Kırmızı') : '🔵 Mavi'} takım ·{' '}
-            {isSpymaster ? '👑 Lider' : '🕵️ Ajan'}
-          </div>
+            {t('{a} takım ·{b}{c}', { a: myPlayer.team === 'red' ? t('🔴 Kırmızı') : '🔵 Mavi', b: ' ', c: isSpymaster ? '👑 Lider' : '🕵️ Ajan' })}</div>
 
           <button
             onClick={() => setShowRoleSwitcher(!showRoleSwitcher)}
@@ -266,7 +263,7 @@ export function CodenamesMobileControllerView({
           }`}
         >
           <div className="text-[11px] uppercase tracking-wider">{t('Kırmızı Takım')}</div>
-          <div className="text-xl font-black">{gameState.redRemaining} Ajan Kaldı</div>
+          <div className="text-xl font-black">{t('{a} Ajan Kaldı', { a: gameState.redRemaining })}</div>
           {gameState.activeTeam === 'red' && <div className="text-[10px] mt-0.5">{t('● SIRA BURADA')}</div>}
         </div>
 
@@ -278,7 +275,7 @@ export function CodenamesMobileControllerView({
           }`}
         >
           <div className="text-[11px] uppercase tracking-wider">{t('Mavi Takım')}</div>
-          <div className="text-xl font-black">{gameState.blueRemaining} Ajan Kaldı</div>
+          <div className="text-xl font-black">{t('{a} Ajan Kaldı', { a: gameState.blueRemaining })}</div>
           {gameState.activeTeam === 'blue' && <div className="text-[10px] mt-0.5">{t('● SIRA BURADA')}</div>}
         </div>
       </div>
@@ -340,8 +337,8 @@ export function CodenamesMobileControllerView({
             </div>
 
             <div className="flex items-center justify-between text-[10px] text-slate-400 dark:text-slate-500 px-1">
-              <span className="flex items-center gap-1">🔴 Kırmızı ({gameState.redRemaining})</span>
-              <span className="flex items-center gap-1">🔵 Mavi ({gameState.blueRemaining})</span>
+              <span className="flex items-center gap-1">{t('🔴 Kırmızı ({a})', { a: gameState.redRemaining })}</span>
+              <span className="flex items-center gap-1">{t('🔵 Mavi ({a})', { a: gameState.blueRemaining })}</span>
               <span className="flex items-center gap-1">{t('⚪ Sivil (7)')}</span>
               <span className="flex items-center gap-1 text-rose-400">{t('☠️ Suikastçı (1)')}</span>
             </div>
@@ -392,8 +389,7 @@ export function CodenamesMobileControllerView({
                   >
                     {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
                       <option key={n} value={n}>
-                        {n} Kart
-                      </option>
+                        {t('{a} Kart', { a: n })}</option>
                     ))}
                   </select>
                 </div>
@@ -488,8 +484,7 @@ export function CodenamesMobileControllerView({
             <div className="text-3xl">🕵️‍♂️</div>
             <div>
               <h4 className="text-lg font-black text-slate-900 dark:text-slate-100">
-                "{confirmCard.word}" Kartını Aç?
-              </h4>
+                {t('"{a}" Kartını Aç?', { a: confirmCard.word })}</h4>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                 {t('Bu kart TV ekranında tüm oyuncuların gözü önünde açılacak!')}</p>
             </div>

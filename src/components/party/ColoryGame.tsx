@@ -48,7 +48,7 @@ export const ColoryGame: React.FC<Props> = ({ onBackToHub }) => {
         myGuess={socket.myGuess}
         gameState={socket.gameState}
         players={socket.players}
-        errorMessage={socket.errorMessage}
+        errorMessage={t(socket.errorMessage)}
         onSubmitGuess={socket.submitGuess}
         onLeave={() => { socket.leaveRoom(); setMode('lobby'); }}
       />
@@ -114,7 +114,7 @@ export const ColoryGame: React.FC<Props> = ({ onBackToHub }) => {
           </div>
           {socket.errorMessage && (
             <div className="p-3 mb-4 rounded-xl bg-rose-50 dark:bg-rose-500/20 border border-rose-300 dark:border-rose-500/40 text-rose-700 dark:text-rose-300 text-xs font-bold">
-              {socket.errorMessage}
+              {t(socket.errorMessage)}
             </div>
           )}
           <form onSubmit={(e) => {

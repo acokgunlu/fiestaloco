@@ -239,7 +239,7 @@ export const QuiplashGame: React.FC<QuiplashGameProps> = ({ onBackToHub }) => {
 
             {socket.errorMessage && (
               <div className="p-3 mb-4 rounded-xl bg-rose-50 dark:bg-rose-500/20 border border-rose-300 dark:border-rose-500/40 text-rose-700 dark:text-rose-300 text-xs font-bold">
-                {socket.errorMessage}
+                {t(socket.errorMessage)}
               </div>
             )}
 

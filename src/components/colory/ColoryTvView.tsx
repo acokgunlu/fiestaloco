@@ -6,6 +6,7 @@ import { ColoryGameState, ColoryPlayer } from '../../types/colory';
 import { hslToHex } from '../../data/coloryLogic';
 
 import { t, withLang } from '../../i18n';
+import { T } from '../../i18n/T';
 interface Props {
   roomCode: string;
   gameState: ColoryGameState;
@@ -41,8 +42,7 @@ export const ColoryTvView: React.FC<Props> = ({
             <div>
               <h2 className="text-xl sm:text-2xl font-black tracking-tight">{t('Colory')}</h2>
               <p className="text-xs font-bold text-slate-500 dark:text-slate-400">
-                Tur {gameState.currentRound}/{gameState.settings.totalRounds} · Rengi hatırla, en yakını bul
-              </p>
+                {t('Tur {a}/{b} · Rengi hatırla, en yakını bul', { a: gameState.currentRound, b: gameState.settings.totalRounds })}</p>
             </div>
           </div>
         </div>
@@ -59,14 +59,17 @@ export const ColoryTvView: React.FC<Props> = ({
             {qr ? <img src={qr} alt="QR" className="w-48 h-48 rounded-2xl" />
                 : <div className="w-48 h-48 rounded-2xl bg-slate-100 dark:bg-slate-800" />}
             <p className="text-xs text-slate-500 dark:text-slate-400 font-medium text-center mt-3">
-              Kamerayla okutun veya <strong className="text-slate-900 dark:text-white">{window.location.host}</strong> adresine girip <strong className="text-amber-500">{roomCode}</strong> yazın.
+              <T k="Kamerayla okutun veya {host} adresine girip {code} yazın."
+                v={{
+                  host: <strong className="text-slate-900 dark:text-white">{window.location.host}</strong>,
+                  code: <strong className="text-amber-500">{roomCode}</strong>,
+                }} />
             </p>
           </div>
           <div className="lg:col-span-7 space-y-4">
             <div className="p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl">
               <div className="flex items-center gap-2 mb-3 text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                <Users className="w-4 h-4" /> Oyuncular ({players.length})
-              </div>
+                <Users className="w-4 h-4" /> {t('Oyuncular ({a})', { a: players.length })}</div>
               {players.length === 0 ? (
                 <p className="text-sm font-bold text-slate-400 dark:text-slate-500 italic py-6 text-center">{t('Bekleniyor…')}</p>
               ) : (
@@ -80,7 +83,7 @@ export const ColoryTvView: React.FC<Props> = ({
               )}
             </div>
             <div className="p-4 rounded-2xl bg-fuchsia-50 dark:bg-fuchsia-950/40 border border-fuchsia-200 dark:border-fuchsia-900 text-xs font-bold text-fuchsia-900 dark:text-fuchsia-200 space-y-1">
-              <p>🎨 Ekranda bir renk {gameState.settings.showSeconds} saniye görünür, sonra kaybolur.</p>
+              <p>{t('🎨 Ekranda bir renk {a} saniye görünür, sonra kaybolur.', { a: gameState.settings.showSeconds })}</p>
               <p>{t('📱 Telefonunuzdan o rengi hafızanızdan seçin. En yakın tutturan turu alır.')}</p>
               <p>{t('👁️ Yakınlık göze göre ölçülür (CIE Lab), RGB sayılarına göre değil.')}</p>
             </div>

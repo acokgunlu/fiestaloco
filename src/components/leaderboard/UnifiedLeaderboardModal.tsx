@@ -160,7 +160,7 @@ export const UnifiedLeaderboardModal: React.FC<UnifiedLeaderboardModalProps> = (
             }`}
           >
             <Trophy className="w-4 h-4 text-amber-500" />
-            <span>Oyuncu Sıralaması ({playersList.length})</span>
+            <span>{t('Oyuncu Sıralaması ({a})', { a: playersList.length })}</span>
           </button>
 
           <button
@@ -175,7 +175,7 @@ export const UnifiedLeaderboardModal: React.FC<UnifiedLeaderboardModalProps> = (
             }`}
           >
             <History className="w-4 h-4 text-rose-500" />
-            <span>Maç Geçmişi ({historyList.length})</span>
+            <span>{t('Maç Geçmişi ({a})', { a: historyList.length })}</span>
           </button>
 
           <button
@@ -220,11 +220,9 @@ export const UnifiedLeaderboardModal: React.FC<UnifiedLeaderboardModalProps> = (
                           {playersList[1]?.name}
                         </div>
                         <div className="text-[11px] font-black text-slate-500 dark:text-slate-400 mt-1">
-                          {playersList[1]?.wins} Galibiyet
-                        </div>
+                          {t('{a} Galibiyet', { a: playersList[1]?.wins })}</div>
                         <div className="text-[10px] text-indigo-600 dark:text-indigo-400 font-bold">
-                          {playersList[1]?.totalScore} Puan
-                        </div>
+                          {t('{a} Puan', { a: playersList[1]?.totalScore })}</div>
                       </div>
 
                       {/* 1st Place */}
@@ -238,11 +236,9 @@ export const UnifiedLeaderboardModal: React.FC<UnifiedLeaderboardModalProps> = (
                           {playersList[0]?.name}
                         </div>
                         <div className="text-xs font-black text-amber-600 dark:text-amber-400 mt-1">
-                          🏆 {playersList[0]?.wins} Galibiyet
-                        </div>
+                          {t('🏆 {a} Galibiyet', { a: playersList[0]?.wins })}</div>
                         <div className="text-[11px] text-indigo-600 dark:text-indigo-400 font-extrabold">
-                          {playersList[0]?.totalScore} Toplam Puan
-                        </div>
+                          {t('{a} Toplam Puan', { a: playersList[0]?.totalScore })}</div>
                       </div>
 
                       {/* 3rd Place */}
@@ -254,11 +250,9 @@ export const UnifiedLeaderboardModal: React.FC<UnifiedLeaderboardModalProps> = (
                             {playersList[2]?.name}
                           </div>
                           <div className="text-[11px] font-black text-slate-500 dark:text-slate-400 mt-1">
-                            {playersList[2]?.wins} Galibiyet
-                          </div>
+                            {t('{a} Galibiyet', { a: playersList[2]?.wins })}</div>
                           <div className="text-[10px] text-indigo-600 dark:text-indigo-400 font-bold">
-                            {playersList[2]?.totalScore} Puan
-                          </div>
+                            {t('{a} Puan', { a: playersList[2]?.totalScore })}</div>
                         </div>
                       )}
                     </div>
@@ -301,11 +295,9 @@ export const UnifiedLeaderboardModal: React.FC<UnifiedLeaderboardModalProps> = (
 
                         <div className="text-right">
                           <div className="font-black text-sm text-indigo-600 dark:text-indigo-400">
-                            {player.totalScore} Puan
-                          </div>
+                            {t('{a} Puan', { a: player.totalScore })}</div>
                           <div className="text-xs font-semibold text-slate-500 dark:text-slate-400">
-                            {player.wins} Galibiyet / {player.totalGames} Maç
-                          </div>
+                            {t('{a} Galibiyet / {b} Maç', { a: player.wins, b: player.totalGames })}</div>
                         </div>
                       </div>
                     ))}
@@ -381,7 +373,7 @@ export const UnifiedLeaderboardModal: React.FC<UnifiedLeaderboardModalProps> = (
                       {match.winnerName && (
                         <div className="flex items-center gap-2 p-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 text-xs text-amber-900 dark:text-amber-200 font-bold">
                           <Crown className="w-4 h-4 text-amber-500 flex-shrink-0" />
-                          <span>Kazanan: {match.winnerAvatar} {match.winnerName} ({match.winnerScore} Puan)</span>
+                          <span>{t('Kazanan: {a} {b} ({c} Puan)', { a: match.winnerAvatar, b: match.winnerName, c: match.winnerScore })}</span>
                           {match.details && <span className="text-amber-700 dark:text-amber-300 font-normal">| {match.details}</span>}
                         </div>
                       )}

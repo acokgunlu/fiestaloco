@@ -159,8 +159,7 @@ export const HorseRacePassAndPlay: React.FC<Props> = ({ onBackToLobby }) => {
         <button onClick={onBackToLobby} className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs font-black cursor-pointer">
           <ArrowLeft className="w-4 h-4" />  {t('Mod Seçimi')}</button>
         <span className="text-xs font-black text-slate-500 dark:text-slate-400">
-          Tek Cihaz · Yarış {raceNo}/{TOTAL_RACES}
-        </span>
+          {t('Tek Cihaz · Yarış {a}/{b}', { a: raceNo, b: TOTAL_RACES })}</span>
       </div>
 
       {phase === 'SETUP' && (
@@ -247,8 +246,7 @@ export const HorseRacePassAndPlay: React.FC<Props> = ({ onBackToLobby }) => {
           <button onClick={confirmBet} disabled={picks.length !== need}
             className="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-rose-600 text-white font-black shadow-lg disabled:opacity-40 cursor-pointer flex items-center justify-center gap-2">
             <Ticket className="w-4 h-4" />
-            KUPONU YATIR → {bettor + 1 < players.length ? t('SIRADAKİNE VER') : t('YARIŞI BAŞLAT')}
-          </button>
+            {t('KUPONU YATIR → {a}', { a: bettor + 1 < players.length ? t('SIRADAKİNE VER') : t('YARIŞI BAŞLAT') })}</button>
         </div>
       )}
 

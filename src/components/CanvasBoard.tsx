@@ -519,7 +519,7 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
         {isPointerDown && (
           <div className="absolute top-3 right-3 bg-rose-600 text-white text-xs px-3.5 py-1.5 rounded-full font-black animate-pulse shadow-md z-10 flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Çiziliyor ({currentPoints.length} nokta)...</span>
+            <span>{t('Çiziliyor ({a} nokta)...', { a: currentPoints.length })}</span>
           </div>
         )}
 
@@ -665,8 +665,7 @@ export const CanvasBoard: React.FC<CanvasBoardProps> = ({
               />
 
               <span className="text-[11px] text-slate-500 dark:text-slate-400 font-bold hidden sm:inline">
-                {replayStrokeIndex}/{strokes.length} çizgi
-              </span>
+                {t('{a}/{b} çizgi', { a: replayStrokeIndex, b: strokes.length })}</span>
             </div>
           )}
 

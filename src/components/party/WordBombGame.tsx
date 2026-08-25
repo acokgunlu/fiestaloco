@@ -434,8 +434,7 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
                       <div>
                         <div className="flex items-center justify-between">
                           <h3 className="text-xl font-black text-slate-900 dark:text-slate-100">
-                            Katılan Oyuncular ({onlinePlayers.length})
-                          </h3>
+                            {t('Katılan Oyuncular ({a})', { a: onlinePlayers.length })}</h3>
                           <span className="text-xs text-slate-500 dark:text-slate-400 font-bold">
                             {t('En az 2 oyuncu önerilir')}</span>
                         </div>
@@ -484,7 +483,7 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
                         }`}
                       >
                         <Flame className="w-5 h-5" />
-                        <span>BOMBAYI ATEŞLE 💣 ({onlinePlayers.length} Oyuncu)</span>
+                        <span>{t('BOMBAYI ATEŞLE 💣 ({a} Oyuncu)', { a: onlinePlayers.length })}</span>
                       </button>
                     </div>
                   </div>
@@ -551,8 +550,7 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
                   {onlineGameState.usedWords.length > 0 && (
                     <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm space-y-2">
                       <span className="text-[11px] font-bold text-slate-400 uppercase">
-                        Bu Turda Söylenen Kelimeler ({onlineGameState.usedWords.length})
-                      </span>
+                        {t('Bu Turda Söylenen Kelimeler ({a})', { a: onlineGameState.usedWords.length })}</span>
                       <div className="flex flex-wrap gap-2">
                         {onlineGameState.usedWords.map((word, idx) => (
                           <span
@@ -653,8 +651,7 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
                     }}
                     className="w-full py-4 rounded-2xl bg-gradient-to-r from-red-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-black text-sm sm:text-base shadow-xl shadow-red-600/30 cursor-pointer active:scale-98 transition-all"
                   >
-                    SONRAKİ BOMBAYI ATEŞLE 💣 (Tur {onlineGameState.currentRound + 1})
-                  </button>
+                    {t('SONRAKİ BOMBAYI ATEŞLE 💣 (Tur {a})', { a: onlineGameState.currentRound + 1 })}</button>
                 </div>
               )}
 
@@ -726,7 +723,7 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
               {socket.errorMessage && (
                 <div className="p-3 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 rounded-xl text-red-700 dark:text-red-300 text-xs font-bold flex items-center gap-2">
                   <AlertTriangle className="w-4 h-4 flex-shrink-0" />
-                  <span>{socket.errorMessage}</span>
+                  <span>{t(socket.errorMessage)}</span>
                 </div>
               )}
 
@@ -1001,8 +998,7 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
                 onClick={startLocalBombRound}
                 className="w-full max-w-md py-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-black text-sm sm:text-base shadow-lg transition-all active:scale-98 cursor-pointer"
               >
-                BOMBAYI ATEŞLE 💣 ({localPlayers.length} Oyuncu)
-              </button>
+                {t('BOMBAYI ATEŞLE 💣 ({a} Oyuncu)', { a: localPlayers.length })}</button>
             </div>
           )}
 

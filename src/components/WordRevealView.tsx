@@ -61,7 +61,7 @@ export const WordRevealView: React.FC<WordRevealViewProps> = ({
     >
       {/* Progress tracker */}
       <div className="flex items-center gap-2 bg-white dark:bg-slate-900 px-4 py-2 rounded-full text-xs font-bold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-xs">
-        <span>Gizli Görev Brifingi • {currentPlayerIndex + 1} / {players.length}</span>
+        <span>{t('Gizli Görev Brifingi • {a} / {b}', { a: currentPlayerIndex + 1, b: players.length })}</span>
         <div className="flex gap-1.5 ml-2">
           {players.map((p, idx) => (
             <span

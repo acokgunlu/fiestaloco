@@ -6,6 +6,7 @@ import { HorseRaceGameState, HorseRacePlayer } from '../../types/horseRace';
 import { HorseRaceTrack } from './HorseRaceTrack';
 
 import { t } from '../../i18n';
+import { T } from '../../i18n/T';
 interface HorseRaceTvViewProps {
   roomCode: string;
   gameState: HorseRaceGameState;
@@ -55,8 +56,7 @@ export const HorseRaceTvView: React.FC<HorseRaceTvViewProps> = ({
               <h2 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white">
                 {t('At Yarışı')}</h2>
               <p className="text-xs font-bold text-slate-500 dark:text-slate-400">
-                Yarış {gameState.currentRace}/{gameState.settings.totalRaces} · Ganyan · Plase · İkili
-              </p>
+                {t('Yarış {a}/{b} · Ganyan · Plase · İkili', { a: gameState.currentRace, b: gameState.settings.totalRaces })}</p>
             </div>
           </div>
         </div>
@@ -78,9 +78,11 @@ export const HorseRaceTvView: React.FC<HorseRaceTvViewProps> = ({
               <div className="w-48 h-48 rounded-2xl bg-slate-100 dark:bg-slate-800" />
             )}
             <p className="text-xs text-slate-500 dark:text-slate-400 font-medium text-center mt-3">
-              Kamerayla okutun veya{' '}
-              <strong className="text-slate-900 dark:text-white">{window.location.host}</strong>{' '}
-              adresine girip <strong className="text-amber-500">{roomCode}</strong> yazın.
+              <T k="Kamerayla okutun veya {host} adresine girip {code} yazın."
+                v={{
+                  host: <strong className="text-slate-900 dark:text-white">{window.location.host}</strong>,
+                  code: <strong className="text-amber-500">{roomCode}</strong>,
+                }} />
             </p>
           </div>
 
@@ -88,8 +90,7 @@ export const HorseRaceTvView: React.FC<HorseRaceTvViewProps> = ({
             <div className="p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl">
               <div className="flex items-center gap-2 mb-3 text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">
                 <Users className="w-4 h-4" />
-                Bahisçiler ({players.length})
-              </div>
+                {t('Bahisçiler ({a})', { a: players.length })}</div>
               {players.length === 0 ? (
                 <p className="text-sm font-bold text-slate-400 dark:text-slate-500 italic py-6 text-center">
                   {t('İlk bahisçinin katılması bekleniyor…')}</p>
@@ -110,7 +111,7 @@ export const HorseRaceTvView: React.FC<HorseRaceTvViewProps> = ({
 
             <div className="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 text-xs font-bold text-emerald-900 dark:text-emerald-200 space-y-1">
               <p>{t('🎫 Telefonlar gişe: Ganyan (birinci), Plase (ilk iki), İkili (1-2 sırayla).')}</p>
-              <p>💰 Herkes 1000 ₺ ile başlar. {gameState.settings.totalRaces} yarış sonunda kasası en kalabalık olan kazanır.</p>
+              <p>{t('💰 Herkes 1000 ₺ ile başlar. {a} yarış sonunda kasası en kalabalık olan kazanır.', { a: gameState.settings.totalRaces })}</p>
             </div>
 
             <button
@@ -152,8 +153,7 @@ export const HorseRaceTvView: React.FC<HorseRaceTvViewProps> = ({
                   </div>
                   {h.form.length > 0 && (
                     <div className="text-[9px] font-mono text-slate-400 dark:text-slate-500">
-                      form {h.form.slice(-3).join('-')}
-                    </div>
+                      {t('form {a}', { a: h.form.slice(-3).join('-') })}</div>
                   )}
                 </div>
               </div>

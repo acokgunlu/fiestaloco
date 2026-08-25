@@ -157,8 +157,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
               </span>
               {activeModule === 'imposter' && phase !== 'LOBBY' && (
                 <span className="bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 px-1.5 py-0.5 rounded-md text-[10px] font-black">
-                  Tur {currentRound}
-                </span>
+                  {t('Tur {a}', { a: currentRound })}</span>
               )}
             </p>
           </div>
