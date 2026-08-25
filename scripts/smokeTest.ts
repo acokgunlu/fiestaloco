@@ -76,11 +76,11 @@ const GAMES: GameSpec[] = [
     joinType: 'timing:join_room',
     stateTypes: ['timing:room_created', 'timing:room_joined', 'timing:state'],
   },
-  {
-    name: 'viraj',
-    createType: 'viraj:create_room',
-    joinType: 'viraj:join_room',
-    stateTypes: ['viraj:room_created', 'viraj:room_joined', 'viraj:state'],
+    {
+    name: 'kapisma',
+    createType: 'kapisma:create_room',
+    joinType: 'kapisma:join_room',
+    stateTypes: ['kapisma:room_created', 'kapisma:room_joined', 'kapisma:state'],
   },
   {
     name: 'quiplash',

@@ -1,42 +1,55 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import QRCode from 'qrcode';
 import { ArrowLeft, Flag, Play, RotateCcw, Trophy, Users } from 'lucide-react';
-import { VirajGameState, VirajPlayer } from '../../types/viraj';
-import { VirajTrackView } from './VirajTrackView';
+import { KapismaGameState, KapismaPlayer } from '../../types/kapisma';
+import { PistCanvas } from './PistCanvas';
+import { generateTrack, MAX_SPEED } from '../../data/pistLogic';
 import { t, withLang } from '../../i18n';
 import { T } from '../../i18n/T';
 
 interface Props {
   roomCode: string;
-  gameState: VirajGameState;
-  players: VirajPlayer[];
-  trackPath: string;
+  gameState: KapismaGameState;
+  players: KapismaPlayer[];
   onStartGame: () => void;
   onNextRace: () => void;
   onRestartGame: () => void;
   onReturnToHub: () => void;
 }
 
-const LINE_ICON: Record<string, string> = { SAFE: '🛡️', NORMAL: '➡️', ATTACK: '⚔️' };
-const MISTAKE_LABEL: Record<string, string> = {
-  WIDE: 'Dışarı taştı', LOCKUP: 'Tekerlek kilitledi', OFF: 'Çakıla düştü',
-};
-
-export const VirajTvView: React.FC<Props> = ({
-  roomCode, gameState, players, trackPath, onStartGame, onNextRace, onRestartGame, onReturnToHub,
+export const KapismaTvView: React.FC<Props> = ({
+  roomCode, gameState, players, onStartGame, onNextRace, onRestartGame, onReturnToHub,
 }) => {
   const [qr, setQr] = useState<string | null>(null);
   useEffect(() => {
-    const url = withLang(`${window.location.origin}${window.location.pathname}?game=viraj&room=${roomCode}`);
+    const url = withLang(`${window.location.origin}${window.location.pathname}?game=kapisma&room=${roomCode}`);
     QRCode.toDataURL(url, { width: 320, margin: 1 }).then(setQr).catch(() => setQr(null));
   }, [roomCode]);
 
   const gs = gameState;
+  const racing = gs.phase === 'RACING';
+
+  /**
+   * KAMERA YOK.
+   *
+   * Pistin tamamı 1000x620'lik dünya kutusunda ve tuval bu kutunun tamamını
+   * gösteriyor. Sonsuz yol sürümünde takip kamerası vardı ve beraberinde bir
+   * hata sınıfı getiriyordu: kamera lidere yetişemiyor, sekme arka plana
+   * düşünce requestAnimationFrame durduğu için kamera olduğu yerde donuyor ve
+   * arabalar ekranın kilometrelerce dışında kalıp hiç çizilmiyordu. Kapalı
+   * devrede bunların hiçbiri yok — çizim de PistCanvas'ın kendi döngüsünde.
+   *
+   * TV yalnızca tohumu biliyor; devreyi kendisi üretiyor.
+   */
+  const track = useMemo(() => generateTrack(gs.seed), [gs.seed]);
+  const lider = gs.cars.length
+    ? gs.cars.reduce((a, b) => (b.progress > a.progress ? b : a))
+    : null;
+  const turBasi = track.points.length;
+
   const byPos = [...gs.cars].sort((a, b) => a.position - b.position);
-  const leader = gs.cars.length ? Math.min(...gs.cars.map((c) => c.elapsed)) : 0;
   const nameOf = (id: string) => players.find((p) => p.id === id);
   const byScore = [...players].sort((a, b) => b.score - a.score);
-  const racing = gs.phase === 'CORNER' || gs.phase === 'RESOLVE';
 
   return (
     <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-5 animate-fade-in text-slate-900 dark:text-slate-100">
@@ -47,15 +60,13 @@ export const VirajTvView: React.FC<Props> = ({
             <ArrowLeft className="w-4 h-4" /> {t('Parti Arenası')}
           </button>
           <div className="flex items-center gap-2.5">
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-rose-500 via-orange-500 to-amber-400 text-white flex items-center justify-center text-2xl shadow-md border-2 border-white dark:border-slate-700">🏎️</div>
+            <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-rose-600 via-red-500 to-amber-400 text-white flex items-center justify-center text-2xl shadow-md border-2 border-white dark:border-slate-700">🏁</div>
             <div>
-              <h2 className="text-xl sm:text-2xl font-black tracking-tight">{t('Viraj')}</h2>
+              <h2 className="text-xl sm:text-2xl font-black tracking-tight">{t('Kapışma')}</h2>
               <p className="text-xs font-bold text-slate-500 dark:text-slate-400">
-                {racing || gs.phase === 'GRID' || gs.phase === 'FINISH'
-                  ? t('Yarış {a}/{b} · {c} · Tur {d}/{e}', {
-                      a: gs.currentRace, b: gs.settings.totalRaces,
-                      c: gs.trackName, d: gs.lap, e: gs.settings.laps })
-                  : t('Her virajda tek karar — güvenli mi, dibine kadar mı')}
+                {t('Yarış {a}/{b} · {c} · {d} tur', {
+                  a: gs.currentRace, b: gs.settings.totalRaces, c: t(track.name), d: gs.settings.laps,
+                })}
               </p>
             </div>
           </div>
@@ -65,7 +76,6 @@ export const VirajTvView: React.FC<Props> = ({
         </span>
       </div>
 
-      {/* LOBİ */}
       {gs.phase === 'LOBBY' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-5 flex flex-col items-center p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl">
@@ -98,98 +108,72 @@ export const VirajTvView: React.FC<Props> = ({
               )}
             </div>
             <div className="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 text-xs font-bold text-rose-900 dark:text-rose-200 space-y-1">
-              <p>{t('🏁 Her virajda herkes aynı anda bir çizgi seçer: güvenli, normal ya da dibine kadar.')}</p>
-              <p>{t('🔥 Saldırmak zaman kazandırır ama lastikleri ısıtır. Isındıkça hata ihtimali hızla büyür.')}</p>
-              <p>{t('🛡️ Güvenli gitmek zaman kaybettirir ama lastikleri soğutur. Ne zaman saldıracağın sana kalmış.')}</p>
+              <p>{t('🏁 Herkes kendi telefonunda GERÇEKTEN araba sürüyor — parmağını kaydırarak direksiyon kırıyor.')}</p>
+              <p>{t('🛣️ Pist herkese aynı: tek bir tohumdan üretiliyor, aynı virajlar herkeste.')}</p>
+              <p>{t('📺 Bu ekran seyirci ekranı. Sürenler telefonuna, kalan herkes buraya bakar.')}</p>
             </div>
             <button onClick={onStartGame} disabled={players.length < 1}
-              className="w-full py-4 rounded-2xl bg-gradient-to-r from-rose-600 via-orange-600 to-amber-500 text-white font-black text-base shadow-xl hover:scale-[1.02] active:scale-95 transition-transform disabled:opacity-40 flex items-center justify-center gap-2 cursor-pointer">
+              className="w-full py-4 rounded-2xl bg-gradient-to-r from-rose-600 via-red-600 to-amber-500 text-white font-black text-base shadow-xl hover:scale-[1.02] active:scale-95 transition-transform disabled:opacity-40 flex items-center justify-center gap-2 cursor-pointer">
               <Play className="w-5 h-5" /> {t('BAŞLAT')}
             </button>
           </div>
         </div>
       )}
 
-      {/* IZGARA */}
-      {gs.phase === 'GRID' && (
-        <div className="text-center space-y-4 py-6">
-          <p className="text-sm font-black uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">{t('Başlangıç ızgarası')}</p>
-          <h3 className="text-5xl font-black">{gs.trackName}</h3>
-          <p className="text-base font-bold text-slate-600 dark:text-slate-300">
-            {t('{a} viraj · {b} tur', { a: gs.cornerCount, b: gs.settings.laps })}
-          </p>
-          <div className="text-6xl font-black text-amber-500 tabular-nums">{gs.timerSeconds}</div>
+      {gs.phase === 'COUNTDOWN' && (
+        <div className="py-16 text-center space-y-3">
+          <p className="text-lg font-black uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">{t('Parmaklar hazır')}</p>
+          <div className="text-[10rem] leading-none font-black tabular-nums text-amber-500">{gs.timerSeconds}</div>
         </div>
       )}
 
-      {/* YARIŞ */}
       {racing && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          <div className="lg:col-span-8 p-3 rounded-3xl bg-slate-900 dark:bg-slate-950 border border-slate-800 shadow-xl">
-            <VirajTrackView path={trackPath} cars={gs.cars} players={players} />
+          <div className="lg:col-span-8 p-2 rounded-3xl bg-slate-900 dark:bg-slate-950 border border-slate-800 shadow-xl">
+            <PistCanvas
+              seed={gs.seed}
+              cars={gs.cars}
+              players={players}
+              focusPlayerId={lider?.playerId}
+            />
           </div>
           <div className="lg:col-span-4 space-y-3">
-            <div className={`p-4 rounded-3xl border-2 shadow-xl text-center ${
-              gs.phase === 'CORNER'
-                ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-400'
-                : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800'}`}>
-              <p className="text-[11px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">
-                {t('Viraj {a}/{b}', { a: gs.cornerIndex, b: gs.cornerCount })}
-              </p>
-              <h4 className="text-2xl font-black">{t(gs.cornerLabel)}</h4>
-              {gs.phase === 'CORNER' ? (
-                <>
-                  <div className="text-5xl font-black text-amber-500 tabular-nums mt-1">{gs.timerSeconds}</div>
-                  <p className="text-xs font-bold text-slate-500 dark:text-slate-400">{t('Telefonlardan seçin!')}</p>
-                  <div className="flex flex-wrap justify-center gap-1.5 mt-2">
-                    {gs.cars.map((c) => {
-                      const p = nameOf(c.playerId);
-                      const done = gs.decidedPlayerIds.includes(c.playerId);
-                      return (
-                        <span key={c.playerId} className={`px-2 py-0.5 rounded-lg text-[11px] font-black border ${
-                          done ? 'bg-emerald-100 dark:bg-emerald-950 border-emerald-400 text-emerald-800 dark:text-emerald-300'
-                               : 'bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-500'}`}>
-                          {p?.name?.slice(0, 7)} {done ? '✔' : '…'}
-                        </span>
-                      );
-                    })}
-                  </div>
-                </>
-              ) : (
-                <p className="text-xs font-black text-slate-500 dark:text-slate-400 mt-1">{t('Seçimler açıldı')}</p>
-              )}
-            </div>
-
             <div className="p-3 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl">
-              <div className="text-[11px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">{t('Sıralama')}</div>
-              <div className="space-y-1">
+              <div className="text-[11px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">{t('Sıralama')}</div>
+              <div className="space-y-1.5">
                 {byPos.map((c) => {
                   const p = nameOf(c.playerId);
-                  const gap = c.elapsed - leader;
+                  const toplam = turBasi * gs.settings.laps;
+                  const gapPct = Math.min(100, (c.progress / Math.max(1, toplam)) * 100);
+                  // Fark, merkez çizgi indeksinden dünya birimine çevriliyor —
+                  // "-40" gibi bir sayı oyuncuya indeks olarak hiçbir şey
+                  // anlatmaz, mesafe olarak anlatır.
+                  const behind = lider
+                    ? Math.round(((lider.progress - c.progress) / turBasi) * track.length)
+                    : 0;
                   return (
-                    <div key={c.playerId} className="flex items-center justify-between px-2 py-1 rounded-xl bg-slate-50 dark:bg-slate-800/60 text-xs">
-                      <span className="font-black flex items-center gap-1.5 min-w-0">
-                        <span className="w-4 tabular-nums text-slate-400">{c.position}</span>
-                        <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: p?.color }} />
-                        <span className="truncate">{p?.name}</span>
-                        {gs.phase === 'RESOLVE' && c.line && <span>{LINE_ICON[c.line]}</span>}
-                      </span>
-                      <span className="flex items-center gap-1.5 shrink-0">
-                        {gs.phase === 'RESOLVE' && c.lastMistake !== 'NONE' && (
-                          <span className="text-[10px] font-black text-rose-600 dark:text-rose-400">{t(MISTAKE_LABEL[c.lastMistake])}</span>
-                        )}
-                        {gs.phase === 'RESOLVE' && c.lastTow && <span className="text-[10px]">💨</span>}
-                        {/* Lastik ısısı — kararın tek gerçek girdisi, TV'de görünmeli */}
-                        <span className="w-10 h-1.5 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                          <span className="block h-full rounded-full" style={{
-                            width: `${c.heat}%`,
-                            backgroundColor: c.heat > 70 ? '#ef4444' : c.heat > 40 ? '#f59e0b' : '#22c55e',
-                          }} />
+                    <div key={c.playerId} className="px-2 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800/60">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-black flex items-center gap-1.5 min-w-0">
+                          <span className="w-4 tabular-nums text-slate-400">{c.position}</span>
+                          <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: p?.color }} />
+                          <span className="truncate">{p?.name}</span>
+                          {c.finishRank > 0 && <Flag className="w-3 h-3 text-emerald-500" />}
+                          {c.offRoad && <span className="text-[10px] text-rose-500 font-black">{t('ÇİMDE')}</span>}
                         </span>
-                        <span className="font-mono tabular-nums text-[10px] w-10 text-right text-slate-500 dark:text-slate-400">
-                          {c.position === 1 ? t('lider') : `+${gap.toFixed(2)}`}
+                        <span className="font-mono tabular-nums text-[10px] text-slate-500 dark:text-slate-400">
+                          {c.finishRank > 0 ? `${c.finishTime.toFixed(1)}s`
+                            : c.position === 1
+                              ? t('TUR {a}/{b}', { a: Math.min(c.lap + 1, gs.settings.laps), b: gs.settings.laps })
+                              : `-${behind}`}
                         </span>
-                      </span>
+                      </div>
+                      <div className="mt-1 h-1.5 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                        <div className="h-full rounded-full" style={{ width: `${gapPct}%`, backgroundColor: p?.color }} />
+                      </div>
+                      <div className="mt-0.5 text-[9px] font-black tabular-nums text-slate-400">
+                        {Math.round((c.speed / MAX_SPEED) * 260)} km/s
+                      </div>
                     </div>
                   );
                 })}
@@ -199,21 +183,19 @@ export const VirajTvView: React.FC<Props> = ({
         </div>
       )}
 
-      {/* BİTİŞ */}
       {(gs.phase === 'FINISH' || gs.phase === 'GAME_OVER') && (
         <div className="space-y-4">
           <div className="p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl">
             <div className="flex items-center gap-2 mb-3 text-xs font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">
-              <Flag className="w-4 h-4" /> {t('{a} — sonuç', { a: gs.trackName })}
+              <Flag className="w-4 h-4" /> {t('Yarış sonucu')}
             </div>
             <div className="space-y-1.5">
               {(gs.results || []).map((r) => {
                 const p = nameOf(r.playerId);
-                const winner = (gs.results || [])[0];
+                const win = (gs.results || [])[0];
                 return (
                   <div key={r.playerId} className={`flex items-center justify-between px-3 py-2 rounded-2xl border ${
-                    r.rank === 1 ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-400'
-                                 : 'bg-slate-50 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700'}`}>
+                    r.rank === 1 ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-400' : 'bg-slate-50 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700'}`}>
                     <span className="text-sm font-black flex items-center gap-2 min-w-0">
                       <span className="w-6 tabular-nums text-slate-400">{r.rank}.</span>
                       <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: p?.color }} />
@@ -221,7 +203,7 @@ export const VirajTvView: React.FC<Props> = ({
                     </span>
                     <span className="flex items-center gap-3 shrink-0">
                       <span className="text-xs font-bold tabular-nums text-slate-500 dark:text-slate-400">
-                        {r.rank === 1 ? `${r.totalTime.toFixed(2)}s` : `+${(r.totalTime - winner.totalTime).toFixed(2)}`}
+                        {r.rank === 1 ? `${r.time.toFixed(2)}s` : `+${(r.time - win.time).toFixed(2)}`}
                       </span>
                       <span className="font-mono font-black text-sm w-8 text-right">+{r.points}</span>
                     </span>

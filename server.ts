@@ -51,19 +51,18 @@ import {
   TimingSettings,
 } from './src/types/timing';
 import {
-  VirajGameState,
-  VirajPlayer,
-  VirajSettings,
-  VirajLine,
-} from './src/types/viraj';
+  KapismaGameState,
+  KapismaPlayer,
+  KapismaSettings,
+} from './src/types/kapisma';
 import {
-  generateTrack as generateVirajTrack,
-  resolveCorner as resolveVirajCornerPure,
-  rankCars as rankVirajCars,
-  gapToAhead as gapToVirajAhead,
-  pointsForRank as virajPointsForRank,
-  type VirajTrack,
-} from './src/data/virajLogic';
+  generateTrack as generatePistTrack,
+  freshCar as freshPistCar,
+  isPlausible as isPistPlausible,
+  pointsForRank as kapismaPointsForRank,
+  makeSeed as makeKapismaSeed,
+  type Track as PistTrack,
+} from './src/data/pistLogic';
 import {
   latencyCorrection,
   maxRunMs,
@@ -140,7 +139,7 @@ interface ConnectedClient {
   roomCode?: string;
   role?: 'observer' | 'player';
   playerId?: string;
-  gameType?: 'imposter' | 'codenames' | 'bomb' | 'bluff' | 'trivia' | 'quiplash' | 'race' | 'colory' | 'timing' | 'viraj';
+  gameType?: 'imposter' | 'codenames' | 'bomb' | 'bluff' | 'trivia' | 'quiplash' | 'race' | 'colory' | 'timing' | 'kapisma';
 }
 
 interface ServerRoom {
@@ -289,7 +288,7 @@ const quiplashRooms = new Map<string, QuiplashServerRoom>();
 const raceRooms = new Map<string, HorseRaceServerRoom>();
 const coloryRooms = new Map<string, ColoryServerRoom>();
 const timingRooms = new Map<string, TimingServerRoom>();
-const virajRooms = new Map<string, VirajServerRoom>();
+const kapismaRooms = new Map<string, KapismaServerRoom>();
 const clientMap = new Map<WebSocket, ConnectedClient>();
 
 // =============================================================================
@@ -356,7 +355,7 @@ const ROOM_REGISTRY: Array<{ gameType: PersistedGameType; map: Map<string, any> 
   { gameType: 'race', map: raceRooms },
   { gameType: 'colory', map: coloryRooms },
   { gameType: 'timing', map: timingRooms },
-  { gameType: 'viraj', map: virajRooms },
+  { gameType: 'kapisma', map: kapismaRooms },
 ];
 
 /** Ayni mac sonucunun tekrar tekrar yazilmasini engeller. */
@@ -2262,264 +2261,177 @@ function revealTiming(room: TimingServerRoom) {
 }
 
 // =============================================================================
-// VIRAJ — pist yarisi
+// KAPISMA — gercek surus
 // =============================================================================
-// Her virajda HERKES AYNI ANDA ve gizlice bir cizgi secer, sonuclar birlikte
-// acilir. Arabalar farkli konumlarda olsa da KARAR ANLARI senkron: aksi halde
-// herkes kendi telefonundaki uyariyi bekler ve kimse TV'ye bakmaz.
+// Araba OYUNCUNUN TELEFONUNDA simule ediliyor; sunucu yalnizca yol tohumunu
+// dagitiyor, konumlari topluyor ve TV'ye aktariyor.
 //
-// SECIM GIZLILIGI: CORNER fazinda kimin ne sectigi yayinlanmaz — yalnizca
-// "sectim" bilgisi. Sizsaydi son secen herkesi gorup ona gore oynardi.
+// Sunucunun tek oyun kurali: makul hiz siniri. Telefon kendi arabasinda
+// yetkili oldugu icin kaba hile (distance = 999999) buradan eleniyor.
+//
+// YAYIN HIZI: telefonlar saniyede ~15 kez konum yolluyor. Her mesajda yayin
+// yapsaydik 8 oyuncuda saniyede 120 yayin olurdu. Yarista yayin SABIT 10 Hz
+// bir zamanlayicidan gidiyor.
 
-interface VirajServerRoom {
+interface KapismaServerRoom {
   code: string;
   observers: Set<WebSocket>;
   playerSockets: Map<string, WebSocket>;
-  players: VirajPlayer[];
-  gameState: VirajGameState;
-  /** Bu yarisin pisti — corners/path gameState'e ozetlenerek gonderilir. */
-  track: VirajTrack;
-  /** playerId -> bu virajdaki secim. Yayinlanmaz. */
-  pendingLines: Record<string, VirajLine>;
+  players: KapismaPlayer[];
+  gameState: KapismaGameState;
+  /**
+   * Pist SUNUCUDA da uretiliyor.
+   * Aga yalnizca tohum gidiyor; TV ve telefonlar ayni tohumdan birebir ayni
+   * devreyi kuruyor. Sunucunun kopyaya ihtiyaci var cunku hile elemesi
+   * "bu surede bu mesafeye gidilebilir mi" diye soruyor ve bunun icin pistin
+   * uzunlugunu bilmesi gerekiyor.
+   */
+  track: PistTrack;
   phaseTimer: NodeJS.Timeout | null;
+  /** RACING sirasindaki 10 Hz yayin dongusu. */
+  tickTimer: NodeJS.Timeout | null;
 }
 
-function createFreshVirajGame(settings?: Partial<VirajSettings>): VirajGameState {
+const KAPISMA_TICK_MS = 100;
+
+function createFreshKapismaGame(settings?: Partial<KapismaSettings>): KapismaGameState {
   return {
     phase: 'LOBBY',
     currentRace: 1,
     settings: {
       totalRaces: Math.max(1, Math.min(10, settings?.totalRaces || 3)),
-      laps: Math.max(1, Math.min(5, settings?.laps || 3)),
-      decideSeconds: Math.max(3, Math.min(15, settings?.decideSeconds || 7)),
+      laps: Math.max(1, Math.min(10, settings?.laps || 3)),
     },
-    trackName: '',
-    cornerCount: 0,
-    lap: 1,
-    cornerIndex: 1,
-    cornerLabel: '',
-    cornerSeverity: 1,
+    // Lobide de gecerli bir tohum bulunsun: `track` ile tutarli kalsin ve
+    // hicbir yerde 0 tohumlu bos pist olusmasin.
+    seed: makeKapismaSeed(),
+    startedAt: 0,
     timerSeconds: 0,
-    decidedPlayerIds: [],
     cars: [],
     winnerPlayerId: null,
     isOnline: true,
   };
 }
 
-function clearVirajTimer(room: VirajServerRoom) {
-  if (room.phaseTimer) {
-    clearInterval(room.phaseTimer);
-    room.phaseTimer = null;
-  }
+function clearKapismaTimers(room: KapismaServerRoom) {
+  if (room.phaseTimer) { clearInterval(room.phaseTimer); room.phaseTimer = null; }
+  if (room.tickTimer) { clearInterval(room.tickTimer); room.tickTimer = null; }
 }
 
-/**
- * Istemciye giden gorunum.
- *
- * CORNER fazinda `line` alani KIRPILIR. Kendi secimini gorsun diye oyuncuya
- * ozel yukte myLine ayrica gonderilir.
- */
-function virajPublicView(room: VirajServerRoom) {
-  const hideLines = room.gameState.phase === 'CORNER';
-  const publicState: VirajGameState = {
-    ...room.gameState,
-    roomCode: room.code,
-    cars: room.gameState.cars.map((c) => ({ ...c, line: hideLines ? null : c.line ?? null })),
-  };
-  return { publicState, players: room.players };
-}
-
-function broadcastVirajRoomState(room: VirajServerRoom, eventType = 'viraj:state') {
-  maybeRecordMatch('viraj', room as any);
-  const { publicState, players } = virajPublicView(room);
-  const base = { gameState: publicState, players, trackPath: room.track?.path || '' };
+function broadcastKapismaRoomState(room: KapismaServerRoom, eventType = 'kapisma:state') {
+  maybeRecordMatch('kapisma', room as any);
+  const publicState: KapismaGameState = { ...room.gameState, roomCode: room.code };
+  const base = { gameState: publicState, players: room.players };
 
   room.players.forEach((player) => {
     const ws = room.playerSockets.get(player.id);
     if (ws && ws.readyState === WebSocket.OPEN) {
-      ws.send(JSON.stringify({
-        type: eventType, ...base,
-        myPlayer: { ...player },
-        myLine: room.pendingLines[player.id] ?? null,
-      }));
+      ws.send(JSON.stringify({ type: eventType, ...base, myPlayer: { ...player } }));
     }
   });
-
-  const tvPayload = JSON.stringify({ type: eventType, ...base });
-  room.observers.forEach((ws) => {
-    if (ws.readyState === WebSocket.OPEN) ws.send(tvPayload);
-  });
+  const tv = JSON.stringify({ type: eventType, ...base });
+  room.observers.forEach((ws) => { if (ws.readyState === WebSocket.OPEN) ws.send(tv); });
 }
 
-/** Arabalarin pist uzerindeki gorsel konumunu ve siralarini gunceller. */
-function updateVirajPositions(room: VirajServerRoom) {
-  const gs = room.gameState;
-  const total = room.track.corners.length * gs.settings.laps;
-  const done = (gs.lap - 1) * room.track.corners.length + (gs.cornerIndex - 1);
-  const baseProgress = total > 0 ? done / total : 0;
-
-  const leader = Math.min(...gs.cars.map((c) => c.elapsed));
-  const order = rankVirajCars(gs.cars);
-  gs.cars.forEach((c) => {
-    const rank = order.indexOf(c.playerId);
-    c.position = rank + 1;
-
-    // GORSEL KONUM — okunabilirlik icin iki bilesenli.
-    //
-    // Ilk denemede yalnizca sure farkini kullaniyordum (behind * 0.0035) ve
-    // ekranda BES ARABA UST USTE BINIYORDU: gercek aralik yarisin buyuk
-    // bolumunde 0,2-0,5 sn, bu da pistin binde biri demek — goze gorunmez.
-    //
-    // Cozum: sabit bir SIRA araligi (her pozisyon icin %1) okunabilirligi
-    // garanti ediyor, uzerine eklenen sure bileseni de gercek farki
-    // hissettiriyor. Kopan bir araba pistte de kopuk gorunuyor.
-    const behind = Math.min(c.elapsed - leader, 6);
-    const offset = rank * 0.016 + behind * 0.009;
-    c.progress = Math.max(0, Math.min(1, baseProgress - offset));
+/** Anlik siralari mesafeye gore gunceller. */
+function updateKapismaPositions(room: KapismaServerRoom) {
+  const order = [...room.gameState.cars].sort((a, b) => {
+    // Bitirenler once ve bitis sirasina gore; bitirmeyenler mesafeye gore
+    if (a.finishRank && b.finishRank) return a.finishRank - b.finishRank;
+    if (a.finishRank) return -1;
+    if (b.finishRank) return 1;
+    return b.progress - a.progress;
   });
+  order.forEach((c, i) => { c.position = i + 1; });
 }
 
-/** Yeni yaris: pist uret, arabalari sifirla, izgaraya diz. */
-function startVirajRace(room: VirajServerRoom) {
-  clearVirajTimer(room);
+function startKapismaRace(room: KapismaServerRoom) {
+  clearKapismaTimers(room);
   const gs = room.gameState;
 
-  room.track = generateVirajTrack(Math.random, gs.trackName || undefined);
-  gs.trackName = room.track.name;
-  gs.cornerCount = room.track.corners.length;
-  gs.lap = 1;
-  gs.cornerIndex = 1;
+  // Tek tohum, herkese ayni pist. Adalet buna bagli.
+  gs.seed = makeKapismaSeed();
+  room.track = generatePistTrack(gs.seed);
   gs.results = undefined;
-  gs.decidedPlayerIds = [];
-  room.pendingLines = {};
-
-  gs.cars = room.players.map((p) => ({
-    playerId: p.id,
-    elapsed: 0,
-    heat: 0,
-    line: null,
-    lastMistake: 'NONE' as const,
-    lastDelta: 0,
-    lastTow: false,
-    progress: 0,
-    position: 0,
-    finishRank: 0,
-  }));
-  room.players.forEach((p) => { p.lastPoints = 0; });
-  updateVirajPositions(room);
-
-  gs.phase = 'GRID';
-  gs.timerSeconds = 5;
-  broadcastVirajRoomState(room, 'viraj:grid');
-
-  room.phaseTimer = setInterval(() => {
-    const cur = virajRooms.get(room.code);
-    if (!cur || cur.gameState.phase !== 'GRID') { if (cur) clearVirajTimer(cur); return; }
-    cur.gameState.timerSeconds -= 1;
-    if (cur.gameState.timerSeconds <= 0) startVirajCorner(cur);
-    else broadcastVirajRoomState(cur);
-  }, 1000);
-}
-
-/** Viraj karari — herkes ayni anda seciyor. */
-function startVirajCorner(room: VirajServerRoom) {
-  clearVirajTimer(room);
-  const gs = room.gameState;
-  const corner = room.track.corners[gs.cornerIndex - 1];
-
-  gs.phase = 'CORNER';
-  gs.cornerLabel = corner.label;
-  gs.cornerSeverity = corner.severity;
-  gs.timerSeconds = gs.settings.decideSeconds;
-  gs.decidedPlayerIds = [];
-  room.pendingLines = {};
-  gs.cars.forEach((c) => { c.line = null; });
-  broadcastVirajRoomState(room, 'viraj:corner');
-
-  room.phaseTimer = setInterval(() => {
-    const cur = virajRooms.get(room.code);
-    if (!cur || cur.gameState.phase !== 'CORNER') { if (cur) clearVirajTimer(cur); return; }
-    cur.gameState.timerSeconds -= 1;
-    if (cur.gameState.timerSeconds <= 0) resolveVirajCorner(cur);
-    else broadcastVirajRoomState(cur);
-  }, 1000);
-}
-
-/** Secimleri ac, viraji coz, arabalari ilerlet. */
-function resolveVirajCorner(room: VirajServerRoom) {
-  clearVirajTimer(room);
-  const gs = room.gameState;
-  const corner = room.track.corners[gs.cornerIndex - 1];
-
-  const inputs = gs.cars.map((c) => ({
-    playerId: c.playerId,
-    // Secim yapmayan NORMAL alir — notr, ne odul ne ceza.
-    line: (room.pendingLines[c.playerId] || 'NORMAL') as VirajLine,
-    heat: c.heat,
-    gapAhead: gapToVirajAhead(c, gs.cars),
-  }));
-
-  const outcomes = resolveVirajCornerPure(inputs, corner.base, corner.severity);
-  outcomes.forEach((o) => {
-    const car = gs.cars.find((c) => c.playerId === o.playerId);
-    if (!car) return;
-    car.elapsed += o.delta;
-    car.heat = o.heat;
-    car.line = o.line;
-    car.lastMistake = o.mistake;
-    car.lastDelta = o.delta;
-    car.lastTow = o.tow;
+  // Izgara: arabalar baslangic cizgisinde yolun enine yayiliyor. Ust uste
+  // dogsalardi ilk karede hepsi ayni pikselde olurdu.
+  const yarim = (room.players.length - 1) / 2;
+  gs.cars = room.players.map((p, i) => {
+    const c = freshPistCar(room.track, (i - yarim) * 17);
+    return {
+      playerId: p.id,
+      x: c.x, y: c.y, heading: c.heading,
+      speed: 0,
+      offRoad: false,
+      lap: 0,
+      idx: 0,
+      progress: 0,
+      finishTime: 0,
+      finishRank: 0,
+      position: 0,
+    };
   });
+  room.players.forEach((p) => { p.lastPoints = 0; });
+  updateKapismaPositions(room);
 
-  updateVirajPositions(room);
-
-  gs.phase = 'RESOLVE';
-  gs.timerSeconds = 4;
-  broadcastVirajRoomState(room, 'viraj:resolve');
+  gs.phase = 'COUNTDOWN';
+  gs.timerSeconds = 3;
+  gs.startedAt = 0;
+  broadcastKapismaRoomState(room, 'kapisma:countdown');
 
   room.phaseTimer = setInterval(() => {
-    const cur = virajRooms.get(room.code);
-    if (!cur || cur.gameState.phase !== 'RESOLVE') { if (cur) clearVirajTimer(cur); return; }
+    const cur = kapismaRooms.get(room.code);
+    if (!cur || cur.gameState.phase !== 'COUNTDOWN') { if (cur) clearKapismaTimers(cur); return; }
     cur.gameState.timerSeconds -= 1;
-    if (cur.gameState.timerSeconds > 0) { broadcastVirajRoomState(cur); return; }
-
-    const g = cur.gameState;
-    if (g.cornerIndex < cur.track.corners.length) {
-      g.cornerIndex += 1;
-      startVirajCorner(cur);
-    } else if (g.lap < g.settings.laps) {
-      g.lap += 1;
-      g.cornerIndex = 1;
-      startVirajCorner(cur);
-    } else {
-      finishVirajRace(cur);
-    }
+    if (cur.gameState.timerSeconds <= 0) startKapismaRacing(cur);
+    else broadcastKapismaRoomState(cur);
   }, 1000);
 }
 
-/** Yaris bitti: sirala, sampiyona puani ver. */
-function finishVirajRace(room: VirajServerRoom) {
-  clearVirajTimer(room);
+function startKapismaRacing(room: KapismaServerRoom) {
+  clearKapismaTimers(room);
+  const gs = room.gameState;
+  gs.phase = 'RACING';
+  gs.timerSeconds = 0;
+  gs.startedAt = Date.now();
+  broadcastKapismaRoomState(room, 'kapisma:go');
+
+  room.tickTimer = setInterval(() => {
+    const cur = kapismaRooms.get(room.code);
+    if (!cur || cur.gameState.phase !== 'RACING') { if (cur) clearKapismaTimers(cur); return; }
+    updateKapismaPositions(cur);
+    broadcastKapismaRoomState(cur);
+
+    // Herkes bitirdiyse ya da lider bitince 12 sn gecti ise yarisi kapat
+    const active = cur.gameState.cars.filter((c) => !c.finishRank);
+    const elapsed = (Date.now() - cur.gameState.startedAt) / 1000;
+    const firstDone = cur.gameState.cars.some((c) => c.finishRank === 1);
+    const leaderTime = cur.gameState.cars.find((c) => c.finishRank === 1)?.finishTime || 0;
+    if (active.length === 0 || (firstDone && elapsed - leaderTime > 12) || elapsed > 300) {
+      finishKapismaRace(cur, elapsed);
+    }
+  }, KAPISMA_TICK_MS);
+}
+
+function finishKapismaRace(room: KapismaServerRoom, elapsed: number) {
+  clearKapismaTimers(room);
   const gs = room.gameState;
 
-  const order = [...gs.cars].sort((a, b) => a.elapsed - b.elapsed);
-  gs.results = order.map((c, i) => {
-    c.finishRank = i + 1;
-    const pts = virajPointsForRank(i + 1);
+  // Bitiremeyenler bulunduklari mesafeye gore siraya girer
+  const unfinished = gs.cars.filter((c) => !c.finishRank).sort((a, b) => b.progress - a.progress);
+  let next = gs.cars.filter((c) => c.finishRank).length + 1;
+  unfinished.forEach((c) => { c.finishRank = next++; c.finishTime = elapsed; });
+
+  const order = [...gs.cars].sort((a, b) => a.finishRank - b.finishRank);
+  gs.results = order.map((c) => {
+    const pts = kapismaPointsForRank(c.finishRank);
     const player = room.players.find((p) => p.id === c.playerId);
     if (player) {
       player.score += pts;
       player.lastPoints = pts;
-      if (i === 0) player.racesWon = (player.racesWon || 0) + 1;
+      if (c.finishRank === 1) player.racesWon = (player.racesWon || 0) + 1;
     }
-    return {
-      playerId: c.playerId,
-      rank: i + 1,
-      totalTime: Math.round(c.elapsed * 100) / 100,
-      points: pts,
-      mistakes: 0,
-    };
+    return { playerId: c.playerId, rank: c.finishRank, time: Math.round(c.finishTime * 100) / 100, points: pts };
   });
 
   const isLast = gs.currentRace >= gs.settings.totalRaces;
@@ -2530,7 +2442,7 @@ function finishVirajRace(room: VirajServerRoom) {
   } else {
     gs.phase = 'FINISH';
   }
-  broadcastVirajRoomState(room, 'viraj:finish');
+  broadcastKapismaRoomState(room, 'kapisma:finish');
 }
 
 function generateRoomCode(): string {
@@ -2546,7 +2458,7 @@ function generateRoomCode(): string {
       !raceRooms.has(code) &&
       !coloryRooms.has(code) &&
       !timingRooms.has(code) &&
-      !virajRooms.has(code)
+      !kapismaRooms.has(code)
     ) {
       return code;
     }
@@ -2991,7 +2903,7 @@ async function startServer() {
       race: raceRooms.size,
       colory: coloryRooms.size,
       timing: timingRooms.size,
-      viraj: virajRooms.size,
+      kapisma: kapismaRooms.size,
     };
     res.json({
       status: 'ok',
@@ -3306,52 +3218,51 @@ Return strictly a JSON array matching this schema:
         const { type } = data;
 
         // =====================================================================
-        // VIRAJ DISPATCHER
+        // KAPISMA DISPATCHER
         // =====================================================================
 
-        if (type === 'viraj:create_room') {
+        if (type === 'kapisma:create_room') {
           const roomCode = generateRoomCode();
-          const newRoom: VirajServerRoom = {
+          const newRoom: KapismaServerRoom = {
             code: roomCode,
             observers: new Set([ws]),
             playerSockets: new Map(),
             players: [],
-            gameState: createFreshVirajGame(data.settings),
-            track: generateVirajTrack(),
-            pendingLines: {},
+            gameState: createFreshKapismaGame(data.settings),
+            // Lobide de bir pist bulunsun: TV oda ekraninda onizleme
+            // gosterebilsin ve `track` hicbir yerde undefined olmasin.
+            track: generatePistTrack(0),   // asagida tohumla eslestiriliyor
             phaseTimer: null,
+            tickTimer: null,
           };
-          virajRooms.set(roomCode, newRoom);
-          clientMap.set(ws, { ws, roomCode, role: 'observer', gameType: 'viraj' });
+          newRoom.track = generatePistTrack(newRoom.gameState.seed);
+          kapismaRooms.set(roomCode, newRoom);
+          clientMap.set(ws, { ws, roomCode, role: 'observer', gameType: 'kapisma' });
           ws.send(JSON.stringify({
-            type: 'viraj:room_created', roomCode,
+            type: 'kapisma:room_created', roomCode,
             gameState: newRoom.gameState, players: newRoom.players,
-            trackPath: newRoom.track.path,
           }));
         }
 
-        else if (type === 'viraj:join_room') {
+        else if (type === 'kapisma:join_room') {
           const roomCode = (data.roomCode || '').toUpperCase().trim();
-          const room = virajRooms.get(roomCode);
+          const room = kapismaRooms.get(roomCode);
           if (!room) {
-            ws.send(JSON.stringify({ type: 'viraj:error', message: `Oda bulunamadi: "${roomCode}"` }));
+            ws.send(JSON.stringify({ type: 'kapisma:error', message: `Oda bulunamadi: "${roomCode}"` }));
             return;
           }
-
           const role = data.role === 'observer' ? 'observer' : 'player';
           if (role === 'observer') {
             room.observers.add(ws);
-            clientMap.set(ws, { ws, roomCode, role: 'observer', gameType: 'viraj' });
+            clientMap.set(ws, { ws, roomCode, role: 'observer', gameType: 'kapisma' });
             ws.send(JSON.stringify({
-              type: 'viraj:room_joined', roomCode, role: 'observer',
-              gameState: room.gameState, players: room.players, trackPath: room.track.path,
+              type: 'kapisma:room_joined', roomCode, role: 'observer',
+              gameState: room.gameState, players: room.players,
             }));
             return;
           }
 
-          // Yaris SIRASINDA katilan siradaki yarisi bekler — ortadan araba
-          // eklemek siralamayi ve isi ekonomisini bozardi.
-          const playerId = data.playerId || `vj-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+          const playerId = data.playerId || `kp-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
           let player = room.players.find((p) => p.id === playerId);
           if (!player) {
             player = {
@@ -3372,78 +3283,94 @@ Return strictly a JSON array matching this schema:
 
           room.observers.delete(ws);
           room.playerSockets.set(player.id, ws);
-          clientMap.set(ws, { ws, roomCode, role: 'player', playerId: player.id, gameType: 'viraj' });
+          clientMap.set(ws, { ws, roomCode, role: 'player', playerId: player.id, gameType: 'kapisma' });
           ws.send(JSON.stringify({
-            type: 'viraj:room_joined', roomCode, role: 'player',
+            type: 'kapisma:room_joined', roomCode, role: 'player',
             playerId: player.id, player,
-            gameState: room.gameState, players: room.players, trackPath: room.track.path,
+            gameState: room.gameState, players: room.players,
           }));
-          broadcastVirajRoomState(room);
+          broadcastKapismaRoomState(room);
         }
 
-        else if (type === 'viraj:start_game') {
+        else if (type === 'kapisma:start_game') {
           const client = clientMap.get(ws);
           if (!client?.roomCode) return;
-          const room = virajRooms.get(client.roomCode);
+          const room = kapismaRooms.get(client.roomCode);
           if (!room) return;
           if (room.players.length < 1) {
-            ws.send(JSON.stringify({ type: 'viraj:error', message: 'En az 1 oyuncu gerekli.' }));
+            ws.send(JSON.stringify({ type: 'kapisma:error', message: 'En az 1 oyuncu gerekli.' }));
             return;
           }
           room.players.forEach((p) => { p.score = 0; p.racesWon = 0; p.lastPoints = 0; });
           room.gameState.currentRace = 1;
           room.gameState.winnerPlayerId = null;
-          room.gameState.trackName = '';
-          startVirajRace(room);
+          startKapismaRace(room);
         }
 
-        else if (type === 'viraj:pick_line') {
+        /**
+         * Telefondan gelen konum bildirimi (~15 Hz).
+         *
+         * Sunucu burada FIZIK CALISTIRMIYOR — araba telefonda simule ediliyor,
+         * cunku aksi halde direksiyon ile tepki arasina ag gecikmesi girer ve
+         * surus hissi olur. Sunucunun tek isi makul olmayan degeri elemek.
+         */
+        else if (type === 'kapisma:progress') {
           const client = clientMap.get(ws);
           if (!client?.roomCode || !client.playerId) return;
-          const room = virajRooms.get(client.roomCode);
-          if (!room || room.gameState.phase !== 'CORNER') return;
-          const player = room.players.find((p) => p.id === client.playerId);
-          if (!player) return;
-          // Bu yarista arabasi yoksa (yaris sirasinda katildi) secim alinmaz
-          if (!room.gameState.cars.some((c) => c.playerId === player.id)) return;
+          const room = kapismaRooms.get(client.roomCode);
+          if (!room || room.gameState.phase !== 'RACING') return;
+          const car = room.gameState.cars.find((c) => c.playerId === client.playerId);
+          if (!car || car.finishRank) return;
 
-          const line = data.line;
-          if (line !== 'SAFE' && line !== 'NORMAL' && line !== 'ATTACK') return;
-          room.pendingLines[player.id] = line;
-          if (!room.gameState.decidedPlayerIds.includes(player.id)) {
-            room.gameState.decidedPlayerIds.push(player.id);
-          }
+          const elapsed = (receivedAt - room.gameState.startedAt) / 1000;
+          const prog = Number(data.progress);
+          if (!Number.isFinite(prog)) return;
+          // Kaba hile eleme: gecen sureye gore fiziksel olarak mumkun olandan
+          // uzaga gidilemez. Tam koruma degil (kod telefonda), ama
+          // 'progress = 999999' gonderen aninda kesilir.
+          if (!isPistPlausible(prog, elapsed, room.track)) return;
+          // Geri gitmek yok — eski paket sonradan gelirse siralamayi bozmasin.
+          if (prog < car.progress) return;
 
-          // Herkes sectiyse beklemeye gerek yok
-          const active = room.gameState.cars
-            .map((c) => c.playerId)
-            .filter((id) => room.players.find((p) => p.id === id)?.connected !== false);
-          if (active.length > 0 && active.every((id) => room.pendingLines[id])) {
-            resolveVirajCorner(room);
-          } else {
-            broadcastVirajRoomState(room);
+          const x = Number(data.x);
+          const y = Number(data.y);
+          const h = Number(data.heading);
+          if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(h)) return;
+
+          car.progress = prog;
+          car.x = x;
+          car.y = y;
+          car.heading = h;
+          car.lap = Math.max(0, Math.floor(Number(data.lap) || 0));
+          car.idx = Math.max(0, Math.floor(Number(data.idx) || 0));
+          car.speed = Math.max(0, Number(data.speed) || 0);
+          car.offRoad = !!data.offRoad;
+
+          if (car.lap >= room.gameState.settings.laps) {
+            const done = room.gameState.cars.filter((c) => c.finishRank).length;
+            car.finishRank = done + 1;
+            car.finishTime = Math.round(elapsed * 100) / 100;
           }
         }
 
-        else if (type === 'viraj:next_race') {
+        else if (type === 'kapisma:next_race') {
           const client = clientMap.get(ws);
           if (!client?.roomCode) return;
-          const room = virajRooms.get(client.roomCode);
+          const room = kapismaRooms.get(client.roomCode);
           if (!room || room.gameState.phase !== 'FINISH') return;
           room.gameState.currentRace += 1;
-          startVirajRace(room);
+          startKapismaRace(room);
         }
 
-        else if (type === 'viraj:restart_game') {
+        else if (type === 'kapisma:restart_game') {
           const client = clientMap.get(ws);
           if (!client?.roomCode) return;
-          const room = virajRooms.get(client.roomCode);
+          const room = kapismaRooms.get(client.roomCode);
           if (!room) return;
-          clearVirajTimer(room);
+          clearKapismaTimers(room);
           room.players.forEach((p) => { p.score = 0; p.racesWon = 0; p.lastPoints = 0; });
-          room.gameState = createFreshVirajGame(room.gameState.settings);
-          room.pendingLines = {};
-          broadcastVirajRoomState(room);
+          room.gameState = createFreshKapismaGame(room.gameState.settings);
+          broadcastKapismaRoomState(room);
         }
 
         // =====================================================================
@@ -6127,24 +6054,23 @@ Return strictly a JSON array matching this schema:
     ws.on('close', () => {
       const client = clientMap.get(ws);
       if (client?.roomCode) {
-        if (client.gameType === 'viraj') {
-          const room = virajRooms.get(client.roomCode);
+        if (client.gameType === 'kapisma') {
+          const room = kapismaRooms.get(client.roomCode);
           if (room) {
-            if (client.role === 'observer') {
-              room.observers.delete(ws);
-            } else if (client.playerId) {
+            if (client.role === 'observer') room.observers.delete(ws);
+            else if (client.playerId) {
               room.playerSockets.delete(client.playerId);
               const p = room.players.find((pl) => pl.id === client.playerId);
               if (p) p.connected = false;
             }
-            broadcastVirajRoomState(room);
+            broadcastKapismaRoomState(room);
             if (room.observers.size === 0 && room.playerSockets.size === 0) {
               setTimeout(() => {
-                const current = virajRooms.get(client.roomCode!);
+                const current = kapismaRooms.get(client.roomCode!);
                 if (current && current.observers.size === 0 && current.playerSockets.size === 0) {
-                  clearVirajTimer(current);
-                  virajRooms.delete(client.roomCode!);
-                  forgetRoom('viraj', client.roomCode!);
+                  clearKapismaTimers(current);
+                  kapismaRooms.delete(client.roomCode!);
+                  forgetRoom('kapisma', client.roomCode!);
                 }
               }, 180000);
             }

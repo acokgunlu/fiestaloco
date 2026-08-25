@@ -87,7 +87,7 @@ export type PersistedGameType =
   | 'race'
   | 'colory'
   | 'timing'
-  | 'viraj';
+  | 'kapisma';
 
 // -----------------------------------------------------------------------------
 // Leaderboard / mac gecmisi

@@ -29,7 +29,7 @@ import { CodenamesOnlineLobby } from './components/codenames/CodenamesOnlineLobb
 import { HorseRaceGame } from './components/party/HorseRaceGame';
 import { ColoryGame } from './components/party/ColoryGame';
 import { TimingGame } from './components/party/TimingGame';
-import { VirajGame } from './components/party/VirajGame';
+import { KapismaGame } from './components/party/KapismaGame';
 import { CodenamesBoardView } from './components/codenames/CodenamesBoardView';
 import { CodenamesRulesModal } from './components/codenames/CodenamesRulesModal';
 import { BluffTriviaGame } from './components/party/BluffTriviaGame';
@@ -255,8 +255,8 @@ export default function App() {
     const roomParam = params.get('room');
     const gameParam = params.get('game');
 
-    if (gameParam === 'viraj') {
-      setActiveModule('viraj');
+    if (gameParam === 'kapisma') {
+      setActiveModule('kapisma');
     } else if (gameParam === 'timing') {
       setActiveModule('timing');
     } else if (gameParam === 'colory') {
@@ -705,8 +705,8 @@ export default function App() {
           <TimingGame onBackToHub={() => setActiveModule('arcade_hub')} />
         )}
 
-        {activeModule === 'viraj' && (
-          <VirajGame onBackToHub={() => setActiveModule('arcade_hub')} />
+        {activeModule === 'kapisma' && (
+          <KapismaGame onBackToHub={() => setActiveModule('arcade_hub')} />
         )}
 
         {activeModule === 'race' && (

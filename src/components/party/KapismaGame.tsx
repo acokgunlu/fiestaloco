@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowLeft, Smartphone, Tv, Users } from 'lucide-react';
-import { useVirajSocket } from '../../utils/useVirajSocket';
-import { VirajTvView } from '../viraj/VirajTvView';
-import { VirajControllerView } from '../viraj/VirajControllerView';
+import { useKapismaSocket } from '../../utils/useKapismaSocket';
+import { KapismaTvView } from '../kapisma/KapismaTvView';
+import { KapismaControllerView } from '../kapisma/KapismaControllerView';
 import { DEFAULT_PLAYER_PALETTE } from '../../data/wordPacks';
 import { playClickSound } from '../../utils/audio';
 
@@ -11,12 +11,12 @@ interface Props {
   onBackToHub: () => void;
 }
 
-export const VirajGame: React.FC<Props> = ({ onBackToHub }) => {
+export const KapismaGame: React.FC<Props> = ({ onBackToHub }) => {
   const [mode, setMode] = useState<'lobby' | 'host' | 'join' | 'phonehost'>('lobby');
   const [code, setCode] = useState('');
   const [name, setName] = useState('');
   const [palette, setPalette] = useState(DEFAULT_PLAYER_PALETTE[0]);
-  const socket = useVirajSocket();
+  const socket = useKapismaSocket();
 
   useEffect(() => {
     const room = new URLSearchParams(window.location.search).get('room');
@@ -28,11 +28,10 @@ export const VirajGame: React.FC<Props> = ({ onBackToHub }) => {
 
   if (mode === 'host' && socket.roomCode && socket.gameState) {
     return (
-      <VirajTvView
+      <KapismaTvView
         roomCode={socket.roomCode}
         gameState={socket.gameState}
         players={socket.players}
-        trackPath={socket.trackPath}
         onStartGame={socket.startGame}
         onNextRace={socket.nextRace}
         onRestartGame={socket.restartGame}
@@ -45,15 +44,13 @@ export const VirajGame: React.FC<Props> = ({ onBackToHub }) => {
   // hem oynar hem yonetir (hostControls).
   if ((mode === 'join' || mode === 'phonehost') && socket.myPlayer && socket.gameState) {
     return (
-      <VirajControllerView
+      <KapismaControllerView
         roomCode={socket.roomCode || ''}
         myPlayer={socket.myPlayer}
-        myLine={socket.myLine}
         gameState={socket.gameState}
         players={socket.players}
-        trackPath={socket.trackPath}
         errorMessage={t(socket.errorMessage)}
-        onPickLine={socket.pickLine}
+        onProgress={socket.sendProgress}
         onLeave={() => { socket.leaveRoom(); setMode('lobby'); }}
         hostControls={mode === 'phonehost'}
         onStartGame={socket.startGame}
@@ -71,14 +68,14 @@ export const VirajGame: React.FC<Props> = ({ onBackToHub }) => {
             className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-xs font-black cursor-pointer">
             <ArrowLeft className="w-4 h-4" />  {t('Parti Arenası')}</button>
           <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-rose-500 via-orange-500 to-amber-400 text-white flex items-center justify-center text-xl shadow-md border-2 border-white dark:border-slate-700">🏎️</div>
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-rose-500 via-orange-500 to-amber-400 text-white flex items-center justify-center text-xl shadow-md border-2 border-white dark:border-slate-700">🏁</div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-xl sm:text-2xl font-black tracking-tight">{t('Viraj')}</h1>
+                <h1 className="text-xl sm:text-2xl font-black tracking-tight">{t('Kapışma')}</h1>
                 <span className="px-2 py-0.5 rounded-full bg-sky-100 dark:bg-sky-950 text-sky-800 dark:text-sky-300 text-[10px] font-black border border-sky-300 dark:border-sky-800">
-                  {t('PİST YARIŞI')}</span>
+                  {t('GERÇEK SÜRÜŞ')}</span>
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400 font-bold">{t('Her virajda tek karar: güvenli mi, dibine kadar mı')}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-bold">{t('Telefonun direksiyon — gerçekten sen sürüyorsun')}</p>
             </div>
           </div>
         </div>
@@ -93,7 +90,7 @@ export const VirajGame: React.FC<Props> = ({ onBackToHub }) => {
               </div>
               <h3 className="text-xl font-black mb-2">{t('TV Ekranı (Host)')}</h3>
               <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                {t('Pist ve arabalar büyük ekranda. Oyuncular her virajda telefonundan çizgisini seçer, sonuçlar birlikte açılır.')}</p>
+                {t('Pist ve bütün arabalar büyük ekranda. Herkes kendi telefonunda gerçekten araba sürer; bu ekran seyirci ekranıdır.')}</p>
             </div>
             <button onClick={() => { playClickSound(); setMode('host'); socket.createRoom(); }}
               className="mt-6 w-full py-3.5 rounded-2xl bg-gradient-to-r from-rose-600 to-orange-600 text-white font-black text-sm shadow-xl hover:scale-105 transition-all flex items-center justify-center gap-2 cursor-pointer">
@@ -113,7 +110,7 @@ export const VirajGame: React.FC<Props> = ({ onBackToHub }) => {
               </div>
               <h3 className="text-xl font-black mb-2">{t('TV Yok — Tek Telefondan')}</h3>
               <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                {t('Paylaşılan ekran gerekmez. Pist küçük hâliyle herkesin telefonunda; odayı kuran başlatır.')}
+                {t('Paylaşılan ekran gerekmez. Pistin tamamı zaten kendi telefonunda; odayı kuran başlatır.')}
               </p>
             </div>
             <button onClick={() => { playClickSound(); setMode('phonehost'); }}
@@ -129,7 +126,7 @@ export const VirajGame: React.FC<Props> = ({ onBackToHub }) => {
               </div>
               <h3 className="text-xl font-black mb-2">{t('Telefondan Katıl')}</h3>
               <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                {t("TV'deki oda kodunu girin; telefonunuz direksiyonunuz olsun.")}</p>
+                {t("TV'deki oda kodunu girin; telefonunuz gerçek direksiyon olsun.")}</p>
             </div>
             <button onClick={() => { playClickSound(); setMode('join'); }}
               className="mt-6 w-full py-3.5 rounded-2xl bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-black text-sm shadow-xl hover:scale-105 transition-all flex items-center justify-center gap-2 cursor-pointer">

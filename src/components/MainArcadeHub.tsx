@@ -619,32 +619,32 @@ export function MainArcadeHub({
             </div>
           </div>
 
-          {/* GAME 9: VIRAJ (PIST YARISI) */}
+          {/* GAME 9: KAPISMA (GERCEK SURUS) */}
           <div
-            id="card-game-viraj"
-            className="bg-white dark:bg-slate-900 rounded-3xl p-6 border-3 border-rose-100 dark:border-slate-800 hover:border-rose-400 dark:hover:border-rose-500 shadow-md hover:shadow-xl transition-all duration-200 flex flex-col justify-between group game-card-pop relative overflow-hidden"
+            id="card-game-kapisma"
+            className="bg-white dark:bg-slate-900 rounded-3xl p-6 border-3 border-red-100 dark:border-slate-800 hover:border-red-400 dark:hover:border-red-500 shadow-md hover:shadow-xl transition-all duration-200 flex flex-col justify-between group game-card-pop relative overflow-hidden"
           >
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-500 via-orange-500 to-amber-400 text-white flex items-center justify-center text-2xl font-black shadow-md border-2 border-white dark:border-slate-700">
-                  🏎️
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-600 via-red-500 to-amber-400 text-white flex items-center justify-center text-2xl font-black shadow-md border-2 border-white dark:border-slate-700">
+                  🏁
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="px-2.5 py-1 rounded-full bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-300 text-[11px] font-black border border-rose-300 dark:border-rose-800">
-                    {t('PİST YARIŞI')}
+                  <span className="px-2.5 py-1 rounded-full bg-red-100 dark:bg-red-950 text-red-800 dark:text-red-300 text-[11px] font-black border border-red-300 dark:border-red-800">
+                    {t('GERÇEK SÜRÜŞ')}
                   </span>
                   <span className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[11px] font-bold">
-                    {t('2-10 Oyuncu')}
+                    {t('2-8 Oyuncu')}
                   </span>
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <h3 className="text-xl font-black text-slate-900 dark:text-white group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
-                  {t('Viraj')}
+                <h3 className="text-xl font-black text-slate-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+                  {t('Kapışma')}
                 </h3>
                 <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
-                  {t('Her virajda herkes aynı anda gizlice bir çizgi seçer: güvenli, normal ya da dibine kadar. Saldırmak hızlandırır ama lastikleri ısıtır — ısındıkça hata kaçınılmaz olur. Ne zaman soğutacağını bilmek yarışı kazandırır.')}
+                  {t('Karar vermiyorsun, GERÇEKTEN sürüyorsun. Üstten bakışlı kapalı devre; parmağını kaydırarak direksiyon kırıyorsun. Sert kırarsan yavaşlarsın, çime taşarsan hızın yarıya düşer — yumuşak çizgi kazanır. Pist herkese aynı, arabalar TV\'de yan yana.')}
                 </p>
               </div>
 
@@ -653,12 +653,12 @@ export function MainArcadeHub({
                   📺 {t('TV Host')}
                 </span>
                 <span className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold">
-                  🔥 {t('Lastik Isısı')}
+                  🎮 {t('Parmakla Direksiyon')}
+                </span>
+                <span className="px-2 py-0.5 rounded-lg bg-cyan-50 dark:bg-cyan-950 text-cyan-700 dark:text-cyan-300 text-[10px] font-bold">
+                  ⚡ {t('Sıfır Gecikme')}
                 </span>
                 <span className="px-2 py-0.5 rounded-lg bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300 text-[10px] font-bold">
-                  🏁 {t('Şampiyona')}
-                </span>
-                <span className="px-2 py-0.5 rounded-lg bg-violet-50 dark:bg-violet-950 text-violet-700 dark:text-violet-300 text-[10px] font-bold">
                   ♾️ {t('Her Yarış Yeni Pist')}
                 </span>
               </div>
@@ -666,15 +666,15 @@ export function MainArcadeHub({
 
             <div className="pt-6">
               <button
-                id="btn-launch-viraj"
+                id="btn-launch-kapisma"
                 onClick={() => {
                   playTurnSound();
-                  onSelectGame('viraj');
+                  onSelectGame('kapisma');
                 }}
-                className="w-full py-3.5 bg-gradient-to-r from-rose-600 to-orange-600 hover:from-rose-500 hover:to-orange-500 text-white font-black text-xs rounded-2xl shadow-md btn-party flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-3.5 bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-black text-xs rounded-2xl shadow-md btn-party flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Play className="w-4 h-4 fill-white" />
-                <span>{t('DİREKSİYONA GEÇ')}</span>
+                <span>{t('GAZA BAS')}</span>
               </button>
             </div>
           </div>

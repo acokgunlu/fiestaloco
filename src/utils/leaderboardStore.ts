@@ -11,7 +11,7 @@ export type GameModuleType =
   | 'race'
   | 'colory'
   | 'timing'
-  | 'viraj';
+  | 'kapisma';
 
 export interface PlayerStats {
   name: string;
@@ -175,7 +175,7 @@ const GAME_LABELS: Record<GameModuleType, { title: string; icon: string }> = {
   race: { title: 'At Yarışı', icon: '🏇' },
   colory: { title: 'Colory', icon: '🎨' },
   timing: { title: 'Tam Zamanında', icon: '⏱️' },
-  viraj: { title: 'Viraj', icon: '🏎️' },
+  kapisma: { title: 'Kapışma', icon: '🏁' },
 };
 
 /**

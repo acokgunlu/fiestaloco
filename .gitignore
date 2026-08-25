@@ -19,3 +19,6 @@ coverage/
 # Buradakiler tek seferlik goc araclariydi; sozluk artik dogrudan duzenlenir.
 .i18n-work/
 strings_auto.json
+
+# Yerel pist tezgahi (gecici gelistirme araci)
+.preview/
