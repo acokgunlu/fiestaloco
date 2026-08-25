@@ -10,6 +10,7 @@ import {
 import { getWsUrl } from './serverUrl';
 
 import { t } from '../i18n';
+import { getLang } from '../i18n';
 export interface UseBombSocketReturn {
   isConnected: boolean;
   roomCode: string | null;
@@ -243,7 +244,7 @@ export function useBombSocket(): UseBombSocketReturn {
   // Actions
   const createRoom = useCallback(() => {
     setErrorMessage(null);
-    send({ type: 'bomb:create_room' });
+    send({ type: 'bomb:create_room', lang: getLang() });
   }, [send]);
 
   const joinRoom = useCallback(

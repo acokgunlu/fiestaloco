@@ -22,7 +22,7 @@ import {
 import { getRandomQuiplashPrompts, getRandomLastLashPrompt } from '../../data/quiplashPrompts';
 import { DEFAULT_PLAYER_PALETTE } from '../../data/wordPacks';
 
-import { t } from '../../i18n';
+import { t, getLang } from '../../i18n';
 interface QuiplashPassAndPlayProps {
   onBackToHub: () => void;
   onOpenRules: () => void;
@@ -93,7 +93,7 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
 
   const startWritingRound = (roundPlayers: QuiplashPlayer[]) => {
     const count = Math.max(roundPlayers.length, 2);
-    const prompts = getRandomQuiplashPrompts(count, 'all');
+    const prompts = getRandomQuiplashPrompts(count, 'all', getLang());
 
     const newMatchups: QuiplashMatchup[] = [];
 

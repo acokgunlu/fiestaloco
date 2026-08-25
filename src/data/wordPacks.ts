@@ -1,4 +1,5 @@
 import { WordPair } from '../types';
+import { ContentLang } from './contentLang';
 
 export interface CategoryInfo {
   id: string;
@@ -9,7 +10,7 @@ export interface CategoryInfo {
   pairs: WordPair[];
 }
 
-export const VOCABULARY_LIST: WordPair[] = [
+export const VOCABULARY_LIST_TR: WordPair[] = [
   // Animals & Creatures (Hayvanlar)
   { category: 'General', crewWord: 'Kedi (Cat)', imposterWord: '', hint: 'Evcil hayvan' },
   { category: 'General', crewWord: 'Köpek (Dog)', imposterWord: '', hint: 'Sadık dost' },
@@ -160,6 +161,158 @@ export const VOCABULARY_LIST: WordPair[] = [
   { category: 'General', crewWord: 'Hazine Sandığı (Treasure Chest)', imposterWord: '', hint: 'Altın dolu kilitli sandık' },
 ];
 
+
+/**
+ * Ingilizce kelime havuzu.
+ * Kelimeler Turkce listedeki parantez icindeki karsiliklardan turetildi;
+ * ipuclari ayrica yazildi (birebir ceviri degil — Ingilizce'de dogal duracak
+ * sekilde). Sirasi Turkce listeyle AYNI, boylece iki dilde ayni zorlukta.
+ */
+export const VOCABULARY_LIST_EN: WordPair[] = [
+  { category: 'General', crewWord: "Cat", imposterWord: '', hint: "Household pet" },
+  { category: 'General', crewWord: "Dog", imposterWord: '', hint: "Loyal companion" },
+  { category: 'General', crewWord: "Elephant", imposterWord: '', hint: "Giant with a trunk" },
+  { category: 'General', crewWord: "Giraffe", imposterWord: '', hint: "Very long neck" },
+  { category: 'General', crewWord: "Penguin", imposterWord: '', hint: "Polar bird" },
+  { category: 'General', crewWord: "Lion", imposterWord: '', hint: "King of the jungle" },
+  { category: 'General', crewWord: "Tiger", imposterWord: '', hint: "Striped predator" },
+  { category: 'General', crewWord: "Eagle", imposterWord: '', hint: "Hunter that soars high" },
+  { category: 'General', crewWord: "Owl", imposterWord: '', hint: "Bird of the night" },
+  { category: 'General', crewWord: "Frog", imposterWord: '', hint: "Hopping amphibian" },
+  { category: 'General', crewWord: "Butterfly", imposterWord: '', hint: "Colourful wings" },
+  { category: 'General', crewWord: "Dolphin", imposterWord: '', hint: "Friendly sea mammal" },
+  { category: 'General', crewWord: "Shark", imposterWord: '', hint: "Sharp-toothed fin" },
+  { category: 'General', crewWord: "Octopus", imposterWord: '', hint: "Eight arms" },
+  { category: 'General', crewWord: "Turtle", imposterWord: '', hint: "Slow one with a shell" },
+  { category: 'General', crewWord: "Snake", imposterWord: '', hint: "Slithering reptile" },
+  { category: 'General', crewWord: "Kangaroo", imposterWord: '', hint: "Hops with a pouch" },
+  { category: 'General', crewWord: "Bear", imposterWord: '', hint: "Big forest animal" },
+  { category: 'General', crewWord: "Panda", imposterWord: '', hint: "Black and white bamboo lover" },
+  { category: 'General', crewWord: "Crocodile", imposterWord: '', hint: "River predator" },
+  { category: 'General', crewWord: "Horse", imposterWord: '', hint: "Runs at a gallop" },
+  { category: 'General', crewWord: "Rabbit", imposterWord: '', hint: "Long ears, loves carrots" },
+  { category: 'General', crewWord: "Bee", imposterWord: '', hint: "Stinger that makes honey" },
+  { category: 'General', crewWord: "Bat", imposterWord: '', hint: "Cave flyer" },
+  { category: 'General', crewWord: "Camel", imposterWord: '', hint: "Humped desert animal" },
+  { category: 'General', crewWord: "Spider", imposterWord: '', hint: "Eight legs, spins webs" },
+  { category: 'General', crewWord: "Flamingo", imposterWord: '', hint: "Pink and long-legged" },
+  { category: 'General', crewWord: "Snail", imposterWord: '', hint: "Carries its house on its back" },
+  { category: 'General', crewWord: "Parrot", imposterWord: '', hint: "Colourful talking bird" },
+  { category: 'General', crewWord: "Squirrel", imposterWord: '', hint: "Gathers nuts" },
+  { category: 'General', crewWord: "Pizza", imposterWord: '', hint: "Sliced Italian favourite" },
+  { category: 'General', crewWord: "Hamburger", imposterWord: '', hint: "Patty in a bun" },
+  { category: 'General', crewWord: "Ice Cream", imposterWord: '', hint: "Cold treat in a cone" },
+  { category: 'General', crewWord: "Coffee", imposterWord: '', hint: "Hot drink in a cup" },
+  { category: 'General', crewWord: "Tea", imposterWord: '', hint: "Served in a tulip glass" },
+  { category: 'General', crewWord: "Watermelon", imposterWord: '', hint: "Red seeded summer fruit" },
+  { category: 'General', crewWord: "Banana", imposterWord: '', hint: "Yellow fruit" },
+  { category: 'General', crewWord: "Apple", imposterWord: '', hint: "Red or green fruit" },
+  { category: 'General', crewWord: "Strawberry", imposterWord: '', hint: "Small red and sweet" },
+  { category: 'General', crewWord: "Pasta", imposterWord: '', hint: "Dough dish with sauce" },
+  { category: 'General', crewWord: "Donut", imposterWord: '', hint: "Sweet ring with a hole" },
+  { category: 'General', crewWord: "Croissant", imposterWord: '', hint: "Buttery crescent shape" },
+  { category: 'General', crewWord: "Fries", imposterWord: '', hint: "Crispy yellow strips" },
+  { category: 'General', crewWord: "Lemon", imposterWord: '', hint: "Sour yellow citrus" },
+  { category: 'General', crewWord: "Sushi", imposterWord: '', hint: "Rice wrapped in seaweed" },
+  { category: 'General', crewWord: "Taco", imposterWord: '', hint: "Mexican wrap" },
+  { category: 'General', crewWord: "Chocolate", imposterWord: '', hint: "Cocoa sweet" },
+  { category: 'General', crewWord: "Cake", imposterWord: '', hint: "Birthday dessert" },
+  { category: 'General', crewWord: "Mushroom", imposterWord: '', hint: "Plant with a cap" },
+  { category: 'General', crewWord: "Cheese", imposterWord: '', hint: "Dairy with holes" },
+  { category: 'General', crewWord: "Egg", imposterWord: '', hint: "Shelled hen product" },
+  { category: 'General', crewWord: "Avocado", imposterWord: '', hint: "Green fruit with a big pit" },
+  { category: 'General', crewWord: "Carrot", imposterWord: '', hint: "Orange root vegetable" },
+  { category: 'General', crewWord: "Corn", imposterWord: '', hint: "Yellow kernels on a cob" },
+  { category: 'General', crewWord: "Simit", imposterWord: '', hint: "Sesame ring bread from Turkey" },
+  { category: 'General', crewWord: "Umbrella", imposterWord: '', hint: "Keeps the rain off" },
+  { category: 'General', crewWord: "Glasses", imposterWord: '', hint: "Frame you wear on your eyes" },
+  { category: 'General', crewWord: "Watch", imposterWord: '', hint: "Time on your wrist" },
+  { category: 'General', crewWord: "Key", imposterWord: '', hint: "Metal that opens a lock" },
+  { category: 'General', crewWord: "Scissors", imposterWord: '', hint: "Two blades that cut" },
+  { category: 'General', crewWord: "Toothbrush", imposterWord: '', hint: "Brush for your mouth" },
+  { category: 'General', crewWord: "Candle", imposterWord: '', hint: "Wick that lights a room" },
+  { category: 'General', crewWord: "Guitar", imposterWord: '', hint: "Stringed instrument" },
+  { category: 'General', crewWord: "Backpack", imposterWord: '', hint: "Bag you wear on your back" },
+  { category: 'General', crewWord: "Hammer", imposterWord: '', hint: "Tool that drives nails" },
+  { category: 'General', crewWord: "Smartphone", imposterWord: '', hint: "Touchscreen device" },
+  { category: 'General', crewWord: "Headphones", imposterWord: '', hint: "For listening to music" },
+  { category: 'General', crewWord: "Book", imposterWord: '', hint: "Pages you read" },
+  { category: 'General', crewWord: "Chair", imposterWord: '', hint: "Something to sit on" },
+  { category: 'General', crewWord: "Broom", imposterWord: '', hint: "Handle for sweeping" },
+  { category: 'General', crewWord: "Mirror", imposterWord: '', hint: "Glass that shows a reflection" },
+  { category: 'General', crewWord: "Hat", imposterWord: '', hint: "Worn on the head" },
+  { category: 'General', crewWord: "Comb", imposterWord: '', hint: "Straightens hair" },
+  { category: 'General', crewWord: "Lamp", imposterWord: '', hint: "Shade that gives light" },
+  { category: 'General', crewWord: "Suitcase", imposterWord: '', hint: "Travel bag on wheels" },
+  { category: 'General', crewWord: "Compass", imposterWord: '', hint: "Needle that points the way" },
+  { category: 'General', crewWord: "Telescope", imposterWord: '', hint: "Tube for looking at stars" },
+  { category: 'General', crewWord: "Frying Pan", imposterWord: '', hint: "Pan for cooking" },
+  { category: 'General', crewWord: "Hourglass", imposterWord: '', hint: "Counter with falling sand" },
+  { category: 'General', crewWord: "Microphone", imposterWord: '', hint: "Makes your voice louder" },
+  { category: 'General', crewWord: "Airplane", imposterWord: '', hint: "Winged sky vehicle" },
+  { category: 'General', crewWord: "Bicycle", imposterWord: '', hint: "Two wheels and pedals" },
+  { category: 'General', crewWord: "Helicopter", imposterWord: '', hint: "Flying craft with rotors" },
+  { category: 'General', crewWord: "Ship", imposterWord: '', hint: "Large sea vessel" },
+  { category: 'General', crewWord: "Train", imposterWord: '', hint: "Carriages on rails" },
+  { category: 'General', crewWord: "Rocket", imposterWord: '', hint: "Launched into space" },
+  { category: 'General', crewWord: "Skateboard", imposterWord: '', hint: "Board on wheels" },
+  { category: 'General', crewWord: "Hot Air Balloon", imposterWord: '', hint: "Giant balloon with a basket" },
+  { category: 'General', crewWord: "Submarine", imposterWord: '', hint: "Travels under water" },
+  { category: 'General', crewWord: "Ambulance", imposterWord: '', hint: "Emergency vehicle with a siren" },
+  { category: 'General', crewWord: "Fire Truck", imposterWord: '', hint: "Red vehicle with a ladder" },
+  { category: 'General', crewWord: "Tractor", imposterWord: '', hint: "Big-wheeled field machine" },
+  { category: 'General', crewWord: "Motorcycle", imposterWord: '', hint: "Two wheels with an engine" },
+  { category: 'General', crewWord: "Cable Car", imposterWord: '', hint: "Cabin that climbs on a cable" },
+  { category: 'General', crewWord: "Volcano", imposterWord: '', hint: "Mountain that spews lava" },
+  { category: 'General', crewWord: "Waterfall", imposterWord: '', hint: "Water falling from a height" },
+  { category: 'General', crewWord: "Lighthouse", imposterWord: '', hint: "Lit tower on the shore" },
+  { category: 'General', crewWord: "Pyramid", imposterWord: '', hint: "Egyptian stone triangle" },
+  { category: 'General', crewWord: "Eiffel Tower", imposterWord: '', hint: "Paris landmark of iron" },
+  { category: 'General', crewWord: "Island", imposterWord: '', hint: "Land surrounded by water" },
+  { category: 'General', crewWord: "Desert", imposterWord: '', hint: "Sand dunes and cactus" },
+  { category: 'General', crewWord: "Castle", imposterWord: '', hint: "Stone walls with towers" },
+  { category: 'General', crewWord: "Windmill", imposterWord: '', hint: "Mill with turning blades" },
+  { category: 'General', crewWord: "Bridge", imposterWord: '', hint: "Road linking two banks" },
+  { category: 'General', crewWord: "Tent", imposterWord: '', hint: "Camping shelter" },
+  { category: 'General', crewWord: "Rainbow", imposterWord: '', hint: "Seven colours in the sky" },
+  { category: 'General', crewWord: "Aurora", imposterWord: '', hint: "Light dancing in the sky" },
+  { category: 'General', crewWord: "Cave", imposterWord: '', hint: "Dark hollow in rock" },
+  { category: 'General', crewWord: "Iceberg", imposterWord: '', hint: "Giant ice floating at sea" },
+  { category: 'General', crewWord: "Astronaut", imposterWord: '', hint: "Person in space with a helmet" },
+  { category: 'General', crewWord: "Pirate", imposterWord: '', hint: "Sea bandit with an eyepatch" },
+  { category: 'General', crewWord: "Dragon", imposterWord: '', hint: "Winged beast that breathes fire" },
+  { category: 'General', crewWord: "Wizard", imposterWord: '', hint: "Hat and staff, casts spells" },
+  { category: 'General', crewWord: "Robot", imposterWord: '', hint: "Metal mechanical being" },
+  { category: 'General', crewWord: "Superhero", imposterWord: '', hint: "Caped, masked rescuer" },
+  { category: 'General', crewWord: "Ghost", imposterWord: '', hint: "White floating figure" },
+  { category: 'General', crewWord: "Alien", imposterWord: '', hint: "Green being with a UFO" },
+  { category: 'General', crewWord: "Knight", imposterWord: '', hint: "Armoured warrior with a sword" },
+  { category: 'General', crewWord: "Mermaid", imposterWord: '', hint: "Woman with a fish tail" },
+  { category: 'General', crewWord: "Chef", imposterWord: '', hint: "Master of food in a white hat" },
+  { category: 'General', crewWord: "Snowman", imposterWord: '', hint: "Winter figure with a carrot nose" },
+  { category: 'General', crewWord: "Detective", imposterWord: '', hint: "Solves mysteries with a magnifying glass" },
+  { category: 'General', crewWord: "Mummy", imposterWord: '', hint: "Ancient figure wrapped in bandages" },
+  { category: 'General', crewWord: "Vampire", imposterWord: '', hint: "Fangs and a cape" },
+  { category: 'General', crewWord: "Crown", imposterWord: '', hint: "Ruler who wears a crown" },
+  { category: 'General', crewWord: "Soccer Ball", imposterWord: '', hint: "Leather sphere with black and white patches" },
+  { category: 'General', crewWord: "Basketball", imposterWord: '', hint: "Hoop with a net" },
+  { category: 'General', crewWord: "Tennis Racket", imposterWord: '', hint: "Racket for hitting over a net" },
+  { category: 'General', crewWord: "Boxing Glove", imposterWord: '', hint: "Padded red fist glove" },
+  { category: 'General', crewWord: "Kite", imposterWord: '', hint: "Flies on the wind with a tail" },
+  { category: 'General', crewWord: "Bowling", imposterWord: '', hint: "White pins knocked down by a ball" },
+  { category: 'General', crewWord: "Chess Knight", imposterWord: '', hint: "Piece that moves in an L" },
+  { category: 'General', crewWord: "Gamepad", imposterWord: '', hint: "Controller with buttons" },
+  { category: 'General', crewWord: "Ferris Wheel", imposterWord: '', hint: "Fairground wheel with cabins" },
+  { category: 'General', crewWord: "Treasure Chest", imposterWord: '', hint: "Locked chest full of gold" },
+];
+
+/** Geriye uyum: dil belirtilmeyen eski cagrilar Turkce havuzu gorur. */
+export const VOCABULARY_LIST = VOCABULARY_LIST_TR;
+
+export function getVocabulary(lang: ContentLang = 'tr'): WordPair[] {
+  return lang === 'en' ? VOCABULARY_LIST_EN : VOCABULARY_LIST_TR;
+}
+
 export const CATEGORIES: CategoryInfo[] = [
   {
     id: 'general',
@@ -167,18 +320,19 @@ export const CATEGORIES: CategoryInfo[] = [
     iconName: 'Sparkles',
     description: 'Tüm kategorilerden karışık zengin kelime havuzu',
     color: '#6366F1',
-    pairs: VOCABULARY_LIST,
+    pairs: VOCABULARY_LIST_TR,
   },
 ];
 
-export function getRandomWordPair(categoryId?: string): WordPair {
-  const randomIndex = Math.floor(Math.random() * VOCABULARY_LIST.length);
-  const selected = VOCABULARY_LIST[randomIndex] || VOCABULARY_LIST[0];
+export function getRandomWordPair(categoryId?: string, lang: ContentLang = 'tr'): WordPair {
+  const list = getVocabulary(lang);
+  const randomIndex = Math.floor(Math.random() * list.length);
+  const selected = list[randomIndex] || list[0];
 
   // The imposter receives NO word and NO category clue (blind imposter),
   // ensuring no category leakage or misleading same-category clues!
   return {
-    category: 'Gizli Kelime',
+    category: lang === 'en' ? 'Secret Word' : 'Gizli Kelime',
     crewWord: selected.crewWord,
     imposterWord: '',
     hint: selected.hint,

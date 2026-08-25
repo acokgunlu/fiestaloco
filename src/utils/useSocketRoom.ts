@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { RoomState, LiveStrokeState, Stroke, GameSettings, WordPair, ClientRole, Point } from '../types';
 import { getWsUrl } from './serverUrl';
 
+import { getLang } from '../i18n';
 export function useSocketRoom() {
   const wsRef = useRef<WebSocket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
@@ -187,7 +188,7 @@ export function useSocketRoom() {
 
   const createRoom = useCallback((settings?: Partial<GameSettings>, hostName?: string) => {
     setErrorMessage(null);
-    send('room:create', { settings, hostName });
+    send('room:create', { settings, hostName, lang: getLang() });
   }, [send]);
 
   const joinRoom = useCallback((roomCode: string, role: ClientRole = 'player', playerName?: string, playerColor?: string, avatar?: string) => {

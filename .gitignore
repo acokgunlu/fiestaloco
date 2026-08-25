@@ -14,3 +14,8 @@ coverage/
 # JetBrains IDE
 .idea/
 
+
+# i18n calisma dosyalari — sozlugun KAYNAGI src/i18n/en.ts ve tr.ts.
+# Buradakiler tek seferlik goc araclariydi; sozluk artik dogrudan duzenlenir.
+.i18n-work/
+strings_auto.json

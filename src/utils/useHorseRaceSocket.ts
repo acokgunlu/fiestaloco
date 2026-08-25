@@ -9,6 +9,7 @@ import {
 import { recordMatchResult } from './leaderboardStore';
 import { getWsUrl } from './serverUrl';
 
+import { getLang } from '../i18n';
 export interface UseHorseRaceSocketReturn {
   isConnected: boolean;
   roomCode: string | null;
@@ -196,7 +197,7 @@ export function useHorseRaceSocket(): UseHorseRaceSocketReturn {
   }, []);
 
   const createRoom = useCallback(
-    (settings?: Partial<HorseRaceSettings>) => send({ type: 'race:create_room', settings }),
+    (settings?: Partial<HorseRaceSettings>) => send({ type: 'race:create_room', lang: getLang(), settings }),
     [send]
   );
 

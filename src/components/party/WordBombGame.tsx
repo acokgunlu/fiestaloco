@@ -32,7 +32,7 @@ import {
 } from '../../utils/audio';
 import { useBombSocket } from '../../utils/useBombSocket';
 
-import { t, withLang } from '../../i18n';
+import { t, withLang, getLang } from '../../i18n';
 interface WordBombGameProps {
   onBackToHub: () => void;
 }
@@ -119,7 +119,7 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
       return;
     }
 
-    const prompt = getRandomBombPrompt();
+    const prompt = getRandomBombPrompt([], getLang());
     const randomFuse = Math.floor(16 + Math.random() * 14);
     localInitialDurationRef.current = randomFuse;
 

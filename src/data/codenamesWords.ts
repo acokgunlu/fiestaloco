@@ -1,3 +1,4 @@
+import { ContentLang } from './contentLang';
 export interface CodenamesCard {
   id: string;
   word: string;
@@ -15,7 +16,7 @@ export const CODENAMES_CATEGORIES = [
   { id: 'abstract', name: 'Soyut & Eylemler', icon: '💡', description: 'Duygular, gizemli kavramlar ve fiiller' },
 ];
 
-export const CODENAMES_WORD_BANK: Record<string, string[]> = {
+export const CODENAMES_WORD_BANK_TR: Record<string, string[]> = {
   objects: [
     'ANAHTAR', 'AYNA', 'BOMBA', 'ÇANTA', 'DÜRBÜN', 'FOTOĞRAF', 'GÖZLÜK', 'HARİTA',
     'İĞNE', 'KALE', 'KEMER', 'KOLYE', 'KUTU', 'KÜTÜPHANE', 'LAMBA', 'MASA',
@@ -54,6 +55,61 @@ export const CODENAMES_WORD_BANK: Record<string, string[]> = {
   ],
 };
 
+/**
+ * Ingilizce kelime havuzu — Turkce havuzla AYNI kategoriler ve AYNI boyutlar
+ * (63 / 55 / 56 / 48). Birebir ceviri degil: Codenames'te kelime, uzerinde
+ * kelime oyunu yapilabilen tek parca bir isim olmali; bazi Turkce kelimelerin
+ * birebir karsiligi Ingilizce'de bu isi gormezdi.
+ */
+export const CODENAMES_WORD_BANK_EN: Record<string, string[]> = {
+  objects: [
+    'KEY', 'MIRROR', 'BOMB', 'SUITCASE', 'BINOCULARS', 'PHOTOGRAPH', 'GLASSES', 'MAP', 'NEEDLE', 
+    'CASTLE', 'BELT', 'NECKLACE', 'BOX', 'LIBRARY', 'LAMP', 'TABLE', 'SCISSORS', 'CANDLE', 'NICKEL', 
+    'BATTERY', 'COMPASS', 'RADIO', 'ROCKET', 'CLOCK', 'UMBRELLA', 'BOTTLE', 'PISTOL', 'PHONE', 
+    'TELEGRAPH', 'TRAIN', 'AIRPLANE', 'WAGON', 'ENVELOPE', 'BELL', 'HAMMER', 'HELMET', 'TELESCOPE', 
+    'MICROSCOPE', 'PIANO', 'GUITAR', 'ROBOT', 'CHIP', 'DRONE', 'SATELLITE', 'FLUTE', 'VIOLIN', 
+    'BALLOON', 'GRILL', 'SUBMARINE', 'HELICOPTER', 'MOTORCYCLE', 'PIGGYBANK', 'NOTEBOOK', 'PENCIL', 
+    'CHEST', 'BRIDGE', 'LANTERN', 'TORCH', 'ARMOUR', 'SWORD', 'CORRIDOR', 'LADDER', 'SEAL'
+  ],
+  pop_culture: [
+    'AGENT', 'HERO', 'BATMAN', 'SUPERMAN', 'DETECTIVE', 'MONSTER', 'VAMPIRE', 'ZOMBIE', 'WIZARD', 
+    'WITCH', 'PRINCESS', 'KNIGHT', 'GLADIATOR', 'NINJA', 'SAMURAI', 'PIRATE', 'ALIEN', 'STAR', 
+    'GALAXY', 'MATRIX', 'AVATAR', 'JOKER', 'SHADOW', 'GHOST', 'SPY', 'SIDEKICK', 'MASKED', 
+    'CHAMPION', 'MASTER', 'KING', 'QUEEN', 'SORCERER', 'DRAGON', 'DINOSAUR', 'CYBER', 'HACKER', 
+    'ORACLE', 'MARTIAN', 'ASTRONAUT', 'SCRIPT', 'OSCAR', 'CAMERA', 'COSTUME', 'SLAPSTICK', 'MUSICAL', 
+    'POP', 'LEGEND', 'GAMBLER', 'ALADDIN', 'ROBINHOOD', 'CINDERELLA', 'MUMMY', 'LABYRINTH', 
+    'COMMANDER', 'SEQUEL'
+  ],
+  nature: [
+    'LION', 'TIGER', 'EAGLE', 'FALCON', 'WOLF', 'BEAR', 'PANDA', 'DOLPHIN', 'SHARK', 'WHALE', 
+    'OCTOPUS', 'COBRA', 'CROCODILE', 'GLACIER', 'DESERT', 'FOREST', 'OCEAN', 'RIVER', 'WATERFALL', 
+    'VOLCANO', 'CRATER', 'METEOR', 'SUN', 'MOON', 'LIGHTNING', 'HURRICANE', 'STORM', 'AVALANCHE', 
+    'EARTHQUAKE', 'RAINBOW', 'POLE', 'TUNDRA', 'CAVE', 'SUMMIT', 'ISLAND', 'CANYON', 'CONTINENT', 
+    'SAHARA', 'CORAL', 'HARBOUR', 'REDWOOD', 'SYCAMORE', 'PALM', 'ROSE', 'ORCHID', 'CACTUS', 
+    'MUSHROOM', 'IVY', 'PENGUIN', 'FLAMINGO', 'OWL', 'RABBIT', 'DEER', 'GIRAFFE', 'ELEPHANT', 
+    'RHINO'
+  ],
+  abstract: [
+    'LOVE', 'MYSTERY', 'BETRAYAL', 'JUSTICE', 'FREEDOM', 'FEAR', 'COURAGE', 'TIME', 'ETERNITY', 
+    'LUCK', 'FATE', 'TARGET', 'ALLIANCE', 'PEACE', 'WAR', 'VICTORY', 'DEFEAT', 'PLAN', 'TACTIC', 
+    'DREAM', 'NIGHTMARE', 'MEMORY', 'SECRET', 'DOUBT', 'TRUST', 'PRIDE', 'PASSION', 'AFFECTION', 
+    'POWER', 'ENERGY', 'LIGHT', 'DARKNESS', 'SILENCE', 'CHAOS', 'ORDER', 'BALANCE', 'FANCY', 'TRUTH', 
+    'SPEED', 'PATIENCE', 'WIT', 'INSTINCT', 'DANGER', 'ADVENTURE', 'JOURNEY', 'FUTURE', 'PAST', 
+    'MOMENT'
+  ],
+};
+
+/** Geriye uyum: dil belirtilmeyen eski cagrilar Turkce havuzu gorur. */
+export const CODENAMES_WORD_BANK = CODENAMES_WORD_BANK_TR;
+
+function bankFor(lang: ContentLang) {
+  return lang === 'en' ? CODENAMES_WORD_BANK_EN : CODENAMES_WORD_BANK_TR;
+}
+function allWords(lang: ContentLang) {
+  const b = bankFor(lang);
+  return Array.from(new Set([...b.objects, ...b.pop_culture, ...b.nature, ...b.abstract]));
+}
+
 // Flattened master list
 export const ALL_CODENAMES_WORDS = Array.from(
   new Set([
@@ -64,13 +120,13 @@ export const ALL_CODENAMES_WORDS = Array.from(
   ])
 );
 
-export function getRandomCodenamesWords(count = 25, category = 'all'): string[] {
-  let source = category === 'all' || !CODENAMES_WORD_BANK[category]
-    ? ALL_CODENAMES_WORDS
-    : CODENAMES_WORD_BANK[category];
+export function getRandomCodenamesWords(count = 25, category = 'all', lang: ContentLang = 'tr'): string[] {
+  const bank = bankFor(lang);
+  const all = allWords(lang);
+  let source = category === 'all' || !bank[category] ? all : bank[category];
 
   if (source.length < count) {
-    source = ALL_CODENAMES_WORDS;
+    source = all;
   }
 
   const shuffled = [...source].sort(() => Math.random() - 0.5);
@@ -80,11 +136,12 @@ export function getRandomCodenamesWords(count = 25, category = 'all'): string[] 
 export function generateCodenamesBoard(
   startingTeam: 'red' | 'blue' = 'red',
   category = 'all',
-  customWords?: string[]
+  customWords?: string[],
+  lang: ContentLang = 'tr'
 ): CodenamesCard[] {
   const words = customWords && customWords.length >= 25
     ? customWords.slice(0, 25)
-    : getRandomCodenamesWords(25, category);
+    : getRandomCodenamesWords(25, category, lang);
 
   // Distribution:
   // Starting team: 9

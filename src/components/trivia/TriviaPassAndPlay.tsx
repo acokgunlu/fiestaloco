@@ -7,7 +7,7 @@ import {
   TRIVIA_CATEGORIES,
   TRIVIA_CATEGORY_KEYS,
 } from '../../types/triviaPursuit';
-import { INITIAL_TRIVIA_QUESTIONS, getNextTriviaQuestion } from '../../data/triviaPursuitQuestions';
+import { INITIAL_TRIVIA_QUESTIONS, getTriviaQuestions, getNextTriviaQuestion } from '../../data/triviaPursuitQuestions';
 import { TriviaWedgePie } from './TriviaWedgePie';
 import { TriviaBoard } from './TriviaBoard';
 import {
@@ -39,7 +39,7 @@ import {
 import { motion } from 'motion/react';
 import { playClickSound, playWinSound, playCorrectSound, playWrongSound, playTurnSound } from '../../utils/audio';
 
-import { t } from '../../i18n';
+import { t, getLang } from '../../i18n';
 interface TriviaPassAndPlayProps {
   onBackToLobby?: () => void;
 }
@@ -95,7 +95,7 @@ export const TriviaPassAndPlay: React.FC<TriviaPassAndPlayProps> = ({ onBackToLo
     usedQuestionIds: [],
   });
 
-  const [questionPool, setQuestionPool] = useState<TriviaQuestion[]>([...INITIAL_TRIVIA_QUESTIONS]);
+  const [questionPool, setQuestionPool] = useState<TriviaQuestion[]>([...getTriviaQuestions(getLang())]);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
 
   // --- Tahta durumu -----------------------------------------------------------

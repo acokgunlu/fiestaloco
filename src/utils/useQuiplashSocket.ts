@@ -11,6 +11,7 @@ import { recordMatchResult } from './leaderboardStore';
 import { getWsUrl } from './serverUrl';
 
 import { t } from '../i18n';
+import { getLang } from '../i18n';
 export interface UseQuiplashSocketReturn {
   isConnected: boolean;
   roomCode: string | null;
@@ -249,7 +250,7 @@ export function useQuiplashSocket(): UseQuiplashSocketReturn {
   };
 
   const createRoom = (settings?: Partial<QuiplashSettings>) => {
-    send({ type: 'quiplash:create_room', settings });
+    send({ type: 'quiplash:create_room', lang: getLang(), settings });
   };
 
   const joinRoom = (

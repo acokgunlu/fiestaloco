@@ -20,6 +20,7 @@ import {
 } from './server/persistence';
 import { detectFinishedMatch } from './server/matchResult';
 import { getRandomWordPair, DEFAULT_PLAYER_PALETTE } from './src/data/wordPacks';
+import { ContentLang, asContentLang } from './src/data/contentLang';
 import { Player, Stroke, WordPair, GamePhase, GameSettings, RoundResult, RoomState, Point } from './src/types';
 import { generateCodenamesBoard, CodenamesCard } from './src/data/codenamesWords';
 import {
@@ -109,7 +110,7 @@ import {
   TriviaQuestion,
   TRIVIA_CATEGORY_KEYS,
 } from './src/types/triviaPursuit';
-import { INITIAL_TRIVIA_QUESTIONS, getNextTriviaQuestion } from './src/data/triviaPursuitQuestions';
+import { INITIAL_TRIVIA_QUESTIONS, getTriviaQuestions, getNextTriviaQuestion } from './src/data/triviaPursuitQuestions';
 import { BOMB_PROMPTS, getRandomBombPrompt } from './src/data/bombPrompts';
 import { BLUFF_QUESTIONS, getRandomBluffQuestion } from './src/data/bluffQuestions';
 import {
@@ -130,6 +131,8 @@ interface ConnectedClient {
 
 interface ServerRoom {
   code: string;
+  /** Odanin icerik dili — sorular/kelimeler bu dilde secilir. */
+  lang: ContentLang;
   hostSocketId?: string;
   observers: Set<WebSocket>;
   playerSockets: Map<string, WebSocket>; // playerId -> ws
@@ -151,6 +154,8 @@ interface ServerRoom {
 
 interface CodenamesServerRoom {
   code: string;
+  /** Odanin icerik dili — sorular/kelimeler bu dilde secilir. */
+  lang: ContentLang;
   observers: Set<WebSocket>;
   playerSockets: Map<string, WebSocket>; // playerId -> ws
   players: CodenamesPlayer[];
@@ -160,6 +165,8 @@ interface CodenamesServerRoom {
 
 interface BombServerRoom {
   code: string;
+  /** Odanin icerik dili — sorular/kelimeler bu dilde secilir. */
+  lang: ContentLang;
   observers: Set<WebSocket>;
   playerSockets: Map<string, WebSocket>; // playerId -> ws
   players: BombPlayer[];
@@ -172,6 +179,8 @@ interface BombServerRoom {
 
 interface BluffServerRoom {
   code: string;
+  /** Odanin icerik dili — sorular/kelimeler bu dilde secilir. */
+  lang: ContentLang;
   observers: Set<WebSocket>;
   playerSockets: Map<string, WebSocket>; // playerId -> ws
   players: BluffPlayer[];
@@ -182,6 +191,8 @@ interface BluffServerRoom {
 
 interface TriviaServerRoom {
   code: string;
+  /** Odanin icerik dili — sorular/kelimeler bu dilde secilir. */
+  lang: ContentLang;
   observers: Set<WebSocket>;
   playerSockets: Map<string, WebSocket>; // playerId -> ws
   players: TriviaPursuitPlayer[];
@@ -193,6 +204,8 @@ interface TriviaServerRoom {
 
 interface QuiplashServerRoom {
   code: string;
+  /** Odanin icerik dili — sorular/kelimeler bu dilde secilir. */
+  lang: ContentLang;
   observers: Set<WebSocket>;
   playerSockets: Map<string, WebSocket>; // playerId -> ws
   players: QuiplashPlayer[];
@@ -575,10 +588,10 @@ function startQuiplashWritingRound(room: QuiplashServerRoom) {
   // Each prompt is given to 2 players
   // For P players, we need P prompts
   const promptCount = Math.max(numPlayers, 2);
-  let prompts = getRandomQuiplashPrompts(promptCount, room.gameState.settings.category);
+  let prompts = getRandomQuiplashPrompts(promptCount, room.gameState.settings.category, room.lang);
   prompts = prompts.filter((pr) => !room.usedPromptIds.includes(pr.id));
   if (prompts.length < promptCount) {
-    prompts = getRandomQuiplashPrompts(promptCount, room.gameState.settings.category);
+    prompts = getRandomQuiplashPrompts(promptCount, room.gameState.settings.category, room.lang);
   }
   prompts.forEach((pr) => room.usedPromptIds.push(pr.id));
 
@@ -795,7 +808,7 @@ function resolveCurrentMatchup(room: QuiplashServerRoom) {
 function startLastLashWriting(room: QuiplashServerRoom) {
   clearQuiplashTimers(room);
 
-  const finalPrompt = getRandomLastLashPrompt();
+  const finalPrompt = getRandomLastLashPrompt(room.lang);
   room.gameState.lastLashPrompt = finalPrompt;
   room.gameState.lastLashAnswers = [];
   room.gameState.phase = 'LAST_LASH_WRITING';
@@ -1363,8 +1376,8 @@ function calculateAndRevealBluffScores(room: BluffServerRoom) {
   broadcastBluffRoomState(room, 'bluff:round_results');
 }
 
-function createFreshBombGame(): BombGameState {
-  const prompt = getRandomBombPrompt([]);
+function createFreshBombGame(lang: ContentLang = 'tr'): BombGameState {
+  const prompt = getRandomBombPrompt([], lang);
   return {
     phase: 'LOBBY',
     currentRound: 1,
@@ -1489,7 +1502,7 @@ function startBombServerTicker(room: BombServerRoom) {
 
 
 
-function createFreshCodenamesGame(settings?: Partial<CodenamesSettings>): CodenamesGameState {
+function createFreshCodenamesGame(settings?: Partial<CodenamesSettings>, lang: ContentLang = 'tr'): CodenamesGameState {
   const fullSettings: CodenamesSettings = {
     startingTeam: settings?.startingTeam || 'random',
     category: settings?.category || 'all',
@@ -1504,7 +1517,7 @@ function createFreshCodenamesGame(settings?: Partial<CodenamesSettings>): Codena
         : 'blue'
       : fullSettings.startingTeam;
 
-  const board = generateCodenamesBoard(starting, fullSettings.category);
+  const board = generateCodenamesBoard(starting, fullSettings.category, undefined, lang);
   const redCount = board.filter((c) => c.type === 'red').length;
   const blueCount = board.filter((c) => c.type === 'blue').length;
 
@@ -2853,13 +2866,16 @@ Return strictly JSON:
 
   // Trivia Pursuit Dynamic AI Question Generator (Non-repeating)
   app.post('/api/trivia-pursuit/generate-questions', async (req, res) => {
+    // AI kapaliysa VEYA hata verirse yedek sorular odanin dilinden gelmeli.
+    // try'in DISINDA: catch blogu da bu degeri kullaniyor.
+    const reqLang = asContentLang((req.body || {}).lang);
     try {
       const apiKey = process.env.GEMINI_API_KEY;
       const { category, count = 6, difficulty = 'balanced' } = req.body || {};
 
       if (!apiKey) {
         // Return fallback fresh questions from built-in pool
-        const shuffled = [...INITIAL_TRIVIA_QUESTIONS]
+        const shuffled = [...getTriviaQuestions(reqLang)]
           .sort(() => Math.random() - 0.5)
           .slice(0, count)
           .map((q) => ({
@@ -2926,7 +2942,7 @@ Return strictly a JSON array matching this schema:
     } catch (err: any) {
       console.error('Gemini Trivia generation error:', err?.message || err);
       // Return safe fallback
-      const fallbackQuestions = [...INITIAL_TRIVIA_QUESTIONS]
+      const fallbackQuestions = [...getTriviaQuestions(reqLang)]
         .sort(() => Math.random() - 0.5)
         .slice(0, 6)
         .map((q) => ({
@@ -3584,10 +3600,12 @@ Return strictly a JSON array matching this schema:
         // 1. CREATE BOMB ROOM (TV / Observer Host)
         else if (type === 'bomb:create_room') {
           const roomCode = generateRoomCode();
-          const initialGameState = createFreshBombGame();
+          const initialGameState = createFreshBombGame(asContentLang(data.lang));
 
           const newRoom: BombServerRoom = {
             code: roomCode,
+
+            lang: asContentLang(data.lang),
             observers: new Set([ws]),
             playerSockets: new Map(),
             players: [],
@@ -3698,7 +3716,7 @@ Return strictly a JSON array matching this schema:
             });
           }
 
-          const prompt = getRandomBombPrompt(room.usedPromptIds);
+          const prompt = getRandomBombPrompt(room.usedPromptIds, room.lang);
           room.usedPromptIds.push(prompt.id);
 
           const randomFuse = Math.floor(18 + Math.random() * 14);
@@ -3783,7 +3801,7 @@ Return strictly a JSON array matching this schema:
           }
 
           room.gameState.currentRound += 1;
-          const prompt = getRandomBombPrompt(room.usedPromptIds);
+          const prompt = getRandomBombPrompt(room.usedPromptIds, room.lang);
           room.usedPromptIds.push(prompt.id);
 
           const randomFuse = Math.floor(18 + Math.random() * 14);
@@ -3824,7 +3842,7 @@ Return strictly a JSON array matching this schema:
             p.wordsUsed = [];
           });
 
-          room.gameState = createFreshBombGame();
+          room.gameState = createFreshBombGame(room.lang);
           broadcastBombRoomState(room);
         }
 
@@ -3839,6 +3857,8 @@ Return strictly a JSON array matching this schema:
 
           const newRoom: BluffServerRoom = {
             code: roomCode,
+
+            lang: asContentLang(data.lang),
             observers: new Set([ws]),
             playerSockets: new Map(),
             players: [],
@@ -3966,7 +3986,7 @@ Return strictly a JSON array matching this schema:
 
           clearBluffTimers(room);
 
-          const q = getRandomBluffQuestion(room.usedQuestionIds);
+          const q = getRandomBluffQuestion(room.usedQuestionIds, room.lang);
           room.usedQuestionIds.push(q.id);
 
           room.players.forEach((p) => {
@@ -4185,7 +4205,7 @@ Return strictly a JSON array matching this schema:
             broadcastBluffRoomState(room, 'bluff:game_over');
           } else {
             room.gameState.currentRound += 1;
-            const q = getRandomBluffQuestion(room.usedQuestionIds);
+            const q = getRandomBluffQuestion(room.usedQuestionIds, room.lang);
             room.usedQuestionIds.push(q.id);
 
             room.players.forEach((p) => {
@@ -4278,12 +4298,14 @@ Return strictly a JSON array matching this schema:
 
           const newRoom: TriviaServerRoom = {
             code: roomCode,
+
+            lang: asContentLang(data.lang),
             observers: new Set([ws]),
             playerSockets: new Map(),
             players: [],
             gameState: initialGameState,
             usedQuestionIds: [],
-            questionPool: [...INITIAL_TRIVIA_QUESTIONS],
+            questionPool: [...getTriviaQuestions(asContentLang(data.lang))],
             roundTimer: null,
           };
 
@@ -4707,6 +4729,8 @@ Return strictly a JSON array matching this schema:
 
           const newRoom: QuiplashServerRoom = {
             code: roomCode,
+
+            lang: asContentLang(data.lang),
             observers: new Set([ws]),
             playerSockets: new Map(),
             players: [],
@@ -5010,10 +5034,12 @@ Return strictly a JSON array matching this schema:
         // 1. CREATE CODENAMES ROOM (TV / Observer Host)
         else if (type === 'codenames:create_room') {
           const roomCode = generateRoomCode();
-          const initialGameState = createFreshCodenamesGame(data.settings);
+          const initialGameState = createFreshCodenamesGame(data.settings, asContentLang(data.lang));
 
           const newRoom: CodenamesServerRoom = {
             code: roomCode,
+
+            lang: asContentLang(data.lang),
             observers: new Set([ws]),
             playerSockets: new Map(),
             players: [],
@@ -5253,7 +5279,7 @@ Return strictly a JSON array matching this schema:
           const room = codenamesRooms.get(client.roomCode);
           if (!room) return;
 
-          const freshState = createFreshCodenamesGame(data.settings || room.gameState.settings);
+          const freshState = createFreshCodenamesGame(data.settings || room.gameState.settings, room.lang);
           room.gameState = freshState;
           broadcastCodenamesRoomState(room);
         }
@@ -5265,9 +5291,11 @@ Return strictly a JSON array matching this schema:
         // CREATE ROOM (Host / Observer Screen)
         else if (type === 'room:create') {
           const roomCode = generateRoomCode();
-          const initialPair = getRandomWordPair();
+          const roomLang = asContentLang(data.lang);
+          const initialPair = getRandomWordPair(undefined, roomLang);
           const newRoom: ServerRoom = {
             code: roomCode,
+            lang: roomLang,
             observers: new Set([ws]),
             playerSockets: new Map(),
             players: [
@@ -5463,7 +5491,7 @@ Return strictly a JSON array matching this schema:
           if (!room) return;
 
           clearRoomTimers(room);
-          const pair = data.customPair || getRandomWordPair(room.settings.category);
+          const pair = data.customPair || getRandomWordPair(room.settings.category, room.lang);
           room.currentWordPair = pair;
           room.strokes = [];
           room.votes = {};
@@ -5620,7 +5648,7 @@ Return strictly a JSON array matching this schema:
 
           clearRoomTimers(room);
           room.currentRoundNumber += 1;
-          const pair = getRandomWordPair(room.settings.category);
+          const pair = getRandomWordPair(room.settings.category, room.lang);
           room.currentWordPair = pair;
           room.strokes = [];
           room.votes = {};

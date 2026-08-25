@@ -19,7 +19,7 @@ import {
 import { playClickSound, playTurnSound } from '../utils/audio';
 import { getApiUrl } from '../utils/serverUrl';
 
-import { t } from '../i18n';
+import { t, getLang } from '../i18n';
 interface LobbyViewProps {
   players: Player[];
   onUpdatePlayers: (players: Player[]) => void;
@@ -131,14 +131,14 @@ export const LobbyView: React.FC<LobbyViewProps> = ({
         setAiFeedback(`Generated: "${pair.crewWord}" vs "${pair.imposterWord}" (${pair.category})`);
       } else {
         // Fallback local random tricky pair
-        const pair = getRandomWordPair();
+        const pair = getRandomWordPair(undefined, getLang());
         setCustomCategory(pair.category);
         setCustomCrewWord(pair.crewWord);
         setCustomImposterWord(pair.imposterWord);
         setAiFeedback(`Picked from word bank: "${pair.crewWord}" vs "${pair.imposterWord}"`);
       }
     } catch {
-      const pair = getRandomWordPair();
+      const pair = getRandomWordPair(undefined, getLang());
       setCustomCategory(pair.category);
       setCustomCrewWord(pair.crewWord);
       setCustomImposterWord(pair.imposterWord);

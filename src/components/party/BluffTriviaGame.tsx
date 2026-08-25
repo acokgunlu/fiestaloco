@@ -28,7 +28,7 @@ import {
 } from '../../utils/audio';
 import { useBluffSocket } from '../../utils/useBluffSocket';
 
-import { t, withLang } from '../../i18n';
+import { t, withLang, getLang } from '../../i18n';
 interface BluffTriviaGameProps {
   onBackToHub: () => void;
 }
@@ -126,7 +126,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
   // =========================================================================
   const startLocalRound = () => {
     playTurnSound();
-    const q = getRandomBluffQuestion(localUsedQuestionIds);
+    const q = getRandomBluffQuestion(localUsedQuestionIds, getLang());
     setLocalUsedQuestionIds((prev) => [...prev, q.id]);
 
     setLocalPlayers((prev) =>

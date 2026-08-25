@@ -1,6 +1,7 @@
+import { ContentLang } from './contentLang';
 import { BluffQuestion } from '../types/partyGames';
 
-export const BLUFF_QUESTIONS: BluffQuestion[] = [
+export const BLUFF_QUESTIONS_TR: BluffQuestion[] = [
   {
     id: 'bluff_1',
     category: 'Tuhaf Tarih',
@@ -143,10 +144,166 @@ export const BLUFF_QUESTIONS: BluffQuestion[] = [
   },
 ];
 
-export function getRandomBluffQuestion(excludeIds: string[] = []): BluffQuestion {
-  const available = BLUFF_QUESTIONS.filter((q) => !excludeIds.includes(q.id));
+/**
+ * Ingilizce soru havuzu — Turkce havuzla AYNI id'ler ve AYNI sira.
+ * Sorular kulture bagli olmadigi icin (Isvicre kobay yasasi, vombat diskisi,
+ * CIA'in akustik kedisi) birebir aktarilabildi; id'lerin ayni olmasi
+ * 'kullanilmis soru' takibinin iki dilde de calismasini sagliyor.
+ */
+export const BLUFF_QUESTIONS_EN: BluffQuestion[] = [
+  {
+    id: 'bluff_1',
+    category: "Odd History",
+    prompt: "In 18th-century England, some aristocrats hired a live [...] to sit in their gardens and lend the grounds a mystical, wise atmosphere.",
+    realAnswer: "Hermit",
+    defaultFakes: ["Panda", "Fortune-telling parrot", "Dwarf sculptor", "Court jester", "Crocodile"],
+  },
+  {
+    id: 'bluff_2',
+    category: "Laws of the World",
+    prompt: "Under Swiss animal welfare law it is illegal to keep a single [...] on its own, in case it gets lonely and depressed.",
+    realAnswer: "Guinea pig",
+    defaultFakes: ["Goldfish", "Chameleon", "Budgie", "Tortoise", "Hamster"],
+  },
+  {
+    id: 'bluff_3',
+    category: "Curious Animals",
+    prompt: "The droppings of the Australian wombat are the only ones in the world shaped like a [...], so they don't roll away.",
+    realAnswer: "Cube (square)",
+    defaultFakes: ["Pyramid", "Ring (doughnut)", "Star", "Cylinder", "Heart"],
+  },
+  {
+    id: 'bluff_4',
+    category: "Strange Inventions",
+    prompt: "In the 1960s the CIA's 'Acoustic Kitty' project implanted a [...] inside a cat to eavesdrop on Soviet embassies.",
+    realAnswer: "Microphone",
+    defaultFakes: ["Sleeping-gas capsule", "Poison needle", "Miniature camera", "GPS transmitter", "Tape recorder"],
+  },
+  {
+    id: 'bluff_5',
+    category: "History & Culture",
+    prompt: "In ancient Rome, the sweat and grime scraped off gladiators was collected and sold to wealthy Roman women as [...].",
+    realAnswer: "Skin cream",
+    defaultFakes: ["A love potion", "Holy wine flavouring", "A battle charm", "Tooth whitener", "Paint for evil-eye beads"],
+  },
+  {
+    id: 'bluff_6',
+    category: "Popular Science",
+    prompt: "When ketchup first went on sale in 1830s America it wasn't sold as a sauce at all, but as [...].",
+    realAnswer: "Medicine for diarrhoea",
+    defaultFakes: ["Toothpaste", "Hair gel", "Wound ointment", "Insect repellent", "Eye drops"],
+  },
+  {
+    id: 'bluff_7',
+    category: "Strange Customs",
+    prompt: "In Denmark, anyone still unmarried at 25 gets bags of [...] tipped over them in the street by their friends.",
+    realAnswer: "Cinnamon",
+    defaultFakes: ["Flour and eggs", "Mustard", "Tomato sauce", "Icing sugar", "Coffee beans"],
+  },
+  {
+    id: 'bluff_8',
+    category: "Space & Nature",
+    prompt: "The crushing pressure in the atmospheres of Saturn and Jupiter means it quite literally rains [...] there.",
+    realAnswer: "Diamonds",
+    defaultFakes: ["Liquid gold", "Emerald dust", "Ice sculptures", "Sulphur", "Pure silver"],
+  },
+  {
+    id: 'bluff_9',
+    category: "Strange Laws",
+    prompt: "By law, at least 35% of the songs played on Canadian radio must be [...].",
+    realAnswer: "By Canadian artists",
+    defaultFakes: ["Sung in French", "Clean and acoustic", "Featuring a guitar solo", "Advert-free", "Backed by classical music"],
+  },
+  {
+    id: 'bluff_10',
+    category: "Curious History",
+    prompt: "In 1923 jockey Frank Hayes suffered a fatal heart attack mid-race, yet his horse crossed the line first — making him [...].",
+    realAnswer: "The first dead jockey to win a race",
+    defaultFakes: ["The first jockey stripped of his medal", "A hero carried by his horse", "The fastest jockey in history", "A rider who got his own statue", "The man who left his trophy to his horse"],
+  },
+  {
+    id: 'bluff_11',
+    category: "Strange Sports",
+    prompt: "At a traditional annual race in England, competitors hurl themselves down a steep hill chasing a rolling [...].",
+    realAnswer: "Wheel of cheese",
+    defaultFakes: ["Giant watermelon", "Wooden barrel", "Royal crown", "Bronze cannonball", "Golden bell"],
+  },
+  {
+    id: 'bluff_12',
+    category: "Nature & Animals",
+    prompt: "Flamingos stand on one leg even while sleeping and resting, because doing so [...].",
+    realAnswer: "Keeps their body heat in",
+    defaultFakes: ["Hides them from crocodiles", "Wakes them up faster", "Strengthens their muscles", "Balances them against the wind"],
+  },
+  {
+    id: 'bluff_13',
+    category: "Cinema & Art",
+    prompt: "For the blood in the famous shower scene in Psycho, director Alfred Hitchcock used [...].",
+    realAnswer: "Chocolate syrup",
+    defaultFakes: ["Cherry jam", "Red ink", "Tomato paste", "Beetroot juice", "Red-dyed gel"],
+  },
+  {
+    id: 'bluff_14',
+    category: "History & War",
+    prompt: "Liechtenstein's army marched off to the 1866 Austro-Prussian war with 80 soldiers and came home [...].",
+    realAnswer: "With 81 men",
+    defaultFakes: ["Without a single casualty", "With only one man left", "Having captured the enemy general", "Without firing a shot"],
+  },
+  {
+    id: 'bluff_15',
+    category: "Food & Kitchen",
+    prompt: "Fredric Baur, who invented the Pringles tube and the crisp's curved shape, asked in his will that his ashes be buried in [...].",
+    realAnswer: "A Pringles tube",
+    defaultFakes: ["A potato field", "Frying oil", "The foundations of the crisp factory", "A giant salt shaker"],
+  },
+  {
+    id: 'bluff_16',
+    category: "Surprising Science",
+    prompt: "Octopuses have 3 hearts and 9 brains, and because of copper-based haemocyanin their blood is [...].",
+    realAnswer: "Blue",
+    defaultFakes: ["Green", "Yellow", "Purple", "Clear / white"],
+  },
+  {
+    id: 'bluff_17',
+    category: "Tech History",
+    prompt: "In 1999 Google's founders Larry Page and Sergey Brin tried to sell the company to Excite for $750,000, but Excite's CEO [...].",
+    realAnswer: "Thought the price was too high",
+    defaultFakes: ["Didn't like the name", "Lost the money at a casino", "Mistook Google for a virus", "Demanded a partnership instead"],
+  },
+  {
+    id: 'bluff_18',
+    category: "History & Kings",
+    prompt: "On his doctor's advice, King Louis XIV of France took a bath just [...] times in his entire life.",
+    realAnswer: "3",
+    defaultFakes: ["1", "12", "0 (never)", "35"],
+  },
+  {
+    id: 'bluff_19',
+    category: "World Cultures",
+    prompt: "Because of the traditional calendar used in Ethiopia, a year there is made up of [...] months.",
+    realAnswer: "13",
+    defaultFakes: ["10", "14", "8", "16"],
+  },
+  {
+    id: 'bluff_20',
+    category: "Space & Flight",
+    prompt: "With no wind or rain on the Moon, Neil Armstrong's footprint will stay undisturbed for at least [...].",
+    realAnswer: "100 million years",
+    defaultFakes: ["1,000 years", "50,000 years", "Forever", "1 million years"],
+  },
+];
+
+/** Geriye uyum: dil belirtilmeyen eski cagrilar Turkce havuzu gorur. */
+export const BLUFF_QUESTIONS = BLUFF_QUESTIONS_TR;
+
+export function getBluffQuestions(lang: ContentLang = 'tr'): BluffQuestion[] {
+  return lang === 'en' ? BLUFF_QUESTIONS_EN : BLUFF_QUESTIONS_TR;
+}
+
+export function getRandomBluffQuestion(excludeIds: string[] = [], lang: ContentLang = 'tr'): BluffQuestion {
+  const available = getBluffQuestions(lang).filter((q) => !excludeIds.includes(q.id));
   if (available.length === 0) {
-    return BLUFF_QUESTIONS[Math.floor(Math.random() * BLUFF_QUESTIONS.length)];
+    return getBluffQuestions(lang)[Math.floor(Math.random() * getBluffQuestions(lang).length)];
   }
   return available[Math.floor(Math.random() * available.length)];
 }

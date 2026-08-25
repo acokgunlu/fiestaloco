@@ -40,7 +40,7 @@ import { useSocketRoom } from './utils/useSocketRoom';
 import { useCodenamesSocket } from './utils/useCodenamesSocket';
 import { isSoundEnabled, toggleSound } from './utils/audio';
 import { useAppTheme } from './utils/theme';
-import { subscribe as subscribeLang, getSnapshot as langSnapshot } from './i18n';
+import { subscribe as subscribeLang, getSnapshot as langSnapshot, getLang } from './i18n';
 
 import { t } from './i18n';
 export default function App() {
@@ -152,7 +152,7 @@ export default function App() {
           : 'blue'
         : settings.startingTeam;
 
-    const newBoard = generateCodenamesBoard(starting, settings.category);
+    const newBoard = generateCodenamesBoard(starting, settings.category, undefined, getLang());
     const redCount = newBoard.filter((c) => c.type === 'red').length;
     const blueCount = newBoard.filter((c) => c.type === 'blue').length;
 
@@ -240,7 +240,7 @@ export default function App() {
 
   const [gamePhase, setGamePhase] = useState<GamePhase>('LOBBY');
   const [currentRoundNumber, setCurrentRoundNumber] = useState(1);
-  const [currentWordPair, setCurrentWordPair] = useState<WordPair>(getRandomWordPair());
+  const [currentWordPair, setCurrentWordPair] = useState<WordPair>(getRandomWordPair(undefined, getLang()));
   const [strokes, setStrokes] = useState<Stroke[]>([]);
   const [roundResult, setRoundResult] = useState<RoundResult | null>(null);
 
@@ -279,7 +279,7 @@ export default function App() {
 
   // Local Imposter game lifecycle handlers
   const startNewGameRound = (customPair?: WordPair) => {
-    const pair = customPair || getRandomWordPair(settings.category);
+    const pair = customPair || getRandomWordPair(settings.category, getLang());
     setCurrentWordPair(pair);
     setStrokes([]);
     setRoundResult(null);

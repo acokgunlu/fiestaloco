@@ -3,6 +3,7 @@ import { ColoryGameState, ColoryPlayer, ColorySettings, Hsl } from '../types/col
 import { recordMatchResult } from './leaderboardStore';
 import { getWsUrl } from './serverUrl';
 
+import { getLang } from '../i18n';
 export interface UseColorySocketReturn {
   isConnected: boolean;
   roomCode: string | null;
@@ -208,7 +209,7 @@ export function useColorySocket(): UseColorySocketReturn {
   }, []);
 
   const createRoom = useCallback(
-    (settings?: Partial<ColorySettings>) => send({ type: 'colory:create_room', settings }),
+    (settings?: Partial<ColorySettings>) => send({ type: 'colory:create_room', lang: getLang(), settings }),
     [send]
   );
   const joinRoom = useCallback(
@@ -222,7 +223,7 @@ export function useColorySocket(): UseColorySocketReturn {
     (playerName: string, avatar = '🎨', color = '#8b5cf6', colorName = 'Mor',
      settings?: Partial<ColorySettings>) => {
       pendingJoinRef.current = { playerName, avatar, color, colorName };
-      send({ type: 'colory:create_room', settings });
+      send({ type: 'colory:create_room', lang: getLang(), settings });
     },
     [send]
   );

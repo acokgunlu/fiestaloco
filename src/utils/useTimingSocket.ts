@@ -3,6 +3,7 @@ import { TimingGameState, TimingPlayer, TimingSettings } from '../types/timing';
 import { recordMatchResult } from './leaderboardStore';
 import { getWsUrl } from './serverUrl';
 
+import { getLang } from '../i18n';
 export interface UseTimingSocketReturn {
   isConnected: boolean;
   roomCode: string | null;
@@ -236,7 +237,7 @@ export function useTimingSocket(): UseTimingSocketReturn {
   }, []);
 
   const createRoom = useCallback(
-    (settings?: Partial<TimingSettings>) => send({ type: 'timing:create_room', settings }),
+    (settings?: Partial<TimingSettings>) => send({ type: 'timing:create_room', lang: getLang(), settings }),
     [send]
   );
   const joinRoom = useCallback(
@@ -262,7 +263,7 @@ export function useTimingSocket(): UseTimingSocketReturn {
       settings?: Partial<TimingSettings>
     ) => {
       pendingJoinRef.current = { playerName, avatar, color, colorName };
-      send({ type: 'timing:create_room', settings });
+      send({ type: 'timing:create_room', lang: getLang(), settings });
     },
     [send]
   );

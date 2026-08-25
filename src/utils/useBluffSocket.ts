@@ -11,6 +11,7 @@ import {
 import { getWsUrl } from './serverUrl';
 
 import { t } from '../i18n';
+import { getLang } from '../i18n';
 export interface UseBluffSocketReturn {
   isConnected: boolean;
   roomCode: string | null;
@@ -286,7 +287,7 @@ export function useBluffSocket(): UseBluffSocketReturn {
     (totalRounds: number = 3) => {
       setErrorMessage(null);
       send({
-        type: 'bluff:create_room',
+        type: 'bluff:create_room', lang: getLang(),
         totalRounds,
       });
     },

@@ -11,6 +11,7 @@ import { recordMatchResult } from './leaderboardStore';
 import { getApiUrl, getWsUrl } from './serverUrl';
 
 import { t } from '../i18n';
+import { getLang } from '../i18n';
 export function useTriviaPursuitSocket() {
   const [isConnected, setIsConnected] = useState(false);
   const [roomCode, setRoomCode] = useState<string | null>(null);
@@ -287,7 +288,7 @@ export function useTriviaPursuitSocket() {
     (settings?: Partial<TriviaPursuitSettings>) => {
       setErrorMessage(null);
       send({
-        type: 'trivia:create_room',
+        type: 'trivia:create_room', lang: getLang(),
         settings,
       });
     },
@@ -378,7 +379,7 @@ export function useTriviaPursuitSocket() {
         const res = await fetch(getApiUrl('/api/trivia-pursuit/generate-questions'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ category, count: 6 }),
+          body: JSON.stringify({ category, count: 6, lang: getLang() }),
         });
         const data = await res.json();
         if (data.questions && data.questions.length > 0) {

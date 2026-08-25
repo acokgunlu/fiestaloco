@@ -19,6 +19,7 @@ import {
 import { getWsUrl } from './serverUrl';
 
 import { t } from '../i18n';
+import { getLang } from '../i18n';
 export interface UseCodenamesSocketReturn {
   isConnected: boolean;
   roomCode: string | null;
@@ -247,7 +248,7 @@ export function useCodenamesSocket(): UseCodenamesSocketReturn {
   const createRoom = useCallback(
     (settings?: Partial<CodenamesSettings>) => {
       send({
-        type: 'codenames:create_room',
+        type: 'codenames:create_room', lang: getLang(),
         settings,
       });
     },

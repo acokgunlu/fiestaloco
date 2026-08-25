@@ -156,15 +156,15 @@ export const PlayerControllerView: React.FC<PlayerControllerViewProps> = ({
                 roomState.myIsImposter ? 'bg-rose-500/30 text-rose-300' : 'bg-emerald-500/30 text-emerald-300'
               }`}
             >
-              {roomState.myRoleTitle}
+              {t(roomState.myRoleTitle || '')}
             </span>
           </div>
 
           <div className="text-2xl sm:text-3xl font-black text-indigo-300 py-1">
-            {roomState.myAssignedWord}
+            {t(roomState.myAssignedWord || '')}
           </div>
 
-          <p className="text-[11px] text-slate-300">{roomState.myRoleDescription}</p>
+          <p className="text-[11px] text-slate-300">{t(roomState.myRoleDescription || '')}</p>
 
           <button
             onClick={() => setIsSecretCardRevealed(false)}
@@ -269,12 +269,12 @@ export const PlayerControllerView: React.FC<PlayerControllerViewProps> = ({
                     roomState.myIsImposter ? 'bg-rose-500/30 text-rose-300' : 'bg-emerald-500/30 text-emerald-300'
                   }`}
                 >
-                  {roomState.myRoleTitle}
+                  {t(roomState.myRoleTitle || '')}
                 </span>
                 <div className="text-2xl sm:text-3xl font-black text-white">
-                  {roomState.myAssignedWord}
+                  {t(roomState.myAssignedWord || '')}
                 </div>
-                <p className="text-xs text-slate-300 max-w-xs">{roomState.myRoleDescription}</p>
+                <p className="text-xs text-slate-300 max-w-xs">{t(roomState.myRoleDescription || '')}</p>
                 <div className="text-[10px] text-slate-400 dark:text-slate-500 underline pt-2">{t('Kapatmak için dokun')}</div>
               </div>
             )}
