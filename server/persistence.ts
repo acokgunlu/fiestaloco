@@ -86,7 +86,8 @@ export type PersistedGameType =
   | 'quiplash'
   | 'race'
   | 'colory'
-  | 'timing';
+  | 'timing'
+  | 'viraj';
 
 // -----------------------------------------------------------------------------
 // Leaderboard / mac gecmisi

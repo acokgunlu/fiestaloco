@@ -64,6 +64,8 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
         return '🎨';
       case 'timing':
         return '⏱️';
+      case 'viraj':
+        return '🏎️';
       default:
         return '🎮';
     }
@@ -87,6 +89,8 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
         return 'Colory';
       case 'timing':
         return t('Tam Zamanında');
+      case 'viraj':
+        return t('Viraj');
       default:
         return 'Parti Merkezi';
     }
@@ -110,6 +114,8 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
         return t('Rengi hatırla, en yakınını bul');
       case 'timing':
         return t('İçinden say, tam vaktinde bas');
+      case 'viraj':
+        return t('Pist yarışı · her virajda tek karar');
       default:
         return t('Çok oyunculu parti oyunları');
     }

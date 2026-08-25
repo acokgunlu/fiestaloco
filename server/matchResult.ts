@@ -26,6 +26,7 @@ const GAME_META: Record<PersistedGameType, { title: string; icon: string }> = {
   race: { title: 'At Yarışı', icon: '🏇' },
   colory: { title: 'Colory', icon: '🎨' },
   timing: { title: 'Tam Zamanında', icon: '⏱️' },
+  viraj: { title: 'Viraj', icon: '🏎️' },
 };
 
 type AnyPlayer = Record<string, any>;
@@ -154,7 +155,7 @@ export function detectFinishedMatch(gameType: PersistedGameType, room: AnyRoom):
   // ---------------------------------------------------------------------------
   // COLORY / TAM ZAMANINDA — en yuksek toplam puan kazanir
   // ---------------------------------------------------------------------------
-  if (gameType === 'colory' || gameType === 'timing') {
+  if (gameType === 'colory' || gameType === 'timing' || gameType === 'viraj') {
     if (gs.phase !== 'GAME_OVER') return null;
     const winnerId = gs.winnerPlayerId ? String(gs.winnerPlayerId) : null;
 

@@ -146,7 +146,7 @@ export function MainArcadeHub({
             </div>
           </div>
           <span className="hidden sm:inline-flex px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 text-xs font-black border border-indigo-200 dark:border-indigo-800">
-            {t('9 Canlı Modül')}</span>
+            {t('10 Canlı Modül')}</span>
         </div>
 
         {/* 7 Distinct Game Cards Grid */}
@@ -615,6 +615,66 @@ export function MainArcadeHub({
               >
                 <Play className="w-4 h-4 fill-white" />
                 <span>{t('BUTONU AL')}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* GAME 9: VIRAJ (PIST YARISI) */}
+          <div
+            id="card-game-viraj"
+            className="bg-white dark:bg-slate-900 rounded-3xl p-6 border-3 border-rose-100 dark:border-slate-800 hover:border-rose-400 dark:hover:border-rose-500 shadow-md hover:shadow-xl transition-all duration-200 flex flex-col justify-between group game-card-pop relative overflow-hidden"
+          >
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-500 via-orange-500 to-amber-400 text-white flex items-center justify-center text-2xl font-black shadow-md border-2 border-white dark:border-slate-700">
+                  🏎️
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="px-2.5 py-1 rounded-full bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-300 text-[11px] font-black border border-rose-300 dark:border-rose-800">
+                    {t('PİST YARIŞI')}
+                  </span>
+                  <span className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[11px] font-bold">
+                    {t('2-10 Oyuncu')}
+                  </span>
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <h3 className="text-xl font-black text-slate-900 dark:text-white group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
+                  {t('Viraj')}
+                </h3>
+                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
+                  {t('Her virajda herkes aynı anda gizlice bir çizgi seçer: güvenli, normal ya da dibine kadar. Saldırmak hızlandırır ama lastikleri ısıtır — ısındıkça hata kaçınılmaz olur. Ne zaman soğutacağını bilmek yarışı kazandırır.')}
+                </p>
+              </div>
+
+              <div className="flex flex-wrap gap-1.5 pt-1">
+                <span className="px-2 py-0.5 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 text-[10px] font-bold">
+                  📺 {t('TV Host')}
+                </span>
+                <span className="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-bold">
+                  🔥 {t('Lastik Isısı')}
+                </span>
+                <span className="px-2 py-0.5 rounded-lg bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300 text-[10px] font-bold">
+                  🏁 {t('Şampiyona')}
+                </span>
+                <span className="px-2 py-0.5 rounded-lg bg-violet-50 dark:bg-violet-950 text-violet-700 dark:text-violet-300 text-[10px] font-bold">
+                  ♾️ {t('Her Yarış Yeni Pist')}
+                </span>
+              </div>
+            </div>
+
+            <div className="pt-6">
+              <button
+                id="btn-launch-viraj"
+                onClick={() => {
+                  playTurnSound();
+                  onSelectGame('viraj');
+                }}
+                className="w-full py-3.5 bg-gradient-to-r from-rose-600 to-orange-600 hover:from-rose-500 hover:to-orange-500 text-white font-black text-xs rounded-2xl shadow-md btn-party flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <Play className="w-4 h-4 fill-white" />
+                <span>{t('DİREKSİYONA GEÇ')}</span>
               </button>
             </div>
           </div>
