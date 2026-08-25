@@ -3077,6 +3077,13 @@ Return strictly a JSON array matching this schema:
             player.connected = true;
           }
 
+          // Ayni soket hem gozlemci hem oyuncu OLAMAZ. TV'siz modda telefon
+          // once odayi kuruyor (gozlemci), hemen ardindan oyuncu olarak
+          // katiliyor; bu satir olmazsa soket iki listede birden kalir ve
+          // her durum guncellemesini iki farkli yukle iki kez alir
+          // (gozlemci yuku myPlayer/myPressed tasimadigi icin kendi
+          // durumunu sifirliyor).
+          room.observers.delete(ws);
           room.playerSockets.set(player.id, ws);
           clientMap.set(ws, { ws, roomCode, role: 'player', playerId: player.id, gameType: 'timing' });
           // Yeni oyuncunun gecikmesi olculmeye baslasin — ilk turuna kadar
@@ -3279,6 +3286,13 @@ Return strictly a JSON array matching this schema:
             player.connected = true;
           }
 
+          // Ayni soket hem gozlemci hem oyuncu OLAMAZ. TV'siz modda telefon
+          // once odayi kuruyor (gozlemci), hemen ardindan oyuncu olarak
+          // katiliyor; bu satir olmazsa soket iki listede birden kalir ve
+          // her durum guncellemesini iki farkli yukle iki kez alir
+          // (gozlemci yuku myPlayer/myPressed tasimadigi icin kendi
+          // durumunu sifirliyor).
+          room.observers.delete(ws);
           room.playerSockets.set(player.id, ws);
           clientMap.set(ws, { ws, roomCode, role: 'player', playerId: player.id, gameType: 'colory' });
           ws.send(
@@ -3453,6 +3467,13 @@ Return strictly a JSON array matching this schema:
             player.connected = true;
           }
 
+          // Ayni soket hem gozlemci hem oyuncu OLAMAZ. TV'siz modda telefon
+          // once odayi kuruyor (gozlemci), hemen ardindan oyuncu olarak
+          // katiliyor; bu satir olmazsa soket iki listede birden kalir ve
+          // her durum guncellemesini iki farkli yukle iki kez alir
+          // (gozlemci yuku myPlayer/myPressed tasimadigi icin kendi
+          // durumunu sifirliyor).
+          room.observers.delete(ws);
           room.playerSockets.set(player.id, ws);
           clientMap.set(ws, { ws, roomCode, role: 'player', playerId: player.id, gameType: 'race' });
           ws.send(
@@ -3902,6 +3923,13 @@ Return strictly a JSON array matching this schema:
             room.players.push(player);
           }
 
+          // Ayni soket hem gozlemci hem oyuncu OLAMAZ. TV'siz modda telefon
+          // once odayi kuruyor (gozlemci), hemen ardindan oyuncu olarak
+          // katiliyor; bu satir olmazsa soket iki listede birden kalir ve
+          // her durum guncellemesini iki farkli yukle iki kez alir
+          // (gozlemci yuku myPlayer/myPressed tasimadigi icin kendi
+          // durumunu sifirliyor).
+          room.observers.delete(ws);
           room.playerSockets.set(player.id, ws);
           clientMap.set(ws, {
             ws,
@@ -4327,7 +4355,14 @@ Return strictly a JSON array matching this schema:
               room.players.push(player);
             }
 
-            room.playerSockets.set(player.id, ws);
+            // Ayni soket hem gozlemci hem oyuncu OLAMAZ. TV'siz modda telefon
+          // once odayi kuruyor (gozlemci), hemen ardindan oyuncu olarak
+          // katiliyor; bu satir olmazsa soket iki listede birden kalir ve
+          // her durum guncellemesini iki farkli yukle iki kez alir
+          // (gozlemci yuku myPlayer/myPressed tasimadigi icin kendi
+          // durumunu sifirliyor).
+          room.observers.delete(ws);
+          room.playerSockets.set(player.id, ws);
             clientMap.set(ws, {
               ws,
               roomCode,

@@ -13,6 +13,11 @@ export interface UseColorySocketReturn {
   players: ColoryPlayer[];
   errorMessage: string | null;
   createRoom: (settings?: Partial<ColorySettings>) => void;
+  /** TV YOK modu: odayı kuran telefon aynı anda oyuncu olur. */
+  createAndJoin: (
+    playerName: string, avatar?: string, color?: string, colorName?: string,
+    settings?: Partial<ColorySettings>
+  ) => void;
   joinRoom: (
     roomCode: string,
     playerName: string,
@@ -39,6 +44,10 @@ export function useColorySocket(): UseColorySocketReturn {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const socketRef = useRef<WebSocket | null>(null);
+  /** createAndJoin: room_created gelir gelmez oyuncu olarak katılmak için. */
+  const pendingJoinRef = useRef<null | {
+    playerName: string; avatar: string; color: string; colorName: string;
+  }>(null);
   const recordedRef = useRef<string | null>(null);
   const pingRef = useRef<number | null>(null);
   const reconnectRef = useRef<number | null>(null);
@@ -98,11 +107,31 @@ export function useColorySocket(): UseColorySocketReturn {
 
           if (type === 'colory:room_created') {
             setRoomCode(msg.roomCode);
-            setClientRole('observer');
             sessionRef.current.roomCode = msg.roomCode;
-            sessionRef.current.role = 'observer';
             setGameState(msg.gameState);
             setPlayers(msg.players || []);
+
+            const pending = pendingJoinRef.current;
+            if (pending) {
+              // TV YOK modu: kuran telefon hemen oyuncuya dönüşüyor. Sunucu
+              // join sırasında bu soketi gözlemci listesinden çıkarır; yoksa
+              // soket iki listede kalıp her güncellemeyi iki farklı yükle alır.
+              pendingJoinRef.current = null;
+              sessionRef.current = {
+                ...sessionRef.current, role: 'player',
+                playerName: pending.playerName, avatar: pending.avatar,
+                color: pending.color, colorName: pending.colorName,
+              };
+              ws.send(JSON.stringify({
+                type: 'colory:join_room', roomCode: msg.roomCode,
+                playerName: pending.playerName, name: pending.playerName,
+                avatar: pending.avatar, color: pending.color,
+                colorName: pending.colorName, role: 'player',
+              }));
+            } else {
+              setClientRole('observer');
+              sessionRef.current.role = 'observer';
+            }
             return;
           }
           if (type === 'colory:room_joined') {
@@ -189,12 +218,21 @@ export function useColorySocket(): UseColorySocketReturn {
     },
     [send]
   );
+  const createAndJoin = useCallback(
+    (playerName: string, avatar = '🎨', color = '#8b5cf6', colorName = 'Mor',
+     settings?: Partial<ColorySettings>) => {
+      pendingJoinRef.current = { playerName, avatar, color, colorName };
+      send({ type: 'colory:create_room', settings });
+    },
+    [send]
+  );
   const startGame = useCallback(() => send({ type: 'colory:start_game' }), [send]);
   const submitGuess = useCallback((hsl: Hsl) => send({ type: 'colory:submit_guess', hsl }), [send]);
   const nextRound = useCallback(() => send({ type: 'colory:next_round' }), [send]);
   const restartGame = useCallback(() => send({ type: 'colory:restart_game' }), [send]);
   const leaveRoom = useCallback(() => {
     sessionRef.current = {};
+    pendingJoinRef.current = null;
     setRoomCode(null); setClientRole(null); setMyPlayer(null);
     setMyGuess(null); setGameState(null); setPlayers([]);
     recordedRef.current = null;
@@ -202,6 +240,6 @@ export function useColorySocket(): UseColorySocketReturn {
 
   return {
     isConnected, roomCode, clientRole, myPlayer, myGuess, gameState, players, errorMessage,
-    createRoom, joinRoom, startGame, submitGuess, nextRound, restartGame, leaveRoom,
+    createRoom, createAndJoin, joinRoom, startGame, submitGuess, nextRound, restartGame, leaveRoom,
   };
 }

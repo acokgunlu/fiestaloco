@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { AlertTriangle, Check, LogOut, Target } from 'lucide-react';
+import { AlertTriangle, Check, Copy, LogOut, Play, RotateCcw, Target, Users } from 'lucide-react';
 import { TimingGameState, TimingPlayer } from '../../types/timing';
 import { formatError, formatSec, modeHint, modeLabel } from '../../data/timingLogic';
 import { TimingTimeline } from './TimingTimeline';
 
-import { t } from '../../i18n';
+import { t, withLang } from '../../i18n';
 interface Props {
   roomCode: string;
   myPlayer: TimingPlayer | null;
@@ -14,14 +14,27 @@ interface Props {
   errorMessage?: string | null;
   onPress: () => void;
   onLeave: () => void;
+  /**
+   * TV YOK modu: bu telefon odayı kurdu, kontroller onda.
+   * TV'li odalarda false — yoksa hem TV'de hem telefonda iki ayrı
+   * "BAŞLAT" butonu olurdu.
+   */
+  hostControls?: boolean;
+  onStartGame?: () => void;
+  onNextRound?: () => void;
+  onRestartGame?: () => void;
 }
 
 export const TimingControllerView: React.FC<Props> = ({
   roomCode, myPlayer, myPressed, gameState, players, errorMessage, onPress, onLeave,
+  hostControls = false, onStartGame, onNextRound, onRestartGame,
 }) => {
   const isNoOver = gameState.mode === 'NO_OVER';
   const myResult = gameState.results?.find((r) => r.playerId === myPlayer?.id);
   const byScore = [...players].sort((a, b) => b.score - a.score);
+  const shareUrl = typeof window === 'undefined'
+    ? ''
+    : withLang(`${window.location.origin}${window.location.pathname}?game=timing&room=${roomCode}`);
   const inRound = !myPlayer || gameState.activePlayerIds.length === 0
     ? true
     : gameState.activePlayerIds.includes(myPlayer.id);
@@ -72,8 +85,51 @@ export const TimingControllerView: React.FC<Props> = ({
       {gameState.phase === 'LOBBY' && (
         <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 shadow-lg text-center space-y-3">
           <div className="text-4xl">⏱️</div>
-          <h3 className="text-lg font-black">{t('Hazırsın!')}</h3>
-          <p className="text-xs font-bold text-slate-500 dark:text-slate-400">{t('TV ekranından başlaması bekleniyor…')}</p>
+          {hostControls ? (
+            <>
+              <h3 className="text-lg font-black">{t('Oda hazır — arkadaşlarını çağır')}</h3>
+              <div className="p-3 rounded-2xl bg-slate-900 dark:bg-slate-950 border-2 border-amber-400">
+                <p className="text-[10px] font-black uppercase tracking-widest text-amber-400">{t('ODA KODU')}</p>
+                <p className="font-mono font-black text-3xl tracking-[0.3em] text-white">{roomCode}</p>
+              </div>
+              <button
+                onClick={() => {
+                  try { navigator.clipboard?.writeText(shareUrl); } catch { /* izin yok */ }
+                }}
+                className="w-full py-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs font-black flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <Copy className="w-3.5 h-3.5" /> {t('Bağlantıyı Kopyala')}
+              </button>
+            </>
+          ) : (
+            <>
+              <h3 className="text-lg font-black">{t('Hazırsın!')}</h3>
+              <p className="text-xs font-bold text-slate-500 dark:text-slate-400">{t('Odayı kuranın başlatması bekleniyor…')}</p>
+            </>
+          )}
+
+          <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-left space-y-2">
+            <div className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400">
+              <Users className="w-3.5 h-3.5" /> {t('Oyuncular ({a})', { a: players.length })}
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {players.map((p) => (
+                <span key={p.id} className={`px-2.5 py-1 rounded-xl text-xs font-black border ${
+                  p.id === myPlayer?.id
+                    ? 'bg-sky-100 dark:bg-sky-950 border-sky-300 dark:border-sky-800'
+                    : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700'}`}>
+                  {p.avatar} {p.name}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {hostControls && (
+            <button onClick={onStartGame} disabled={players.length < 1}
+              className="w-full py-4 rounded-2xl bg-gradient-to-r from-sky-600 via-indigo-600 to-violet-600 text-white font-black text-base shadow-xl active:scale-95 transition-transform disabled:opacity-40 flex items-center justify-center gap-2 cursor-pointer">
+              <Play className="w-5 h-5" /> {t('BAŞLAT')}
+            </button>
+          )}
           <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-left text-xs space-y-1 font-medium text-slate-600 dark:text-slate-300">
             <p>{t('1️⃣ Bir hedef süre açıklanır — "tam 10 saniye" gibi.')}</p>
             <p>{t('2️⃣ Geri sayım biter, telefon titrer. Hiçbir yerde sayaç YOK.')}</p>
@@ -199,6 +255,19 @@ export const TimingControllerView: React.FC<Props> = ({
 
           {gameState.phase === 'GAME_OVER' && gameState.winnerPlayerId === myPlayer?.id && (
             <p className="text-sm font-black text-amber-500">{t('🏆 Zaman senin işine bakıyor!')}</p>
+          )}
+
+          {hostControls && gameState.phase === 'REVEAL' && (
+            <button onClick={onNextRound}
+              className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-sky-600 to-violet-600 text-white font-black shadow-lg active:scale-95 transition-transform cursor-pointer">
+              {t('SONRAKİ TUR →')}
+            </button>
+          )}
+          {hostControls && gameState.phase === 'GAME_OVER' && (
+            <button onClick={onRestartGame}
+              className="w-full py-3.5 rounded-2xl bg-slate-900 dark:bg-slate-800 text-white font-black text-sm shadow-lg active:scale-95 transition-transform inline-flex items-center justify-center gap-2 cursor-pointer">
+              <RotateCcw className="w-4 h-4" /> {t('YENİDEN OYNA')}
+            </button>
           )}
         </div>
       )}

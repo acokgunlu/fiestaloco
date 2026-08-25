@@ -13,6 +13,17 @@ export interface UseTimingSocketReturn {
   players: TimingPlayer[];
   errorMessage: string | null;
   createRoom: (settings?: Partial<TimingSettings>) => void;
+  /**
+   * TV YOK modu: odayı kuran telefon aynı anda oyuncu olur.
+   * Önce create_room (gözlemci), room_created gelince hemen join_room (oyuncu).
+   */
+  createAndJoin: (
+    playerName: string,
+    avatar?: string,
+    color?: string,
+    colorName?: string,
+    settings?: Partial<TimingSettings>
+  ) => void;
   joinRoom: (
     roomCode: string,
     playerName: string,
@@ -39,6 +50,10 @@ export function useTimingSocket(): UseTimingSocketReturn {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const socketRef = useRef<WebSocket | null>(null);
+  /** createAndJoin: room_created gelir gelmez oyuncu olarak katılmak için. */
+  const pendingJoinRef = useRef<null | {
+    playerName: string; avatar: string; color: string; colorName: string;
+  }>(null);
   const recordedRef = useRef<string | null>(null);
   const pingRef = useRef<number | null>(null);
   const reconnectRef = useRef<number | null>(null);
@@ -113,11 +128,38 @@ export function useTimingSocket(): UseTimingSocketReturn {
 
           if (type === 'timing:room_created') {
             setRoomCode(msg.roomCode);
-            setClientRole('observer');
             sessionRef.current.roomCode = msg.roomCode;
-            sessionRef.current.role = 'observer';
             setGameState(msg.gameState);
             setPlayers(msg.players || []);
+
+            const pending = pendingJoinRef.current;
+            if (pending) {
+              // TV YOK modu: kuran telefon hemen oyuncuya dönüşüyor.
+              // Sunucu join sırasında bu soketi gözlemci listesinden çıkarıyor,
+              // yoksa her güncelleme iki kez ve iki farklı yükle gelirdi.
+              pendingJoinRef.current = null;
+              sessionRef.current = {
+                ...sessionRef.current,
+                role: 'player',
+                playerName: pending.playerName,
+                avatar: pending.avatar,
+                color: pending.color,
+                colorName: pending.colorName,
+              };
+              ws.send(JSON.stringify({
+                type: 'timing:join_room',
+                roomCode: msg.roomCode,
+                playerName: pending.playerName,
+                name: pending.playerName,
+                avatar: pending.avatar,
+                color: pending.color,
+                colorName: pending.colorName,
+                role: 'player',
+              }));
+            } else {
+              setClientRole('observer');
+              sessionRef.current.role = 'observer';
+            }
             return;
           }
           if (type === 'timing:room_joined') {
@@ -211,6 +253,19 @@ export function useTimingSocket(): UseTimingSocketReturn {
     },
     [send]
   );
+  const createAndJoin = useCallback(
+    (
+      playerName: string,
+      avatar = '⏱️',
+      color = '#0ea5e9',
+      colorName = 'Mavi',
+      settings?: Partial<TimingSettings>
+    ) => {
+      pendingJoinRef.current = { playerName, avatar, color, colorName };
+      send({ type: 'timing:create_room', settings });
+    },
+    [send]
+  );
   const startGame = useCallback(() => send({ type: 'timing:start_game' }), [send]);
   const press = useCallback(() => {
     // Yerel geri bildirim aninda: sunucunun yaniti beklenirse buton "olmus"
@@ -222,6 +277,7 @@ export function useTimingSocket(): UseTimingSocketReturn {
   const restartGame = useCallback(() => send({ type: 'timing:restart_game' }), [send]);
   const leaveRoom = useCallback(() => {
     sessionRef.current = {};
+    pendingJoinRef.current = null;
     setRoomCode(null); setClientRole(null); setMyPlayer(null);
     setMyPressed(false); setGameState(null); setPlayers([]);
     recordedRef.current = null;
@@ -229,6 +285,6 @@ export function useTimingSocket(): UseTimingSocketReturn {
 
   return {
     isConnected, roomCode, clientRole, myPlayer, myPressed, gameState, players, errorMessage,
-    createRoom, joinRoom, startGame, press, nextRound, restartGame, leaveRoom,
+    createRoom, createAndJoin, joinRoom, startGame, press, nextRound, restartGame, leaveRoom,
   };
 }

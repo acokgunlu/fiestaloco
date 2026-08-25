@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowLeft, Smartphone, Tv } from 'lucide-react';
+import { ArrowLeft, Smartphone, Tv, Users } from 'lucide-react';
 import { useColorySocket } from '../../utils/useColorySocket';
 import { ColoryTvView } from '../colory/ColoryTvView';
 import { ColoryControllerView } from '../colory/ColoryControllerView';
@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const ColoryGame: React.FC<Props> = ({ onBackToHub }) => {
-  const [mode, setMode] = useState<'lobby' | 'host' | 'join'>('lobby');
+  const [mode, setMode] = useState<'lobby' | 'host' | 'join' | 'phonehost'>('lobby');
   const [code, setCode] = useState('');
   const [name, setName] = useState('');
   const [palette, setPalette] = useState(DEFAULT_PLAYER_PALETTE[0]);
@@ -40,7 +40,9 @@ export const ColoryGame: React.FC<Props> = ({ onBackToHub }) => {
     );
   }
 
-  if (mode === 'join' && socket.myPlayer && socket.gameState) {
+  // TV'li odada telefon = sadece palet. TV YOK modunda odayi kuran telefon
+  // hem oynar hem yonetir (hostControls).
+  if ((mode === 'join' || mode === 'phonehost') && socket.myPlayer && socket.gameState) {
     return (
       <ColoryControllerView
         roomCode={socket.roomCode || ''}
@@ -51,6 +53,10 @@ export const ColoryGame: React.FC<Props> = ({ onBackToHub }) => {
         errorMessage={t(socket.errorMessage)}
         onSubmitGuess={socket.submitGuess}
         onLeave={() => { socket.leaveRoom(); setMode('lobby'); }}
+        hostControls={mode === 'phonehost'}
+        onStartGame={socket.startGame}
+        onNextRound={socket.nextRound}
+        onRestartGame={socket.restartGame}
       />
     );
   }
@@ -77,7 +83,7 @@ export const ColoryGame: React.FC<Props> = ({ onBackToHub }) => {
       </div>
 
       {mode === 'lobby' ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           <div className="flex flex-col justify-between p-7 rounded-3xl bg-white dark:bg-slate-900/80 hover:bg-slate-50 dark:hover:bg-slate-900 border-2 border-fuchsia-500/30 hover:border-fuchsia-500/70 shadow-2xl transition-all group">
             <div>
               <div className="w-14 h-14 rounded-2xl bg-fuchsia-100 dark:bg-fuchsia-600/20 text-fuchsia-600 dark:text-fuchsia-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
@@ -90,6 +96,27 @@ export const ColoryGame: React.FC<Props> = ({ onBackToHub }) => {
             <button onClick={() => { playClickSound(); setMode('host'); socket.createRoom(); }}
               className="mt-6 w-full py-3.5 rounded-2xl bg-gradient-to-r from-fuchsia-600 to-violet-600 text-white font-black text-sm shadow-xl hover:scale-105 transition-all flex items-center justify-center gap-2 cursor-pointer">
               <Tv className="w-4 h-4" />  {t('TV ODANI KUR')}</button>
+          </div>
+
+          {/*
+            TV YOK MODU — tek telefondan oda.
+            Paylasilan ekran olmadigi icin hedef renk, geri sayim ve sonuc
+            karsilastirmasi herkesin kendi telefonunda gosteriliyor.
+          */}
+          <div className="flex flex-col justify-between p-7 rounded-3xl bg-white dark:bg-slate-900/80 hover:bg-slate-50 dark:hover:bg-slate-900 border-2 border-emerald-500/30 hover:border-emerald-500/70 shadow-2xl transition-all group">
+            <div>
+              <div className="w-14 h-14 rounded-2xl bg-emerald-100 dark:bg-emerald-600/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <Users className="w-7 h-7" />
+              </div>
+              <h3 className="text-xl font-black mb-2">{t('TV Yok — Tek Telefondan')}</h3>
+              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                {t('Paylaşılan ekran gerekmez. Odayı telefonundan kur, arkadaşların kendi telefonlarından katılsın; herkes aynı anda oynar.')}
+              </p>
+            </div>
+            <button onClick={() => { playClickSound(); setMode('phonehost'); }}
+              className="mt-6 w-full py-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-black text-sm shadow-xl hover:scale-105 transition-all flex items-center justify-center gap-2 cursor-pointer">
+              <Users className="w-4 h-4" /> {t('ODAYI TELEFONDAN KUR')}
+            </button>
           </div>
 
           <div className="flex flex-col justify-between p-7 rounded-3xl bg-white dark:bg-slate-900/80 hover:bg-slate-50 dark:hover:bg-slate-900 border-2 border-cyan-500/30 hover:border-cyan-500/70 shadow-2xl transition-all group">
@@ -109,7 +136,7 @@ export const ColoryGame: React.FC<Props> = ({ onBackToHub }) => {
       ) : (
         <div className="w-full max-w-md mx-auto p-8 rounded-3xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 shadow-2xl">
           <div className="flex items-center justify-between pb-4 mb-6 border-b border-slate-200 dark:border-slate-800">
-            <h3 className="text-lg font-black">{t('Telefondan Odaya Katıl')}</h3>
+            <h3 className="text-lg font-black">{mode === 'phonehost' ? t('Odayı Kur') : t('Telefondan Odaya Katıl')}</h3>
             <button onClick={() => setMode('lobby')} className="text-xs text-slate-500 dark:text-slate-400 font-bold cursor-pointer">{t('İptal')}</button>
           </div>
           {socket.errorMessage && (
@@ -119,15 +146,23 @@ export const ColoryGame: React.FC<Props> = ({ onBackToHub }) => {
           )}
           <form onSubmit={(e) => {
               e.preventDefault();
-              if (!code.trim() || !name.trim()) return;
+              if (!name.trim()) return;
+              if (mode === 'phonehost') {
+                playClickSound();
+                socket.createAndJoin(name.trim(), palette.avatar, palette.color, palette.name);
+                return;
+              }
+              if (!code.trim()) return;
               playClickSound();
               socket.joinRoom(code.trim().toUpperCase(), name.trim(), palette.avatar, palette.color, palette.name, 'player');
             }} className="space-y-4">
+            {mode !== 'phonehost' && (
             <div>
               <label className="block text-[11px] font-bold uppercase text-slate-500 dark:text-slate-400 mb-1">{t('Oda Kodu')}</label>
               <input value={code} onChange={(e) => setCode(e.target.value.toUpperCase())} placeholder={t('ÖRN: FISH90')} required
                 className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-fuchsia-600 dark:text-fuchsia-400 font-mono font-black text-lg uppercase tracking-widest text-center focus:outline-none focus:border-fuchsia-400" />
             </div>
+            )}
             <div>
               <label className="block text-[11px] font-bold uppercase text-slate-500 dark:text-slate-400 mb-1">{t('Adınız')}</label>
               <input value={name} onChange={(e) => setName(e.target.value)} placeholder={t('Adınızı yazın…')} required
@@ -146,7 +181,7 @@ export const ColoryGame: React.FC<Props> = ({ onBackToHub }) => {
             </div>
             <button type="submit" disabled={!socket.isConnected}
               className="w-full mt-6 py-4 rounded-2xl bg-gradient-to-r from-fuchsia-600 via-violet-600 to-cyan-500 text-white font-black text-base shadow-xl hover:scale-105 active:scale-95 transition-all disabled:opacity-50 cursor-pointer">
-              {!socket.isConnected ? t('Bağlanıyor…') : t('PALETİ AÇ')}
+              {!socket.isConnected ? t('Bağlanıyor…') : mode === 'phonehost' ? t('ODAYI AÇ') : t('PALETİ AÇ')}
             </button>
           </form>
         </div>

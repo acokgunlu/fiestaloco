@@ -5,5 +5,14 @@
   "Oyuncular ({a})": "Players ({a})",
   "{a} MODU": "{a} MODE",
   "{a}x Seri": "{a}x Streak",
-  "Kamerayla okutun veya {host} adresine girip {code} yazın.": "Scan it with your camera, or go to {host} and enter {code}."
+  "Kamerayla okutun veya {host} adresine girip {code} yazın.": "Scan it with your camera, or go to {host} and enter {code}.",
+  "TV Yok — Tek Telefondan": "No TV — From One Phone",
+  "Paylaşılan ekran gerekmez. Odayı telefonundan kur, arkadaşların kendi telefonlarından katılsın; herkes aynı anda oynar.": "No shared screen needed. Set the room up on your phone, let your friends join from theirs, and everyone plays at the same time.",
+  "ODAYI TELEFONDAN KUR": "SET UP THE ROOM ON YOUR PHONE",
+  "Odayı Kur": "Set Up the Room",
+  "ODAYI AÇ": "OPEN THE ROOM",
+  "Oda hazır — arkadaşlarını çağır": "Room's ready — call your friends over",
+  "Odayı kuranın başlatması bekleniyor…": "Waiting for the host to start…",
+  "1️⃣ Ekranında bir renk çıkacak — iyi bak.": "1️⃣ A colour will appear on your screen — look carefully.",
+  "Renk kaybolduğunda aynısını seçmeye çalış": "When the colour disappears, try to pick the same one"
 }
