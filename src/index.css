@@ -13,7 +13,8 @@
 
 @layer base {
   body {
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    /* Tasarımın metin fontu Nunito; başlıklar .font-display ile Baloo 2. */
+    font-family: 'Nunito', 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     touch-action: manipulation;
     /* Çıkartma dili: kâğıt zemin + nokta dokusu (tasarım 1b).
        Renkler TOKEN'DAN geliyor, sabit değil: `.dark body` diye ikinci bir
@@ -559,4 +560,49 @@
 @media (prefers-reduced-motion: reduce) {
   .sticker-tilt, .sticker-btn { transition: none; }
   .sticker-tilt:hover { transform: none !important; }
+}
+
+/* =============================================================================
+ * ORTAK SÖZ DAĞARCIĞININ ÇIKARTMA DİLİNE ÇEVRİLMESİ
+ * =============================================================================
+ * Oyun ekranları (57 dosya, ~21.000 satır) aynı küçük kalıbı tekrarlıyor:
+ * beyaz panel + yumuşak gölge + gradyan buton. Bu kalıpların 21.000 satır
+ * içinde regex'le değiştirilmesi kırılgan; onun yerine kalıpların GÖRSEL
+ * KARŞILIĞI burada yeniden tanımlanıyor. Tailwind bu sınıfları `utilities`
+ * katmanında üretiyor, bu blok da aynı katmanda ve DAHA SONRA geldiği için
+ * kazanıyor — `!important` gerekmiyor.
+ *
+ * Kapsam bilinçli olarak dar: yalnızca gölge ve kenarlık. Renk ve yerleşim
+ * ekranın kendi işi, onlara dokunulmuyor.
+ * ========================================================================== */
+@layer utilities {
+  /* Bulanık gölge çıkartma dilinde yok; sert ofset gölgeye çevriliyor. */
+  .shadow-md  { box-shadow: 3px 3px 0 var(--sticker-ink); }
+  .shadow-lg  { box-shadow: 4px 4px 0 var(--sticker-ink); }
+  .shadow-xl  { box-shadow: 5px 5px 0 var(--sticker-ink); }
+  .shadow-2xl { box-shadow: 6px 6px 0 var(--sticker-ink); }
+  .shadow-sm, .shadow-xs { box-shadow: 2px 2px 0 var(--sticker-ink); }
+
+  /* Panel yüzeyi ve konturu tema token'larına bağlanıyor: ekranlar
+     `bg-white dark:bg-slate-900` yazmaya devam ediyor, sonuç çıkartma oluyor. */
+  .bg-white { background-color: var(--sticker-surface); }
+  .border-slate-200, .border-slate-300 { border-color: var(--sticker-ink); }
+}
+
+.dark .bg-white { background-color: var(--sticker-surface); }
+.dark .border-slate-700, .dark .border-slate-800 { border-color: var(--sticker-ink); }
+
+@layer utilities {
+  /*
+   * GRADYAN YOK.
+   * Çıkartma dili düz renk + kontur üzerine kurulu; gradyan onu bozuyor.
+   * Ekranlarda 174 gradyan butonu var ve hepsini elle düzenlemek yerine
+   * gradyan KENDİ İLK DURAĞINA düzleştiriliyor: renk niyeti korunuyor,
+   * geçiş kayboluyor. `background-image: none` demek olmazdı — buton
+   * arka planı çoğu yerde saydam ve düğme görünmez olurdu.
+   * `bg-clip-text` hariç: orada gradyan yazının kendisi.
+   */
+  [class*="bg-gradient-to-"]:not(.bg-clip-text) {
+    background-image: linear-gradient(var(--tw-gradient-from), var(--tw-gradient-from));
+  }
 }
