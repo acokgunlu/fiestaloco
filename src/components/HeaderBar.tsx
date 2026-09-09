@@ -124,7 +124,8 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
   return (
     <header
       id="game-header-bar"
-      className="w-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 sticky top-0 z-30 px-3 sm:px-6 py-2.5 shadow-xs transition-colors"
+      className="w-full sticky top-0 z-30 px-3 sm:px-6 py-2.5 font-body"
+      style={{ background: 'var(--sticker-surface)', borderBottom: '3px solid var(--sticker-ink)', color: 'var(--sticker-ink)' }}
     >
       <div className="max-w-6xl mx-auto flex items-center justify-between">
         {/* Brand Logo & Name */}
@@ -134,7 +135,8 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
               playClickSound();
               if (onSelectGameHub) onSelectGameHub();
             }}
-            className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 via-rose-500 to-indigo-600 flex items-center justify-center shadow-md shadow-rose-500/20 text-white font-black text-lg ring-2 ring-amber-500/30 transition-transform active:scale-95 cursor-pointer"
+            className="w-10 h-10 rounded-xl flex items-center justify-center font-display text-lg cursor-pointer sticker-btn"
+            style={{ background: '#ff5d8f', color: '#fff', borderWidth: '2.5px', boxShadow: '3px 3px 0 var(--sticker-ink)', transform: 'rotate(-6deg)' }}
             title={t('FiestaLoco Ana Menü')}
           >
             {getGameIcon()}
@@ -146,18 +148,19 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
                   playClickSound();
                   if (onSelectGameHub) onSelectGameHub();
                 }}
-                className="text-base sm:text-lg font-black tracking-tight text-slate-900 dark:text-white leading-tight hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer"
+                className="text-lg sm:text-xl font-display leading-tight cursor-pointer"
               >
-                Fiesta<span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-rose-600">Loco</span>
+                Fiesta<span style={{ color: '#ff5d8f' }}>Loco</span>
               </h1>
-              <span className="hidden xs:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
+              <span className="hidden xs:inline-flex items-center gap-1 px-2.5 py-0.5 sticker-pill text-[10px] uppercase tracking-wider"
+                style={{ background: '#ffd93d', color: '#1c1917' }}>
                 <Sparkles className="w-2.5 h-2.5 text-indigo-500" />
                 <span>
                   {getGameTitle()}
                 </span>
               </span>
             </div>
-            <p className="text-[10px] sm:text-xs font-semibold text-slate-500 dark:text-slate-400 flex items-center gap-1.5 mt-0.5">
+            <p className="text-[10px] sm:text-xs font-bold flex items-center gap-1.5 mt-0.5" style={{ color: 'var(--sticker-ink-soft)' }}>
               <span>
                 {getGameSubtitle()}
               </span>
@@ -171,7 +174,8 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
 
         {/* Phase Indicator Badge (For Imposter Line) */}
         {activeModule === 'imposter' && phase !== 'LOBBY' && (
-          <div className="hidden md:flex items-center gap-2 bg-slate-100/90 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 px-3.5 py-1.5 rounded-full text-xs font-bold text-slate-700 dark:text-slate-300 shadow-xs">
+          <div className="hidden md:flex items-center gap-2 sticker-pill px-3.5 py-1.5 text-xs"
+            style={{ background: 'var(--sticker-surface)', color: 'var(--sticker-ink)' }}>
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-xs" />
             <span>
               {phase === 'WORD_REVEAL' && t('Rol & Kelime Kartı Aşaması')}
@@ -193,7 +197,8 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
                 playClickSound();
                 onSelectGameHub();
               }}
-              className="px-2.5 py-1.5 sm:px-3 rounded-xl text-indigo-700 dark:text-indigo-300 hover:text-indigo-900 dark:hover:text-white bg-indigo-50 dark:bg-indigo-950/80 hover:bg-indigo-100 dark:hover:bg-indigo-900 border border-indigo-200 dark:border-indigo-800 transition-all flex items-center gap-1.5 text-xs font-black shadow-xs cursor-pointer active:scale-95"
+              className="px-2.5 py-1.5 sm:px-3 sticker-btn flex items-center gap-1.5 text-xs font-black"
+              style={{ background: 'var(--sticker-surface)', color: 'var(--sticker-ink)', borderWidth: '2.5px', borderRadius: '999px', boxShadow: '2px 2px 0 var(--sticker-ink)' }}
               title={t('Oyun Seçim Menüsü')}
             >
               <Grid className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
@@ -209,7 +214,8 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
                 playClickSound();
                 onOpenLeaderboard();
               }}
-              className="px-2.5 py-1.5 sm:px-3 rounded-xl text-amber-700 dark:text-amber-300 hover:text-amber-900 dark:hover:text-white bg-amber-50 dark:bg-amber-950/80 hover:bg-amber-100 dark:hover:bg-amber-900 border border-amber-200 dark:border-amber-800 transition-all flex items-center gap-1.5 text-xs font-black shadow-xs cursor-pointer active:scale-95"
+              className="px-2.5 py-1.5 sm:px-3 sticker-btn flex items-center gap-1.5 text-xs font-black"
+              style={{ background: 'var(--sticker-surface)', color: 'var(--sticker-ink)', borderWidth: '2.5px', borderRadius: '999px', boxShadow: '2px 2px 0 var(--sticker-ink)' }}
               title={t('Skor Tablosu & Geçmiş')}
             >
               <Trophy className="w-4 h-4 text-amber-500 fill-amber-500/20" />

@@ -15,21 +15,21 @@
   body {
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     touch-action: manipulation;
-    background-color: #faf8f5;
-    background-image: radial-gradient(#e2e8f0 1.5px, transparent 1.5px);
-    background-size: 24px 24px;
-    color: #0f172a;
+    /* Çıkartma dili: kâğıt zemin + nokta dokusu (tasarım 1b).
+       Renkler TOKEN'DAN geliyor, sabit değil: `.dark body` diye ikinci bir
+       kural yazınca @layer base içinde iki body kuralı çakışıyor ve koyu
+       tema gövdede uygulanmıyordu (kart ve metin dönüyor, zemin kalıyordu).
+       Token tek kaynak olunca sorun kökten kalkıyor. */
+    background-color: var(--sticker-paper);
+    background-image: radial-gradient(var(--sticker-dot) 1.6px, transparent 1.6px);
+    background-size: 22px 22px;
+    color: var(--sticker-ink);
     min-height: 100vh;
     transition: background-color 0.2s ease, color 0.2s ease;
   }
 
-  /* Koyu tema: body arka plani da donmeli, yoksa asiri kaydirmada (overscroll)
-     ve kabuk disinda kalan alanlarda krem rengi sizar. */
-  .dark body {
-    background-color: #020617;
-    background-image: radial-gradient(#1e293b 1.5px, transparent 1.5px);
-    color: #e2e8f0;
-  }
+  /* Koyu tema ayrı bir gövde kuralı GEREKTİRMİYOR: değişkenler .dark
+     üzerinde dönüyor, gövde onları okuyor. */
 }
 
 /* Party Game Tactile 3D Buttons */
@@ -450,3 +450,113 @@
   animation: assassinPulse 1.4s infinite;
 }
 
+
+/* =============================================================================
+ * ÇIKARTMA DİLİ (tasarım yönü 1b — "Sticker Cartoon")
+ * =============================================================================
+ * Kâğıt zemin, kalın mürekkep konturu, SERT ofset gölge (bulanıklık yok),
+ * hafif eğik duran kartlar. Gradyan ve yumuşak gölge YOK — bu dilin tamamı
+ * düz renk + kontur üzerine kurulu; gradyan eklemek çıkartma hissini bozuyor.
+ *
+ * Koyu tema, tasarımın koyu telefon varyantından: kâğıt yerine mürekkep zemin,
+ * kontur ve gölge kâğıt renginde. Yani ilişki tersine dönüyor, kaybolmuyor.
+ * ========================================================================== */
+
+:root {
+  --sticker-paper: #fff6e5;
+  --sticker-dot: #e9d5b8;
+  --sticker-ink: #1c1917;
+  --sticker-ink-soft: #57534e;
+  --sticker-ink-faint: #a8a29e;
+  --sticker-surface: #ffffff;
+}
+
+.dark {
+  --sticker-paper: #1c1917;
+  --sticker-dot: #3a342f;
+  --sticker-ink: #fff6e5;
+  --sticker-ink-soft: #d6d3d1;
+  --sticker-ink-faint: #a8a29e;
+  --sticker-surface: #292524;
+}
+
+.font-display {
+  font-family: 'Baloo 2', 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: .005em;
+}
+.font-body {
+  font-family: 'Nunito', 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+/* --- Kart / panel ---------------------------------------------------------- */
+.sticker {
+  background: var(--sticker-surface);
+  color: var(--sticker-ink);
+  border: 3px solid var(--sticker-ink);
+  border-radius: 18px;
+  box-shadow: 6px 6px 0 var(--sticker-ink);
+}
+.sticker-sm {
+  border-width: 2.5px;
+  border-radius: 14px;
+  box-shadow: 3px 3px 0 var(--sticker-ink);
+}
+.sticker-lg {
+  border-radius: 22px;
+  box-shadow: 8px 8px 0 var(--sticker-ink);
+}
+
+/* Eğik duruş + üzerine gelince düzelme. Çıkartma hissini veren tek hareket bu;
+   başka animasyona gerek yok. */
+.sticker-tilt {
+  transition: transform .15s cubic-bezier(.34,1.4,.64,1), box-shadow .15s ease;
+}
+.sticker-tilt:hover {
+  transform: rotate(0deg) translateY(-4px) !important;
+  box-shadow: 8px 10px 0 var(--sticker-ink);
+}
+
+/* --- Buton ----------------------------------------------------------------- */
+/* Basılınca gölge sıfırlanıp buton gölgenin yerine kayıyor: gerçekten bastırma
+   hissi. `translate` ile `box-shadow` aynı anda değişmezse buton kayar ama
+   gölge yerinde kalır ve tuhaf görünür. */
+.sticker-btn {
+  border: 3px solid var(--sticker-ink);
+  border-radius: 14px;
+  box-shadow: 4px 4px 0 var(--sticker-ink);
+  transition: transform .1s ease, box-shadow .1s ease, filter .15s ease;
+  cursor: pointer;
+}
+.sticker-btn:hover { filter: brightness(1.06); }
+.sticker-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0 0 0 var(--sticker-ink);
+}
+.sticker-btn:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 4px 4px 0 var(--sticker-ink);
+  filter: none;
+}
+
+/* --- Rozet / çip ----------------------------------------------------------- */
+.sticker-pill {
+  border: 2.5px solid var(--sticker-ink);
+  border-radius: 999px;
+  box-shadow: 2px 2px 0 var(--sticker-ink);
+  font-weight: 900;
+}
+
+/* --- Kâğıt zemin ----------------------------------------------------------- */
+.sticker-paper {
+  background-color: var(--sticker-paper);
+  background-image: radial-gradient(var(--sticker-dot) 1.6px, transparent 1.6px);
+  background-size: 22px 22px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sticker-tilt, .sticker-btn { transition: none; }
+  .sticker-tilt:hover { transform: none !important; }
+}
