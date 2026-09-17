@@ -71,7 +71,9 @@ PAYLOAD=$(
     echo "NODE_ENV=production"
     echo "PORT=3000"
     echo "SERVE_STATIC=false"
-    grep -E '^(SUPABASE_URL|SUPABASE_SERVICE_ROLE_KEY|ALLOWED_ORIGINS|GEMINI_API_KEY|SNAPSHOT_INTERVAL_MS|SNAPSHOT_MAX_AGE_MINUTES)=' .env.server \
+    # Beyaz liste: burada olmayan degisken sunucuya SESSIZCE gitmez.
+    # ADMIN_TOKEN eklenmeden once panel sifresi canlida hic tanimlanmiyordu.
+    grep -E '^(SUPABASE_URL|SUPABASE_SERVICE_ROLE_KEY|ALLOWED_ORIGINS|GEMINI_API_KEY|ADMIN_TOKEN|SNAPSHOT_INTERVAL_MS|SNAPSHOT_MAX_AGE_MINUTES)=' .env.server \
       | sed 's/[[:space:]]*$//'
   }
 )
@@ -79,7 +81,9 @@ PAYLOAD=$(
 echo "==> Aktarilan degiskenler:"
 echo "$PAYLOAD" | grep -E '^[A-Z]' | while IFS='=' read -r k v; do
   case "$k" in
-    *KEY*) printf '    %s=%s\n' "$k" "$([ -n "$v" ] && echo '***gizli***' || echo '(bos)')" ;;
+    # Adinda KEY/TOKEN/SECRET/PASSWORD gecen her deger gizlenir. Yalniz *KEY*
+    # varken ADMIN_TOKEN terminale DUZ METIN basiliyordu.
+    *KEY*|*TOKEN*|*SECRET*|*PASSWORD*) printf '    %s=%s\n' "$k" "$([ -n "$v" ] && echo '***gizli***' || echo '(bos)')" ;;
     *)     printf '    %s=%s\n' "$k" "$v" ;;
   esac
 done
