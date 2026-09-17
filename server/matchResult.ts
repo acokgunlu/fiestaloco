@@ -27,6 +27,8 @@ const GAME_META: Record<PersistedGameType, { title: string; icon: string }> = {
   colory: { title: 'Colory', icon: '🎨' },
   timing: { title: 'Tam Zamanında', icon: '⏱️' },
   kapisma: { title: 'Kapışma', icon: '🏁' },
+  kusatma: { title: 'Kale Kuşatması', icon: '🏰' },
+  fetih: { title: 'İl İl Fetih', icon: '🗺️' },
 };
 
 type AnyPlayer = Record<string, any>;
@@ -174,6 +176,66 @@ export function detectFinishedMatch(gameType: PersistedGameType, room: AnyRoom):
         winnerName: winnerEntry?.name,
         winnerAvatar: winnerEntry?.avatar,
         winnerScore: winnerEntry?.score,
+        players: recordPlayers,
+      },
+    };
+  }
+
+  // ---------------------------------------------------------------------------
+  // KALE KUŞATMASI — takım bazlı; kazanan takımın herkesi kazanmış sayılır
+  // ---------------------------------------------------------------------------
+  if (gameType === 'kusatma') {
+    if (gs.phase !== 'GAME_OVER' || !gs.winnerTeam) return null;
+    const winnerTeam = String(gs.winnerTeam);
+
+    const recordPlayers: MatchPlayerRecord[] = players.map((p) => {
+      const entry = basePlayer(p, num(p.score), winnerTeam !== 'draw' && String(p.team) === winnerTeam);
+      entry.roleOrTeam = String(p.team ?? '?');
+      return entry;
+    });
+    const mvp = players.find((p) => String(p.id) === String(gs.winnerPlayerId));
+    const winnerEntry = mvp ? recordPlayers[players.indexOf(mvp)] : undefined;
+
+    return {
+      dedupeKey: `kusatma:${room.code}:${num(gs.gameId)}`,
+      record: {
+        gameType,
+        gameTitle: meta.title,
+        gameIcon: meta.icon,
+        roomCode: room.code,
+        winnerName: winnerEntry?.name,
+        winnerAvatar: winnerEntry?.avatar,
+        winnerScore: winnerEntry?.score,
+        details: winnerTeam === 'draw'
+          ? `Berabere (surlar ${num(gs.walls?.red)} - ${num(gs.walls?.blue)})`
+          : `${winnerTeam === 'red' ? 'Kızıl' : 'Mavi'} Kale kazandı (surlar ${num(gs.walls?.red)} - ${num(gs.walls?.blue)})`,
+        players: recordPlayers,
+      },
+    };
+  }
+
+  // ---------------------------------------------------------------------------
+  // İL İL FETİH — en çok ile sahip olan kazanır (skor = il sayısı)
+  // ---------------------------------------------------------------------------
+  if (gameType === 'fetih') {
+    if (gs.phase !== 'GAME_OVER') return null;
+    const winnerId = gs.winnerPlayerId ? String(gs.winnerPlayerId) : null;
+    const recordPlayers: MatchPlayerRecord[] = players.map((p) =>
+      basePlayer(p, num(p.score), winnerId ? String(p.id) === winnerId : false)
+    );
+    const winnerEntry = recordPlayers.find((p) => p.isWinner);
+
+    return {
+      dedupeKey: `fetih:${room.code}:${num(gs.gameId)}`,
+      record: {
+        gameType,
+        gameTitle: meta.title,
+        gameIcon: meta.icon,
+        roomCode: room.code,
+        winnerName: winnerEntry?.name,
+        winnerAvatar: winnerEntry?.avatar,
+        winnerScore: winnerEntry?.score,
+        details: winnerEntry ? `${winnerEntry.name} ${winnerEntry.score} ile hükmetti` : undefined,
         players: recordPlayers,
       },
     };

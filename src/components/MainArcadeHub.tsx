@@ -3,8 +3,10 @@ import {
   ArrowRight,
   Bomb,
   Car,
+  Castle,
   HelpCircle,
   LayoutGrid,
+  Map as MapIcon,
   Mic,
   Palette,
   PenTool,
@@ -44,6 +46,8 @@ const ICONS: Record<PartyGameType, React.ComponentType<{ className?: string }>> 
   colory: Palette,
   timing: Timer,
   quiplash: Mic,
+  kusatma: Castle,
+  fetih: MapIcon,
 };
 
 export function MainArcadeHub({

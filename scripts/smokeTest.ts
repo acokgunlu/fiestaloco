@@ -83,6 +83,18 @@ const GAMES: GameSpec[] = [
     stateTypes: ['kapisma:room_created', 'kapisma:room_joined', 'kapisma:state'],
   },
   {
+    name: 'kusatma',
+    createType: 'kusatma:create_room',
+    joinType: 'kusatma:join_room',
+    stateTypes: ['kusatma:room_created', 'kusatma:room_joined', 'kusatma:state'],
+  },
+  {
+    name: 'fetih',
+    createType: 'fetih:create_room',
+    joinType: 'fetih:join_room',
+    stateTypes: ['fetih:room_created', 'fetih:room_joined', 'fetih:state'],
+  },
+  {
     name: 'quiplash',
     createType: 'quiplash:create_room',
     joinType: 'quiplash:join_room',

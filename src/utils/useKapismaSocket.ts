@@ -197,9 +197,9 @@ export function useKapismaSocket(): UseKapismaSocketReturn {
               recordedRef.current = next.roomCode || null;
               const winner = msg.players.find((p: KapismaPlayer) => p.id === next.winnerPlayerId);
               recordMatchResult({
-                gameType: 'timing',
-                gameTitle: 'Tam Zamanında',
-                gameIcon: '⏱️',
+                gameType: 'kapisma',
+                gameTitle: 'Kapışma',
+                gameIcon: '🏁',
                 roomCode: next.roomCode || '',
                 players: msg.players.map((p: KapismaPlayer) => ({
                   name: p.name,

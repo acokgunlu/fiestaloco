@@ -23,6 +23,8 @@ import {
 } from './server/persistence';
 import { GAMES } from './src/data/gameRegistry';
 import { detectFinishedMatch } from './server/matchResult';
+import { createKusatmaServer } from './server/kusatmaServer';
+import { createFetihServer } from './server/fetihServer';
 import { getRandomWordPair, DEFAULT_PLAYER_PALETTE } from './src/data/wordPacks';
 import { ContentLang, asContentLang } from './src/data/contentLang';
 import { Player, Stroke, WordPair, GamePhase, GameSettings, RoundResult, RoomState, Point } from './src/types';
@@ -143,7 +145,7 @@ interface ConnectedClient {
   roomCode?: string;
   role?: 'observer' | 'player';
   playerId?: string;
-  gameType?: 'imposter' | 'codenames' | 'bomb' | 'bluff' | 'trivia' | 'quiplash' | 'race' | 'colory' | 'timing' | 'kapisma';
+  gameType?: 'imposter' | 'codenames' | 'bomb' | 'bluff' | 'trivia' | 'quiplash' | 'race' | 'colory' | 'timing' | 'kapisma' | 'kusatma' | 'fetih';
 }
 
 interface ServerRoom {
@@ -295,6 +297,22 @@ const timingRooms = new Map<string, TimingServerRoom>();
 const kapismaRooms = new Map<string, KapismaServerRoom>();
 const clientMap = new Map<WebSocket, ConnectedClient>();
 
+/**
+ * Kale Kuşatması ve İl İl Fetih: oda iskeleti server/roomKit.ts'de, kurallar
+ * kendi modüllerinde. Buradaki oyunlardan farklı olarak dispatcher'a satır
+ * satır yazılmadılar; server.ts yalnızca mesajı ve kopmayı onlara iletiyor.
+ */
+const quizGameHost = {
+  clientMap,
+  generateRoomCode: () => generateRoomCode(),
+  recordMatch: (gameType: PersistedGameType, room: unknown) => maybeRecordMatch(gameType, room as AnyServerRoom),
+  forgetRoom: (gameType: PersistedGameType, roomCode: string) => forgetRoom(gameType, roomCode),
+};
+const kusatmaServer = createKusatmaServer(quizGameHost);
+const fetihServer = createFetihServer(quizGameHost);
+const kusatmaRooms = kusatmaServer.rooms;
+const fetihRooms = fetihServer.rooms;
+
 // =============================================================================
 // DEPLOYMENT CONFIG — frontend (Vercel) ve oyun sunucusu (Railway) ayri origin.
 // =============================================================================
@@ -360,6 +378,8 @@ const ROOM_REGISTRY: Array<{ gameType: PersistedGameType; map: Map<string, any> 
   { gameType: 'colory', map: coloryRooms },
   { gameType: 'timing', map: timingRooms },
   { gameType: 'kapisma', map: kapismaRooms },
+  { gameType: 'kusatma', map: kusatmaRooms },
+  { gameType: 'fetih', map: fetihRooms },
 ];
 
 /** Ayni mac sonucunun tekrar tekrar yazilmasini engeller. */
@@ -2536,7 +2556,9 @@ function generateRoomCode(): string {
       !raceRooms.has(code) &&
       !coloryRooms.has(code) &&
       !timingRooms.has(code) &&
-      !kapismaRooms.has(code)
+      !kapismaRooms.has(code) &&
+      !kusatmaRooms.has(code) &&
+      !fetihRooms.has(code)
     ) {
       return code;
     }
@@ -2984,6 +3006,8 @@ async function startServer() {
       colory: coloryRooms.size,
       timing: timingRooms.size,
       kapisma: kapismaRooms.size,
+      kusatma: kusatmaRooms.size,
+      fetih: fetihRooms.size,
     };
     res.json({
       status: 'ok',
@@ -3332,6 +3356,13 @@ Return strictly a JSON array matching this schema:
         // =====================================================================
         // KAPISMA DISPATCHER
         // =====================================================================
+
+        if (
+          kusatmaServer.handleMessage(ws, type, data, receivedAt) ||
+          fetihServer.handleMessage(ws, type, data, receivedAt)
+        ) {
+          return;
+        }
 
         if (type === 'kapisma:create_room') {
           const roomCode = generateRoomCode();
@@ -6166,7 +6197,9 @@ Return strictly a JSON array matching this schema:
     ws.on('close', () => {
       const client = clientMap.get(ws);
       if (client?.roomCode) {
-        if (client.gameType === 'kapisma') {
+        if (kusatmaServer.handleClose(ws, client) || fetihServer.handleClose(ws, client)) {
+          // oda kiti isledi
+        } else if (client.gameType === 'kapisma') {
           const room = kapismaRooms.get(client.roomCode);
           if (room) {
             if (client.role === 'observer') room.observers.delete(ws);

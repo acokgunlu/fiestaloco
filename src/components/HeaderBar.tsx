@@ -66,6 +66,10 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
         return '⏱️';
       case 'kapisma':
         return '🏁';
+      case 'kusatma':
+        return '🏰';
+      case 'fetih':
+        return '🗺️';
       default:
         return '🎮';
     }
@@ -91,6 +95,10 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
         return t('Tam Zamanında');
       case 'kapisma':
         return t('Kapışma');
+      case 'kusatma':
+        return t('Kale Kuşatması');
+      case 'fetih':
+        return t('İl İl Fetih');
       default:
         return 'Parti Merkezi';
     }
@@ -116,6 +124,10 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
         return t('İçinden say, tam vaktinde bas');
       case 'kapisma':
         return t('Gerçek sürüş · telefonun direksiyon');
+      case 'kusatma':
+        return t('İki takım, iki sur — bilgiyle yık');
+      case 'fetih':
+        return t('Bil, üret, fethet — Türkiye haritasında');
       default:
         return t('Çok oyunculu parti oyunları');
     }

@@ -30,6 +30,8 @@ import { HorseRaceGame } from './components/party/HorseRaceGame';
 import { ColoryGame } from './components/party/ColoryGame';
 import { TimingGame } from './components/party/TimingGame';
 import { KapismaGame } from './components/party/KapismaGame';
+import { KusatmaGame } from './components/party/KusatmaGame';
+import { FetihGame } from './components/party/FetihGame';
 import { CodenamesBoardView } from './components/codenames/CodenamesBoardView';
 import { CodenamesRulesModal } from './components/codenames/CodenamesRulesModal';
 import { BluffTriviaGame } from './components/party/BluffTriviaGame';
@@ -258,6 +260,10 @@ export default function App() {
 
     if (gameParam === 'kapisma') {
       setActiveModule('kapisma');
+    } else if (gameParam === 'kusatma') {
+      setActiveModule('kusatma');
+    } else if (gameParam === 'fetih') {
+      setActiveModule('fetih');
     } else if (gameParam === 'timing') {
       setActiveModule('timing');
     } else if (gameParam === 'colory') {
@@ -724,6 +730,14 @@ export default function App() {
 
         {activeModule === 'kapisma' && (
           <KapismaGame onBackToHub={() => setActiveModule('arcade_hub')} />
+        )}
+
+        {activeModule === 'kusatma' && (
+          <KusatmaGame onBackToHub={() => setActiveModule('arcade_hub')} />
+        )}
+
+        {activeModule === 'fetih' && (
+          <FetihGame onBackToHub={() => setActiveModule('arcade_hub')} />
         )}
 
         {activeModule === 'race' && (
