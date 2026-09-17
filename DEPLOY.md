@@ -100,9 +100,14 @@ Proje `fiestaloco` (ref `lqpbfvzkfgxwatboente`, eu-central-1) kurulu, şema uygu
 | `player_stats` | Global oyuncu istatistikleri (isim bazlı, büyük/küçük harf duyarsız) |
 | `match_history` | Oynanan her maçın kaydı |
 | `room_snapshots` | Aktif odaların state'i — restart dayanıklılığı |
+| `app_settings` | Yönetim paneli ayarları, anahtar-değer (ör. `hidden_games`). Şema: `deploy/supabase/002_app_settings.sql` |
 
 RLS açık: `player_stats` ve `match_history` herkese **okunur**, yazma yalnızca `service_role`.
-`room_snapshots` tamamen kapalı.
+`room_snapshots` ve `app_settings` tamamen kapalı (ön yüz `app_settings`'i sunucu API'sinden okur).
+
+**Yönetim paneli** (`/admin`): sunucuda `ADMIN_TOKEN` tanımlı değilse panel kapalıdır (503).
+Şifre yalnızca `/etc/fiestaloco.env` içinde durur; `.env.server`'a yazıp
+`./scripts/set-secrets-ec2.sh` ile gönderilir. Aynı IP'den 8 yanlış denemede 15 dk kilit.
 
 ### 2. AWS altyapısı
 

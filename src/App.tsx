@@ -41,6 +41,7 @@ import { useSocketRoom } from './utils/useSocketRoom';
 import { useCodenamesSocket } from './utils/useCodenamesSocket';
 import { isSoundEnabled, toggleSound } from './utils/audio';
 import { useAppTheme } from './utils/theme';
+import { useHiddenGames } from './utils/gameVisibility';
 import { subscribe as subscribeLang, getSnapshot as langSnapshot, getLang } from './i18n';
 
 import { t } from './i18n';
@@ -278,6 +279,20 @@ export default function App() {
       setAppMode('picker');
     }
   }, [roomState]);
+
+  /*
+   * Gizli oyun koruması.
+   * Hub gizli oyunu zaten listelemiyor; bu etki `?game=quiplash` gibi doğrudan
+   * bağlantıyı da kapatıyor. İstisna: URL'de oda kodu varsa (QR ile odaya
+   * katılan telefon) açık bırakılıyor — yönetici oyunu oyun sürerken gizlerse
+   * içerideki oyuncular yarıda kalmasın. Gizlemek YENİ oyun başlatmayı keser.
+   */
+  const { hidden: hiddenGames, loaded: hiddenLoaded } = useHiddenGames();
+  useEffect(() => {
+    if (!hiddenLoaded || activeModule === 'arcade_hub') return;
+    const hasRoom = new URLSearchParams(window.location.search).has('room');
+    if (hiddenGames.has(activeModule) && !hasRoom) setActiveModule('arcade_hub');
+  }, [activeModule, hiddenGames, hiddenLoaded]);
 
 
   // Local Imposter game lifecycle handlers

@@ -344,3 +344,43 @@ export async function pruneStaleSnapshots(olderThanHours = 12): Promise<number> 
     return 0;
   }
 }
+
+// -----------------------------------------------------------------------------
+// Uygulama ayarları (admin paneli)
+// -----------------------------------------------------------------------------
+// Anahtar-değer tablosu: `app_settings (key text pk, value jsonb, updated_at)`.
+// İlk kullanıcısı gizli oyun listesi; başka yönetim ayarı eklenirse aynı tablo.
+// Tablo yoksa ya da kalıcılık kapalıysa null döner ve çağıran bellekte devam
+// eder — ayar okunamadı diye sunucu açılmamazlık yapmamalı.
+
+export async function loadSetting<T = unknown>(key: string): Promise<T | null> {
+  if (!client) return null;
+  try {
+    const { data, error } = await client
+      .from('app_settings')
+      .select('value')
+      .eq('key', key)
+      .maybeSingle();
+    if (error) throw error;
+    return (data?.value as T) ?? null;
+  } catch (error) {
+    noteFailure(`loadSetting(${key})`, error);
+    return null;
+  }
+}
+
+/** true: kalıcı olarak yazıldı. false: kalıcılık kapalı ya da yazma başarısız. */
+export async function saveSetting(key: string, value: unknown): Promise<boolean> {
+  if (!client) return false;
+  try {
+    const { error } = await client
+      .from('app_settings')
+      .upsert({ key, value, updated_at: new Date().toISOString() }, { onConflict: 'key' });
+    if (error) throw error;
+    writes += 1;
+    return true;
+  } catch (error) {
+    noteFailure(`saveSetting(${key})`, error);
+    return false;
+  }
+}

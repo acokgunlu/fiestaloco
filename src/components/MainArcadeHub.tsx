@@ -19,6 +19,7 @@ import {
 import { PartyGameType } from '../types/partyGames';
 import { playClickSound, playTurnSound } from '../utils/audio';
 import { FILTERS, GAMES, GameFilter, filterGames } from '../data/gameRegistry';
+import { useHiddenGames } from '../utils/gameVisibility';
 import { t } from '../i18n';
 
 interface MainArcadeHubProps {
@@ -60,7 +61,10 @@ export function MainArcadeHub({
     window.location.href = `?room=${quickRoomCode.trim().toUpperCase()}`;
   };
 
-  const gorunen = filterGames(GAMES, filter);
+  // Yönetim panelinden gizlenen oyunlar hub'da hiç listelenmez.
+  const { hidden } = useHiddenGames();
+  const acik = GAMES.filter((g) => !hidden.has(g.id));
+  const gorunen = filterGames(acik, filter);
   // Oda kodu kutuları: girilen harfler dolu, kalanlar kesik çizgili.
   const kutular = [0, 1, 2, 3].map((i) => quickRoomCode[i] || '');
 
@@ -114,7 +118,7 @@ export function MainArcadeHub({
 
           <div className="flex flex-wrap items-center gap-4 pt-1">
             <button
-              onClick={() => { playClickSound(); onSelectGame(GAMES[0].id); }}
+              onClick={() => { playClickSound(); if (acik[0]) onSelectGame(acik[0].id); }}
               className="sticker-btn font-display px-6 py-4 text-lg sm:text-xl flex items-center gap-2"
               style={{ background: '#7bd389', color: '#1c1917' }}
             >
@@ -216,6 +220,14 @@ export function MainArcadeHub({
           </div>
         </div>
 
+        {/* Filtre + gizleme birlikte bir kategoriyi boşaltabilir; boş ızgara
+            yerine ne olduğunu söyleyen tek satır. */}
+        {gorunen.length === 0 && (
+          <p className="sticker sticker-sm px-4 py-3 text-sm font-bold" style={{ color: 'var(--sticker-ink-soft)' }}>
+            {t('Bu kategoride şu an oyun yok.')}
+          </p>
+        )}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 sm:gap-5 pt-2">
           {gorunen.map((g) => {
             const Icon = ICONS[g.id];
@@ -279,7 +291,7 @@ export function MainArcadeHub({
           </button>
         )}
         <span className="sticker-pill px-4 py-2 text-xs" style={{ background: 'var(--sticker-surface)', color: 'var(--sticker-ink-soft)' }}>
-          {t('10 Canlı Modül')}
+          {t('{a} Canlı Modül', { a: acik.length })}
         </span>
       </div>
     </div>

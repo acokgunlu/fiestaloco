@@ -1,4 +1,5 @@
 import express from 'express';
+import crypto from 'crypto';
 import fs from 'fs';
 import http from 'http';
 import path from 'path';
@@ -12,12 +13,15 @@ import {
   fetchMatchHistory,
   isPersistenceEnabled,
   loadRoomSnapshots,
+  loadSetting,
   persistenceStatus,
   pruneStaleSnapshots,
   recordMatch,
   saveRoomSnapshots,
+  saveSetting,
   type PersistedGameType,
 } from './server/persistence';
+import { GAMES } from './src/data/gameRegistry';
 import { detectFinishedMatch } from './server/matchResult';
 import { getRandomWordPair, DEFAULT_PLAYER_PALETTE } from './src/data/wordPacks';
 import { ContentLang, asContentLang } from './src/data/contentLang';
@@ -417,6 +421,80 @@ async function snapshotAllRooms(): Promise<void> {
 
   if (entries.length === 0) return;
   await saveRoomSnapshots(entries);
+}
+
+// =============================================================================
+// YÖNETİM PANELİ — oyun görünürlüğü
+// =============================================================================
+// Gizli oyunlar hub'da listelenmez ve doğrudan ?game= bağlantısıyla yeni oyun
+// başlatılamaz (ön yüz uygular). Mevcut odalara oda koduyla katılım AÇIK kalır:
+// yönetici oyunu oyun sürerken gizlerse içerdeki oyuncular yarıda kalmasın.
+//
+// Geçerli oyun listesi gameRegistry'den gelir — ön yüzle tek kaynak.
+const KNOWN_GAME_IDS: string[] = GAMES.map((g) => g.id);
+let hiddenGames: string[] = [];
+
+/** Bilinmeyen id'leri atar, tekrarları siler, künye sırasına dizer. Dizi değilse null. */
+function sanitizeHiddenGames(input: unknown): string[] | null {
+  if (!Array.isArray(input)) return null;
+  const wanted = new Set(input.filter((v): v is string => typeof v === 'string'));
+  return KNOWN_GAME_IDS.filter((id) => wanted.has(id));
+}
+
+async function loadHiddenGames(): Promise<void> {
+  const stored = await loadSetting<string[]>('hidden_games');
+  const clean = sanitizeHiddenGames(stored);
+  if (clean) hiddenGames = clean;
+  console.log('[admin] gizli oyunlar:', hiddenGames.length ? hiddenGames.join(', ') : '(yok)');
+}
+
+/*
+ * Yetki: tek bir yönetici şifresi, YALNIZCA sunucu ortam değişkeninde
+ * (ADMIN_TOKEN, /etc/fiestaloco.env). Tanımlı değilse panel KAPALI — boş şifreyle
+ * açık bir yönetim ucu bırakmaktansa hiç çalışmaması doğru.
+ *
+ * Karşılaştırma sabit sürede (timingSafeEqual; iki taraf önce sha256 ile eşit
+ * uzunluğa getiriliyor, yoksa uzunluk farkı zaman sızdırır). Aynı IP'den üst
+ * üste ADMIN_MAX_FAILS yanlış denemede ADMIN_LOCK_MS boyunca kilit.
+ */
+const ADMIN_TOKEN = (process.env.ADMIN_TOKEN || '').trim();
+const ADMIN_MAX_FAILS = 8;
+const ADMIN_LOCK_MS = 15 * 60 * 1000;
+const adminFails = new Map<string, { count: number; lockedUntil: number }>();
+
+function adminTokenMatches(given: string): boolean {
+  const a = crypto.createHash('sha256').update(given).digest();
+  const b = crypto.createHash('sha256').update(ADMIN_TOKEN).digest();
+  return crypto.timingSafeEqual(a, b);
+}
+
+/** true: yetkili. false: hata yanıtı zaten gönderildi. */
+function requireAdmin(req: express.Request, res: express.Response): boolean {
+  if (!ADMIN_TOKEN) {
+    res.status(503).json({ error: 'admin_disabled' });
+    return false;
+  }
+  const ip = req.ip || 'unknown';
+  const now = Date.now();
+  let rec = adminFails.get(ip);
+  if (rec && rec.lockedUntil > now) {
+    res.status(429).json({ error: 'locked', retryAfterSeconds: Math.ceil((rec.lockedUntil - now) / 1000) });
+    return false;
+  }
+  if (rec && rec.lockedUntil !== 0 && rec.lockedUntil <= now) rec = undefined; // kilit süresi doldu
+
+  const header = req.headers.authorization || '';
+  const given = header.startsWith('Bearer ') ? header.slice(7).trim() : '';
+  if (given && adminTokenMatches(given)) {
+    adminFails.delete(ip);
+    return true;
+  }
+
+  const count = (rec?.count || 0) + 1;
+  adminFails.set(ip, { count, lockedUntil: count >= ADMIN_MAX_FAILS ? now + ADMIN_LOCK_MS : 0 });
+  if (adminFails.size > 5000) adminFails.clear(); // saldırı altında bellek sınırsız büyümesin
+  res.status(401).json({ error: 'unauthorized' });
+  return false;
 }
 
 /**
@@ -2882,7 +2960,9 @@ async function startServer() {
       res.setHeader('Access-Control-Allow-Origin', '*');
     }
     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    // Authorization: admin paneli ayrı origin'den (Vercel) Bearer ile çağırıyor;
+    // bu başlık listede yoksa tarayıcı ön-uçuş isteğinde engeller.
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     res.setHeader('Access-Control-Max-Age', '86400');
     if (req.method === 'OPTIONS') {
       res.sendStatus(204);
@@ -2914,6 +2994,38 @@ async function startServer() {
       rooms: totals,
       persistence: persistenceStatus(),
     });
+  });
+
+  // ---------------------------------------------------------------------------
+  // Oyun görünürlüğü (herkese açık okuma) + yönetim uçları
+  // ---------------------------------------------------------------------------
+  app.get('/api/games/visibility', (_req, res) => {
+    res.setHeader('Cache-Control', 'no-store');
+    res.json({ hidden: hiddenGames });
+  });
+
+  /** Panel girişi: şifreyi doğrular, başka bir şey yapmaz. */
+  app.post('/api/admin/login', (req, res) => {
+    if (!requireAdmin(req, res)) return;
+    res.json({ ok: true, persistence: isPersistenceEnabled() });
+  });
+
+  app.post('/api/admin/games/visibility', async (req, res) => {
+    if (!requireAdmin(req, res)) return;
+    const clean = sanitizeHiddenGames(req.body?.hidden);
+    if (!clean) {
+      res.status(400).json({ error: 'hidden_must_be_array' });
+      return;
+    }
+    // Hepsi gizlenirse hub bomboş açılır; bunu bilerek isteyen yok.
+    if (clean.length >= KNOWN_GAME_IDS.length) {
+      res.status(400).json({ error: 'cannot_hide_all' });
+      return;
+    }
+    hiddenGames = clean;
+    const persisted = await saveSetting('hidden_games', clean);
+    console.log('[admin] gizli oyunlar güncellendi:', clean.length ? clean.join(', ') : '(yok)', persisted ? '' : '(yalnız bellekte)');
+    res.json({ hidden: hiddenGames, persisted });
   });
 
   // ---------------------------------------------------------------------------
@@ -6305,6 +6417,7 @@ Return strictly a JSON array matching this schema:
   // Kalicilik: acilista geri yukle, periyodik snapshot al
   // ---------------------------------------------------------------------------
   await restoreRoomsFromSnapshots();
+  await loadHiddenGames();
 
   let snapshotInterval: NodeJS.Timeout | null = null;
   let pruneInterval: NodeJS.Timeout | null = null;
