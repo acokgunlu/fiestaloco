@@ -89,7 +89,21 @@ export function MainArcadeHub({
               FIESTA
             </span>
             <br />
-            <span style={{ color: 'var(--sticker-surface)', textShadow: '5px 5px 0 #4cc9f0, 10px 10px 0 var(--sticker-ink)' }}>
+            {/*
+              LOCO açık dolgulu; kontur OLMADAN harflerin içi kâğıt zemine
+              karışıyordu ve yalnızca gölgeler görünüyordu (canlıda okunmadı).
+              Kontur mürekkep renginde ve paint-order ile dolgunun ARKASINA
+              çiziliyor, yani beyaz dolguyu inceltmiyor. Koyu temada mürekkep
+              kâğıt rengine döndüğü için kontur orada da harfi ayırıyor.
+            */}
+            <span
+              style={{
+                color: 'var(--sticker-surface)',
+                WebkitTextStroke: '0.055em var(--sticker-ink)',
+                paintOrder: 'stroke fill',
+                textShadow: '5px 5px 0 #4cc9f0, 10px 10px 0 var(--sticker-ink)',
+              }}
+            >
               LOCO
             </span>
           </h1>
