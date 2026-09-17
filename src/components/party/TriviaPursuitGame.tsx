@@ -67,7 +67,7 @@ export const TriviaPursuitGame: React.FC<TriviaPursuitGameProps> = ({ onBackToHu
 
   const handleCopyLink = (code: string) => {
     playClickSound();
-    const url = withLang(`${window.location.origin}${window.location.pathname}?game=trivia_pursuit&room=${code}`);
+    const url = withLang(`${window.location.origin}${window.location.pathname}?game=bilgi-kalesi&room=${code}`);
     navigator.clipboard.writeText(url);
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2500);

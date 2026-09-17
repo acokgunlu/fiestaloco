@@ -39,7 +39,7 @@ export const QuiplashGame: React.FC<QuiplashGameProps> = ({ onBackToHub }) => {
   // Socket
   const socket = useQuiplashSocket();
 
-  // URL room param detection (?game=quiplash&room=CODE or ?room=CODE)
+  // URL room param detection (?game=laf-cambazi&room=CODE or ?room=CODE)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const roomParam = params.get('room');

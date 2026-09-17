@@ -54,7 +54,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
 
   useEffect(() => {
     const origin = window.location.origin;
-    const joinUrl = withLang(`${origin}/?game=quiplash&room=${roomCode}`);
+    const joinUrl = withLang(`${origin}/?game=laf-cambazi&room=${roomCode}`);
     QRCode.toDataURL(joinUrl, {
       margin: 1,
       width: 280,

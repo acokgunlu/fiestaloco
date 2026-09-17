@@ -70,7 +70,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
   const currentCat = currentQ ? TRIVIA_CATEGORIES[currentQ.category] : null;
 
   const joinUrl = typeof window !== 'undefined'
-    ? withLang(`${window.location.origin}${window.location.pathname}?game=trivia_pursuit&room=${roomCode}`)
+    ? withLang(`${window.location.origin}${window.location.pathname}?game=bilgi-kalesi&room=${roomCode}`)
     : `?room=${roomCode}`;
 
   const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(

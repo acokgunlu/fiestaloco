@@ -264,7 +264,9 @@ export default function App() {
       setActiveModule('colory');
     } else if (gameParam === 'race') {
       setActiveModule('race');
-    } else if (gameParam === 'quiplash') {
+    } else if (gameParam === 'laf-cambazi') {
+      // Bağlantıdaki ad oyuncuya görünür: başkasının markasını taşımasın.
+      // İç id ('quiplash') kodda kalıyor, adres çubuğuna çıkmıyor.
       setActiveModule('quiplash');
     } else if (gameParam === 'codenames') {
       setActiveModule('codenames');
@@ -272,7 +274,7 @@ export default function App() {
       setActiveModule('bomb');
     } else if (gameParam === 'bluff') {
       setActiveModule('bluff');
-    } else if (gameParam === 'trivia' || gameParam === 'trivia_pursuit') {
+    } else if (gameParam === 'bilgi-kalesi') {
       setActiveModule('trivia_pursuit');
     } else if (roomParam && !roomState) {
       setActiveModule('imposter');
@@ -282,7 +284,7 @@ export default function App() {
 
   /*
    * Gizli oyun koruması.
-   * Hub gizli oyunu zaten listelemiyor; bu etki `?game=quiplash` gibi doğrudan
+   * Hub gizli oyunu zaten listelemiyor; bu etki `?game=laf-cambazi` gibi doğrudan
    * bağlantıyı da kapatıyor. İstisna: URL'de oda kodu varsa (QR ile odaya
    * katılan telefon) açık bırakılıyor — yönetici oyunu oyun sürerken gizlerse
    * içerideki oyuncular yarıda kalmasın. Gizlemek YENİ oyun başlatmayı keser.
