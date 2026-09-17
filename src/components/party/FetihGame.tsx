@@ -8,16 +8,16 @@ import { FetihControllerView } from '../fetih/FetihControllerView';
 import { t } from '../../i18n';
 
 export const FetihGame: React.FC<{ onBackToHub: () => void }> = ({ onBackToHub }) => {
-  const socket = useQuizGameSocket<FetihGameState, FetihPlayer>('fetih', { title: 'İl İl Fetih', icon: '🗺️' });
+  const socket = useQuizGameSocket<FetihGameState, FetihPlayer>('fetih', { title: 'Cihan Fatihi', icon: '🗺️' });
   return (
     <QuizGameShell
       socket={socket}
       slug="fetih"
-      title={t('İl İl Fetih')}
-      tagline={t('Bil, üret, fethet — Türkiye haritasında')}
+      title={t('Cihan Fatihi')}
+      tagline={t('Bil, üret, fethet — dünya haritasında')}
       icon={<MapIcon className="w-6 h-6" />}
       candy="#7bd389"
-      tvHint={t('Türkiye haritası büyük ekranda. Bilgiyle asker kazan, zarla üret, telefondan emir ver.')}
+      tvHint={t('Dünya haritası büyük ekranda. Bilgiyle asker kazan, zarla üret, telefondan emir ver; yalnızca komşu bölgelere saldırılır.')}
       onBackToHub={onBackToHub}
       renderTv={(s, leave) => (
         <FetihTvView roomCode={s.roomCode!} gameState={s.gameState!} players={s.players} send={s.send} onLeave={leave} />

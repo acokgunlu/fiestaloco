@@ -1,8 +1,8 @@
 import type { FetihAttackOrder, FetihBattle, FetihTile } from '../types/fetih';
-import { FETIH_PROVINCE_IDS, areNeighbors, neighborsOf } from './fetihMap';
+import { TERRITORY_IDS, areNeighbors, neighborsOf } from './fetihMap';
 
 /**
- * İl İl Fetih — saf kurallar
+ * Cihan Fatihi — saf kurallar
  * ==========================
  * Sunucu oyunu bu fonksiyonlarla yürütüyor; telefon da aynı fonksiyonlarla
  * "hangi saldırılar mümkün" listesini çiziyor. Fonksiyonların çoğu `tiles`
@@ -14,6 +14,7 @@ type Rand = () => number;
 
 export const FETIH_TIMES = { vote: 10, question: 15, roll: 7, orders: 30 } as const;
 
+/** Başlangıçta oyuncu başına bölge. */
 export const START_PROVINCES = 3;
 export const START_TROOPS = 3;
 export const RESPAWN_TROOPS = 3;
@@ -24,7 +25,7 @@ export const FASTEST_BONUS = 2;
 
 /**
  * Üretim numaraları, Catan'daki dağılımla: 6 ve 8 sık gelir ama 2 ve 12
- * kadar nadir değil. 7 yok — 7 eşkıyanın sayısı.
+ * kadar nadir değil. 7 yok — 7 korsan baskınının sayısı.
  */
 const TOKEN_CYCLE = [2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12];
 
@@ -39,17 +40,17 @@ export function shuffled<T>(arr: T[], rand: Rand = Math.random): T[] {
 
 /**
  * RASTGELE BAŞLANGIÇ.
- * Her oyuncuya 3 dağınık il ve 3'er asker. İller mümkün olduğunca başka
- * oyuncuların illerine komşu olmayacak şekilde seçiliyor: ilk turda birinin
+ * Her oyuncuya 3 dağınık bölge ve 3'er asker. Bölgeler mümkün olduğunca başka
+ * oyuncuların bölgelerine komşu olmayacak şekilde seçiliyor: ilk turda birinin
  * dibinde doğup hemen yutulmak oyunu daha başlamadan bitirirdi.
  */
 export function setupBoard(playerIds: string[], rand: Rand = Math.random): Record<number, FetihTile> {
   const tokens: number[] = [];
-  while (tokens.length < FETIH_PROVINCE_IDS.length) tokens.push(...TOKEN_CYCLE);
+  while (tokens.length < TERRITORY_IDS.length) tokens.push(...TOKEN_CYCLE);
   const tokenOrder = shuffled(tokens, rand);
 
   const tiles: Record<number, FetihTile> = {};
-  FETIH_PROVINCE_IDS.forEach((id, i) => {
+  TERRITORY_IDS.forEach((id, i) => {
     tiles[id] = { owner: null, troops: 1 + Math.floor(rand() * 3), token: tokenOrder[i] };
   });
 
@@ -59,7 +60,7 @@ export function setupBoard(playerIds: string[], rand: Rand = Math.random): Recor
   // Sırayla dağıt (herkes 1, sonra herkes 2…) — ilk seçen avantajlı olmasın.
   for (let k = 0; k < START_PROVINCES; k++) {
     for (const pid of shuffled(playerIds, rand)) {
-      const free = FETIH_PROVINCE_IDS.filter((id) => !tiles[id].owner);
+      const free = TERRITORY_IDS.filter((id) => !tiles[id].owner);
       const calm = free.filter((id) => !touchesOther(id, pid));
       const pool = calm.length > 0 ? calm : free;
       if (pool.length === 0) break;
@@ -72,7 +73,7 @@ export function setupBoard(playerIds: string[], rand: Rand = Math.random): Recor
 }
 
 export function ownedProvinces(tiles: Record<number, FetihTile>, pid: string): number[] {
-  return FETIH_PROVINCE_IDS.filter((id) => tiles[id]?.owner === pid);
+  return TERRITORY_IDS.filter((id) => tiles[id]?.owner === pid);
 }
 
 export function totalTroops(tiles: Record<number, FetihTile>, pid: string): number {
@@ -88,10 +89,10 @@ export function rollDice(rand: Rand = Math.random): [number, number] {
   return [1 + Math.floor(rand() * 6), 1 + Math.floor(rand() * 6)];
 }
 
-/** Numarası zar toplamını tutan her il sahibine 1 asker üretir. */
+/** Numarası zar toplamını tutan her bölge sahibine 1 asker üretir. */
 export function production(tiles: Record<number, FetihTile>, sum: number): Record<string, number> {
   const gains: Record<string, number> = {};
-  for (const id of FETIH_PROVINCE_IDS) {
+  for (const id of TERRITORY_IDS) {
     const t = tiles[id];
     if (t.owner && t.token === sum) gains[t.owner] = (gains[t.owner] || 0) + 1;
   }
@@ -99,8 +100,8 @@ export function production(tiles: Record<number, FetihTile>, sum: number): Recor
 }
 
 /**
- * 7 — EŞKIYA BASKINI (tiles'ı değiştirir).
- * Her oyuncunun en kalabalık ilinden, orada 4+ asker varsa, 1 asker gider.
+ * 7 — KORSAN BASKINI (tiles'ı değiştirir).
+ * Her oyuncunun en kalabalık bölgesinden, orada 4+ asker varsa, 1 asker gider.
  * Catan'daki "7 gelince eli kalabalık olan kart atar" kuralının karşılığı:
  * askerini tek ilde yığan cezalanıyor.
  */
@@ -191,14 +192,14 @@ export function uniqueColor(wanted: string, taken: string[]): string {
   return FETIH_COLORS.find((c) => !used.has(c.toLowerCase())) ?? wanted;
 }
 
-/** Bir ile komşu düşman/tarafsız asker toplamı — "sıcak cephe" ölçüsü. */
+/** Bir bölgeye komşu düşman asker toplamı — "sıcak cephe" ölçüsü. */
 export function threatAt(tiles: Record<number, FetihTile>, pid: string, id: number): number {
   return neighborsOf(id)
     .filter((n) => tiles[n].owner !== pid)
     .reduce((sum, n) => sum + (tiles[n].owner ? tiles[n].troops : 0), 0);
 }
 
-/** Emir vermeyen oyuncunun yedeği: en sıcak cepheye, eşitse en kalabalık ile. */
+/** Emir vermeyen oyuncunun yedeği: en sıcak cepheye, eşitse en kalabalık bölgeye. */
 export function autoPlacement(tiles: Record<number, FetihTile>, pid: string): number | null {
   const owned = ownedProvinces(tiles, pid);
   if (owned.length === 0) return null;
@@ -298,12 +299,12 @@ export function resolveOrders(
   return battles;
 }
 
-/** İlsiz kalanları boş bir ilde yeniden doğurur (tiles'ı değiştirir). */
+/** Toprağı kalmayanları boş bir bölgede yeniden doğurur (tiles'ı değiştirir). */
 export function respawnEliminated(tiles: Record<number, FetihTile>, playerIds: string[], rand: Rand = Math.random): string[] {
   const respawned: string[] = [];
   for (const pid of playerIds) {
     if (ownedProvinces(tiles, pid).length > 0) continue;
-    const neutral = FETIH_PROVINCE_IDS.filter((id) => !tiles[id].owner);
+    const neutral = TERRITORY_IDS.filter((id) => !tiles[id].owner);
     if (neutral.length === 0) continue;
     const pick = neutral[Math.floor(rand() * neutral.length)];
     tiles[pick].owner = pid;

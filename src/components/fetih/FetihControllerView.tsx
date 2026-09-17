@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Check, LogOut, Play, RotateCcw, Send, Shield, Swords, Trophy } from 'lucide-react';
+import { Check, LogOut, Play, RotateCcw, Send, Shield, Swords, Trophy, X } from 'lucide-react';
 import type { FetihAttackOrder, FetihGameState, FetihPlayer } from '../../types/fetih';
-import { neighborsOf, provinceName } from '../../data/fetihMap';
+import { isSeaLink, neighborsOf, territoryName } from '../../data/fetihMap';
 import {
-  FASTEST_BONUS, QUIZ_BONUS, attackOptions, autoPlacement, baseIncome, ownedProvinces, threatAt, totalTroops, winChance,
+  FASTEST_BONUS, QUIZ_BONUS, autoPlacement, baseIncome, ownedProvinces, threatAt, totalTroops, winChance,
 } from '../../data/fetihLogic';
 import { getLang, t } from '../../i18n';
 import { FetihMap } from './FetihMap';
@@ -22,51 +22,73 @@ interface Props {
 }
 
 const sameAttack = (a: FetihAttackOrder, b: FetihAttackOrder) => a.from === b.from && a.to === b.to;
+const pct = (v: number) => {
+  const n = Math.round(v * 100);
+  return getLang() === 'en' ? `${n}%` : `%${n}`;
+};
 
 export const FetihControllerView: React.FC<Props> = ({ roomCode, me, gameState: gs, players, errorMessage, hostControls, send, onLeave }) => {
+  const lang = getLang();
+  const name = (id: number) => territoryName(id, lang);
   const owned = useMemo(() => ownedProvinces(gs.tiles, me.id), [gs.tiles, me.id]);
   const troops = useMemo(() => totalTroops(gs.tiles, me.id), [gs.tiles, me.id]);
   const ownerName = (id: string | null) => (id ? players.find((p) => p.id === id)?.name ?? '?' : t('tarafsız'));
   const ownerColor = (id: string | null) => (id ? players.find((p) => p.id === id)?.color ?? '#a8a29e' : 'var(--sticker-surface)');
 
-  // --- emir taslağı (yalnızca ORDERS fazında anlamlı) --------------------
+  // --- emir taslağı (yalnızca ORDERS fazında) ------------------------------
   const [place, setPlace] = useState<number | null>(null);
+  const [from, setFrom] = useState<number | null>(null);
   const [attacks, setAttacks] = useState<FetihAttackOrder[]>([]);
   const [sent, setSent] = useState(false);
   const orderKey = `${gs.gameId}-${gs.round}-${gs.phase === 'ORDERS'}`;
+
+  /** Yerleştirme hesaba katılmış asker sayısı. */
+  const troopsAt = (id: number) => (gs.tiles[id]?.troops ?? 0) + (place === id ? me.reserve : 0);
+  /** Saldırı kaynağı olabilecek bölgeler: 2+ asker ve en az bir yabancı komşu. */
+  const sources = owned
+    .filter((id) => troopsAt(id) >= 2 && neighborsOf(id).some((n) => gs.tiles[n].owner !== me.id))
+    .sort((a, b) => troopsAt(b) - troopsAt(a));
+  const sourcesKey = sources.join(',');
+
   useEffect(() => {
-    setPlace(gs.phase === 'ORDERS' ? autoPlacement(gs.tiles, me.id) : null);
+    const auto = gs.phase === 'ORDERS' ? autoPlacement(gs.tiles, me.id) : null;
+    setPlace(auto);
+    setFrom(auto);
     setAttacks([]);
     setSent(false);
-    // Yalnızca yeni emir turu başladığında sıfırla; tiles her saniye yeniden geliyor.
+    // Yalnızca yeni emir turunda sıfırla; durum her saniye yeniden geliyor.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderKey]);
 
-  const placeList = useMemo(
-    () => [...owned].sort((a, b) => threatAt(gs.tiles, me.id, b) - threatAt(gs.tiles, me.id, a) || gs.tiles[b].troops - gs.tiles[a].troops),
-    [owned, gs.tiles, me.id],
-  );
-  const options = useMemo(() => attackOptions(gs.tiles, me.id, place, me.reserve).slice(0, 14), [gs.tiles, me.id, place, me.reserve]);
-  // Durum her saniye yeniden geliyor; liste yalnızca asker sayıları değişince yeniden kuruluyor.
-  const optionsKey = options.map((o) => `${o.from}-${o.to}-${o.fromTroops}-${o.toTroops}`).join('|');
-
-  // Yerleştirme değişince artık geçersiz kalan saldırıyı düşür
+  // Yerleştirme değişince kaynak artık saldıramıyorsa seçimi ve geçersiz saldırıları düşür
   useEffect(() => {
+    if (from !== null && !sources.includes(from)) setFrom(sources[0] ?? null);
     setAttacks((prev) => {
-      const kept = prev.filter((a) => options.some((o) => sameAttack(o, a)));
+      const kept = prev.filter((a) => sources.includes(a.from));
       return kept.length === prev.length ? prev : kept;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [optionsKey]);
+  }, [sourcesKey]);
+
+  const targets = from === null ? [] : neighborsOf(from).filter((n) => gs.tiles[n].owner !== me.id);
 
   const toggleAttack = (a: FetihAttackOrder) => {
     setSent(false);
     setAttacks((prev) => {
       if (prev.some((x) => sameAttack(x, a))) return prev.filter((x) => !sameAttack(x, a));
-      const next = [...prev, a];
-      return next.slice(-Math.max(1, me.attacks));
+      return [...prev, a].slice(-Math.max(1, me.attacks));
     });
   };
+
+  const onMapClick = (id: number) => {
+    if (sources.includes(id)) { setFrom(id); return; }
+    if (from !== null && targets.includes(id)) toggleAttack({ from, to: id });
+  };
+
+  const placeList = useMemo(
+    () => [...owned].sort((a, b) => threatAt(gs.tiles, me.id, b) - threatAt(gs.tiles, me.id, a) || gs.tiles[b].troops - gs.tiles[a].troops),
+    [owned, gs.tiles, me.id],
+  );
 
   let body: React.ReactNode = null;
 
@@ -75,7 +97,7 @@ export const FetihControllerView: React.FC<Props> = ({ roomCode, me, gameState: 
       <div className="space-y-4">
         <Panel className="text-center space-y-2">
           <p className="font-display text-2xl">{t('Odadasın!')}</p>
-          <p className="text-sm font-bold" style={{ color: 'var(--sticker-ink-soft)' }}>{t('Oyun başlayınca haritada sana rastgele 3 il düşecek.')}</p>
+          <p className="text-sm font-bold" style={{ color: 'var(--sticker-ink-soft)' }}>{t('Oyun başlayınca dünya haritasında sana rastgele 3 bölge düşecek.')}</p>
           <p className="text-sm font-black">{t('Oyuncular ({a})', { a: players.length })}: {players.map((p) => p.name).join(', ')}</p>
         </Panel>
         {hostControls ? (
@@ -106,7 +128,7 @@ export const FetihControllerView: React.FC<Props> = ({ roomCode, me, gameState: 
             <Die value={gs.roll.dice[0]} size={44} /><Die value={gs.roll.dice[1]} size={44} />
             <span className="font-display text-3xl tabular-nums ml-auto">{sum}</span>
           </div>
-          {raided && <p className="text-sm font-black">{t('Eşkıya {a} ilinden 1 asker götürdü.', { a: provinceName(raided.province) })}</p>}
+          {raided && <p className="text-sm font-black">{t('Korsanlar {a} bölgesinden 1 asker götürdü.', { a: name(raided.province) })}</p>}
           <ul className="text-sm font-bold space-y-0.5">
             <li>{t('Taban gelir: +{a}', { a: owned.length > 0 ? baseIncome(owned.length) : 0 })}</li>
             {pick?.correct && <li>{t('Doğru cevap: +{a}', { a: QUIZ_BONUS + (fastest ? FASTEST_BONUS : 0) })}</li>}
@@ -124,18 +146,19 @@ export const FetihControllerView: React.FC<Props> = ({ roomCode, me, gameState: 
           <TimerPill seconds={gs.timerSeconds} />
         </div>
 
+        {/* 1. Yerleştirme */}
         <Panel className="space-y-2 p-4">
           <p className="font-black text-sm inline-flex items-center gap-1.5"><Shield className="w-4 h-4" /> {t('1. {a} yedek askeri nereye yığalım?', { a: me.reserve })}</p>
-          <div className="space-y-1.5 max-h-56 overflow-y-auto pr-1">
+          <div className="space-y-1.5 max-h-44 overflow-y-auto pr-1">
             {placeList.map((id) => {
               const threat = threatAt(gs.tiles, me.id, id);
               const border = neighborsOf(id).some((n) => gs.tiles[n].owner !== me.id);
               const selected = place === id;
               return (
-                <button key={id} onClick={() => { setPlace(id); setSent(false); }}
+                <button key={id} onClick={() => { setPlace(id); setFrom(id); setSent(false); }}
                   className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left text-sm font-black cursor-pointer"
                   style={{ border: '2.5px solid var(--sticker-ink)', background: selected ? '#ffd93d' : 'var(--sticker-surface)', color: selected ? INK : 'var(--sticker-ink)' }}>
-                  <span className="flex-1 truncate">{provinceName(id)}</span>
+                  <span className="flex-1 truncate">{name(id)}</span>
                   {border && <span className="text-[11px] font-bold opacity-80">{threat > 0 ? t('cephe · {a} düşman', { a: threat }) : t('sınır')}</span>}
                   <span className="tabular-nums">{gs.tiles[id].troops}{selected && me.reserve > 0 ? ` +${me.reserve}` : ''}</span>
                 </button>
@@ -144,36 +167,72 @@ export const FetihControllerView: React.FC<Props> = ({ roomCode, me, gameState: 
           </div>
         </Panel>
 
-        <Panel className="space-y-2 p-4">
+        {/* 2. Saldırı: önce kaynak, sonra YALNIZCA onun komşuları */}
+        <Panel className="space-y-3 p-4">
           <p className="font-black text-sm inline-flex items-center gap-1.5">
             <Swords className="w-4 h-4" /> {t('2. Saldırı ({a}/{b} seçildi)', { a: attacks.length, b: me.attacks })}
           </p>
-          {options.length === 0 ? (
-            <p className="text-sm font-bold" style={{ color: 'var(--sticker-ink-soft)' }}>{t('Saldırmak için en az 2 askerli bir sınır ilin olmalı.')}</p>
+
+          {sources.length === 0 ? (
+            <p className="text-sm font-bold" style={{ color: 'var(--sticker-ink-soft)' }}>{t('Saldırmak için en az 2 askerli, sınırda bir bölgen olmalı.')}</p>
           ) : (
-            <div className="space-y-1.5 max-h-72 overflow-y-auto pr-1">
-              {options.map((o) => {
-                const chosen = attacks.some((a) => sameAttack(a, o));
-                const chance = Math.round(winChance(o.fromTroops, o.toTroops) * 100);
-                return (
-                  <button key={`${o.from}-${o.to}`} onClick={() => toggleAttack({ from: o.from, to: o.to })}
-                    className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left text-sm cursor-pointer"
-                    style={{ border: '2.5px solid var(--sticker-ink)', background: chosen ? '#ff6b6b' : 'var(--sticker-surface)', color: chosen ? INK : 'var(--sticker-ink)' }}>
-                    <span className="flex-1 min-w-0">
-                      <span className="font-black">{provinceName(o.from)} <span className="tabular-nums">{o.fromTroops}</span></span>
-                      <span className="font-bold"> → </span>
-                      <span className="font-black">{provinceName(o.to)} <span className="tabular-nums">{o.toTroops}</span></span>
-                      <span className="flex items-center gap-1 text-[11px] font-bold opacity-80">
-                        <span className="w-2.5 h-2.5 rounded-full inline-block" style={{ background: ownerColor(o.owner), border: '1.5px solid var(--sticker-ink)' }} />
-                        {ownerName(o.owner)}
-                      </span>
-                    </span>
-                    <span className="font-display text-lg tabular-nums">{getLang() === 'en' ? `${chance}%` : `%${chance}`}</span>
-                    {chosen && <Check className="w-4 h-4" />}
-                  </button>
-                );
-              })}
-            </div>
+            <>
+              <div className="space-y-1.5">
+                <p className="text-xs font-black uppercase" style={{ color: 'var(--sticker-ink-soft)' }}>{t('Nereden saldıracaksın?')}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {sources.map((id) => (
+                    <button key={id} onClick={() => setFrom(id)}
+                      className="sticker-pill px-3 py-1 text-sm cursor-pointer"
+                      style={{ background: from === id ? me.color : 'var(--sticker-surface)', color: from === id ? INK : 'var(--sticker-ink)' }}>
+                      {name(id)} <span className="tabular-nums">{troopsAt(id)}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {from !== null && (
+                <div className="space-y-1.5">
+                  <p className="text-xs font-black uppercase" style={{ color: 'var(--sticker-ink-soft)' }}>
+                    {t('{a} bölgesinin komşuları', { a: name(from) })}
+                  </p>
+                  {targets.length === 0 ? (
+                    <p className="text-sm font-bold">{t('Bu bölgenin saldırabileceği komşusu yok.')}</p>
+                  ) : targets.map((to) => {
+                    const tile = gs.tiles[to];
+                    const chosen = attacks.some((a) => sameAttack(a, { from, to }));
+                    return (
+                      <button key={to} onClick={() => toggleAttack({ from, to })}
+                        className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left text-sm cursor-pointer"
+                        style={{ border: '2.5px solid var(--sticker-ink)', background: chosen ? '#ff6b6b' : 'var(--sticker-surface)', color: chosen ? INK : 'var(--sticker-ink)' }}>
+                        <span className="flex-1 min-w-0">
+                          <span className="font-black">{name(to)} <span className="tabular-nums">{tile.troops}</span></span>
+                          <span className="flex items-center gap-1 text-[11px] font-bold opacity-80">
+                            <span className="w-2.5 h-2.5 rounded-full inline-block" style={{ background: ownerColor(tile.owner), border: '1.5px solid var(--sticker-ink)' }} />
+                            {ownerName(tile.owner)}{isSeaLink(from, to) ? ` · ${t('deniz geçidi')}` : ''}
+                          </span>
+                        </span>
+                        <span className="font-display text-lg tabular-nums">{pct(winChance(troopsAt(from), tile.troops))}</span>
+                        {chosen && <Check className="w-4 h-4" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {attacks.length > 0 && (
+                <div className="space-y-1">
+                  <p className="text-xs font-black uppercase" style={{ color: 'var(--sticker-ink-soft)' }}>{t('Seçilen saldırılar')}</p>
+                  {attacks.map((a) => (
+                    <div key={`${a.from}-${a.to}`} className="flex items-center gap-2 text-sm font-black">
+                      <span className="flex-1 truncate">{name(a.from)} → {name(a.to)}</span>
+                      <button onClick={() => toggleAttack(a)} aria-label={t('Kaldır')} className="sticker-btn p-1" style={{ background: 'var(--sticker-surface)', color: 'var(--sticker-ink)' }}>
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
           )}
         </Panel>
 
@@ -199,8 +258,8 @@ export const FetihControllerView: React.FC<Props> = ({ roomCode, me, gameState: 
       <div className="space-y-4">
         <Panel className="text-center space-y-2" style={{ background: won ? '#7bd389' : '#ffd93d', color: INK }}>
           <Trophy className="w-10 h-10 mx-auto" />
-          <p className="font-display text-3xl">{won ? t('Anadolu senin!') : t('{a}. oldun', { a: rank })}</p>
-          <p className="text-sm font-black">{t('{a} il · {b} doğru cevap', { a: me.score, b: me.correctCount })}</p>
+          <p className="font-display text-3xl">{won ? t('Dünya senin!') : t('{a}. oldun', { a: rank })}</p>
+          <p className="text-sm font-black">{t('{a} bölge · {b} doğru cevap', { a: me.score, b: me.correctCount })}</p>
         </Panel>
         {hostControls && (
           <div className="grid grid-cols-1 gap-3">
@@ -212,12 +271,13 @@ export const FetihControllerView: React.FC<Props> = ({ roomCode, me, gameState: 
     );
   }
 
+  const ordering = gs.phase === 'ORDERS';
   return (
     <div className="w-full max-w-md mx-auto px-4 py-4 space-y-4 font-body" style={{ color: 'var(--sticker-ink)' }}>
       <div className="flex items-center justify-between gap-2">
         <span className="sticker-pill px-3 py-1 text-sm inline-flex items-center gap-1.5 min-w-0" style={{ background: me.color, color: INK }}>
           <span className="truncate">{me.name}</span>
-          {gs.phase !== 'LOBBY' && <span className="tabular-nums">· {t('{a} il', { a: me.score })} · {t('{a} asker', { a: troops })}</span>}
+          {gs.phase !== 'LOBBY' && <span className="tabular-nums">· {t('{a} bölge', { a: me.score })} · {t('{a} asker', { a: troops })}</span>}
         </span>
         <div className="flex items-center gap-2">
           <span className="sticker-pill px-2.5 py-0.5 font-mono text-sm" style={{ background: '#ffd93d', color: INK }}>{roomCode}</span>
@@ -228,11 +288,19 @@ export const FetihControllerView: React.FC<Props> = ({ roomCode, me, gameState: 
       </div>
 
       {gs.phase !== 'LOBBY' && (
-        <Panel className="p-2">
+        <Panel className="p-2 space-y-1">
           <FetihMap tiles={gs.tiles} players={players} focusPlayerId={me.id} showTokens={gs.phase === 'ROLL'}
             rolled={gs.phase === 'ROLL' && gs.roll ? gs.roll.dice[0] + gs.roll.dice[1] : null}
-            plannedPlace={gs.phase === 'ORDERS' ? place : null} plannedAttacks={gs.phase === 'ORDERS' ? attacks : []}
-            battles={gs.phase === 'RESOLVE' ? gs.battles : []} />
+            plannedPlace={ordering ? place : null} plannedAttacks={ordering ? attacks : []}
+            battles={gs.phase === 'RESOLVE' ? gs.battles : []}
+            selectedFrom={ordering ? from : null} targets={ordering ? targets : []}
+            zoomIds={ordering && from !== null ? [from, ...neighborsOf(from)] : null}
+            onTerritoryClick={ordering ? onMapClick : undefined} />
+          {ordering && from !== null && (
+            <p className="text-[11px] font-bold text-center" style={{ color: 'var(--sticker-ink-soft)' }}>
+              {t('Kırmızı halkalılar {a} bölgesinin komşuları — yalnızca onlara saldırabilirsin.', { a: name(from) })}
+            </p>
+          )}
         </Panel>
       )}
 

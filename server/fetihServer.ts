@@ -6,7 +6,7 @@ import {
   tallyCategoryVote,
   type QuizCategoryId,
 } from '../src/data/quizBank';
-import { FETIH_PROVINCE_IDS, areNeighbors } from '../src/data/fetihMap';
+import { TERRITORY_IDS, areNeighbors } from '../src/data/fetihMap';
 import {
   FASTEST_BONUS,
   FETIH_TIMES,
@@ -29,7 +29,7 @@ import type { QuizPick } from '../src/types/quizRound';
 import { createRoomKit, playerBasics, type KitHost, type KitRoom } from './roomKit';
 
 /**
- * İL İL FETİH — sunucu
+ * CİHAN FATİHİ — sunucu
  * Tur: VOTE → QUESTION → ROLL → ORDERS → RESOLVE → … → GAME_OVER
  */
 
@@ -47,7 +47,7 @@ interface FetihRoom extends KitRoom<FetihGameState, FetihPlayer> {
 
 function emptyTiles(): FetihGameState['tiles'] {
   const tiles: FetihGameState['tiles'] = {};
-  for (const id of FETIH_PROVINCE_IDS) tiles[id] = { owner: null, troops: 1, token: 0 };
+  for (const id of TERRITORY_IDS) tiles[id] = { owner: null, troops: 1, token: 0 };
   return tiles;
 }
 
@@ -103,7 +103,7 @@ export function createFetihServer(host: KitHost) {
       return { id, ...basics, score: 0, reserve: 0, attacks: 0, correctCount: 0, respawns: 0 };
     },
 
-    /** Oyun sürerken gelen oyuncu boş bir ilde başlıyor. */
+    /** Oyun sürerken gelen oyuncu boş bir bölgede başlıyor. */
     onPlayerAdded(room, player) {
       const gs = room.gameState;
       if (gs.phase === 'LOBBY' || gs.phase === 'GAME_OVER') return;
@@ -181,6 +181,13 @@ export function createFetihServer(host: KitHost) {
 
     onResume(room) {
       const gs = room.gameState;
+      // Harita değiştiyse (eski Türkiye haritasıyla kaydedilmiş oda) yarım oyunu
+      // yeni bölgelerle sürdürmek anlamsız: odayı temiz lobiye döndür.
+      if (TERRITORY_IDS.some((id) => !gs.tiles?.[id]) || Object.keys(gs.tiles || {}).length !== TERRITORY_IDS.length) {
+        room.gameState = freshState(gs.settings);
+        room.players.forEach((p) => { p.score = 0; p.reserve = 0; p.attacks = 0; p.correctCount = 0; p.respawns = 0; });
+        return;
+      }
       const left = Math.max(3, gs.timerSeconds);
       if (gs.phase === 'VOTE') kit.runTimer(room, left, () => endVote(room));
       else if (gs.phase === 'QUESTION') {

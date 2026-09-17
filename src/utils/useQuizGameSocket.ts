@@ -4,7 +4,7 @@ import { recordMatchResult, type GameModuleType } from './leaderboardStore';
 import { getLang } from '../i18n';
 
 /**
- * Kale Kuşatması ve İl İl Fetih için ortak soket kancası.
+ * Kale Kuşatması ve Cihan Fatihi için ortak soket kancası.
  *
  * İki oyunun sunucu tarafı aynı oda kitini (server/roomKit.ts) kullanıyor;
  * mesaj sözleşmesi de aynı, yalnızca önek farklı. Kapışma kancasının

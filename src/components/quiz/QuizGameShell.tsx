@@ -7,7 +7,7 @@ import { t } from '../../i18n';
 import { GameHeader, INK, PrimaryButton } from './QuizParts';
 
 /**
- * Kale Kuşatması ve İl İl Fetih'in giriş ekranı.
+ * Kale Kuşatması ve Cihan Fatihi'in giriş ekranı.
  * Üç yol (Kapışma ile aynı): TV'de oda kur, TV olmadan telefondan kur, katıl.
  * Oyun başladıktan sonra ekranı `renderTv` / `renderController` çiziyor.
  */

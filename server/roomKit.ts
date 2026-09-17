@@ -3,7 +3,7 @@ import { asContentLang, type ContentLang } from '../src/data/contentLang';
 import type { PersistedGameType } from './persistence';
 
 /**
- * ODA KİTİ — Kale Kuşatması ve İl İl Fetih için ortak oda iskeleti
+ * ODA KİTİ — Kale Kuşatması ve Cihan Fatihi için ortak oda iskeleti
  * =================================================================
  * server.ts'deki her oyun oda kurma, katılma, yeniden bağlanma, yayın ve
  * kopma işini kendi içinde tekrar yazıyor. Yeni iki oyun bu tekrarı bu

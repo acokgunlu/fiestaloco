@@ -1,9 +1,9 @@
 import React from 'react';
 import { Check, Crown, Map as MapIcon, Play, RotateCcw, Swords, Trophy, Zap } from 'lucide-react';
 import type { FetihBattle, FetihGameState, FetihPlayer } from '../../types/fetih';
-import { provinceName } from '../../data/fetihMap';
+import { territoryName } from '../../data/fetihMap';
 import { FASTEST_BONUS, QUIZ_BONUS, totalTroops } from '../../data/fetihLogic';
-import { t } from '../../i18n';
+import { getLang, t } from '../../i18n';
 import { FetihMap } from './FetihMap';
 import { GameHeader, INK, JoinCard, Panel, PlayerChip, PrimaryButton, QuestionBoard, TimerPill, VoteBoard } from '../quiz/QuizParts';
 
@@ -42,10 +42,10 @@ export const Die: React.FC<{ value: number; size?: number }> = ({ value, size = 
 
 export function battleLine(b: FetihBattle, players: FetihPlayer[]): string {
   const who = players.find((p) => p.id === b.playerId)?.name ?? '?';
-  const from = provinceName(b.from);
-  const to = provinceName(b.to);
+  const from = territoryName(b.from, getLang());
+  const to = territoryName(b.to, getLang());
   if (b.cancelled) return t('{a}: {b} → {c} emri geçersiz kaldı', { a: who, b: from, c: to });
-  if (b.conquered) return t('{a}, {b} ilini fethetti ({c} kayıp)', { a: who, b: to, c: b.attLoss });
+  if (b.conquered) return t('{a}, {b} bölgesini fethetti ({c} kayıp)', { a: who, b: to, c: b.attLoss });
   return t('{a}, {b} önünde püskürtüldü ({c} kayıp, savunma {d})', { a: who, b: to, c: b.attLoss, d: b.defLoss });
 }
 
@@ -107,9 +107,9 @@ export const FetihTvView: React.FC<Props> = ({ roomCode, gameState: gs, players,
             <span className="font-display text-5xl tabular-nums">{sum}</span>
           </div>
           {sum === 7 ? (
-            <p className="text-sm font-black">{t('Eşkıya baskını! En kalabalık illerden 1’er asker gitti.')}{gs.roll.raided.length === 0 ? ` ${t('Ama kimsenin 4+ askeri yoktu.')}` : ''}</p>
+            <p className="text-sm font-black">{t('Korsan baskını! Herkesin en kalabalık bölgesinden 1 asker gitti.')}{gs.roll.raided.length === 0 ? ` ${t('Ama kimsenin 4+ askeri yoktu.')}` : ''}</p>
           ) : Object.keys(gs.roll.gains).length === 0 ? (
-            <p className="text-sm font-bold">{t('{a} numaralı illerin hiçbiri kimsenin değil — üretim yok.', { a: sum })}</p>
+            <p className="text-sm font-bold">{t('{a} numaralı bölgelerin hiçbiri kimsenin değil — üretim yok.', { a: sum })}</p>
           ) : (
             <div className="flex flex-wrap gap-1.5">
               {Object.entries(gs.roll.gains).map(([pid, n]) => {
@@ -174,8 +174,8 @@ export const FetihTvView: React.FC<Props> = ({ roomCode, gameState: gs, players,
     side = (
       <Panel className="space-y-4 text-center">
         <Trophy className="w-12 h-12 mx-auto" />
-        <h2 className="font-display text-3xl">{winner ? t('{a} Anadolu’ya hükmetti!', { a: winner.name }) : t('Oyun bitti')}</h2>
-        {winner && <p className="font-bold">{t('{a} il ile birinci', { a: winner.score })}</p>}
+        <h2 className="font-display text-3xl">{winner ? t('{a} dünyaya hükmetti!', { a: winner.name }) : t('Oyun bitti')}</h2>
+        {winner && <p className="font-bold">{t('{a} bölge ile birinci', { a: winner.score })}</p>}
         <div className="grid grid-cols-1 gap-3">
           <PrimaryButton candy="#7bd389" onClick={() => send('start_game')}><Play className="w-5 h-5" /> {t('Yeni Harita')}</PrimaryButton>
           <PrimaryButton candy="#4cc9f0" onClick={() => send('restart_game')}><RotateCcw className="w-5 h-5" /> {t('Lobiye Dön')}</PrimaryButton>
@@ -185,12 +185,12 @@ export const FetihTvView: React.FC<Props> = ({ roomCode, gameState: gs, players,
   }
 
   return (
-    <div className="w-full max-w-[1500px] mx-auto px-4 sm:px-6 py-5 space-y-5 font-body" style={{ color: 'var(--sticker-ink)' }}>
-      <GameHeader icon={<MapIcon className="w-6 h-6" />} candy="#7bd389" title={t('İl İl Fetih')} roomCode={roomCode} onBack={onLeave}
+    <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 py-5 space-y-5 font-body" style={{ color: 'var(--sticker-ink)' }}>
+      <GameHeader icon={<MapIcon className="w-6 h-6" />} candy="#7bd389" title={t('Cihan Fatihi')} roomCode={roomCode} onBack={onLeave}
         subtitle={gs.phase === 'LOBBY' ? t('Harita rastgele dağıtılacak') : t('Tur {a}/{b} · {c}', { a: Math.max(1, gs.round), b: gs.settings.totalRounds, c: t(PHASE_LABEL[gs.phase]) })} />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
-        <div className="lg:col-span-8 space-y-4">
+        <div className="lg:col-span-9 space-y-4">
           <Panel className="p-3">
             <FetihMap tiles={gs.tiles} players={players} rolled={rolledSum}
               battles={gs.phase === 'RESOLVE' ? gs.battles : []} showTokens={gs.phase !== 'LOBBY'} showTroops={gs.phase !== 'LOBBY'} />
@@ -199,17 +199,17 @@ export const FetihTvView: React.FC<Props> = ({ roomCode, gameState: gs, players,
             <Panel className="space-y-2">
               <h3 className="font-display text-xl">{t('Nasıl oynanır?')}</h3>
               <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-1.5 text-sm font-semibold" style={{ color: 'var(--sticker-ink-soft)' }}>
-                <li>{t('Başlangıç rastgele: herkese dağınık 3 il ve 3’er asker, tarafsız illerde 1-3 asker.')}</li>
+                <li>{t('Başlangıç rastgele: herkese dağınık 3 bölge ve 3’er asker, tarafsız bölgelerde 1-3 asker.')}</li>
                 <li>{t('Her tur kategori oylanır, soru gelir. Doğru bilen +{a} asker, en hızlı +{b} daha ve 2 saldırı hakkı alır.', { a: QUIZ_BONUS, b: FASTEST_BONUS })}</li>
-                <li>{t('Sonra iki zar atılır: numarası tutan her il sahibine 1 asker üretir. 7 gelirse eşkıya baskını.')}</li>
-                <li>{t('Emirler gizli verilir: yedeği bir ile yığ, komşu bir ile saldır. Savaşlar Risk zarlarıyla çözülür.')}</li>
-                <li>{t('İlsiz kalan elenmez, boş bir ilde yeniden doğar. {a} tur sonunda en çok ili olan kazanır.', { a: gs.settings.totalRounds })}</li>
+                <li>{t('Sonra iki zar atılır: numarası tutan her bölge sahibine 1 asker üretir. 7 gelirse korsan baskını.')}</li>
+                <li>{t('Emirler gizli verilir: yedeği bir bölgene yığ, yalnızca KOMŞU bir bölgeye saldır — kara sınırı ya da kesik çizgili deniz geçidi. Savaşlar zarla çözülür.')}</li>
+                <li>{t('Toprağı kalmayan elenmez, boş bir bölgede yeniden doğar. {a} tur sonunda en çok bölgesi olan kazanır.', { a: gs.settings.totalRounds })}</li>
               </ul>
             </Panel>
           ) : null}
         </div>
 
-        <div className="lg:col-span-4 space-y-4">
+        <div className="lg:col-span-3 space-y-4">
           {side}
           {gs.phase !== 'LOBBY' && (
             <Panel className="space-y-1.5 p-4">
@@ -220,7 +220,7 @@ export const FetihTvView: React.FC<Props> = ({ roomCode, gameState: gs, players,
                   <span className="font-black flex-1 truncate">{p.name}</span>
                   {gs.phase === 'GAME_OVER' && i === 0 && <Crown className="w-4 h-4" />}
                   <span className="font-bold tabular-nums" style={{ color: 'var(--sticker-ink-soft)' }}>{t('{a} asker', { a: totalTroops(gs.tiles, p.id) })}</span>
-                  <span className="sticker-pill px-2 py-0 text-xs tabular-nums" style={{ background: p.color, color: INK }}>{t('{a} il', { a: p.score })}</span>
+                  <span className="sticker-pill px-2 py-0 text-xs tabular-nums" style={{ background: p.color, color: INK }}>{t('{a} bölge', { a: p.score })}</span>
                 </div>
               ))}
             </Panel>

@@ -1,7 +1,7 @@
 import type { QuizCategoryId } from '../data/quizBank';
 
 /**
- * Kale Kuşatması ile İl İl Fetih'in ORTAK soru turu parçaları.
+ * Kale Kuşatması ile Cihan Fatihi'in ORTAK soru turu parçaları.
  * Her iki oyunda da tur aynı iki adımla açılıyor: kategori oylaması, soru.
  */
 

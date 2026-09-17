@@ -28,7 +28,7 @@ const GAME_META: Record<PersistedGameType, { title: string; icon: string }> = {
   timing: { title: 'Tam Zamanında', icon: '⏱️' },
   kapisma: { title: 'Kapışma', icon: '🏁' },
   kusatma: { title: 'Kale Kuşatması', icon: '🏰' },
-  fetih: { title: 'İl İl Fetih', icon: '🗺️' },
+  fetih: { title: 'Cihan Fatihi', icon: '🗺️' },
 };
 
 type AnyPlayer = Record<string, any>;
@@ -215,7 +215,7 @@ export function detectFinishedMatch(gameType: PersistedGameType, room: AnyRoom):
   }
 
   // ---------------------------------------------------------------------------
-  // İL İL FETİH — en çok ile sahip olan kazanır (skor = il sayısı)
+  // CİHAN FATİHİ — en çok bölgeye sahip olan kazanır (skor = bölge sayısı)
   // ---------------------------------------------------------------------------
   if (gameType === 'fetih') {
     if (gs.phase !== 'GAME_OVER') return null;
@@ -235,7 +235,7 @@ export function detectFinishedMatch(gameType: PersistedGameType, room: AnyRoom):
         winnerName: winnerEntry?.name,
         winnerAvatar: winnerEntry?.avatar,
         winnerScore: winnerEntry?.score,
-        details: winnerEntry ? `${winnerEntry.name} ${winnerEntry.score} ile hükmetti` : undefined,
+        details: winnerEntry ? `${winnerEntry.name} ${winnerEntry.score} bölgeyle dünyaya hükmetti` : undefined,
         players: recordPlayers,
       },
     };

@@ -2,23 +2,24 @@ import type { QuizCategoryId } from '../data/quizBank';
 import type { PublicQuestion, QuizPick, QuizVote } from './quizRound';
 
 /**
- * İl İl Fetih — tip tanımları
- * ===========================
- * Risk ile Catan arası bir Türkiye haritası oyunu. Başlangıç tamamen
- * rastgele: herkese dağınık 3 il, tarafsız illere 1-3 asker ve her ile
- * 2-12 arası bir üretim zarı numarası.
+ * Cihan Fatihi — tip tanımları
+ * ============================
+ * Dünya haritasında bölge fethi; üretim zarları ve zar savaşları. Başlangıç
+ * tamamen rastgele: herkese dağınık 3 bölge, tarafsız bölgelere 1-3 asker ve
+ * her bölgeye 2-12 arası bir üretim zarı numarası. Saldırı YALNIZCA komşu
+ * bölgeye (kara sınırı ya da deniz geçidi) yapılabiliyor.
  *
  * Bir tur:
  *   VOTE     → 3 kategoriden biri oylanıyor
  *   QUESTION → doğru bilen asker kazanıyor; en hızlı doğru bilen fazladan
  *              asker, ikinci saldırı hakkı ve ilk hamle önceliği alıyor
- *   ROLL     → iki zar: numarası tutan her il sahibine 1 asker üretiyor
- *              (Catan). 7 gelirse eşkıya baskını.
- *   ORDERS   → herkes gizlice yedek askerini bir iline yerleştiriyor ve
- *              komşu bir ile saldırı emri veriyor
- *   RESOLVE  → emirler öncelik sırasıyla uygulanıyor, zar savaşları (Risk)
+ *   ROLL     → iki zar: numarası tutan her bölge sahibine 1 asker üretiyor.
+ *              7 gelirse korsan baskını.
+ *   ORDERS   → herkes gizlice yedek askerini bir bölgesine yerleştiriyor ve
+ *              komşu bir bölgeye saldırı emri veriyor
+ *   RESOLVE  → emirler öncelik sırasıyla uygulanıyor, zar savaşları
  *
- * İlsiz kalan oyuncu elenmiyor: boş bir ilde 3 askerle yeniden doğuyor.
+ * Toprağı kalmayan oyuncu elenmiyor: boş bir bölgede 3 askerle yeniden doğuyor.
  * Parti oyununda kimse ilk 10 dakikada seyirci kalmamalı.
  */
 
@@ -30,7 +31,7 @@ export interface FetihPlayer {
   avatar: string;
   color: string;
   colorName: string;
-  /** Sahip olunan il sayısı — sıralama ve maç kaydı bunu kullanıyor. */
+  /** Sahip olunan bölge sayısı — sıralama ve maç kaydı bunu kullanıyor. */
   score: number;
   /** Bu tur yerleştirilmeyi bekleyen asker. */
   reserve: number;
@@ -62,7 +63,7 @@ export interface FetihBattle {
   attLoss: number;
   defLoss: number;
   conquered: boolean;
-  /** Emir uygulanamadı (kaynak il elden çıktı, asker yetmedi…). */
+  /** Emir uygulanamadı (kaynak bölge elden çıktı, asker yetmedi…). */
   cancelled: boolean;
 }
 
@@ -70,7 +71,7 @@ export interface FetihRoll {
   dice: [number, number];
   /** Oyuncu başına üretilen asker. */
   gains: Record<string, number>;
-  /** 7 geldiğinde eşkıyanın asker götürdüğü iller. */
+  /** 7 geldiğinde korsanların asker götürdüğü bölgeler. */
   raided: Array<{ playerId: string; province: number }>;
 }
 
@@ -95,7 +96,7 @@ export interface FetihGameState {
   settings: FetihSettings;
   timerSeconds: number;
 
-  /** İl plakası → durum. */
+  /** Bölge kimliği (worldTerritories) → durum. */
   tiles: Record<number, FetihTile>;
 
   vote: QuizVote | null;

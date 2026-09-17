@@ -179,7 +179,7 @@ const GAME_LABELS: Record<GameModuleType, { title: string; icon: string }> = {
   timing: { title: 'Tam Zamanında', icon: '⏱️' },
   kapisma: { title: 'Kapışma', icon: '🏁' },
   kusatma: { title: 'Kale Kuşatması', icon: '🏰' },
-  fetih: { title: 'İl İl Fetih', icon: '🗺️' },
+  fetih: { title: 'Cihan Fatihi', icon: '🗺️' },
 };
 
 /**
