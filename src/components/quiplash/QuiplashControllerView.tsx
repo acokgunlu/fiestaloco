@@ -422,7 +422,7 @@ export const QuiplashControllerView: React.FC<QuiplashControllerViewProps> = ({
 
       {/* Controller Footer */}
       <footer className="text-center text-[10px] text-slate-600 font-bold uppercase tracking-widest pt-2">
-        {t('FiestaLoco • Quiplash Phone Controller')}</footer>
+        {t('FiestaLoco • Laf Cambazı Telefon Kumandası')}</footer>
     </div>
   );
 };

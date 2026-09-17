@@ -59,7 +59,7 @@ export function CodenamesLobbyView({ onStartGame, onReturnToHub }: CodenamesLobb
           <span>{t('Gizli İstihbarat & İpucu Arenası')}</span>
         </div>
         <h1 className="text-3xl sm:text-5xl font-black tracking-tight">
-          {t('🕵️‍♂️ GİZLİ AJANLAR (CODENAMES)')}</h1>
+          {t('🕵️‍♂️ GİZLİ AJANLAR')}</h1>
         <p className="text-sm sm:text-base text-white/90 max-w-xl mx-auto mt-2 font-medium">
           {t('İki takım, 25 kod kelimesi ve 1 ölümcül Kara Suikastçı! Liderinizin verdiği gizli ipuçlarını çözerek kendi ajanlarınızı ilk siz açığa çıkarın.')}</p>
       </div>

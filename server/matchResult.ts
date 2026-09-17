@@ -17,12 +17,12 @@ export interface DetectedMatch {
 
 const GAME_META: Record<PersistedGameType, { title: string; icon: string }> = {
   imposter: { title: 'Imposter Line', icon: '🎨' },
-  codenames: { title: 'Codenames', icon: '🕵️' },
+  codenames: { title: 'Gizli Ajanlar', icon: '🕵️' },
   verdict: { title: 'Grup Mahkemesi', icon: '⚖️' },
   bomb: { title: 'Saatli Bomba', icon: '💣' },
   bluff: { title: 'Yalan Ustası', icon: '🎭' },
-  trivia: { title: 'Trivia Pursuit', icon: '🧠' },
-  quiplash: { title: 'Quiplash', icon: '🥊' },
+  trivia: { title: 'Bilgi Kalesi', icon: '🧠' },
+  quiplash: { title: 'Laf Cambazı', icon: '🥊' },
   race: { title: 'At Yarışı', icon: '🏇' },
   colory: { title: 'Colory', icon: '🎨' },
   timing: { title: 'Tam Zamanında', icon: '⏱️' },

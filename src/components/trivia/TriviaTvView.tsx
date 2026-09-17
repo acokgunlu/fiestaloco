@@ -99,7 +99,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
-                {t('Trivia Pursuit TV')}</h2>
+                {t('Bilgi Kalesi TV')}</h2>
               <span className="text-[10px] uppercase font-black tracking-widest px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
                 {t('ANA EKRAN')}</span>
             </div>
@@ -605,7 +605,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
                 {players.find((p) => p.id === gameState.winnerPlayerId)?.name || t('Şampiyon')}
               </h2>
               <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1 font-medium">
-                {t("Tüm Kategori Rozetlerini toplayarak Trivia Pursuit'i fethetti!")}</p>
+                {t("Tüm Kategori Rozetlerini toplayarak Bilgi Kalesi'ni fethetti!")}</p>
             </div>
 
             {/* Final Leaderboard */}
@@ -708,7 +708,7 @@ export const TriviaTvView: React.FC<TriviaTvViewProps> = ({
           </div>
 
           <div className="text-right text-[11px] text-slate-400 shrink-0 font-bold">
-            {t('FiestaLoco • Trivia Pursuit')}</div>
+            {t('FiestaLoco • Bilgi Kalesi')}</div>
         </div>
       </div>
     </div>

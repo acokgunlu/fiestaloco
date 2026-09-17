@@ -191,7 +191,7 @@ export function useTriviaPursuitSocket() {
 
                 recordMatchResult({
                   gameType: 'trivia_pursuit',
-                  gameTitle: 'Trivia Pursuit (Bilgi Çarkı)',
+                  gameTitle: 'Bilgi Kalesi',
                   gameIcon: '🧠',
                   roomCode: msg.gameState.roomCode,
                   winnerName: winner?.name,
@@ -225,7 +225,7 @@ export function useTriviaPursuitSocket() {
             setMyAnswerSubmitted(msg.answer);
           }
         } catch (e) {
-          console.error('Trivia Pursuit message parse error:', e);
+          console.error('Bilgi Kalesi message parse error:', e);
         }
       };
     } catch (err) {

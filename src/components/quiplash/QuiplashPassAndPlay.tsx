@@ -243,7 +243,7 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
             </div>
             <div>
               <h1 className="text-sm font-black tracking-wider uppercase bg-gradient-to-r from-purple-400 to-pink-300 bg-clip-text text-transparent">
-                {t('QUIPLASH')}</h1>
+                {t('LAF CAMBAZI')}</h1>
               <span className="text-[10px] text-slate-500 dark:text-slate-400 font-bold block -mt-0.5">
                 {t('Tek Cihaz (Pass & Play)')}</span>
             </div>
@@ -564,7 +564,7 @@ export const QuiplashPassAndPlay: React.FC<QuiplashPassAndPlayProps> = ({
       </main>
 
       <footer className="text-center text-[10px] text-slate-600 font-bold uppercase tracking-widest pt-2">
-        {t('FiestaLoco • Quiplash Pass & Play')}</footer>
+        {t('FiestaLoco • Laf Cambazı Tek Cihaz')}</footer>
     </div>
   );
 };

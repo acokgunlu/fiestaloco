@@ -34,12 +34,12 @@ interface UnifiedLeaderboardModalProps {
 
 const GAME_FILTER_OPTIONS: { id: 'all' | GameModuleType; label: string; icon: string }[] = [
   { id: 'all', label: 'Tüm Oyunlar', icon: '🎮' },
-  { id: 'quiplash', label: 'Quiplash', icon: '🥊' },
-  { id: 'codenames', label: 'Codenames', icon: '🕵️' },
+  { id: 'quiplash', label: 'Laf Cambazı', icon: '🥊' },
+  { id: 'codenames', label: 'Gizli Ajanlar', icon: '🕵️' },
   { id: 'imposter', label: 'Imposter', icon: '🎨' },
-  { id: 'bluff', label: 'Fibbage', icon: '🤥' },
-  { id: 'bomb', label: 'Word Bomb', icon: '💣' },
-  { id: 'trivia_pursuit', label: 'Trivia Pursuit', icon: '🧠' },
+  { id: 'bluff', label: 'Yalan Ustası', icon: '🤥' },
+  { id: 'bomb', label: 'Saatli Bomba', icon: '💣' },
+  { id: 'trivia_pursuit', label: 'Bilgi Kalesi', icon: '🧠' },
 ];
 
 export const UnifiedLeaderboardModal: React.FC<UnifiedLeaderboardModalProps> = ({
@@ -418,10 +418,10 @@ export const UnifiedLeaderboardModal: React.FC<UnifiedLeaderboardModalProps> = (
                   { title: '🔥 Parti Kıdemlisi', desc: 'En az 5 parti oyunu tamamla.', color: 'border-orange-300' },
                   { title: '🏆 Seri Şampiyon', desc: 'Farklı oyunlarda en az 3 galibiyet elde et.', color: 'border-amber-400' },
                   { title: '👑 Fiesta Efsanesi', desc: 'Toplamda 10 zafer kazanarak efsane ol!', color: 'border-yellow-500' },
-                  { title: '🧠 Bilgi Dâhisi', desc: 'Trivia Pursuit çarkında 6 rozeti topla veya kazan.', color: 'border-blue-400' },
+                  { title: '🧠 Bilgi Dâhisi', desc: "Bilgi Kalesi'nde 6 rozeti topla veya kazan.", color: 'border-blue-400' },
                   { title: '🎭 Usta Yalancı', desc: 'Yalan Ustası (Bluff Trivia) oyununda rakipleri kandırarak kazan.', color: 'border-purple-400' },
                   { title: '💣 Çelik Sinirli', desc: 'Saatli Bomba oyununda bombayı patlatmadan son hayatta kalan ol.', color: 'border-rose-400' },
-                  { title: '🕵️ Gizli Ajan Lideri', desc: 'Gizli Ajanlar (Codenames) oyununda takımına zaferi getir.', color: 'border-indigo-400' },
+                  { title: '🕵️ Gizli Ajan Lideri', desc: 'Gizli Ajanlar oyununda takımına zaferi getir.', color: 'border-indigo-400' },
                   { title: '🎨 Sanat Dedektifi', desc: 'Sahtekâr Ressam oyununda sahtekârı çizimlerinden yakala.', color: 'border-emerald-400' },
                   { title: '⚖️ Grup Yargıcı', desc: 'Kim Yapar? Mahkemesi oyununda en popüler oyları topla.', color: 'border-pink-400' },
                 ].map((badge, bIdx) => (

@@ -271,7 +271,7 @@ export const WordBombGame: React.FC<WordBombGameProps> = ({ onBackToHub }) => {
             <h1 className="text-sm sm:text-base font-black text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
               <span>{t('Saatli Bomba')}</span>
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300">
-                {t('Word Bomb')}</span>
+                {t('Saatli Bomba')}</span>
             </h1>
             <p className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium">
               {t('Tik-tak patlamadan kelimeyi devret!')}</p>

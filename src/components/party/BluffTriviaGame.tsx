@@ -328,7 +328,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
             <div className="flex items-center gap-1.5">
               <h1 className="text-base sm:text-lg font-black text-slate-900 dark:text-slate-100">{t('Yalan Ustası')}</h1>
               <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-900 uppercase tracking-wide">
-                {t('Fibbage Tarzı')}</span>
+                {t('Blöf Oyunu')}</span>
             </div>
             <p className="text-[11px] text-slate-500 dark:text-slate-400 font-bold">{t('Sahte Cevaplar & Gerçek Trivia')}</p>
           </div>
@@ -423,7 +423,7 @@ export const BluffTriviaGame: React.FC<BluffTriviaGameProps> = ({ onBackToHub })
                   <span className="px-3 py-1 rounded-full bg-white/20 text-white text-xs font-black backdrop-blur-md">
                     {t('📱 Telefon Kumandası')}</span>
                   <span className="px-3 py-1 rounded-full bg-white/20 text-white text-xs font-black backdrop-blur-md">
-                    {t('🎭 Fibbage Tarzı Blöf')}</span>
+                    {t('🎭 Blöf Oyunu')}</span>
                 </div>
 
                 {/* Round Count Selector */}

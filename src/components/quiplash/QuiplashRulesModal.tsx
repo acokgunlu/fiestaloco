@@ -28,7 +28,7 @@ export const QuiplashRulesModal: React.FC<QuiplashRulesModalProps> = ({ isOpen, 
                 🥊
               </div>
               <div>
-                <h2 className="text-xl font-black tracking-tight">{t('Quiplash Nasıl Oynanır?')}</h2>
+                <h2 className="text-xl font-black tracking-tight">{t('Laf Cambazı Nasıl Oynanır?')}</h2>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
                   {t('Mizah, hazırcevaplık ve laf cambazlığı düellosu!')}</p>
               </div>
@@ -67,9 +67,9 @@ export const QuiplashRulesModal: React.FC<QuiplashRulesModalProps> = ({ isOpen, 
               <Trophy className="w-5 h-5 text-pink-600 dark:text-pink-400 shrink-0 mt-0.5" />
               <div>
                 <strong className="block text-pink-900 dark:text-pink-300 font-bold mb-1">
-                  {t('3. Puanlama & QUIPLASH! Bonusu')}</strong>
+                  {t('3. Puanlama & TAM İSABET! Bonusu')}</strong>
                 <p className="text-slate-600 dark:text-slate-300 text-xs">
-                  <T k="Her aldığınız oy size puan kazandırır (2. Turda 2 katı!). Eğer odadaki tüm oyları tek başınıza silip süpürürseniz {a} bonusu patlar!" v={{ a: <strong>{t('QUIPLASH!')}</strong> }} /></p>
+                  <T k="Her aldığınız oy size puan kazandırır (2. Turda 2 katı!). Eğer odadaki tüm oyları tek başınıza silip süpürürseniz {a} bonusu patlar!" v={{ a: <strong>{t('TAM İSABET!')}</strong> }} /></p>
               </div>
             </div>
 
@@ -77,9 +77,9 @@ export const QuiplashRulesModal: React.FC<QuiplashRulesModalProps> = ({ isOpen, 
               <Users className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
               <div>
                 <strong className="block text-emerald-900 dark:text-emerald-300 font-bold mb-1">
-                  {t('4. The Last Lash (Büyük Final)')}</strong>
+                  {t('4. Final Düellosu')}</strong>
                 <p className="text-slate-600 dark:text-slate-300 text-xs">
-                  {t('Son turda tüm oyuncular tek bir ortak soruya cevap yazar. Ardından herkes en beğendiği yanıtlara 3 katı değerinde madalya oyları dağıtır ve Quiplash Şampiyonu belirlenir!')}</p>
+                  {t('Son turda tüm oyuncular tek bir ortak soruya cevap yazar. Ardından herkes en beğendiği yanıtlara 3 katı değerinde madalya oyları dağıtır ve Laf Cambazı Şampiyonu belirlenir!')}</p>
               </div>
             </div>
           </div>

@@ -56,10 +56,13 @@ const G = (
 
 /**
  * Sıra hub'daki görünüm sırası.
- * Başlıklar uygulamada YERLEŞİK olanlar; tasarım maketinde bazıları
- * uluslararası adıyla ("Fibbage", "Word Bomb") yazılmıştı ama bunlar çeviri
- * sözlüğünde ve oyuncuların belleğinde Türkçe adlarıyla duruyor, o yüzden
- * yeniden adlandırma yapılmadı — geri kalan her şey tasarımdan.
+ *
+ * ADLAR BAŞKASININ MARKASINI TAŞIMAZ. "Quiplash" (Jackbox) ve "Trivial Pursuit"
+ * (Hasbro) tescilli; ticari bir üründe bu adlar ya da çok yakın klonları hem
+ * mağazadan kaldırılma hem de SMK m.30 kapsamında suç riski taşıyor. Bu yüzden
+ * Laf Cambazı ve Bilgi Kalesi adlarını aldılar. id'ler ('quiplash',
+ * 'trivia_pursuit') DEĞİŞMEDİ: oyuncuya görünmüyorlar ve değiştirmek mevcut QR
+ * bağlantılarını, soket mesaj tiplerini ve oda snapshot'larını bozardı.
  */
 export const GAMES: GameEntry[] = [
   G('imposter',       'Sahtekâr Ressam', 'Tek çizgi çiz, sahtekârı yakala',      '3-10', 12, 'parti',   '#ffd93d', -1.5),
@@ -67,11 +70,11 @@ export const GAMES: GameEntry[] = [
   G('kapisma',        'Kapışma',         'Parmağın direksiyon',                  '2-8',  10, 'refleks', '#ff6b6b', -0.5),
   G('bluff',          'Yalan Ustası',    'İnandırıcı yalan yaz, gerçeği bul',    '2-10', 15, 'zeka',    '#ff5d8f',  1.5),
   G('bomb',           'Saatli Bomba',    'Heceyi yakala, bombayı fırlat',        '2-12',  8, 'refleks', '#ff9f43', -1),
-  G('trivia_pursuit', 'Trivia Pursuit',  'Çarkı çevir, 6 rozeti topla',          '2-10', 25, 'zeka',    '#7bd389', -1.5),
+  G('trivia_pursuit', 'Bilgi Kalesi',    'Zar at, kaleleri fethet',              '2-10', 25, 'zeka',    '#7bd389', -1.5),
   G('race',           'At Yarışı',       'Kuponunu yatır, izle',                 '2-8',  10, 'parti',   '#a3e635',  1),
   G('colory',         'Colory',          'Rengi hatırla, en yakını bul',         '2-12',  8, 'refleks', '#ff8fab', -0.5),
   G('timing',         'Tam Zamanında',   'İçinden say, tam vaktinde bas',        '2-12',  6, 'refleks', '#7ad7f0',  1.5),
-  G('quiplash',       'Quiplash',        'Doğru cevap yok, en komik kazanır',    '2-12', 15, 'parti',   '#b892ff', -1),
+  G('quiplash',       'Laf Cambazı',     'Doğru cevap yok, en komik kazanır',    '2-12', 15, 'parti',   '#b892ff', -1),
 ];
 
 export type GameFilter = 'hepsi' | GameCategory | 'kisa';

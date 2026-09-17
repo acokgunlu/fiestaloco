@@ -74,7 +74,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
   const getGameTitle = () => {
     switch (activeModule) {
       case 'trivia_pursuit':
-        return 'Trivia Pursuit';
+        return 'Bilgi Kalesi';
       case 'codenames':
         return 'Gizli Ajanlar';
       case 'imposter':

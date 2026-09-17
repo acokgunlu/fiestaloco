@@ -166,12 +166,12 @@ function toModuleType(serverGameType: string): GameModuleType {
 
 const GAME_LABELS: Record<GameModuleType, { title: string; icon: string }> = {
   imposter: { title: 'Imposter Line', icon: '🎨' },
-  codenames: { title: 'Codenames', icon: '🕵️' },
+  codenames: { title: 'Gizli Ajanlar', icon: '🕵️' },
   bluff: { title: 'Yalan Ustası', icon: '🎭' },
   bomb: { title: 'Saatli Bomba', icon: '💣' },
   verdict: { title: 'Grup Mahkemesi', icon: '⚖️' },
-  trivia_pursuit: { title: 'Trivia Pursuit', icon: '🧠' },
-  quiplash: { title: 'Quiplash', icon: '🥊' },
+  trivia_pursuit: { title: 'Bilgi Kalesi', icon: '🧠' },
+  quiplash: { title: 'Laf Cambazı', icon: '🥊' },
   race: { title: 'At Yarışı', icon: '🏇' },
   colory: { title: 'Colory', icon: '🎨' },
   timing: { title: 'Tam Zamanında', icon: '⏱️' },

@@ -103,7 +103,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
             </div>
             <div>
               <h1 className="text-base font-black tracking-wider uppercase bg-gradient-to-r from-purple-400 via-pink-300 to-amber-300 bg-clip-text text-transparent">
-                {t('QUIPLASH')}</h1>
+                {t('LAF CAMBAZI')}</h1>
               <span className="text-[10px] text-slate-400 font-bold block -mt-0.5">
                 {t('TV Host • Ana Ekran')}</span>
             </div>
@@ -246,7 +246,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
                   }`}
                 >
                   <Play className="w-5 h-5 fill-current" />
-                  {t('Quiplash’ı Başlat!')}</button>
+                  {t('Laf Cambazı’nı Başlat!')}</button>
               </div>
             </div>
           </div>
@@ -352,7 +352,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
                 {/* Quiplash Sweep Banner */}
                 {isMatchupResult && activeMatchup.answer1.isQuiplash && (
                   <div className="absolute top-3 right-3 px-3 py-1 rounded-xl bg-amber-400 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center gap-1 shadow-lg animate-bounce">
-                    {t('👑 QUIPLASH! (+500 BONUS)')}</div>
+                    {t('👑 TAM İSABET! (+500 BONUS)')}</div>
                 )}
 
                 <div className="mb-4">
@@ -403,7 +403,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
                 {/* Quiplash Sweep Banner */}
                 {isMatchupResult && activeMatchup.answer2.isQuiplash && (
                   <div className="absolute top-3 right-3 px-3 py-1 rounded-xl bg-amber-400 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center gap-1 shadow-lg animate-bounce">
-                    {t('👑 QUIPLASH! (+500 BONUS)')}</div>
+                    {t('👑 TAM İSABET! (+500 BONUS)')}</div>
                 )}
 
                 <div className="mb-4">
@@ -509,7 +509,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
               ) : (
                 <>
                   <Crown className="w-5 h-5 text-amber-300" />
-                  <span>{t('Büyük Finale Geç (The Last Lash)')}</span>
+                  <span>{t('Final Düellosuna Geç')}</span>
                 </>
               )}
             </button>
@@ -583,7 +583,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
             </div>
             <span className="text-xs font-black tracking-widest uppercase text-amber-400 mb-2">
               {t('OYUN BİTTİ')}</span>
-            <h2 className="text-5xl font-black text-white mb-8">{t('QUIPLASH ŞAMPİYONU')}</h2>
+            <h2 className="text-5xl font-black text-white mb-8">{t('LAF CAMBAZI ŞAMPİYONU')}</h2>
 
             {/* Winner Spotlight Card */}
             {(() => {
@@ -642,7 +642,7 @@ export const QuiplashTvView: React.FC<QuiplashTvViewProps> = ({
 
       {/* Bottom Bar Info */}
       <footer className="relative z-10 px-8 py-3 border-t border-slate-900 bg-slate-950/80 text-center text-xs text-slate-500 font-medium">
-        {t('FiestaLoco • Quiplash TV Host Mode')}</footer>
+        {t('FiestaLoco • Laf Cambazı TV Modu')}</footer>
     </div>
   );
 };

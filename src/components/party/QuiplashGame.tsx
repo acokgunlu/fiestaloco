@@ -145,7 +145,7 @@ export const QuiplashGame: React.FC<QuiplashGameProps> = ({ onBackToHub }) => {
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
-                  {t('Quiplash')}</h1>
+                  {t('Laf Cambazı')}</h1>
                 <span className="px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300 text-[10px] font-black border border-purple-300 dark:border-purple-800">
                   {t('MİZAH VE LAF CAMBAZLIĞI DÜELLOSU')}</span>
               </div>

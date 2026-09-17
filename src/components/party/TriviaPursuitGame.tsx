@@ -170,7 +170,7 @@ export const TriviaPursuitGame: React.FC<TriviaPursuitGameProps> = ({ onBackToHu
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
-                  {t('Trivia Pursuit')}</h1>
+                  {t('Bilgi Kalesi')}</h1>
                 <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-[10px] font-black border border-emerald-300 dark:border-emerald-800">
                   {t('BİLGİ ÇARKI & 6 ROZET')}</span>
               </div>
@@ -266,7 +266,7 @@ export const TriviaPursuitGame: React.FC<TriviaPursuitGameProps> = ({ onBackToHu
                   🏆
                 </div>
                 <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white drop-shadow-sm">
-                  {t('Trivia Pursuit TV Host')}</h2>
+                  {t('Bilgi Kalesi TV Host')}</h2>
                 <p className="text-emerald-100 dark:text-emerald-200 text-sm sm:text-base font-medium leading-relaxed">
                   {t('Büyük ekranda 6 renkli çark döner! Oyuncular telefonlarından cevap verir, 6 farklı kategorideki tüm rozetleri ilk toplayan şampiyon olur!')}</p>
 

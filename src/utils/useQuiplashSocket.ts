@@ -184,7 +184,7 @@ export function useQuiplashSocket(): UseQuiplashSocketReturn {
               if (winner) {
                 recordMatchResult({
                   gameType: 'quiplash',
-                  gameTitle: 'Quiplash',
+                  gameTitle: 'Laf Cambazı',
                   gameIcon: '🥊',
                   roomCode: msg.gameState.roomCode,
                   winnerName: winner.name,
@@ -207,11 +207,11 @@ export function useQuiplashSocket(): UseQuiplashSocketReturn {
             }
           }
         } catch (e) {
-          console.error('Quiplash msg parse error:', e);
+          console.error('Laf Cambazı msg parse error:', e);
         }
       };
     } catch (e) {
-      console.error('Quiplash connection error:', e);
+      console.error('Laf Cambazı connection error:', e);
     }
   }, []);
 

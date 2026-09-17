@@ -50,7 +50,7 @@ export function CodenamesRulesModal({ isOpen, onClose }: CodenamesRulesModalProp
             </div>
             <div>
               <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-slate-100 tracking-tight">
-                {t('Gizli Ajanlar (Codenames) Oyun Rehberi')}</h2>
+                {t('Gizli Ajanlar Oyun Rehberi')}</h2>
               <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
                 {t('Takım Stratejisi • İpucu Verme • TV Host & Telefon Kumandası')}</p>
             </div>
@@ -336,7 +336,7 @@ export function CodenamesRulesModal({ isOpen, onClose }: CodenamesRulesModalProp
                   <span>{t('Kara Suikastçı (The Assassin) Hakkında')}</span>
                 </div>
                 <p className="text-xs text-rose-900 dark:text-rose-200 leading-relaxed">
-                  {t('Codenames oyununun en heyecanlı ve tehlikeli kartıdır. Masadaki 25 karttan tam olarak 1 tanesi Suikastçıdır.')}</p>
+                  {t('Gizli Ajanlar oyununun en heyecanlı ve tehlikeli kartıdır. Masadaki 25 karttan tam olarak 1 tanesi Suikastçıdır.')}</p>
               </div>
 
               <div className="p-4 rounded-2xl bg-stone-900 text-white space-y-3">
