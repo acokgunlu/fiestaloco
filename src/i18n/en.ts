@@ -1304,8 +1304,8 @@ export const EN: Record<string, string> = {
   "Bilgi Kalesi TV": "Quiz Fortress TV",
   "LAF CAMBAZI": "WORD ACROBAT",
   "TAM İSABET!": "BULLSEYE!",
-  // Kale Kuşatması + Cihan Fatihi
-  "Cihan Fatihi": "World Conqueror",
+  // Kale Kuşatması + Dünya Fethi
+  "Dünya Fethi": "World Conquest",
   "Bil, üret, dünyayı fethet": "Answer, produce, conquer the world",
   "Bil, üret, fethet — dünya haritasında": "Know, produce, conquer — on the world map",
   "Dünya haritası büyük ekranda. Bilgiyle asker kazan, zarla üret, telefondan emir ver; yalnızca komşu bölgelere saldırılır.": "The world map on the big screen. Earn troops with knowledge, produce with dice, give orders from your phone; you can only attack neighbouring territories.",

@@ -1,5 +1,5 @@
 /**
- * Cihan Fatihi — dünya haritası üreticisi
+ * Dünya Fethi — dünya haritası üreticisi
  * =======================================
  *   npx tsx scripts/buildWorldMap.ts
  *

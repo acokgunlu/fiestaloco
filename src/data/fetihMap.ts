@@ -2,7 +2,7 @@ import type { ContentLang } from './contentLang';
 import { WORLD_NEIGHBORS, WORLD_SEA_LINKS, WORLD_TERRITORIES } from './worldTerritories';
 
 /**
- * Cihan Fatihi — dünya haritası tahtası
+ * Dünya Fethi — dünya haritası tahtası
  * =====================================
  * Bölgeler, adları ve komşuluk scripts/buildWorldMap.ts ile Natural Earth
  * ülke sınırlarından üretiliyor (src/data/worldTerritories.ts). Bu modül

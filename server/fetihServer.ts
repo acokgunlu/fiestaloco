@@ -29,7 +29,7 @@ import type { QuizPick } from '../src/types/quizRound';
 import { createRoomKit, playerBasics, type KitHost, type KitRoom } from './roomKit';
 
 /**
- * CİHAN FATİHİ — sunucu
+ * DÜNYA FETHİ — sunucu
  * Tur: VOTE → QUESTION → ROLL → ORDERS → RESOLVE → … → GAME_OVER
  */
 

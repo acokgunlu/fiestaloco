@@ -2,7 +2,7 @@ import type { FetihAttackOrder, FetihBattle, FetihTile } from '../types/fetih';
 import { TERRITORY_IDS, areNeighbors, neighborsOf } from './fetihMap';
 
 /**
- * Cihan Fatihi — saf kurallar
+ * Dünya Fethi — saf kurallar
  * ==========================
  * Sunucu oyunu bu fonksiyonlarla yürütüyor; telefon da aynı fonksiyonlarla
  * "hangi saldırılar mümkün" listesini çiziyor. Fonksiyonların çoğu `tiles`

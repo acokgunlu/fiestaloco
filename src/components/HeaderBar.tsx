@@ -98,7 +98,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
       case 'kusatma':
         return t('Kale Kuşatması');
       case 'fetih':
-        return t('Cihan Fatihi');
+        return t('Dünya Fethi');
       default:
         return 'Parti Merkezi';
     }

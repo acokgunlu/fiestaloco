@@ -7,7 +7,7 @@ import { getLang, t, withLang } from '../../i18n';
 import { T } from '../../i18n/T';
 
 /**
- * Kale Kuşatması ile Cihan Fatihi'in ortak ekran parçaları (Sticker dili).
+ * Kale Kuşatması ile Dünya Fethi'in ortak ekran parçaları (Sticker dili).
  * Şeker renkleri açık tonlar olduğu için üzerlerindeki yazı HER İKİ temada
  * koyu mürekkep (#1c1917); kontur ve gölge temaya göre değişiyor.
  */

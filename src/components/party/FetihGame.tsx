@@ -8,12 +8,12 @@ import { FetihControllerView } from '../fetih/FetihControllerView';
 import { t } from '../../i18n';
 
 export const FetihGame: React.FC<{ onBackToHub: () => void }> = ({ onBackToHub }) => {
-  const socket = useQuizGameSocket<FetihGameState, FetihPlayer>('fetih', { title: 'Cihan Fatihi', icon: '🗺️' });
+  const socket = useQuizGameSocket<FetihGameState, FetihPlayer>('fetih', { title: 'Dünya Fethi', icon: '🗺️' });
   return (
     <QuizGameShell
       socket={socket}
       slug="fetih"
-      title={t('Cihan Fatihi')}
+      title={t('Dünya Fethi')}
       tagline={t('Bil, üret, fethet — dünya haritasında')}
       icon={<MapIcon className="w-6 h-6" />}
       candy="#7bd389"

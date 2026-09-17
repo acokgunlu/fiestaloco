@@ -2,7 +2,7 @@ import type { QuizCategoryId } from '../data/quizBank';
 import type { PublicQuestion, QuizPick, QuizVote } from './quizRound';
 
 /**
- * Cihan Fatihi — tip tanımları
+ * Dünya Fethi — tip tanımları
  * ============================
  * Dünya haritasında bölge fethi; üretim zarları ve zar savaşları. Başlangıç
  * tamamen rastgele: herkese dağınık 3 bölge, tarafsız bölgelere 1-3 asker ve

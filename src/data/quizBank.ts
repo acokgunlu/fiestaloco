@@ -3,7 +3,7 @@ import { INITIAL_TRIVIA_QUESTIONS_EN, INITIAL_TRIVIA_QUESTIONS_TR } from './triv
 import type { TriviaCategory } from '../types/triviaPursuit';
 
 /**
- * ORTAK SORU BANKASI — Kale Kuşatması ve Cihan Fatihi
+ * ORTAK SORU BANKASI — Kale Kuşatması ve Dünya Fethi
  * ==================================================
  * Her turun başında oyunculara 3 kategori sunuluyor, en çok oyu alan
  * kategoriden soru geliyor. Bilgi Kalesi'nin 6 kategorisi olduğu gibi

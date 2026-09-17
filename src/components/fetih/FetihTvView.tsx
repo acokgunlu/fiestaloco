@@ -186,7 +186,7 @@ export const FetihTvView: React.FC<Props> = ({ roomCode, gameState: gs, players,
 
   return (
     <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 py-5 space-y-5 font-body" style={{ color: 'var(--sticker-ink)' }}>
-      <GameHeader icon={<MapIcon className="w-6 h-6" />} candy="#7bd389" title={t('Cihan Fatihi')} roomCode={roomCode} onBack={onLeave}
+      <GameHeader icon={<MapIcon className="w-6 h-6" />} candy="#7bd389" title={t('Dünya Fethi')} roomCode={roomCode} onBack={onLeave}
         subtitle={gs.phase === 'LOBBY' ? t('Harita rastgele dağıtılacak') : t('Tur {a}/{b} · {c}', { a: Math.max(1, gs.round), b: gs.settings.totalRounds, c: t(PHASE_LABEL[gs.phase]) })} />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
