@@ -262,7 +262,7 @@ export default function App() {
       setActiveModule('kapisma');
     } else if (gameParam === 'kusatma') {
       setActiveModule('kusatma');
-    } else if (gameParam === 'fetih') {
+    } else if (gameParam === 'galaksi' || gameParam === 'fetih') {
       setActiveModule('fetih');
     } else if (gameParam === 'timing') {
       setActiveModule('timing');

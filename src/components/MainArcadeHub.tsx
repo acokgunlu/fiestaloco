@@ -6,7 +6,7 @@ import {
   Castle,
   HelpCircle,
   LayoutGrid,
-  Map as MapIcon,
+  Orbit,
   Mic,
   Palette,
   PenTool,
@@ -47,7 +47,7 @@ const ICONS: Record<PartyGameType, React.ComponentType<{ className?: string }>> 
   timing: Timer,
   quiplash: Mic,
   kusatma: Castle,
-  fetih: MapIcon,
+  fetih: Orbit,
 };
 
 export function MainArcadeHub({

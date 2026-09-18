@@ -69,7 +69,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
       case 'kusatma':
         return '🏰';
       case 'fetih':
-        return '🗺️';
+        return '🌌';
       default:
         return '🎮';
     }
@@ -98,7 +98,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
       case 'kusatma':
         return t('Kale Kuşatması');
       case 'fetih':
-        return t('Dünya Fethi');
+        return t('Galaksi');
       default:
         return 'Parti Merkezi';
     }
@@ -127,7 +127,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
       case 'kusatma':
         return t('İki takım, iki sur — bilgiyle yık');
       case 'fetih':
-        return t('Bil, üret, fethet — dünya haritasında');
+        return t('Sisli galakside sektör sektör fetih');
       default:
         return t('Çok oyunculu parti oyunları');
     }

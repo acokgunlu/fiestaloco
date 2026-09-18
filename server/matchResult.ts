@@ -28,7 +28,7 @@ const GAME_META: Record<PersistedGameType, { title: string; icon: string }> = {
   timing: { title: 'Tam Zamanında', icon: '⏱️' },
   kapisma: { title: 'Kapışma', icon: '🏁' },
   kusatma: { title: 'Kale Kuşatması', icon: '🏰' },
-  fetih: { title: 'Dünya Fethi', icon: '🗺️' },
+  fetih: { title: 'Galaksi', icon: '🌌' },
 };
 
 type AnyPlayer = Record<string, any>;
@@ -215,7 +215,7 @@ export function detectFinishedMatch(gameType: PersistedGameType, room: AnyRoom):
   }
 
   // ---------------------------------------------------------------------------
-  // DÜNYA FETHİ — en çok bölgeye sahip olan kazanır (skor = bölge sayısı)
+  // GALAKSİ (iç kimlik fetih) — en çok puan: sektör 1, gezegen 3
   // ---------------------------------------------------------------------------
   if (gameType === 'fetih') {
     if (gs.phase !== 'GAME_OVER') return null;
@@ -235,7 +235,7 @@ export function detectFinishedMatch(gameType: PersistedGameType, room: AnyRoom):
         winnerName: winnerEntry?.name,
         winnerAvatar: winnerEntry?.avatar,
         winnerScore: winnerEntry?.score,
-        details: winnerEntry ? `${winnerEntry.name} ${winnerEntry.score} bölgeyle dünyaya hükmetti` : undefined,
+        details: winnerEntry ? `${winnerEntry.name} ${winnerEntry.score} puanla galaksiyi fethetti` : undefined,
         players: recordPlayers,
       },
     };

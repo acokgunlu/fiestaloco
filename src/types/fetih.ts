@@ -1,29 +1,25 @@
 import type { QuizCategoryId } from '../data/quizBank';
+import type { GalaxyCell } from '../data/galaxyLogic';
 import type { PublicQuestion, QuizPick, QuizVote } from './quizRound';
 
 /**
- * Dünya Fethi — tip tanımları
- * ============================
- * Dünya haritasında bölge fethi; üretim zarları ve zar savaşları. Başlangıç
- * tamamen rastgele: herkese dağınık 3 bölge, tarafsız bölgelere 1-3 asker ve
- * her bölgeye 2-12 arası bir üretim zarı numarası. Saldırı YALNIZCA komşu
- * bölgeye (kara sınırı ya da deniz geçidi) yapılabiliyor.
+ * Galaksi — tip tanımları
+ * =======================
+ * İç kimlik 'fetih' kaldı (yönetim panelindeki gizleme ayarı, maç kayıtları ve
+ * oda snapshot'ları bu kimliğe bağlı); oyuncuya görünen ad Galaksi.
  *
- * Bir tur:
- *   VOTE     → 3 kategoriden biri oylanıyor
- *   QUESTION → doğru bilen asker kazanıyor; en hızlı doğru bilen fazladan
- *              asker, ikinci saldırı hakkı ve ilk hamle önceliği alıyor
- *   ROLL     → iki zar: numarası tutan her bölge sahibine 1 asker üretiyor.
- *              7 gelirse korsan baskını.
- *   ORDERS   → herkes gizlice yedek askerini bir bölgesine yerleştiriyor ve
- *              komşu bir bölgeye saldırı emri veriyor
- *   RESOLVE  → emirler öncelik sırasıyla uygulanıyor, zar savaşları
- *
- * Toprağı kalmayan oyuncu elenmiyor: boş bir bölgede 3 askerle yeniden doğuyor.
- * Parti oyununda kimse ilk 10 dakikada seyirci kalmamalı.
+ *   LOBBY     → oyuncular giriyor
+ *   PICK      → herkes sisli galakside bir ana yıldız seçiyor
+ *   VOTE      → 3 kategoriden biri oylanıyor
+ *   QUESTION  → soru: doğru 2, yanlış 1 enerji
+ *   ANSWER    → doğru cevap ve hamle sırası
+ *   ORDERS    → herkes telefondan hamlesini planlıyor (komşu sektörlere)
+ *   RESOLVE   → hamleler sırayla oynanıyor
+ *   DUEL      → rakip sektörüne girildi: ikisine aynı 4 şıklı soru
+ *   GAME_OVER → turlar bitti
  */
 
-export type FetihPhase = 'LOBBY' | 'VOTE' | 'QUESTION' | 'ROLL' | 'ORDERS' | 'RESOLVE' | 'GAME_OVER';
+export type FetihPhase = 'LOBBY' | 'PICK' | 'VOTE' | 'QUESTION' | 'ANSWER' | 'ORDERS' | 'RESOLVE' | 'DUEL' | 'GAME_OVER';
 
 export interface FetihPlayer {
   id: string;
@@ -31,55 +27,40 @@ export interface FetihPlayer {
   avatar: string;
   color: string;
   colorName: string;
-  /** Sahip olunan bölge sayısı — sıralama ve maç kaydı bunu kullanıyor. */
+  /** Sektör 1 + gezegen 3 puan — sıralama ve maç kaydı bunu kullanıyor. */
   score: number;
-  /** Bu tur yerleştirilmeyi bekleyen asker. */
-  reserve: number;
-  /** Bu tur kullanılabilecek saldırı hakkı. */
-  attacks: number;
+  sectors: number;
+  planets: number;
+  /** Bu tur harcanabilecek enerji (adım sayısı). */
+  energy: number;
   correctCount: number;
-  respawns: number;
   connected?: boolean;
   isHost?: boolean;
 }
 
-export interface FetihTile {
-  owner: string | null;
-  troops: number;
-  /** Üretim numarası (2-12, 7 hariç). */
-  token: number;
+export type DuelReason = 'only' | 'none' | 'asteroid' | 'faster';
+
+export interface FetihDuel {
+  attackerId: string;
+  defenderId: string;
+  cell: number;
+  question: PublicQuestion;
+  answeredIds: string[];
+  stage: 'question' | 'reveal';
+  /** Açıklamada dolu. */
+  correct?: number;
+  picks?: Array<{ playerId: string; choice: number | null; ms: number | null }>;
+  winnerId?: string;
+  reason?: DuelReason;
 }
 
-export interface FetihAttackOrder {
-  from: number;
-  to: number;
-}
-
-export interface FetihBattle {
+/** TV günlüğü — metin istemcide, dile göre kuruluyor. */
+export interface FetihLogEntry {
   playerId: string;
-  from: number;
-  to: number;
-  defenderId: string | null;
-  attLoss: number;
-  defLoss: number;
-  conquered: boolean;
-  /** Emir uygulanamadı (kaynak bölge elden çıktı, asker yetmedi…). */
-  cancelled: boolean;
-}
-
-export interface FetihRoll {
-  dice: [number, number];
-  /** Oyuncu başına üretilen asker. */
-  gains: Record<string, number>;
-  /** 7 geldiğinde korsanların asker götürdüğü bölgeler. */
-  raided: Array<{ playerId: string; province: number }>;
-}
-
-export interface FetihQuizResult {
-  correct: number;
-  fact?: string;
-  picks: QuizPick[];
-  fastestId: string | null;
+  kind: 'capture' | 'hole' | 'duelWin' | 'duelLoss' | 'homeFall' | 'cancel' | 'respawn';
+  cell: number;
+  otherId?: string;
+  count?: number;
 }
 
 export interface FetihSettings {
@@ -96,21 +77,25 @@ export interface FetihGameState {
   settings: FetihSettings;
   timerSeconds: number;
 
-  /** Bölge kimliği (worldTerritories) → durum. */
-  tiles: Record<number, FetihTile>;
+  radius: number;
+  cells: GalaxyCell[];
 
   vote: QuizVote | null;
   category: QuizCategoryId | null;
   question: PublicQuestion | null;
   answeredIds: string[];
-  quiz: FetihQuizResult | null;
+  /** ANSWER fazında: doğru şık ve kim bildi. */
+  quiz: { correct: number; fact?: string; picks: QuizPick[] } | null;
 
-  roll: FetihRoll | null;
-  /** Emrini gönderenler (emrin içeriği çözülene kadar gizli). */
-  submittedIds: string[];
-  /** Hamle sırası: en hızlı doğru bilen önce. */
+  /** Hamle sırası: doğru bilenler hızına göre, sonra kalanlar. */
   initiative: string[];
-  battles: FetihBattle[];
+  submittedIds: string[];
+  /** Şu an hamlesi oynanan oyuncu. */
+  moverId: string | null;
+  /** Son oynanan adım — TV bunu okla gösteriyor. */
+  lastMove: { playerId: string; from: number; to: number } | null;
+  duel: FetihDuel | null;
+  log: FetihLogEntry[];
 
   winnerPlayerId: string | null;
 }

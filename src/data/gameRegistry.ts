@@ -76,7 +76,7 @@ export const GAMES: GameEntry[] = [
   G('timing',         'Tam Zamanında',   'İçinden say, tam vaktinde bas',        '2-12',  6, 'refleks', '#7ad7f0',  1.5),
   G('quiplash',       'Laf Cambazı',     'Doğru cevap yok, en komik kazanır',    '2-12', 15, 'parti',   '#b892ff', -1),
   G('kusatma',        'Kale Kuşatması',  'Bil, vur, surlarını yık',              '2-12', 10, 'zeka',    '#ff9f43',  1),
-  G('fetih',          'Dünya Fethi',    'Bil, üret, dünyayı fethet',            '2-8',  15, 'zeka',    '#7bd389', -1),
+  G('fetih',          'Galaksi',        'Sisli galakside sektör sektör fetih',  '2-8',  15, 'zeka',    '#b892ff', -1),
 ];
 
 export type GameFilter = 'hepsi' | GameCategory | 'kisa';
