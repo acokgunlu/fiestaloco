@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useSyncExternalStore } from 'react';
+import React, { useState, useEffect, useRef, useSyncExternalStore } from 'react';
 import { Player, Stroke, WordPair, GamePhase, GameSettings, RoundResult } from './types';
 import { CodenamesGameState, CodenamesSettings, CodenamesTeam } from './types/codenames';
 import { PartyGameType } from './types/partyGames';
@@ -40,6 +40,7 @@ import { TriviaPursuitGame } from './components/party/TriviaPursuitGame';
 import { QuiplashGame } from './components/party/QuiplashGame';
 import { UnifiedLeaderboardModal } from './components/leaderboard/UnifiedLeaderboardModal';
 import { useSocketRoom } from './utils/useSocketRoom';
+import { lookupRoomGame, roomJoinHref } from './utils/roomLookup';
 import { useCodenamesSocket } from './utils/useCodenamesSocket';
 import { isSoundEnabled, toggleSound } from './utils/audio';
 import { useAppTheme } from './utils/theme';
@@ -253,6 +254,7 @@ export default function App() {
   const [soundActive, setSoundActive] = useState(true);
 
   // Check URL query parameters for ?room=CODE or ?game=codenames
+  const roomLookupStarted = useRef(false);
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const roomParam = params.get('room');
@@ -283,8 +285,19 @@ export default function App() {
     } else if (gameParam === 'bilgi-kalesi') {
       setActiveModule('trivia_pursuit');
     } else if (roomParam && !roomState) {
-      setActiveModule('imposter');
-      setAppMode('picker');
+      // Oyunu belirtilmemiş kod (ana sayfadaki kutu, eski QR'lar): kod hangi
+      // oyunun, sunucuya sor; imposter'a düşmek yalnız kod imposter'ınsa ya da
+      // sunucuya ulaşılamazsa.
+      if (roomLookupStarted.current) return;
+      roomLookupStarted.current = true;
+      lookupRoomGame(roomParam).then((game) => {
+        if (game && game !== 'imposter') {
+          window.location.replace(roomJoinHref(roomParam, game));
+          return;
+        }
+        setActiveModule('imposter');
+        setAppMode('picker');
+      });
     }
   }, [roomState]);
 

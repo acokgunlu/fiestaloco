@@ -23,6 +23,7 @@ import { playClickSound, playTurnSound } from '../utils/audio';
 import { FILTERS, GAMES, GameFilter, filterGames } from '../data/gameRegistry';
 import { useHiddenGames } from '../utils/gameVisibility';
 import { t } from '../i18n';
+import { lookupRoomGame, roomJoinHref } from '../utils/roomLookup';
 
 interface MainArcadeHubProps {
   onSelectGame: (gameId: PartyGameType) => void;
@@ -56,13 +57,25 @@ export function MainArcadeHub({
   onOpenLeaderboard,
 }: MainArcadeHubProps) {
   const [quickRoomCode, setQuickRoomCode] = useState('');
+  const [joinError, setJoinError] = useState<string | null>(null);
+  const [joining, setJoining] = useState(false);
   const [filter, setFilter] = useState<GameFilter>('hepsi');
 
-  const handleQuickJoin = (e: React.FormEvent) => {
+  // Kod hangi oyunun, önce sunucuya soruluyor; yoksa burada söyleniyor.
+  const handleQuickJoin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!quickRoomCode.trim()) return;
+    const code = quickRoomCode.trim().toUpperCase();
+    if (!code || joining) return;
     playClickSound();
-    window.location.href = `?room=${quickRoomCode.trim().toUpperCase()}`;
+    setJoining(true);
+    setJoinError(null);
+    const game = await lookupRoomGame(code);
+    setJoining(false);
+    if (game === null) {
+      setJoinError(t('Oda bulunamadı: {a}', { a: code }));
+      return;
+    }
+    window.location.href = roomJoinHref(code, game);
   };
 
   // Yönetim panelinden gizlenen oyunlar hub'da hiç listelenmez.
@@ -70,7 +83,8 @@ export function MainArcadeHub({
   const acik = GAMES.filter((g) => !hidden.has(g.id));
   const gorunen = filterGames(acik, filter);
   // Oda kodu kutuları: girilen harfler dolu, kalanlar kesik çizgili.
-  const kutular = [0, 1, 2, 3].map((i) => quickRoomCode[i] || '');
+  // Kodlar kelime + 2 rakam: FOX42 (5) ya da STAR86 (6).
+  const kutular = [0, 1, 2, 3, 4, 5].map((i) => quickRoomCode[i] || '');
 
   return (
     <div
@@ -143,11 +157,11 @@ export function MainArcadeHub({
           </div>
 
           <form onSubmit={handleQuickJoin} className="flex flex-col gap-3">
-            <div className="flex gap-2.5">
+            <div className="flex gap-2">
               {kutular.map((harf, i) => (
                 <div
                   key={i}
-                  className="flex-1 h-16 sm:h-[72px] rounded-2xl flex items-center justify-center font-display text-3xl sm:text-[40px]"
+                  className="flex-1 min-w-0 h-14 sm:h-16 rounded-xl flex items-center justify-center font-display text-2xl sm:text-3xl"
                   style={
                     harf
                       ? { border: '3px solid var(--sticker-ink)', background: '#ffd93d', color: '#1c1917' }
@@ -164,10 +178,10 @@ export function MainArcadeHub({
             <input
               id="input-quick-room-code"
               type="text"
-              maxLength={4}
+              maxLength={6}
               placeholder={t('ODA KODU')}
               value={quickRoomCode}
-              onChange={(e) => setQuickRoomCode(e.target.value.toUpperCase())}
+              onChange={(e) => { setQuickRoomCode(e.target.value.toUpperCase().replace(/\s/g, '')); setJoinError(null); }}
               aria-label={t('ODA KODU')}
               className="w-full px-3 py-2.5 rounded-xl text-center text-sm font-black tracking-[0.3em] uppercase outline-none"
               style={{
@@ -177,12 +191,17 @@ export function MainArcadeHub({
               }}
             />
 
+            {joinError && (
+              <div className="sticker sticker-sm px-3 py-2 text-sm font-black" role="alert" style={{ background: '#ff6b6b', color: '#1c1917' }}>{joinError}</div>
+            )}
+
             <button
               type="submit"
+              disabled={joining}
               className="sticker-btn font-display py-3.5 text-lg flex items-center justify-center gap-2"
               style={{ background: '#ff5d8f', color: '#fff' }}
             >
-              {t('KATIL')} <ArrowRight className="w-5 h-5" strokeWidth={3} />
+              {joining ? t('Kontrol ediliyor…') : <>{t('KATIL')} <ArrowRight className="w-5 h-5" strokeWidth={3} /></>}
             </button>
           </form>
 

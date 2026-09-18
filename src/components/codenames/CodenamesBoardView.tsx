@@ -87,7 +87,7 @@ export function CodenamesBoardView({
   } = gameState;
 
   const isRed = activeTeam === 'red';
-  const joinUrl = roomCode ? `${window.location.origin}/?room=${roomCode}` : '';
+  const joinUrl = roomCode ? `${window.location.origin}/?game=codenames&room=${roomCode}` : '';
 
   // Generate QR Code if roomCode is available
   useEffect(() => {

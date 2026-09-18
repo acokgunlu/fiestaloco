@@ -3074,19 +3074,38 @@ async function startServer() {
     res.json({ enabled: true, matches: await fetchMatchHistory(limit, gameType) });
   });
 
-  // Query Room Info endpoint (for quick pre-check on join)
+  // Oda kodu hangi oyunun? Kod üreteci tüm oyunlarda ortak ve benzersiz, yani
+  // bir kod tek bir oyuna ait. "?room=KOD" ile gelen (oyunu belirtilmemiş)
+  // telefon bununla doğru oyuna yönleniyor; `game` URL'deki ?game= değeri.
   app.get('/api/room/:code', (req, res) => {
-    const code = req.params.code.toUpperCase();
+    res.setHeader('Cache-Control', 'no-store');
+    const code = req.params.code.toUpperCase().trim();
     const room = rooms.get(code);
-    if (!room) {
-      return res.status(404).json({ error: 'Room not found' });
+    if (room) {
+      return res.json({
+        code: room.code,
+        game: 'imposter',
+        playerCount: room.players.length,
+        gamePhase: room.gamePhase,
+        category: room.currentWordPair.category,
+      });
     }
-    res.json({
-      code: room.code,
-      playerCount: room.players.length,
-      gamePhase: room.gamePhase,
-      category: room.currentWordPair.category,
-    });
+    const others: Array<[string, Map<string, unknown>]> = [
+      ['codenames', codenamesRooms],
+      ['bomb', bombRooms],
+      ['bluff', bluffRooms],
+      ['bilgi-kalesi', triviaRooms],
+      ['laf-cambazi', quiplashRooms],
+      ['race', raceRooms],
+      ['colory', coloryRooms],
+      ['timing', timingRooms],
+      ['kapisma', kapismaRooms],
+      ['kusatma', kusatmaRooms],
+      ['galaksi', fetihRooms],
+    ];
+    const hit = others.find(([, map]) => map.has(code));
+    if (!hit) return res.status(404).json({ error: 'Room not found' });
+    res.json({ code, game: hit[0] });
   });
 
   // AI Word Pair Generation
